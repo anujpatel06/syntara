@@ -1,6 +1,6 @@
 {
   "name": "@syntara/codemods",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Codemods for Syntara's breaking changes. Each one rewrites what it can be sure of and reports the rest.",
   "type": "module",
   "license": "MIT",
