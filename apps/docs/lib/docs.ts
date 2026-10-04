@@ -131,6 +131,14 @@ export const DOC_PAGES: readonly DocPage[] = [
     keywords: 'adr decisions contribution rfc process maturity alpha beta stable graduation',
   },
   {
+    slug: 'raise-a-conflict',
+    href: '/docs/raise-a-conflict',
+    title: 'Raise a conflict',
+    description: 'Two rules, two products, or a past decision pulling different ways? Raise it here.',
+    group: 'project',
+    keywords: 'conflict disagree dispute issue request clash priority order governance',
+  },
+  {
     slug: 'changelog',
     href: '/docs/changelog',
     title: 'Changelog',

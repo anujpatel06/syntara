@@ -6,6 +6,40 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 (conflict flow on the site) — the flow on Governance, and a page to raise one
+
+**Changed**
+- **Governance → "When things conflict"**: GOVERNANCE.md §9 drawn for the site (`components/governance/conflict-flow.tsx`):
+  raise → sort → decide → record as four cards, the three kinds with their rules, and the priority order.
+- **New page, `/docs/raise-a-conflict`** (sidebar under Project, footer, a link from Governance): a short "before you
+  raise it" and the form (`conflict-form.tsx`). The site is a static export, so the form opens GitHub's Conflict issue
+  form pre-filled through issue-form query parameters (one per field `id`); the person submits on GitHub. No server,
+  no token, nothing stored. The "New information" field appears only for "I disagree with a past decision".
+- **Old repository address fixed**: 20 links and `GITHUB_URL` said `anujpatel06/strata`; they say `syntara`.
+
+**Decided**
+- Flow on the website and the form on the site: **Anuj**. A separate page for raising one: **Anuj** ("a separate
+  entry point"); putting it in the sidebar, footer and a Governance link is **Claude**, pending review.
+- Pre-filled GitHub link instead of submitting from the site: **Claude** (submitting would need a server function
+  and a stored GitHub token).
+
+**Results**
+- Clicked through in the dev server: the filled form built
+  `github.com/anujpatel06/syntara/issues/new?template=conflict.yml&title=…&kind=…&clash=…&where=…&evidence=…`, every
+  answer in its field, `kind` word for word with the template, `&` in a title kept. An empty form opened nothing (0)
+  and showed four "Please fill in this field" messages.
+- Not proven: what GitHub shows after sign-in. The browser pane isn't signed in to GitHub; the link follows GitHub's
+  documented pre-fill format.
+- Full `/verify`, all steps pass: `check-hydration` 118 routes × 2 schemes, 0 failures; `axe-sweep` 0 violation nodes;
+  `check-narrow-overflow` 236 checks, 0 sideways. Shipped: `apps/docs/out/docs/raise-a-conflict.html` exists,
+  `grep -rl conflict.yml apps/docs/out/_next/static` → 1 file, `grep -c anujpatel06/strata …/governance.html` → 0.
+
+**Next**
+- The selected radio card is quiet in dark mode, and the site's primary button is grey: both raised with Anuj, unchanged.
+- Nothing yet checks that a conflict issue ends in a decision record (GOVERNANCE.md §9 says so).
+
+---
+
 ## 2026-10-04 — A flow for conflicts (GOVERNANCE.md §9, ADR-043)
 
 **Changed**

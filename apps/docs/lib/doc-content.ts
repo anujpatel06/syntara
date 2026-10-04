@@ -16,5 +16,6 @@ export const DOC_CONTENT: Record<string, () => Promise<MdxModule>> = {
   density: () => import('../content/docs/density.mdx'),
   accessibility: () => import('../content/docs/accessibility.mdx'),
   governance: () => import('../content/docs/governance.mdx'),
+  'raise-a-conflict': () => import('../content/docs/raise-a-conflict.mdx'),
   changelog: () => import('../content/docs/changelog.mdx'),
 };
