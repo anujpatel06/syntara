@@ -2,6 +2,7 @@
 
 import { Badge, Button, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@syntara/react';
 import { IconGitBranch } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 const files = [
   { name: 'src/checkout/summary.tsx', change: '+42 −8' },
@@ -10,10 +11,11 @@ const files = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <Card style={{ inlineSize: '100%', maxInlineSize: 440 }}>
       <CardHeader>
-        <CardTitle>Order summary refactor</CardTitle>
+        <CardTitle>{t('Order summary refactor')}</CardTitle>
         <CardDescription>
           <IconGitBranch aria-hidden />
           feature/summary · 3 files
@@ -30,8 +32,8 @@ export default function Example() {
         </ul>
       </CardContent>
       <CardFooter style={{ justifyContent: 'space-between' }}>
-        <Badge variant="status" tone="success">Ready to review</Badge>
-        <Button variant="contrast">Review</Button>
+        <Badge variant="status" tone="success">{t('Ready to review')}</Badge>
+        <Button variant="contrast">{t('Review')}</Button>
       </CardFooter>
     </Card>
   );

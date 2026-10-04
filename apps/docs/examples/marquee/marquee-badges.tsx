@@ -1,6 +1,7 @@
 'use client';
 
 import { Badge, Marquee } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const FEATURES = [
   'WCAG 2.2 AA',
@@ -14,8 +15,9 @@ const FEATURES = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
-    <Marquee label="What's included" speed="fast" pauseOnHover={false}>
+    <Marquee label={t("What's included")} speed="fast" pauseOnHover={false}>
       {FEATURES.map((feature) => (
         <Badge key={feature} tone="brand" size="md">
           {feature}

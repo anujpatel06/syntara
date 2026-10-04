@@ -2,32 +2,34 @@
 
 import { Button, Checkbox, CheckboxGroup, DialogTrigger, Sheet, TextField } from '@syntara/react';
 import { IconAdjustmentsHorizontal } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   return (
     <DialogTrigger>
       <Button variant="outline">
         <IconAdjustmentsHorizontal aria-hidden />
-        Filters
+        {t('Filters')}
       </Button>
       <Sheet
-        title="Filter claims"
-        description="Show only the claims that match."
+        title={t('Filter claims')}
+        description={t('Show only the claims that match.')}
         footer={({ close }) => (
           <>
             <Button variant="ghost" onPress={close}>
-              Reset
+              {t('Reset')}
             </Button>
-            <Button onPress={close}>Show results</Button>
+            <Button onPress={close}>{t('Show results')}</Button>
           </>
         )}
       >
-        <TextField label="Reference" placeholder="e.g. CLM-20418" />
-        <CheckboxGroup label="Status" defaultValue={['submitted', 'review']}>
-          <Checkbox value="submitted">Submitted</Checkbox>
-          <Checkbox value="review">In review</Checkbox>
-          <Checkbox value="approved">Approved</Checkbox>
-          <Checkbox value="declined">Declined</Checkbox>
+        <TextField label={t('Reference')} placeholder={t('e.g. CLM-20418')} />
+        <CheckboxGroup label={t('Status')} defaultValue={['submitted', 'review']}>
+          <Checkbox value="submitted">{t('Submitted')}</Checkbox>
+          <Checkbox value="review">{t('In review')}</Checkbox>
+          <Checkbox value="approved">{t('Approved')}</Checkbox>
+          <Checkbox value="declined">{t('Declined')}</Checkbox>
         </CheckboxGroup>
       </Sheet>
     </DialogTrigger>

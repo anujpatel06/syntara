@@ -2,26 +2,28 @@
 
 import { Button, Menu, MenuItem, MenuSeparator, MenuTrigger } from '@syntara/react';
 import { IconArchive, IconCopy, IconDotsVertical, IconPencil, IconTrash } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   return (
     <MenuTrigger>
-      <Button variant="outline" size="icon" aria-label="Claim actions">
+      <Button variant="outline" size="icon" aria-label={t('Claim actions')}>
         <IconDotsVertical aria-hidden />
       </Button>
       <Menu onAction={(key) => console.log(key)}>
         <MenuItem id="edit" icon={<IconPencil />}>
-          Edit details
+          {t('Edit details')}
         </MenuItem>
         <MenuItem id="duplicate" icon={<IconCopy />}>
-          Duplicate
+          {t('Duplicate')}
         </MenuItem>
         <MenuItem id="archive" icon={<IconArchive />}>
-          Archive
+          {t('Archive')}
         </MenuItem>
         <MenuSeparator />
         <MenuItem id="delete" icon={<IconTrash />} tone="danger">
-          Delete claim
+          {t('Delete claim')}
         </MenuItem>
       </Menu>
     </MenuTrigger>

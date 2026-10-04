@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button, CommandDialog, CommandItem } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const people = [
   { id: 'pr', name: 'Priya Raman', team: 'Finance' },
@@ -11,13 +12,14 @@ const people = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   const [isOpen, setOpen] = useState(false);
   return (
     <>
       <Button variant="outline" onPress={() => setOpen(true)}>
-        Assign reviewer
+        {t('Assign reviewer')}
       </Button>
-      <CommandDialog aria-label="Assign reviewer" placeholder="Search people…" isOpen={isOpen} onOpenChange={setOpen} items={people}>
+      <CommandDialog aria-label={t('Assign reviewer')} placeholder={t('Search people…')} isOpen={isOpen} onOpenChange={setOpen} items={people}>
         {(person) => (
           <CommandItem id={person.id} textValue={`${person.name} ${person.team}`} meta={person.team}>
             {person.name}

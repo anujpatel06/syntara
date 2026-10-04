@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { Button, ToastRegion, toast } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   const [archived, setArchived] = useState(0);
   return (
     <div style={{ display: 'grid', gap: 'var(--syntara-space-2)', justifyItems: 'center' }}>
@@ -13,13 +15,13 @@ export default function Example() {
         onPress={() => {
           setArchived((n) => n + 1);
           toast({
-            title: 'Claim archived',
-            description: 'You can find it under Archived.',
-            action: { label: 'Undo', onAction: () => setArchived((n) => n - 1) },
+            title: t('Claim archived'),
+            description: t('You can find it under Archived.'),
+            action: { label: t('Undo'), onAction: () => setArchived((n) => n - 1) },
           });
         }}
       >
-        Archive claim
+        {t('Archive claim')}
       </Button>
       <span style={{ color: 'var(--syntara-color-text-subtle)', fontSize: 'var(--syntara-font-size-sm)' }}>Archived: {archived}</span>
     </div>

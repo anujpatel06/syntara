@@ -1,6 +1,7 @@
 'use client';
 
 import { Button, Dialog, DialogTrigger } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const sections = [
   ['Eligibility', 'You must hold an active account in good standing to join the programme.'],
@@ -12,13 +13,14 @@ const sections = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <DialogTrigger>
-      <Button variant="outline">Read terms</Button>
+      <Button variant="outline">{t('Read terms')}</Button>
       <Dialog
-        title="Rewards programme terms"
-        description="Last updated 1 March"
-        footer={({ close }) => <Button onPress={close}>I agree</Button>}
+        title={t('Rewards programme terms')}
+        description={t('Last updated 1 March')}
+        footer={({ close }) => <Button onPress={close}>{t('I agree')}</Button>}
       >
         {sections.map(([heading, body]) => (
           <section key={heading}>

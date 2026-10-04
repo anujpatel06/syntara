@@ -1,6 +1,7 @@
 'use client';
 
 import { AreaChart } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const data = [
   { week: 'W1', income: 4200, spending: 3100 }, { week: 'W2', income: 3900, spending: 3600 },
@@ -10,15 +11,16 @@ const data = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <AreaChart
-      aria-label="Income and spending by week"
+      aria-label={t('Income and spending by week')}
       data={data}
       x="week"
-      xLabel="Week"
+      xLabel={t('Week')}
       series={[
-        { key: 'income', label: 'Income' },
-        { key: 'spending', label: 'Spending' },
+        { key: 'income', label: t('Income') },
+        { key: 'spending', label: t('Spending') },
       ]}
       format={{ value: { style: 'currency', currency: 'USD', maximumFractionDigits: 0 } }}
     />

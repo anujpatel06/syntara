@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { Checkbox, CheckboxGroup } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const ACCOUNTS = ['Savings', 'Current', 'Joint'];
 
 export default function Example() {
+  const t = useCopy();
   const [selected, setSelected] = useState<string[]>(['Savings']);
   const all = selected.length === ACCOUNTS.length;
   return (
@@ -15,9 +17,9 @@ export default function Example() {
         isIndeterminate={selected.length > 0 && !all}
         onChange={(on) => setSelected(on ? ACCOUNTS : [])}
       >
-        All accounts
+        {t('All accounts')}
       </Checkbox>
-      <CheckboxGroup aria-label="Accounts" value={selected} onChange={setSelected} style={{ paddingInlineStart: 'var(--syntara-space-6)' }}>
+      <CheckboxGroup aria-label={t('Accounts')} value={selected} onChange={setSelected} style={{ paddingInlineStart: 'var(--syntara-space-6)' }}>
         {ACCOUNTS.map((a) => (
           <Checkbox key={a} value={a}>
             {a}
