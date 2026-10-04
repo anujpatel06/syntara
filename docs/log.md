@@ -6,6 +6,34 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 (Footer follow-up) — the hover light takes the brand colour in light mode
+
+Branch `fix/footer-brand-light`, cut from `origin/main` at aa8222b.
+
+**Changed**
+- `Footer`: in light schemes the wordmark's lit edge and glow use `text.brand` instead of a tint of `text.default`,
+  which read as a black outline with a grey smudge. Dark schemes keep the white light. One custom property, `--_light`,
+  switched by `@container style(--syntara-sheen: none)` (the light-scheme signal). Changeset `footer-brand-light.md` (patch).
+
+**Decided**
+- Brand colour for the light-mode hover light: **Anuj** (asked for it, approved the screenshots).
+
+**Results** (`/verify`; build served on :3231 with `SYNTARA_BASE_URL`)
+- `pnpm typecheck`: clean. `pnpm test`: 2,206 passing, 0 failing; `check-test-counts`: README row matches.
+- `pnpm test:themes`: 118,000 of 118,000. `check:meta`: footer 0 errors. `registry`: 81 items. `check-override-weight`: 0.
+  `pnpm drift packages/react/src/ui/footer.module.css`: 0 findings.
+- Docs build 92 of 92 pages; `check-ssr-tabs` 0 of 91. A built CSS chunk contains both `--_light` and
+  `--syntara-color-text-brand` (1 file), so the change is in the measured build.
+- Build n19bRy_3IL-CSq4Crd7vy: hydration 0 of 286; theme links 0 of 5; narrow overflow 0 of 286; CSP 0 of 143; axe 0
+  violation nodes (143 routes × 2 schemes); overlay exit 0 (108 tooltips, 4 menus).
+- Read from the live preview: `--_light` resolves to `#aa2595` for Haat and `#3f4bca` for Vela in light mode; hover
+  screenshots of both looked at by Anuj.
+
+**Next**
+- Nothing for the Footer. Style A (outline-only inner boxes) runs in its own session.
+
+---
+
 ## 2026-10-04 — Footer, from Anuj's reference
 
 **Changed**
