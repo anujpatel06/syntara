@@ -36,17 +36,29 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 - Background is the brand's `surface.canvas` (near-black, brand-tinted: house dark `#0d0d0e`), not pure black as in the
   reference, because the system has no pure-black role: **Claude recommended, Anuj accepted** ("do it").
 
-**Results**
-- `pnpm --filter @syntara/react exec vitest run`: 58 files, 505 tests passed.
-- `pnpm check:meta`: footer `alpha`, meets `alpha`, 0 errors. `pnpm drift` on both footer files: 0 findings, 100.0 / 100.
-- `tsc --noEmit` for `@syntara/react` and `@syntara/docs typecheck`: clean.
-- Screenshots (vela light, harbor dark with hover, qamar light RTL, care compact, house 390px) looked at by Claude. They
-  were taken on the docs component page with a temporary script that lifted the example to full width and swapped the
-  brand attribute: not `/screenshots`' playground, which fails to load in this worktree (below).
+**Results** (`/verify`, after merging `origin/main` at bd08eb7; the docs build served on :3231 with `SYNTARA_BASE_URL`)
+- `pnpm typecheck`: every package clean.
+- `pnpm test`: 2,206 passing, 0 failing (react 509, engine 310 with 1 skipped, icons 959, MCP 193, schema 150, auditor
+  77, codemods 8). The MCP server's two component-count tests moved from 56 to 57 for Footer; README, package README
+  and CLAUDE.md counts updated to 57 (`ls packages/react/meta/*.meta.json | wc -l` → 57). `check-test-counts --fix` wrote
+  the README's Tests row; its "Measured" date was left alone.
+- `pnpm test:themes`: 118,000 of 118,000 checks pass; chart palettes 2,000 of 2,000.
+- `pnpm check:meta`: footer `alpha`, meets `alpha`, 0 errors. `pnpm registry`: 81 items. `check-override-weight`: 0.
+- `pnpm drift` on both footer files: 0 findings, 100.0 / 100.
+- `pnpm --filter @syntara/docs build`: 92 of 92 pages. `check-ssr-tabs`: 0 of 91 pages missing a panel.
+  `grep -rl light-word apps/docs/out/_next/static`: 3 files, so the footer is in the build that was measured.
+- Build N-dEMDQBhsRVa2c8RFwVL: `check-hydration` 0 failures of 286; `check-theme-links` 0 of 5; `check-narrow-overflow`
+  0 sideways of 286; `check-csp` 0 of 143; `axe-sweep` 0 violation nodes over 143 routes × 2 schemes;
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus).
+- Screenshots looked at by Claude: vela light, harbor dark with hover, qamar light RTL, care compact, house 390px; Qamar
+  in Arabic and Haat in Hindi selected in the real docs preview; the footer on the home page (temporary swap, reverted);
+  five name lengths (4 to 30 characters, wordmark 406px to 52px tall at 1440px, 98px to 13px at 390px).
 
 **Next**
 - Anuj (or a native reader) to review the Arabic and Hindi footer wording, written by Claude this session.
-- Anuj's review of the look. The full `/verify` (docs production build and axe sweep) has not been run; run it before commit.
+- **Long names: Anuj to choose.** The wordmark fills the width, so 30 characters is 13px tall on a phone and 4
+  characters is 406px on a laptop. Claude recommended a size floor and ceiling (long names run off the end, short
+  names stop growing) plus a "use a short name" guideline.
 - The playground fails in a fresh worktree: `use-sync-external-store/shim` "does not provide an export named
   'useSyncExternalStore'" (Vite dependency pre-bundling, also with `--force`). Not caused by Footer.
 - A real social-icon set (X, GitHub, LinkedIn, YouTube) doesn't exist in `@syntara/icons`; examples use generic icons.
