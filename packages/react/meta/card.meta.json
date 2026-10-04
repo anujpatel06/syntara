@@ -98,6 +98,13 @@
       "description": "A faint decorative star field (CSS dots in a pseudo-element, invisible to assistive tech). Only drawn on variant=\"feature\"."
     },
     {
+      "component": "Card",
+      "name": "surface",
+      "type": "'auto' | 'raised'",
+      "default": "'auto'",
+      "description": "`auto`: inside a Card it is an outline only (no face, no shadow, a border.subtle hairline), so a card doesn't read as filled boxes in a filled box; anywhere else it has its raised face. `raised` keeps the face inside a card too. Applies to `default` and `outline` cards; a feature card tells nothing inside it to change."
+    },
+    {
       "component": "CardMedia",
       "name": "glow",
       "type": "'brand' | 'accent' | 'none'",

@@ -136,6 +136,13 @@
       "description": "Same chrome options as Card; ghost for tiles inside a card. editorial = a quiet inset figure for a card (a showcase card's results): the number first, large and regular weight, the label beneath, a hairline edge on a slightly lifted face (surface.canvas light, surface.default dark), no shadow; its corner follows the card's."
     },
     {
+      "component": "StatTile",
+      "name": "surface",
+      "type": "'auto' | 'raised'",
+      "default": "'auto'",
+      "description": "`auto`: inside a Card it is an outline only (no face, no shadow, a border.subtle hairline), so a card doesn't read as filled boxes in a filled box; anywhere else it has its raised face. `raised` keeps the face inside a card too. Applies to `default` and `outline` tiles."
+    },
+    {
       "component": "StatTileGroup",
       "name": "children",
       "type": "ReactNode",

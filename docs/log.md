@@ -6,6 +6,65 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 — Inside a card, inner surfaces are outlines (ADR-045)
+
+**Changed**
+- **Card tells what's inside it that it's inside a card** (`--syntara-surface-nest: card`, inherited; `none` on
+  `feature`). **Alert, StatTile (`default`, `outline`), a Card inside a Card and FileUpload's file rows** read it with a
+  container style query and drop their face, rim and shadow, keeping a `border.subtle` hairline. On the bare page they
+  look exactly as before. Toast, controls (buttons, pills, fields, icon tiles) and `CardContent variant="inset"` are
+  unchanged.
+- **New optional prop `surface?: 'auto' | 'raised'`** on Alert, StatTile and Card (`raised` keeps the face in a card).
+  meta.json, tests, `CONVENTIONS.md` (Surface recipe §2) and changeset `inner-surfaces-are-outlines.md` (react and sdui
+  minor). `@syntara/sdui` schema 1.1.0 → 1.2.0 (the generator refused to run until it was bumped).
+- **Home page brand rail:** the card is flat (`TenantCard flat` → Card `ghost`), so the brand's framed scope is the only
+  box; the frame's own padding is dropped so content isn't inset twice.
+- Alert's neutral glyph knockout no longer follows the face (it would have gone transparent): it is `surface.raised`.
+- A StatTile's sparkline-dot ring follows `--syntara-surface-nest-face` inside a card.
+
+**Decided**
+- Style A, outer card keeps its face, inner pieces become outlines: **Anuj** (from a three-way mockup; B, divider lines
+  only, not chosen).
+- Automatic inside a card, with `surface="raised"` to opt out, over an opt-in prop or outlines everywhere:
+  **Claude recommended, Anuj accepted**. Shipped as a minor, not a breaking change: GOVERNANCE.md §5 counts a visual
+  refinement that keeps size and contrast as non-breaking (ADR-045 has the reasoning).
+- Brand rail: flatten the card rather than remove the frame: **Anuj**.
+- Rejected the same day, so not to be re-proposed: "lit from above" faces from two dark-dashboard references
+  (Helios Investments, Luxury Store Admin), with big glows and then small ones: **Anuj** ("not good"; went back to flat).
+- Which components count as "inner surfaces" (content boxes yes; controls, Toast and the inset well no):
+  **Claude recommended, pending Anuj**.
+
+**Results**
+- Contrast on every plain card face (`surface.raised`, `.sunken`, `.canvas`, `.default`) × light/dark, 5 tenants and
+  1,000 fuzz brands (`pnpm --filter @syntara/react exec vitest run test/alert.test.tsx -t "every plain card face"`):
+  status shape ≥ 5.41:1 (fuzz#77 light success on sunken), `text.subtle` ≥ 5.96:1, `text.default` ≥ 14.31:1.
+- Live check of the Vela rail card (browser `getComputedStyle`): Alert and StatTile background transparent, box-shadow
+  only `0 0 0 0.5px` hairline.
+- `/verify` (2026-10-04, this branch): `pnpm typecheck` clean; `pnpm test` 2,214 passing, 0 failing (react 517, engine
+  310 with 1 skipped, icons 959, MCP 193, schema 150, auditor 77, codemods 8), `check-test-counts --fix` moved the
+  README row 509 → 517; `pnpm test:themes` 118,000 of 118,000, chart palettes 2,000 of 2,000; `pnpm check:meta` exit 0;
+  `pnpm registry` 81 items; `check-override-weight` 0.
+- `pnpm --filter @syntara/docs build` 92 of 92 pages; `check-ssr-tabs` 0 of 91 missing a panel;
+  `grep -rl syntara-surface-nest apps/docs/out/_next/static` 3 files, so the change is in the measured build.
+- Build D0kYAuDj844HQsGjI0Udl: `check-hydration` 0 of 286; `check-theme-links` 0 of 5; `check-narrow-overflow` 0
+  sideways of 286; `check-csp` 0 of 143; `axe-sweep` 0 violation nodes over 143 routes × 2 schemes;
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
+- After merging `origin/main` at 983fd22 (Hero, #51): `pnpm test` all passing (react 527 = main's 519 + 8 here), README
+  row fixed by `check-test-counts --fix`; `pnpm typecheck` and `pnpm check:meta` exit 0. Re-running
+  `pnpm --filter @syntara/sdui generate` found the committed `validator.generated.js` stale (0 mentions of `surface`,
+  now 5); regenerated in the merge commit.
+- Screenshots looked at by Claude: the brand rail before/after/flat in dark; dashboard-overview vela light, harbor
+  dark, qamar light (top-level Alert and StatTiles unchanged, as intended); settings harbor dark; benefits-overview
+  care light (Alert in a card is now an outline); request-flow qamar dark RTL; portfolio vela dark at 390px; the
+  FileUpload docs page dark. Nothing below grade found.
+
+**Next**
+- Anuj to confirm the scope list (controls, Toast and `CardContent variant="inset"` left filled).
+- The dark `border.subtle` hairline is very faint; if it reads as missing, step up to `border.default`.
+- The brand-tinted page from the Helios reference was not tried: the rail shows four brands on one shared page.
+
+---
+
 ## 2026-10-04 (Footer follow-up) — the hover light takes the brand colour in light mode
 
 Branch `fix/footer-brand-light`, cut from `origin/main` at aa8222b.

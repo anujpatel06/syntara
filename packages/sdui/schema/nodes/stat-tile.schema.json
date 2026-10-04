@@ -8,7 +8,7 @@
     "component": "stat-tile",
     "export": "StatTile",
     "maturity": "beta",
-    "schemaVersion": "1.1.0",
+    "schemaVersion": "1.2.0",
     "source": "meta"
   },
   "type": "object",
@@ -94,6 +94,15 @@
             "editorial"
           ],
           "default": "default"
+        },
+        "surface": {
+          "description": "`auto`: inside a Card it is an outline only (no face, no shadow, a border.subtle hairline), so a card doesn't read as filled boxes in a filled box; anywhere else it has its raised face. `raised` keeps the face inside a card too. Applies to `default` and `outline` tiles.",
+          "type": "string",
+          "enum": [
+            "auto",
+            "raised"
+          ],
+          "default": "auto"
         }
       },
       "required": [

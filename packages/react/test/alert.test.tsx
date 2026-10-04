@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Alert } from '../src/ui/alert';
-import { STATUS_TONES, TENANTS, loadFuzzInputs, readUiCss, statusIconWorst } from './status-icon-contrast';
+import { STATUS_TONES, TENANTS, loadFuzzInputs, nestedOutlineWorst, readUiCss, statusIconWorst } from './status-icon-contrast';
 
 describe('Alert', () => {
   it('renders title and body without a live role by default', () => {
@@ -99,5 +99,37 @@ describe('Alert: filled status icon (surface recipe)', () => {
     // Measured 2026-09-27: shape 6.09 (light success), glyph 5.43, tenants and fuzz alike.
     expect(Math.min(tenants.shape, fuzz.shape)).toBeGreaterThanOrEqual(3);
     expect(Math.min(tenants.glyph, fuzz.glyph)).toBeGreaterThanOrEqual(4.5);
+  }, 60_000);
+});
+
+describe('Alert: an outline inside a card (style A, Anuj 2026-10-04)', () => {
+  it('drops the face, rim and shadow inside a card, keeps a border.subtle hairline, and `surface="raised"` opts out', () => {
+    const css = readUiCss('alert.module.css');
+    const block = /@container style\(--syntara-surface-nest: card\) \{([\s\S]*?)\n\}/.exec(css)?.[1] ?? '';
+    expect(block).toContain(".alert:not([data-surface='raised'])");
+    expect(block).toMatch(/--_face: transparent;/);
+    expect(block).toMatch(/box-shadow: 0 0 0 var\(--syntara-hairline\) var\(--syntara-color-border-subtle\);/);
+    // The neutral glyph's knockout must not follow the (now transparent) face.
+    expect(css).not.toMatch(/--_on-tone: var\(--_face\)/);
+    const card = readUiCss('card.module.css');
+    expect(card).toMatch(/--syntara-surface-nest: card;/);
+    expect(/\.card\[data-variant='feature'\] \{[^}]*--syntara-surface-nest: none;/.exec(card)).not.toBeNull();
+  });
+
+  it('sets data-surface only when the face is kept', () => {
+    const { rerender } = render(<Alert title="t" />);
+    expect(screen.getByText('t').closest('[data-tone]')).not.toHaveAttribute('data-surface');
+    rerender(<Alert title="t" surface="raised" />);
+    expect(screen.getByText('t').closest('[data-tone]')).toHaveAttribute('data-surface', 'raised');
+  });
+
+  it('shape ≥ 3:1 and text ≥ 4.5:1 on every plain card face, every tenant × scheme and 1,000 fuzz brands', async () => {
+    const tenants = nestedOutlineWorst(Object.values(TENANTS), Object.keys(TENANTS));
+    const fuzz = nestedOutlineWorst(await loadFuzzInputs());
+    // Measured 2026-10-04: shape 5.41 (light success on surface.sunken), text.subtle 5.96, text.default 14.31; fuzz
+    // and tenants alike. The worst face is light surface.sunken, a showcase card can't show it, but a ghost card might.
+    expect(Math.min(tenants.shape, fuzz.shape)).toBeGreaterThanOrEqual(3);
+    expect(Math.min(tenants.subtle, fuzz.subtle)).toBeGreaterThanOrEqual(4.5);
+    expect(Math.min(tenants.text, fuzz.text)).toBeGreaterThanOrEqual(4.5);
   }, 60_000);
 });

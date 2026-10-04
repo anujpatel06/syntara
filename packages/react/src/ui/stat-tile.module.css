@@ -108,6 +108,18 @@
     'meta  spark';
 }
 
+/* Inside a card (style A, Anuj 2026-10-04): the default and outline tiles become an outline only, a border.subtle
+   hairline with no face, rim or shadow (as Alert). Ghost and editorial keep their own look.
+   After the variants on purpose: same weight as .tile[data-variant='outline'], so order decides. */
+@container style(--syntara-surface-nest: card) {
+  .tile:not([data-variant='ghost'], [data-variant='editorial'], [data-surface='raised']) {
+    --_fill: transparent;
+    --_rim: transparent;
+    --_edge: var(--syntara-color-border-subtle);
+    box-shadow: 0 0 0 var(--syntara-hairline) var(--_edge);
+  }
+}
+
 .tile[data-variant='editorial'] .value {
   font-weight: var(--syntara-font-weight-regular);
   /* A figure takes its direction from its own first strong character (none = LTR), so "+18%" and "3 min" stay
@@ -264,6 +276,13 @@
   fill: currentColor;
   stroke: var(--syntara-color-surface-raised);
   stroke-width: 2;
+}
+
+/* Inside a card the tile has no face, so the ring matches the card's. */
+@container style(--syntara-surface-nest: card) {
+  .tile:not([data-variant='ghost'], [data-variant='editorial'], [data-surface='raised']) .sparkDot {
+    stroke: var(--syntara-surface-nest-face, var(--syntara-color-surface-raised));
+  }
 }
 
 .tile[data-variant='ghost'] .sparkDot {
