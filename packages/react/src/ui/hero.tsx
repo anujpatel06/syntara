@@ -10,8 +10,19 @@ const cx = (...c: Array<string | false | null | undefined>) => c.filter(Boolean)
 /** useLayoutEffect in the browser (so the copied theme lands before paint), useEffect on the server (no warning). */
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-/** The hero's style. One more arrives (RFC-003): cards. */
-export type HeroVariant = 'aurora' | 'orbit' | 'gallery';
+/** The hero's style (RFC-003). */
+export type HeroVariant = 'aurora' | 'orbit' | 'gallery' | 'cards';
+
+/** A card for `variant="cards"`: a title and a small label straight on a brand colour, over a picture. */
+export interface HeroCard {
+  title: string;
+  meta?: string;
+  /** A picture that runs edge to edge under the title. Decorative: no alt text. */
+  image?: string;
+}
+
+/** Card fan: how far (degrees) the fan tilts either way as the pointer crosses the hero. */
+const TILT = 4;
 
 /** A picture for `variant="gallery"`. The wall is decoration, so pictures carry no alt text. */
 export interface HeroImage {
@@ -48,6 +59,7 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
    * The style. `aurora` (default): soft lights in the brand's primary and accent drift behind centred text.
    * `orbit`: text on the start side; rings of the brand colour ripple out around `actions` on the far side.
    * `gallery`: a curved wall of `images` turns slowly between the headline and the description.
+   * `cards`: centred text over a fan of up to five `cards` rising from the bottom edge, with name-tagged `cursors`.
    */
   variant?: HeroVariant;
   /** Level of the headline. Default 1, for a page's hero; use 2 or lower for a hero inside a longer page. */
@@ -62,6 +74,10 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   theme?: string;
   /** Pictures for `variant="gallery"`, used in order and repeated to fill 20 cards. Ignored by other styles. */
   images?: HeroImage[];
+  /** Up to five cards for `variant="cards"`, fanned out from the middle. Decoration: hidden from assistive tech. */
+  cards?: HeroCard[];
+  /** Up to two names on cursors that drift beside the headline (`variant="cards"`, wide screens), as if people were working alongside. */
+  cursors?: string[];
   /** Names the pause toggle. It's a toggle, so the name stays and its pressed state says paused. Default "Pause animation". */
   pauseLabel?: string;
   ref?: Ref<HTMLElement>;
@@ -87,6 +103,8 @@ export function Hero({
   scheme = 'dark',
   theme,
   images = [],
+  cards = [],
+  cursors = [],
   className,
   ref,
   ...rest
@@ -135,12 +153,14 @@ export function Hero({
     el.style.setProperty('--_px', (x * 2 - 1).toFixed(3));
     el.style.setProperty('--_py', (y * 2 - 1).toFixed(3));
     el.style.setProperty('--_hero-lean', `${((x * 2 - 1) * LEAN).toFixed(1)}deg`);
+    el.style.setProperty('--_hero-tilt', `${((x * 2 - 1) * TILT).toFixed(2)}deg`);
   };
   const onPointerLeave = (e: PointerEvent<HTMLElement>) => {
     rest.onPointerLeave?.(e);
     own.current?.style.setProperty('--_px', '0');
     own.current?.style.setProperty('--_py', '0');
     own.current?.style.setProperty('--_hero-lean', '0deg');
+    own.current?.style.setProperty('--_hero-tilt', '0deg');
   };
 
   // Gallery: pictures fill the non-brand cards in order, repeating if there are fewer than 20.
@@ -213,9 +233,39 @@ export function Hero({
             {titleSecondary != null && <span className={cx(styles.line, styles.secondary)}>{titleSecondary}</span>}
           </Heading>
           {variant !== 'gallery' && description != null && <p className={styles.description}>{description}</p>}
-          {variant === 'aurora' && actions != null && <div className={styles.actions}>{actions}</div>}
+          {(variant === 'aurora' || variant === 'cards') && actions != null && <div className={styles.actions}>{actions}</div>}
         </div>
         {wall}
+        {variant === 'cards' &&
+          cursors.slice(0, 2).map((name, i) => (
+            <span key={name} className={styles.cursor} data-n={i} aria-hidden="true">
+              <svg viewBox="0 0 16 16" className={styles.cursorArrow} focusable="false">
+                <path d="M2 1.5 14 6.4 8.6 8.6 6.4 14Z" />
+              </svg>
+              <span className={styles.cursorName}>{name}</span>
+            </span>
+          ))}
+        {variant === 'cards' && cards.length > 0 && (
+          <div className={styles.fan} aria-hidden="true">
+            {cards.slice(0, 5).map((card, i, shown) => (
+              <div
+                key={i}
+                className={styles.fanCard}
+                data-n={i}
+                // --k runs -2…2 from the middle card, centred however many cards are shown.
+                style={{ '--k': i - (shown.length - 1) / 2 } as CSSProperties}
+              >
+                <span className={styles.fanLabel}>
+                  <span className={styles.fanTitle}>{card.title}</span>
+                  {card.meta != null && <span className={styles.fanMeta}>{card.meta}</span>}
+                </span>
+                {card.image != null && (
+                  <img src={card.image} alt="" loading="lazy" decoding="async" draggable={false} className={styles.fanImage} />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
         {variant === 'gallery' && (description != null || actions != null) && (
           <div className={styles.below}>
             {description != null && <p className={styles.description}>{description}</p>}

@@ -1,7 +1,7 @@
 {
   "name": "hero",
   "title": "Hero",
-  "description": "The opening section of a website page: a big headline, a sentence and what to do next, over a moving decoration in the brand's colours. Dark by default. Styles: aurora, orbit, gallery.",
+  "description": "The opening section of a website page: a big headline, a sentence and what to do next, over a moving decoration in the brand's colours. Dark by default. Styles: aurora, orbit, gallery, cards.",
   "category": "layout",
   "maturity": "alpha",
   "exports": [
@@ -32,6 +32,11 @@
       "name": "hero-gallery",
       "title": "Gallery",
       "description": "variant=\"gallery\": your images on a slowly turning wall between the headline and the description. Two cards are brand-colour tiles."
+    },
+    {
+      "name": "hero-cards",
+      "title": "Card fan",
+      "description": "variant=\"cards\": centred copy over a fan of up to five cards on solved brand colours, with name-tagged cursors drifting beside the headline. Hover the fan to spread it."
     },
     {
       "name": "hero-search",
@@ -79,7 +84,7 @@
     {
       "component": "Hero",
       "name": "variant",
-      "type": "'aurora' | 'orbit' | 'gallery'",
+      "type": "'aurora' | 'orbit' | 'gallery' | 'cards'",
       "default": "'aurora'",
       "description": "aurora: soft lights drift behind centred text. orbit: text on the start side, rings of the brand colour around the actions on the far side. gallery and cards follow (RFC-003)."
     },
@@ -88,6 +93,18 @@
       "name": "images",
       "type": "Array<{ src: string }>",
       "description": "Pictures for variant=\"gallery\", used in order and repeated to fill 20 cards. Decorative: no alt text."
+    },
+    {
+      "component": "Hero",
+      "name": "cards",
+      "type": "Array<{ title: string; meta?: string; image?: string }>",
+      "description": "Up to five cards for variant=\"cards\", fanned out from the middle, each on a different solved brand colour pair. Decorative."
+    },
+    {
+      "component": "Hero",
+      "name": "cursors",
+      "type": "string[]",
+      "description": "Up to two names on cursors that drift beside the headline (variant=\"cards\", wide screens)."
     },
     {
       "component": "Hero",

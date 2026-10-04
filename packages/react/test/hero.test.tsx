@@ -175,6 +175,55 @@ describe('Hero', () => {
     });
   });
 
+  describe('variant="cards"', () => {
+    const cards = [
+      { title: 'Briefs', meta: '12 this week', image: '/a.webp' },
+      { title: 'Budgets' },
+      { title: 'Approvals', meta: '3 waiting', image: '/c.webp' },
+      { title: 'Calendar' },
+      { title: 'Reports' },
+      { title: 'Ignored sixth' },
+    ];
+
+    it('keeps the actions in the copy and hides the fan and cursors', () => {
+      const { container } = render(
+        <Hero variant="cards" title="Plan it together" cards={cards} cursors={['Priya', 'Omar', 'Third']} actions={<button type="button">Try it</button>} />,
+      );
+      expect(screen.getByRole('button', { name: 'Try it' })).toBeInTheDocument();
+      // Cursors and cards both carry data-n; the card is the one without the arrow svg.
+      const firstCard = [...container.querySelectorAll('[data-n="0"]')].find((el) => !el.querySelector('svg'))!;
+      const fan = firstCard.parentElement!;
+      expect(fan).toHaveAttribute('aria-hidden', 'true');
+      // Card titles are decoration: not announced, so not found by role or text queries that respect aria-hidden.
+      expect(screen.queryByRole('heading', { name: 'Briefs' })).toBeNull();
+      // At most two cursors, each hidden.
+      const tags = [...container.querySelectorAll('span[aria-hidden="true"]')].filter((el) => el.querySelector('svg'));
+      expect(tags.map((t) => t.textContent)).toEqual(['Priya', 'Omar']);
+    });
+
+    it('fans at most five cards, centred on the middle one', () => {
+      const { container } = render(<Hero variant="cards" title="A" cards={cards} />);
+      const shown = [...container.querySelectorAll<HTMLElement>('[data-n]')].filter((el) => !el.querySelector('svg'));
+      expect(shown.map((c) => c.textContent?.split(/\d/)[0])).toHaveLength(5);
+      expect(shown.map((c) => c.style.getPropertyValue('--k'))).toEqual(['-2', '-1', '0', '1', '2']);
+      expect(container.textContent).not.toContain('Ignored sixth');
+      const imgs = container.querySelectorAll('img');
+      expect(imgs).toHaveLength(2);
+      for (const img of imgs) expect(img).toHaveAttribute('alt', '');
+    });
+
+    it('centres fewer cards too', () => {
+      const { container } = render(<Hero variant="cards" title="A" cards={cards.slice(0, 3)} />);
+      const ks = [...container.querySelectorAll<HTMLElement>('[data-n]')].map((c) => c.style.getPropertyValue('--k'));
+      expect(ks).toEqual(['-1', '0', '1']);
+    });
+
+    it('draws no fan without cards', () => {
+      const { container } = render(<Hero variant="cards" title="A" />);
+      expect(container.querySelectorAll('[data-n]')).toHaveLength(0);
+    });
+  });
+
   it('hides the decoration from assistive tech', () => {
     const { container } = render(<Hero title="Plans" />);
     expect(container.querySelector('section > [aria-hidden="true"]')).toBeInTheDocument();

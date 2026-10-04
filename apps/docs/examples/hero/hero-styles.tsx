@@ -100,6 +100,30 @@ export default function Example() {
         />
       ),
     },
+    {
+      variant: 'cards',
+      example: 'hero-cards',
+      name: 'Card fan',
+      hero: (
+        <Hero
+          variant="cards"
+          headingLevel={3}
+          title={t('Plan it together')}
+          titleSecondary={t('ship it on time')}
+          description={t('One workspace for briefs, budgets and approvals, so nothing waits in someone’s inbox.')}
+          actions={<Button size="lg">{t('Try it free')}</Button>}
+          cards={[
+            { title: t('Briefs'), meta: t('12 this week'), image: '/hero-gallery/12-orange-orb-on-blue.webp' },
+            { title: t('Budgets'), meta: t('On track'), image: '/hero-gallery/02-pastel-spheres-on-gradient.webp' },
+            { title: t('Approvals'), meta: t('3 waiting'), image: '/hero-gallery/15-colourful-3d-object.webp' },
+            { title: t('Calendar'), meta: t('Next: Friday'), image: '/hero-gallery/17-abstract-3d-design.webp' },
+            { title: t('Reports'), meta: t('Updated today'), image: '/hero-gallery/18-pink-and-purple-object.webp' },
+          ]}
+          cursors={['Priya', 'Omar']}
+          style={{ minBlockSize: 760 }}
+        />
+      ),
+    },
   ];
 
   return (
