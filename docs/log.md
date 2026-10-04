@@ -6,6 +6,39 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 — A flow for conflicts (GOVERNANCE.md §9, ADR-043)
+
+**Changed**
+- **`GOVERNANCE.md` §9, "When things conflict".** One path for every conflict: raise, sort, decide, record. Three
+  kinds: two rules clash (settled by a ranked priority order), someone disagrees with a past decision (reopened only
+  with significant new information), two products want opposite things (prop, variant or brand input first, else a
+  local override until three products need it). With a Mermaid flowchart.
+- **`.github/ISSUE_TEMPLATE/conflict.yml`**, a "Conflict" issue form that asks for the kind, both sides, where it
+  shows up and, for a past decision, the new information.
+- **`docs/research/2026-10-04-conflict-management.md`**: who has done which piece. W3C (ranked priorities), Go and
+  Ousterhout (reopen only with new information), Brad Frost and Primer (local first, promote later), Carbon (named
+  champion, fixed comment window), MADR (decision-makers field). Two of Claude's from-memory claims were wrong and
+  are corrected there: GOV.UK's working-group page is gone, and Polaris has no formal RFC process.
+
+**Decided**
+- Build the flow plus the issue form, not automatic detection yet: **Anuj** (ADR-043).
+- Priority order, accessibility over not breaking consumers over brand wishes over speed: **Anuj** (ADR-043).
+- §9 at the end rather than renumbering §5, which other files point to; no fixed comment window: **Claude
+  recommended, Anuj accepted**.
+
+**Results**
+- Flow tested on one real case, RFC-001 (Button `tone`): it lands where the RFC decided. Reasoning in ADR-043.
+- The form parses: `js-yaml` load of `conflict.yml` → 6 fields, labels `[ 'conflict' ]`.
+- No code changed, so `/verify` was not run.
+
+**Next**
+- The research note's follow-ups before any public "nobody else does this" wording (Material, Backpack, Orbit,
+  the Salesforce and Curtis sources first-hand).
+- Automatic detection (the drift auditor opening a Conflict issue) once a few real conflicts have used the form.
+- Per-kind labels need a GitHub Action; not built.
+
+---
+
 ## 2026-10-03 (21st.dev-style pieces) — Marquee, PromptComposer, the AI reply, and previews in the tenant's language
 
 Four branches, one PR each. This entry lives on `feat/docs-preview-locale`; the other three carry no log edit, so
