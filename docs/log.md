@@ -8,18 +8,20 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ## 2026-10-04 (Hero follow-up) — Hero follows the page's light or dark scheme
 
-Branch `claude/hero-follows-scheme`, cut from `origin/main` at 1a41bbf, fast-forwarded to 44ca23a.
+Branch `claude/hero-follows-scheme`, cut from `origin/main` at 1a41bbf, fast-forwarded to 44ca23a; then merged with the
+local, unpushed `fix/hero-dark-contrast` (1906e14, the next entry), so both ship in one PR.
 
 **Changed**
 - `Hero` (alpha): `scheme` defaults to `"inherit"`, not `"dark"`; `scheme="dark"` keeps the old look. Changeset
   `hero-follows-the-page.md` (minor) says the default changed; `hero.md` no longer says "dark by default".
-- Light scheme, aurora: the lights keep their full dark-scheme strength; a blurred halo of `surface.canvas` at 90% sits behind
-  the copy (round-cornered, at least 86% at the text) and under the pause toggle. One custom property, `--_halo`,
-  `transparent` in dark. Orbit and gallery only change by following the page.
+- Light scheme, aurora: the lights keep their full dark-scheme strength; the copy sits on the dark fix's blurred veil,
+  now one `--_veil: light-dark(<canvas 90%>, <canvas 77%>)` (one rule, one element, `.copy::before`). The pause
+  toggle has its own unblurred 90% veil in light. The merge also caught that git had kept both `.copy::before` rules,
+  the later (light-only) one switching the dark veil off. Orbit and gallery only change by following the page.
 - Docs: the "Follow the page" example became "Always dark" (`hero-dark.tsx`, `scheme="dark"`); `hero.meta.json`
   (description, `scheme` default, example, accessibility note) and RFC-003 updated; ADR-046 written.
-- `hero.test.tsx`: the default-scheme test flipped; a new light-scheme contrast proof reads the lights and the halo
-  from the CSS and checks every combination of the four lights, for the six tenants and 1,000 fuzz brands.
+- `hero.test.tsx`: the default-scheme test flipped; the dark fix's "aurora contrast" proof now also proves light,
+  reusing its blur geometry (96.40% kept at the weakest text point) and checking every combination of the four lights.
 
 **Decided**
 - Hero follows the page by default, always-dark as an option (option B of three) — **Anuj** (ADR-046). Reverses
@@ -30,27 +32,74 @@ Branch `claude/hero-follows-scheme`, cut from `origin/main` at 1a41bbf, fast-for
   recommended, Anuj accepted** ("ok").
 - The pause toggle gets its own halo, scoped to aurora — **Claude** (full-strength lights took its icon to 1.211:1).
 
-**Results**
-- `hero.test.tsx` light-scheme proof, worst of 1,000 fuzz brands: text.default 11.861, text.subtle 4.939, text.brand
-  4.005, pause 5.342 (tenants: 12.016 / 5.019 / 4.501 / 5.413) — `npx vitest run test/hero.test.tsx -t contrast
-  --reporter=verbose` in `packages/react`.
-- `pnpm typecheck` clean. `pnpm test` 2,231 passing (react 534), 0 failing; `check-test-counts --fix` updated the
-  README row. `pnpm test:themes` 118,000 of 118,000, adjustments median 4. `check:meta` 58 ok. `registry` 82 items.
-  `check-override-weight` 0.
-- Docs build 315 of 315 pages; `--_halo` found in 2 built CSS chunks (`grep -rl -- "--_halo" apps/docs/out/_next/static`).
-  `check-ssr-tabs` 0 of 314.
-- Build XSohxn8UvdOAm4FaFJb8Y on :3241: hydration 0 of 288; theme links 0 of 5; narrow overflow 0 of 288; CSP 0 of
-  144; overlay exit 0 (108 tooltips, 4 menus). **axe: 2 violation nodes, dark `/docs/components/hero`** — the
-  pre-existing dark gap, now visible to axe (ADR-046, Consequences). Measured before the halo's edge was softened;
-  the soft edge changes light-scheme CSS only and the tests above were re-run after it.
-- Not committed: waiting for the dark fix, then a re-run of `/verify` step 9.
+**Results** (after the merge with the dark fix)
+- `hero.test.tsx` "aurora contrast", worst of 1,000 fuzz brands — light: text.default 12.068, text.subtle 5.034,
+  text.brand 4.054, pause 5.342 (tenants 12.140 / 5.071 / 4.573 / 5.413); dark: 7.870 / 4.556, unchanged from the
+  dark fix. Veil kept at the weakest text point 0.9640 — `npx vitest run test/hero.test.tsx --reporter=verbose` in
+  `packages/react`.
+- `pnpm typecheck` clean. `pnpm test` 2,236 passing (react 539), 0 failing; README row re-measured with
+  `check-test-counts --fix` (not picked from either side). `pnpm test:themes` 118,000 of 118,000, adjustments median 4.
+  `check:meta` 58 ok. `registry` 82 items. `check-override-weight` 0.
+- Docs build 315 of 315 pages; the merged veil is in it (`grep -rl 'surface-canvas) 90%' apps/docs/out/_next/static`:
+  1 file; `77%`: 1 file). `check-ssr-tabs` 0 of 314.
+- Build MFzXQ5-uZrz6qoztBuWwK on :3241: hydration 0 of 288; theme links 0 of 5; narrow overflow 0 of 288; CSP 0 of
+  144; **axe 0 violation nodes (144 routes × 2 schemes)**; overlay exit 0 (108 tooltips, 4 menus).
+- Earlier, before the merge: axe found the 2 dark nodes on `/docs/components/hero` (ADR-046, Consequences).
 
 **Next**
-- When the dark-gap fix is on main: bring it in, re-run `/verify` (axe must be 0), then ask Anuj to commit and open
-  the PR (README "Tests" row: re-measure, never pick a side).
-- Dark gap, found here: the pointer light alone brings `text.subtle` to 3.716:1 for a tenant in the dark scheme
-  (throwaway measurement, not yet a test). A separate session is measuring and fixing it.
+- Anuj: say yes to commit the merge and open one PR for both changes; then `fix/hero-dark-contrast` can be deleted
+  (its commit ships here).
 - On phones the halo covers most of the hero; shrinking it to the copy's content box would show more colour (offered).
+
+---
+
+## 2026-10-04 (Hero follow-up) — a dark veil behind the aurora's copy
+
+Branch `fix/hero-dark-contrast`, cut from `origin/main` at 1a41bbf.
+
+**Problem.** In dark, the aurora's lights are washed toward `text.default`, and two pass behind the copy. Measured
+first (commit 023ab77, before any change): at 1200px the pointer light took `text.subtle` to 3.716 (Qamar) and
+2.973 (fuzz); the pointer on light C took `text.default` to 4.411 (Qamar); and wider heroes were worse, because the
+blur is fixed while the lights grow (pointer strength 0.378 at 1200px → 0.528 at 1920px).
+
+**Changed**
+- `hero.module.css`: `--_veil`, surface.canvas at 77% in dark (transparent in light), painted by
+  `.root[data-variant='aurora'] .copy::before`: a box a space-16 taller and two wider than the copy, blurred by a
+  space-16. Text sits on the veil; the lights keep their full glow outside it. A first try with a hard-edged
+  faded box read as a picture frame on a wide screen and was dropped.
+- `hero.test.tsx`: the "aurora contrast in dark" proof, every number read from the CSS. All four lights stacked at
+  full strength (the worst case at any width or pointer position), the veil's strength at the weakest text point
+  (a corner of the smallest copy, from the blur's Gaussian edge), 8-bit sRGB compositing.
+- `README.md`: test counts (`node scripts/check-test-counts.mjs --from <pnpm test output> --fix`).
+
+**Decided**
+- A dark veil behind the copy: **Claude recommended, Anuj accepted** (options were: a full veil, a softer pointer
+  light, or keeping lights off the text; then a full 74% veil vs. one only behind the copy). Anuj approved the look
+  from a screenshot.
+- The light-mode `--_veil` is still not on main: it is uncommitted in `claude/hero-follows-scheme`. Whichever
+  lands second merges the two into one `light-dark(<light 85%>, <dark 77%>)` and decides which element paints it
+  (that branch uses `.lights::after`, full-bleed; this one `.copy::before`, behind the copy only).
+
+**Results**
+- Contrast (`cd packages/react && npx vitest run test/hero.test.tsx --silent=false`, floored): veil kept at the
+  weakest text point 0.9640, so 0.7423 effective. All four lights at full strength under it: tenants
+  `text.default` 10.549, `text.subtle` 6.107 (Qamar); fuzz 7.870 / **4.556** (fuzz#198). Without the veil, the
+  pointer alone at full strength: `text.subtle` 2.223 (Qamar). With the veil set to 72% the fuzz check fails, so
+  the proof bites.
+- The 74% minimum came from a throwaway sweep (0–100% in 1% steps; not committed): all four lights, tenants 62%,
+  fuzz 74%.
+- `/verify`: `pnpm typecheck` exit 0; `pnpm test` 2,225 passed (react 528, engine 309 + 1 skipped, icons 959, mcp 193,
+  sdui 150, audit 77, codemods 8); `pnpm test:themes` 118,000/118,000, median adjustments 4 (unchanged);
+  `pnpm check:meta` 58/58 (1 warning that was already on main: `hero-styles.tsx` not in meta.examples);
+  `pnpm registry` 82 items; `check-override-weight` clean; docs build 315/315 pages; `check-ssr-tabs` 0;
+  served build ZRqTFTXgs2SaTGom059l7, with the change in it (`grep -rho "surface-canvas) 77%" apps/docs/out/_next/static`):
+  hydration 0/288, theme links 0/5, sideways scroll 0/288, CSP 0/144, axe 0 violation nodes (144 × 2), overlay exit 0.
+- Screenshots (playground, `node scripts/shoot.mjs`): Vela, Harbor dark, Qamar RTL, Haat compact, Care at 390px.
+
+**Next**
+- Merge with the light-mode veil (above).
+- Known gap, already on main and not this change: at 390px the eyebrow wraps onto two lines.
+- Known gap: `hero-styles.tsx` isn't listed in the Hero's meta.examples (check:meta warning).
 
 ---
 
@@ -110,7 +159,6 @@ Branch `claude/hero-follows-scheme`, cut from `origin/main` at 1a41bbf, fast-for
 - Anuj to confirm the scope list (controls, Toast and `CardContent variant="inset"` left filled).
 - The dark `border.subtle` hairline is very faint; if it reads as missing, step up to `border.default`.
 - The brand-tinted page from the Helios reference was not tried: the rail shows four brands on one shared page.
-
 ---
 
 ## 2026-10-04 (Footer follow-up) — the hover light takes the brand colour in light mode

@@ -22,14 +22,17 @@ strength, `text.subtle` fell to 1.0:1. Three light-mode looks were shown to Anuj
 3. **Lights at full strength and a halo at 85%** behind the copy and the pause toggle: passed (4.844:1). Approved
    ("done"). The screenshot sweep then showed the halo's straight, feathered edge reading as a pale box when the hero
    is shown small (the styles overview); it became a blurred rectangle at 90% with round corners. Approved ("ok").
+   It was then merged with the dark-scheme veil from `fix/hero-dark-contrast` (same element, same idea, Anuj approved
+   its look): one `--_veil`, 90% in light and 77% in dark, painted by that branch's larger blurred box.
 
 ## Decision
 
 1. `scheme` defaults to `"inherit"`; `"dark"` stays as an option. Hero is alpha, so GOVERNANCE.md §5 lets the default
    change without a deprecation or codemod. A changeset records it.
-2. Light scheme, aurora: the lights keep their dark-scheme strength. Behind the copy, a rectangle of `surface.canvas`
-   at 90% reaches two blur radii (`space-8`) past the copy's padding box and is blurred by one, so at the text it keeps
-   at least Φ(2)² = 95.5% of that (86%). The pause toggle has the same halo, unblurred. Dark has no halo (`light-dark()`,
+2. Light scheme, aurora: the lights keep their dark-scheme strength. Behind the copy, `--_veil` (`surface.canvas`,
+   90% in light, 77% in dark) fills a box a `space-16` taller and two wider than the copy, blurred by a `space-16`; at
+   the weakest text point it keeps 96.40% of that (the dark-fix's geometry proof). In light the pause toggle has its
+   own unblurred 90% veil. Dark has no halo (`light-dark()`,
    so it follows the scope's scheme, never `prefers-color-scheme`).
 3. Orbit and gallery change only in that they now follow the page; they have no lights behind their copy.
 4. The docs example "Follow the page" became "Always dark" (`hero-dark`, `scheme="dark"`).
@@ -43,8 +46,8 @@ and checks: `text.default` and `text.subtle` ≥ 4.5:1, `text.brand` (the Eyebro
 
 | | text.default | text.subtle | text.brand | pause | pause hovered |
 |---|---|---|---|---|---|
-| 6 tenants | 12.016 | 5.019 | 4.501 | 5.413 | 11.561 |
-| 1,000 fuzz brands | 11.861 | 4.939 | 4.005 | 5.342 | 11.442 |
+| 6 tenants | 12.140 | 5.071 | 4.573 | 5.413 | 11.561 |
+| 1,000 fuzz brands | 12.068 | 5.034 | 4.054 | 5.342 | 11.442 |
 
 Buttons and the search field carry their own fills, so the lights don't touch their text contrast.
 
@@ -52,8 +55,7 @@ Buttons and the search field carry their own fills, so the lights don't touch th
 
 - On phones the copy fills nearly the whole hero, so the halo covers most of it and the colour shows mainly at the
   top and bottom. Shrinking the halo to the copy's content box would show more; offered, not taken.
-- Making `.copy` positioned (for the halo) let axe compute the background behind aurora's text, which it used to
-  report as "incomplete". It now finds the dark gap below on `/docs/components/hero` (2 nodes, 1.23:1 and 2.59:1, the
-  same with main's dark scoping put back by hand). The gap was there before; the sweep could not see it.
-- The dark scheme (default before, `scheme="dark"` now) has its own gap: the pointer light alone brings `text.subtle`
-  to 3.716:1 for a tenant. A separate session is measuring and fixing it.
+- Making `.copy` positioned (for the veil) let axe compute the background behind aurora's text, which it used to
+  report as "incomplete". Before the dark veil was merged in, it found the dark gap on `/docs/components/hero` (2
+  nodes, 1.23:1 and 2.59:1, the same with main's dark scoping put back by hand): there before, unseen by the sweep.
+  The dark veil, merged into this branch, closes it.
