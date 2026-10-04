@@ -3,9 +3,11 @@
 import { useState, type FormEvent } from 'react';
 import { Button, Chip, ChipGroup, TextField } from '@syntara/react';
 import { IconMapPin } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 // Input chips: values the user entered, each with a remove button. Delete or Backspace removes the focused one.
 export default function Example() {
+  const t = useCopy();
   const [cities, setCities] = useState(['Delhi', 'Pune', 'Kochi']);
   const [draft, setDraft] = useState('');
   const add = (e: FormEvent) => {
@@ -17,14 +19,14 @@ export default function Example() {
   return (
     <div style={{ display: 'grid', gap: 'var(--syntara-space-4)', inlineSize: '100%', maxInlineSize: '24rem' }}>
       <form onSubmit={add} style={{ display: 'flex', gap: 'var(--syntara-space-2)', alignItems: 'flex-end' }}>
-        <TextField label="Add a city" value={draft} onChange={setDraft} style={{ flex: 1 }} />
-        <Button type="submit" variant="outline">Add</Button>
+        <TextField label={t('Add a city')} value={draft} onChange={setDraft} style={{ flex: 1 }} />
+        <Button type="submit" variant="outline">{t('Add')}</Button>
       </form>
       <ChipGroup
         mode="input"
-        aria-label="Cities"
+        aria-label={t('Cities')}
         onRemove={(keys) => setCities((list) => list.filter((c) => !keys.has(c)))}
-        renderEmptyState={() => <span style={{ color: 'var(--syntara-color-text-subtle)', fontSize: 'var(--syntara-font-size-sm)' }}>No cities yet.</span>}
+        renderEmptyState={() => <span style={{ color: 'var(--syntara-color-text-subtle)', fontSize: 'var(--syntara-font-size-sm)' }}>{t('No cities yet.')}</span>}
       >
         {cities.map((city) => (
           <Chip key={city} id={city} icon={<IconMapPin />}>{city}</Chip>

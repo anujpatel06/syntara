@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button, Steps } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const steps = [
   { id: 'plan', label: 'Plan', description: 'Choose cover' },
@@ -12,14 +13,15 @@ const steps = [
 
 /** Completed steps are buttons: press one to go back to it. */
 export default function Example() {
+  const t = useCopy();
   const [current, setCurrent] = useState('health');
   const index = steps.findIndex((s) => s.id === current);
   const next = steps[index + 1];
   return (
     <div style={{ display: 'grid', gap: 24, inlineSize: '100%', justifyItems: 'start' }}>
-      <Steps current={current} steps={steps} onStepPress={setCurrent} aria-label="Sign-up progress" />
+      <Steps current={current} steps={steps} onStepPress={setCurrent} aria-label={t('Sign-up progress')} />
       <Button variant="secondary" isDisabled={!next} onPress={() => next && setCurrent(next.id)}>
-        Continue
+        {t('Continue')}
       </Button>
     </div>
   );

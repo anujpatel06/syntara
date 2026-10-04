@@ -1,6 +1,7 @@
 'use client';
 
 import { AreaChart } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const data = [
   { hour: '09:00', requests: 320 }, { hour: '10:00', requests: 410 }, { hour: '11:00', requests: 385 },
@@ -9,17 +10,18 @@ const data = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <AreaChart
-      aria-label="Requests per hour today"
+      aria-label={t('Requests per hour today')}
       data={data}
       x="hour"
-      xLabel="Hour"
+      xLabel={t('Hour')}
       height={160}
       curve="linear"
       showGrid={false}
       showYAxis={false}
-      series={[{ key: 'requests', label: 'Requests' }]}
+      series={[{ key: 'requests', label: t('Requests') }]}
     />
   );
 }

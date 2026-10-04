@@ -2,6 +2,7 @@
 
 import { IconReceipt } from '@syntara/icons';
 import { Button, DataTable, EmptyState, type DataTableColumn } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 type Invoice = { id: string; issued: string; amount: string };
 
@@ -12,9 +13,10 @@ const columns: DataTableColumn<Invoice>[] = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <DataTable
-      aria-label="Invoices"
+      aria-label={t('Invoices')}
       columns={columns}
       rows={[]}
       getRowId={(r) => r.id}
@@ -22,9 +24,9 @@ export default function Example() {
         <EmptyState
           size="sm"
           icon={<IconReceipt />}
-          title="No invoices yet"
-          description="Invoices appear here after your first billing cycle closes."
-          action={<Button variant="outline" size="sm">View billing settings</Button>}
+          title={t('No invoices yet')}
+          description={t('Invoices appear here after your first billing cycle closes.')}
+          action={<Button variant="outline" size="sm">{t('View billing settings')}</Button>}
         />
       }
     />

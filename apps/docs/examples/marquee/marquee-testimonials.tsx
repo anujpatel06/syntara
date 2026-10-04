@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, Marquee } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const QUOTES = [
   { quote: 'Our Arabic app finally looks like it was designed in Arabic.', who: 'Product designer, Dubai' },
@@ -23,14 +24,15 @@ function Quote({ quote, who }: { quote: string; who: string }) {
 }
 
 export default function Example() {
+  const t = useCopy();
   return (
     <div style={{ display: 'grid', gap: 'var(--syntara-space-4)' }}>
-      <Marquee label="What teams say, row one" speed="slow">
+      <Marquee label={t('What teams say, row one')} speed="slow">
         {QUOTES.slice(0, 3).map((q) => (
           <Quote key={q.who} {...q} />
         ))}
       </Marquee>
-      <Marquee label="What teams say, row two" speed="slow" reverse>
+      <Marquee label={t('What teams say, row two')} speed="slow" reverse>
         {QUOTES.slice(3).map((q) => (
           <Quote key={q.who} {...q} />
         ))}

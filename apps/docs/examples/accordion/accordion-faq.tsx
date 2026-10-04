@@ -1,6 +1,7 @@
 'use client';
 
 import { Accordion, AccordionItem } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const faqs = [
   { id: 'change-plan', q: 'Can I change my plan mid-year?', a: 'Yes. The new plan starts on the first day of next month and we adjust the premium from then.' },
@@ -10,6 +11,7 @@ const faqs = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <Accordion allowsMultipleExpanded defaultExpandedKeys={['change-plan', 'abroad']}>
       {faqs.map((f) => (
@@ -17,8 +19,8 @@ export default function Example() {
           {f.a}
         </AccordionItem>
       ))}
-      <AccordionItem id="pause" title="Can I pause my cover? (Not available on your plan)" isDisabled>
-        Pausing is available on annual plans only.
+      <AccordionItem id="pause" title={t('Can I pause my cover? (Not available on your plan)')} isDisabled>
+        {t('Pausing is available on annual plans only.')}
       </AccordionItem>
     </Accordion>
   );
