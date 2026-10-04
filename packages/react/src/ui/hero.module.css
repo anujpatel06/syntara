@@ -288,3 +288,242 @@
     corner-shape: squircle;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * Layout wrapper: aurora stacks everything centred; orbit puts the copy on the start side and the ringed actions on
+ * the far side.
+ * ------------------------------------------------------------------ */
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
+}
+
+/* ------------------------------------------------------------------ *
+ * variant="orbit" — ported from apps/docs/blocks/hero-orbit (minus its menu bar). Rings of the brand colour ripple
+ * out around the actions and lean toward the pointer; faint stars twinkle behind. The strongest colour is only ever
+ * at the centre of the rings, far from the copy.
+ * ------------------------------------------------------------------ */
+
+.root[data-variant='orbit'] {
+  --_stepX: var(--syntara-space-8); /* how far each ring reaches past the last, sideways */
+  --_stepY: var(--syntara-space-6); /* …and up and down */
+  --_loop: calc(var(--syntara-motion-duration-slow) * 20); /* 6.4s ripple */
+  --_px: 0;
+  --_py: 0;
+
+  min-block-size: calc(var(--syntara-space-16) * 11); /* 704px */
+  background:
+    radial-gradient(
+      70% 60% at 85% 90%,
+      color-mix(in oklab, var(--syntara-color-action-primary-bg) 10%, transparent),
+      transparent
+    ),
+    var(--syntara-color-surface-canvas);
+  text-align: start;
+}
+
+.root[data-variant='orbit'] .inner {
+  flex: 1;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: calc(var(--syntara-space-24) + var(--syntara-space-8));
+  max-inline-size: calc(var(--syntara-space-16) * 18.75); /* 1200px */
+  padding-block: var(--syntara-space-16) calc(var(--syntara-space-24) + var(--syntara-space-8));
+  padding-inline: var(--_gutter);
+}
+
+@container syntara-hero (min-width: 640px) {
+  .root[data-variant='orbit'] .inner {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .root[data-variant='orbit'] .inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--syntara-space-16);
+    padding-block: var(--syntara-space-24);
+  }
+}
+
+.root[data-variant='orbit'] .copy {
+  align-items: start;
+  max-inline-size: calc(var(--syntara-space-16) * 9); /* 576px */
+  padding: 0;
+}
+
+.root[data-variant='orbit'] .eyebrow {
+  justify-content: start;
+}
+
+.root[data-variant='orbit'] .title {
+  font-weight: var(--syntara-font-weight-medium);
+}
+
+@container syntara-hero (min-width: 640px) {
+  .root[data-variant='orbit'] .title {
+    font-size: var(--syntara-font-size-6xl);
+    letter-spacing: var(--syntara-font-tracking-6xl);
+  }
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .root[data-variant='orbit'] .title {
+    font-size: var(--syntara-font-size-7xl);
+    letter-spacing: var(--syntara-font-tracking-7xl);
+  }
+}
+
+.root[data-variant='orbit'] .description {
+  max-inline-size: 46ch;
+  text-wrap: pretty;
+}
+
+/* The actions sit in the middle of the rings. Narrow: centred under the copy. Wide: the far bottom corner. */
+.core {
+  position: relative;
+  align-self: center;
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .core {
+    margin-inline-end: var(--syntara-space-16);
+  }
+}
+
+.coreActions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--syntara-space-3);
+}
+
+.rings {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Ring --i: 1 is innermost, 7 outermost. Each reaches one step further and holds less of the brand colour, from 87%
+   at the centre to 9% at the edge. */
+.ring {
+  position: absolute;
+  inset-block: calc(var(--_stepY) * var(--i) * -1);
+  inset-inline: calc(var(--_stepX) * var(--i) * -1);
+  border-radius: var(--syntara-radius-pill);
+  background-color: color-mix(
+    in oklab,
+    var(--syntara-color-action-primary-bg) calc(100% - var(--i) * 13%),
+    var(--syntara-color-surface-canvas)
+  );
+}
+
+/* The innermost ring is the brightest: the brand colour lit from above. No second hue (Harbor's orange on teal read
+   brown; Anuj, 2026-10-04). */
+.ring:last-child {
+  background-image: radial-gradient(
+    120% 90% at 50% 15%,
+    color-mix(in oklab, var(--syntara-color-action-primary-bg), var(--syntara-color-text-default) 30%),
+    transparent 75%
+  );
+  box-shadow: 0 0 var(--syntara-space-16) color-mix(in oklab, var(--syntara-color-action-primary-bg) 45%, transparent);
+}
+
+.stars {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Stars only show on a dark scheme (on a light page they read as dust): transparent there, via the scope's
+   color-scheme, never prefers-color-scheme. */
+.star {
+  position: absolute;
+  inline-size: calc(var(--syntara-space-1) / 2);
+  block-size: calc(var(--syntara-space-1) / 2);
+  border-radius: var(--syntara-radius-pill);
+  background-color: light-dark(transparent, var(--syntara-color-text-subtle));
+  opacity: 0.45;
+}
+
+.star[data-big] {
+  inline-size: var(--syntara-space-1);
+  block-size: var(--syntara-space-1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ring {
+    translate:
+      calc(var(--_px) * var(--i) * var(--syntara-space-2))
+      calc(var(--_py) * var(--i) * var(--syntara-space-1));
+    transition: translate calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
+    animation: syntara-hero-ripple var(--_loop) ease-in-out infinite;
+    animation-delay: calc(var(--i) * var(--syntara-motion-duration-slow) * 1.5);
+  }
+
+  .star {
+    animation: syntara-hero-twinkle calc(var(--syntara-motion-duration-slow) * 10) ease-in-out infinite;
+    animation-delay: calc(var(--_d) * var(--syntara-motion-duration-slow) * -10);
+  }
+
+  .root[data-paused] :is(.ring, .star) {
+    animation-play-state: paused;
+  }
+
+  .root[data-paused] .ring {
+    translate: none;
+  }
+}
+
+@keyframes syntara-hero-ripple {
+  50% {
+    scale: 1.035;
+  }
+}
+
+@keyframes syntara-hero-twinkle {
+  50% {
+    opacity: 0.1;
+  }
+}
+
+/* The lamp: buttons at the centre of the rings are a white pill with dark text, in both schemes (Anuj, 2026-10-04:
+   "change the button colour to white"). White is the scheme's lightest text-safe pair, never a raw colour: on a dark
+   scheme text.default (near-white) with surface.canvas text, on a light one surface.default with text.default. Both
+   pairs are text-on-surface pairs the engine proves at 4.5:1.
+   Button keeps its colours in --_bg / --_fg / --_border; the class is tripled (with the state attribute) to outrank
+   Button's own variant and state rules, which go up to four selectors deep. */
+.coreActions {
+  --_lamp: light-dark(var(--syntara-color-surface-default), var(--syntara-color-text-default));
+  --_lampText: light-dark(var(--syntara-color-text-default), var(--syntara-color-surface-canvas));
+}
+
+.coreActions.coreActions.coreActions > [data-rac],
+.coreActions.coreActions.coreActions > [data-rac]:is([data-hovered], [data-pressed]) {
+  --_bg: var(--_lamp);
+  --_fg: var(--_lampText);
+  --_border: var(--_lamp);
+  border-radius: var(--syntara-radius-pill);
+  box-shadow:
+    var(--syntara-shadow-raised),
+    0 0 var(--syntara-space-12) color-mix(in oklab, var(--_lamp) 35%, transparent);
+}
+
+.coreActions.coreActions.coreActions > [data-rac][data-hovered] {
+  --_bg: color-mix(in oklab, var(--_lamp) 90%, var(--syntara-color-action-primary-bg));
+}
+
+/* Button squares its corners off with corner-shape: squircle; the lamp is a true pill. */
+@supports (corner-shape: squircle) {
+  .coreActions.coreActions.coreActions > [data-rac] {
+    corner-shape: round;
+  }
+}

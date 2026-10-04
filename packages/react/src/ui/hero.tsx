@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useLayoutEffect, useRef, useState, type HTMLAttributes, type JSX, type PointerEvent, type ReactNode, type Ref } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type HTMLAttributes, type JSX, type PointerEvent, type ReactNode, type Ref } from 'react';
 import { ToggleButton } from 'react-aria-components';
 import { IconPlayerPause, IconPlayerPlay } from '@syntara/icons';
 import styles from './hero.module.css';
@@ -10,8 +10,17 @@ const cx = (...c: Array<string | false | null | undefined>) => c.filter(Boolean)
 /** useLayoutEffect in the browser (so the copied theme lands before paint), useEffect on the server (no warning). */
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-/** The hero's style. More arrive one at a time (RFC-003): orbit, gallery, cards. */
-export type HeroVariant = 'aurora';
+/** The hero's style. More arrive one at a time (RFC-003): gallery, cards. */
+export type HeroVariant = 'aurora' | 'orbit';
+
+const RINGS = 7;
+
+/** Orbit's star field from a fixed seed, so the server and the browser draw the same stars. */
+const STARS = (() => {
+  let seed = 7;
+  const next = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  return Array.from({ length: 48 }, () => ({ x: next() * 100, y: next() * 100, d: next(), big: next() > 0.85 }));
+})();
 
 export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** The headline. */
@@ -24,7 +33,10 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   eyebrow?: ReactNode;
   /** Buttons, a search field, chips: whatever the page offers next. At most two buttons reads best. */
   actions?: ReactNode;
-  /** The decoration. Default `aurora`: soft lights in the brand's primary and accent drift behind the text. */
+  /**
+   * The style. `aurora` (default): soft lights in the brand's primary and accent drift behind centred text.
+   * `orbit`: text on the start side; rings of the brand colour ripple out around `actions` on the far side.
+   */
   variant?: HeroVariant;
   /** Level of the headline. Default 1, for a page's hero; use 2 or lower for a hero inside a longer page. */
   headingLevel?: 1 | 2 | 3 | 4;
@@ -82,14 +94,24 @@ export function Hero({
   }, [scheme, theme]);
   const darkTheme = scheme === 'dark' ? (theme ?? inherited.theme) : undefined;
 
-  // The pointer light: the pointer's position in the hero, as percentages, written as CSS variables.
+  // Follow the pointer, written as CSS variables so React doesn't re-render per move: as percentages for aurora's
+  // pointer light, and as -1…1 per axis for orbit's rings to lean toward.
   const onPointerMove = (e: PointerEvent<HTMLElement>) => {
     rest.onPointerMove?.(e);
     const el = own.current;
     if (paused || e.pointerType === 'touch' || !el) return;
     const r = el.getBoundingClientRect();
-    el.style.setProperty('--_mx', `${(((e.clientX - r.left) / r.width) * 100).toFixed(1)}%`);
-    el.style.setProperty('--_my', `${(((e.clientY - r.top) / r.height) * 100).toFixed(1)}%`);
+    const x = (e.clientX - r.left) / r.width;
+    const y = (e.clientY - r.top) / r.height;
+    el.style.setProperty('--_mx', `${(x * 100).toFixed(1)}%`);
+    el.style.setProperty('--_my', `${(y * 100).toFixed(1)}%`);
+    el.style.setProperty('--_px', (x * 2 - 1).toFixed(3));
+    el.style.setProperty('--_py', (y * 2 - 1).toFixed(3));
+  };
+  const onPointerLeave = (e: PointerEvent<HTMLElement>) => {
+    rest.onPointerLeave?.(e);
+    own.current?.style.setProperty('--_px', '0');
+    own.current?.style.setProperty('--_py', '0');
   };
 
   const setRef = (node: HTMLElement | null) => {
@@ -110,24 +132,51 @@ export function Hero({
       data-syntara-scheme={darkTheme ? 'dark' : undefined}
       data-syntara-density={darkTheme ? inherited.density : undefined}
       onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
     >
-      <div className={styles.lights} aria-hidden="true">
-        <span className={cx(styles.light, styles.lightA)} />
-        <span className={cx(styles.light, styles.lightB)} />
-        <span className={cx(styles.light, styles.lightC)} />
-        <span className={cx(styles.light, styles.lightPointer)} />
-      </div>
+      {variant === 'aurora' && (
+        <div className={styles.lights} aria-hidden="true">
+          <span className={cx(styles.light, styles.lightA)} />
+          <span className={cx(styles.light, styles.lightB)} />
+          <span className={cx(styles.light, styles.lightC)} />
+          <span className={cx(styles.light, styles.lightPointer)} />
+        </div>
+      )}
+      {variant === 'orbit' && (
+        <div className={styles.stars} aria-hidden="true">
+          {STARS.map((star, i) => (
+            <span
+              key={i}
+              className={styles.star}
+              data-big={star.big || undefined}
+              style={{ insetInlineStart: `${star.x}%`, insetBlockStart: `${star.y}%`, '--_d': star.d } as CSSProperties}
+            />
+          ))}
+        </div>
+      )}
 
-      <div className={styles.copy}>
-        {eyebrow != null && <div className={styles.eyebrow}>{eyebrow}</div>}
-        <Heading id={`${uid}-title`} className={styles.title}>
-          <span className={styles.line}>{title}</span>
-          {/* A real space between the lines, so the heading reads "pays before", not "paysbefore". The block lines hide it. */}
-          {titleSecondary != null && ' '}
-          {titleSecondary != null && <span className={cx(styles.line, styles.secondary)}>{titleSecondary}</span>}
-        </Heading>
-        {description != null && <p className={styles.description}>{description}</p>}
-        {actions != null && <div className={styles.actions}>{actions}</div>}
+      <div className={styles.inner}>
+        <div className={styles.copy}>
+          {eyebrow != null && <div className={styles.eyebrow}>{eyebrow}</div>}
+          <Heading id={`${uid}-title`} className={styles.title}>
+            <span className={styles.line}>{title}</span>
+            {/* A real space between the lines, so the heading reads "pays before", not "paysbefore". The block lines hide it. */}
+            {titleSecondary != null && ' '}
+            {titleSecondary != null && <span className={cx(styles.line, styles.secondary)}>{titleSecondary}</span>}
+          </Heading>
+          {description != null && <p className={styles.description}>{description}</p>}
+          {variant !== 'orbit' && actions != null && <div className={styles.actions}>{actions}</div>}
+        </div>
+        {variant === 'orbit' && (
+          <div className={styles.core}>
+            <div className={styles.rings} aria-hidden="true">
+              {Array.from({ length: RINGS }, (_, i) => (
+                <span key={i} className={styles.ring} style={{ '--i': RINGS - i } as CSSProperties} />
+              ))}
+            </div>
+            {actions != null && <div className={styles.coreActions}>{actions}</div>}
+          </div>
+        )}
       </div>
 
       <ToggleButton className={styles.pause} isSelected={paused} onChange={setPaused} aria-label={pauseLabel}>

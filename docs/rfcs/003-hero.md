@@ -64,4 +64,5 @@ doesn't help consumers, who can't install blocks (ADR-011 revision: the registry
 - [x] `meta.json`, examples and docs
 - [x] Tests (slots, heading level, pause toggle, dark scope)
 - [x] Changeset
-- [ ] `orbit`, `gallery`, `cards`, one PR each
+- [x] `orbit` (Anuj approved 2026-10-04, after asking for a white button at the centre)
+- [ ] `gallery`, `cards`, one PR each
