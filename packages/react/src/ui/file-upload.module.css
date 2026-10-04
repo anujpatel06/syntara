@@ -37,7 +37,10 @@
    whole zone swells slightly towards the file. */
 .zone[data-drop-target] {
   border-style: solid;
-  border-color: var(--syntara-color-action-primary-bg);
+  /* text.brand, not action.primary.bg: an outline against the page needs 3:1 (WCAG 1.4.11). The engine proves
+     text.brand ≥ 4.5:1 on every surface; action.primary.bg is only proven against its own label and fell to 1.65–2.97:1
+     in six tenant × scheme pairs (2026-10-04). */
+  border-color: var(--syntara-color-text-brand);
   background: var(--syntara-color-surface-selected);
   box-shadow: 0 0 0 4px color-mix(in oklab, var(--syntara-color-focus-ring) 18%, transparent);
 }

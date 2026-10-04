@@ -220,10 +220,13 @@
 }
 
 .card[data-selected] {
-  border-color: var(--syntara-color-action-primary-bg);
+  /* text.brand, not action.primary.bg: an outline against the page needs 3:1 (WCAG 1.4.11). The engine proves
+     text.brand ≥ 4.5:1 on every surface; action.primary.bg is only proven against its own label and fell to 1.65–2.97:1
+     in six tenant × scheme pairs (2026-10-04). */
+  border-color: var(--syntara-color-text-brand);
   background-color: var(--syntara-color-surface-selected);
   /* A second hairline inside so selection reads by weight, not only colour; the raised shadow stays. */
-  box-shadow: inset 0 0 0 1px var(--syntara-color-action-primary-bg), var(--syntara-shadow-raised);
+  box-shadow: inset 0 0 0 1px var(--syntara-color-text-brand), var(--syntara-shadow-raised);
 }
 
 .card[data-invalid] {
@@ -318,7 +321,7 @@
   }
 
   .card[data-selected]:has(> .button[data-hovered]):not([data-disabled], :has(> .button[data-pressed])) {
-    box-shadow: inset 0 0 0 1px var(--syntara-color-action-primary-bg), var(--syntara-shadow-raised), var(--syntara-shadow-raised);
+    box-shadow: inset 0 0 0 1px var(--syntara-color-text-brand), var(--syntara-shadow-raised), var(--syntara-shadow-raised);
   }
 
   .card[data-invalid][data-selected]:has(> .button[data-hovered]):not([data-disabled], :has(> .button[data-pressed])) {
