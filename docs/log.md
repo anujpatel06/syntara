@@ -6,31 +6,53 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
-## 2026-10-04 (Hero follow-up) — measuring the aurora's lights behind the text in dark
+## 2026-10-04 (Hero follow-up) — a dark veil behind the aurora's copy
 
-Branch `fix/hero-dark-contrast`, cut from `origin/main` at 1a41bbf. Test only; the look is unchanged, waiting on Anuj.
+Branch `fix/hero-dark-contrast`, cut from `origin/main` at 1a41bbf.
+
+**Problem.** In dark, the aurora's lights are washed toward `text.default`, and two pass behind the copy. Measured
+first (commit 023ab77, before any change): at 1200px the pointer light took `text.subtle` to 3.716 (Qamar) and
+2.973 (fuzz); the pointer on light C took `text.default` to 4.411 (Qamar); and wider heroes were worse, because the
+blur is fixed while the lights grow (pointer strength 0.378 at 1200px → 0.528 at 1920px).
 
 **Changed**
-- `packages/react/test/hero.test.tsx`: an "aurora contrast in dark" block. It reads the lights' numbers from
-  `hero.module.css`, models the blur's real peak (1 − exp(−R²/2σ²)), composites each light over `surface.canvas`
-  in 8-bit sRGB, and measures `text.default` and `text.subtle` for the six tenants (with Haat) and the 1,000 fuzz
-  brands. The failure is recorded with `it.fails`, so the suite stays green today and goes red once a fix lands.
-
-**Results** (`cd packages/react && npx vitest run test/hero.test.tsx --silent=false`; ratios floored, never rounded up)
-- 1200px, tenants, worst: pointer light → text.subtle 3.716 (Qamar), text.default 6.418. Light C → text.subtle
-  5.746 (Care). This reproduces the throwaway measurement.
-- 1200px, fuzz: pointer → text.subtle 2.973, text.default 5.132; light C → text.subtle 3.200.
-- New: pointer resting on light C (tenants, 1200px) → text.default 4.411, text.subtle 2.553 (Qamar).
-- New: wider is worse. The blur is fixed at 96px while the lights grow with the hero, so the pointer's strength
-  goes 0.378 at 1200px → 0.528 at 1920px. At 1920px the pointer alone takes text.default to 4.152 (Qamar).
-- Below 640px the lights double in size; strength at 639px is 0.403 (pointer), so large phones/tablets sit near 1200px's case.
+- `hero.module.css`: `--_veil`, surface.canvas at 77% in dark (transparent in light), painted by
+  `.root[data-variant='aurora'] .copy::before`: a box a space-16 taller and two wider than the copy, blurred by a
+  space-16. Text sits on the veil; the lights keep their full glow outside it. A first try with a hard-edged
+  faded box read as a picture frame on a wide screen and was dropped.
+- `hero.test.tsx`: the "aurora contrast in dark" proof, every number read from the CSS. All four lights stacked at
+  full strength (the worst case at any width or pointer position), the veil's strength at the weakest text point
+  (a corner of the smallest copy, from the blur's Gaussian edge), 8-bit sRGB compositing.
+- `README.md`: test counts (`node scripts/check-test-counts.mjs --from <pnpm test output> --fix`).
 
 **Decided**
-- Nothing yet. Fix options are with Anuj (dark veil / softer, smaller pointer light / keep lights off the copy).
-- The light-mode `--_veil` is not on main: it is uncommitted in another session's worktree (`claude/hero-follows-scheme`).
+- A dark veil behind the copy: **Claude recommended, Anuj accepted** (options were: a full veil, a softer pointer
+  light, or keeping lights off the text; then a full 74% veil vs. one only behind the copy). Anuj approved the look
+  from a screenshot.
+- The light-mode `--_veil` is still not on main: it is uncommitted in `claude/hero-follows-scheme`. Whichever
+  lands second merges the two into one `light-dark(<light 85%>, <dark 77%>)` and decides which element paints it
+  (that branch uses `.lights::after`, full-bleed; this one `.copy::before`, behind the copy only).
+
+**Results**
+- Contrast (`cd packages/react && npx vitest run test/hero.test.tsx --silent=false`, floored): veil kept at the
+  weakest text point 0.9640, so 0.7423 effective. All four lights at full strength under it: tenants
+  `text.default` 10.549, `text.subtle` 6.107 (Qamar); fuzz 7.870 / **4.556** (fuzz#198). Without the veil, the
+  pointer alone at full strength: `text.subtle` 2.223 (Qamar). With the veil set to 72% the fuzz check fails, so
+  the proof bites.
+- The 74% minimum came from a throwaway sweep (0–100% in 1% steps; not committed): all four lights, tenants 62%,
+  fuzz 74%.
+- `/verify`: `pnpm typecheck` exit 0; `pnpm test` 2,225 passed (react 528, engine 309 + 1 skipped, icons 959, mcp 193,
+  sdui 150, audit 77, codemods 8); `pnpm test:themes` 118,000/118,000, median adjustments 4 (unchanged);
+  `pnpm check:meta` 58/58 (1 warning that was already on main: `hero-styles.tsx` not in meta.examples);
+  `pnpm registry` 82 items; `check-override-weight` clean; docs build 315/315 pages; `check-ssr-tabs` 0;
+  served build ZRqTFTXgs2SaTGom059l7, with the change in it (`grep -rho "surface-canvas) 77%" apps/docs/out/_next/static`):
+  hydration 0/288, theme links 0/5, sideways scroll 0/288, CSP 0/144, axe 0 violation nodes (144 × 2), overlay exit 0.
+- Screenshots (playground, `node scripts/shoot.mjs`): Vela, Harbor dark, Qamar RTL, Haat compact, Care at 390px.
 
 **Next**
-- Anuj picks a fix; then change the CSS, flip `it.fails` to `it`, and add a 1920px case to the proof.
+- Merge with the light-mode veil (above).
+- Known gap, already on main and not this change: at 390px the eyebrow wraps onto two lines.
+- Known gap: `hero-styles.tsx` isn't listed in the Hero's meta.examples (check:meta warning).
 
 ---
 

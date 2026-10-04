@@ -9,6 +9,11 @@
   --_gutter: var(--syntara-space-4);
   /* How strong the lights are: bright, since the hero is dark by default (scheme="dark"). */
   --_glow: 0.8;
+  /* In dark, a veil of the page colour behind the copy (see .copy::before) leaves the lights there at about a quarter of
+     their strength, so text.default and text.subtle keep 4.5:1 with all four lights stacked at full strength under them
+     (any width, any pointer position), for every tenant and 1,000 fuzz brands (hero.test.tsx). Outside the copy the
+     lights keep their full glow. */
+  --_veil: light-dark(transparent, color-mix(in srgb, var(--syntara-color-surface-canvas) 77%, transparent));
   /* What the lights are washed toward: the page on a light scheme (pastel), the light text colour on a dark one, so
      they glow (mixing toward a dark page turned Harbor's orange brown). The theme sets color-scheme, so light-dark()
      follows the scope's scheme, not the browser's. */
@@ -110,6 +115,25 @@
 /* ------------------------------------------------------------------ *
  * Copy
  * ------------------------------------------------------------------ */
+
+/* The veil (see --_veil): over the lights, under the text. A box a space-16 taller and two wider than the copy on
+   each side, blurred by a space-16 so it reads as a soft shadow rather than a frame. Every line of text sits at least
+   two blur radii inside its edge (padding 64px + 64px above, 80px + 64px below, gutter + 128px at the sides), where
+   the blur keeps ≥ 96.5% of the veil; --_veil is set so that still clears the 74% the contrast proof needs. */
+.root[data-variant='aurora'] .copy {
+  position: relative;
+}
+
+.root[data-variant='aurora'] .copy::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset-block: calc(var(--syntara-space-16) * -1);
+  inset-inline: calc(var(--syntara-space-16) * -2);
+  background-color: var(--_veil);
+  filter: blur(var(--syntara-space-16));
+  pointer-events: none;
+}
 
 .copy {
   display: flex;

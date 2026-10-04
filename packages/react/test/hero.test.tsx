@@ -199,35 +199,52 @@ describe('Hero', () => {
 });
 
 /*
- * Aurora contrast in dark. Two of the four lights pass behind the copy: light C (high on the far side) and the
- * pointer light. Their numbers are read straight from hero.module.css, so changing them re-runs the proof.
- *   colour   light C = color-mix(in oklab, action.primary.bg, accent.bg); pointer = color-mix(in oklab,
- *            action.primary.bg P%, --_wash), and --_wash is text.default in dark.
- *   strength opacity × the peak of a disc blurred by a Gaussian of σ = the blur radius. At the disc's centre that peak
- *            is the Gaussian's mass inside the disc, 1 − exp(−R² / 2σ²), with R = half the light's width in px.
- *   paint    composited over surface.canvas in 8-bit sRGB (how browsers blend), then text.default and text.subtle
- *            (the headline's second line and the description) are measured against it.
- * Light A and B sit in the corners, away from the copy, so they are not measured.
+ * Aurora contrast in dark. Every number is read from hero.module.css, so changing one re-runs the proof.
+ *   lights   all four stacked at full strength (A, B, C, then the pointer, in paint order), whatever the width or
+ *            pointer position: the blur only ever lowers a light below its opacity, so this is the worst case.
+ *            A = color-mix(in oklab, action.primary.bg 70%, --_wash), B = accent.bg 75% + --_wash,
+ *            C = action.primary.bg + accent.bg evenly, pointer = action.primary.bg 60% + --_wash; --_wash is text.default.
+ *   veil     surface.canvas at V%, as a box around the copy blurred by σ = space-16. A blurred box keeps, at a point,
+ *            the product over both axes of Φ(a/σ) + Φ(b/σ) − 1 (a, b: distances to that axis's two edges). The
+ *            weakest text point is a corner of the copy's content box, for the smallest copy (one title line, a
+ *            phone's gutter); the veil there is V% × that product.
+ *   paint    composited in 8-bit sRGB, as browsers blend. text.default and text.subtle (the headline's second line
+ *            and the description) must reach 4.5:1 for the six tenants and the engine's 1,000 fuzz brands.
  */
 describe('aurora contrast in dark', () => {
   const css = readUiCss('hero.module.css');
-  const num = (re: RegExp): number => {
-    const m = re.exec(css);
+  // A top-level rule (at the start of a line), not one nested in an @container.
+  const block = (selector: string) => {
+    const at = css.indexOf(`\n${selector} {`);
+    if (at < 0) throw new Error(`hero.module.css: ${selector} not found`);
+    return /\{([^}]*)\}/.exec(css.slice(at))![1]!;
+  };
+  const num = (src: string, re: RegExp): number => {
+    const m = re.exec(src);
     if (!m) throw new Error(`hero.module.css: ${re} not found`);
     return Number(m[1]);
   };
-  const rule = (name: string) => /\{([^}]*)\}/.exec(css.slice(css.indexOf(`.${name} {`)))?.[1] ?? '';
-  const GLOW = num(/--_glow: ([\d.]+);/);
-  const BLUR = num(/filter: blur\(calc\(var\(--syntara-space-16\) \* ([\d.]+)\)\);/);
-  const C = rule('lightC');
-  const P = rule('lightPointer');
-  const C_OPACITY = Number(/opacity: calc\(var\(--_glow\) \* ([\d.]+)\)/.exec(C)?.[1]);
-  const C_CQI = Number(/inline-size: calc\((\d+)cqi/.exec(C)?.[1]);
-  const P_OPACITY = Number(/opacity: calc\(var\(--_glow\) \* ([\d.]+)\)/.exec(P)?.[1]);
-  const P_CQI = Number(/inline-size: calc\((\d+)cqi/.exec(P)?.[1]);
-  const P_MIX = Number(/action-primary-bg\) (\d+)%, var\(--_wash\)/.exec(P)?.[1]);
+  const GLOW = num(css, /--_glow: ([\d.]+);/);
+  const VEIL = num(css, /--_veil: light-dark\(transparent, color-mix\(in srgb, var\(--syntara-color-surface-canvas\) (\d+)%, transparent\)\);/);
   const WASH_DARK = /--_wash: light-dark\([^,]+, var\(--syntara-color-([\w-]+)\)\);/.exec(css)?.[1];
-  const C_IS_EVEN_MIX = /color-mix\(in oklab, var\(--syntara-color-action-primary-bg\), var\(--syntara-color-accent-bg\)\)/.test(C);
+  const opacity = (sel: string) => {
+    const m = /opacity: calc\(var\(--_glow\) \* ([\d.]+)\)/.exec(block(sel));
+    return GLOW * (m ? Number(m[1]) : 1);
+  };
+  const share = (sel: string) => num(block(sel), /-bg\) (\d+)%, var\(--_wash\)/);
+  const LIGHTS = {
+    A: { opacity: opacity('.lightA'), primary: share('.lightA') },
+    B: { opacity: opacity('.lightB'), accent: share('.lightB') },
+    C: { opacity: opacity('.lightC'), even: /color-mix\(in oklab, var\(--syntara-color-action-primary-bg\), var\(--syntara-color-accent-bg\)\)/.test(block('.lightC')) },
+    P: { opacity: opacity('.lightPointer'), primary: share('.lightPointer') },
+  };
+  const veilBox = block(".root[data-variant='aurora'] .copy::before");
+  const BOX = {
+    block: num(veilBox, /inset-block: calc\(var\(--syntara-space-16\) \* -([\d.]+)\);/),
+    inline: num(veilBox, /inset-inline: calc\(var\(--syntara-space-16\) \* -([\d.]+)\);/),
+    blur: /filter: blur\(var\(--syntara-space-16\)\);/.test(veilBox),
+    paints: /background-color: var\(--_veil\);/.test(veilBox),
+  };
 
   type Rgb = [number, number, number];
   const toLab = (hex: string) => linearRgbToOklab(hexToRgb8(hex).map((v) => srgbToLinear(v / 255)) as Rgb);
@@ -244,111 +261,100 @@ describe('aurora contrast in dark', () => {
     return rgb8ToHex([0, 1, 2].map((i) => Math.round(f[i]! * alpha + b[i]! * (1 - alpha))) as Rgb);
   };
   const floor3 = (v: number) => (Math.floor(v * 1000) / 1000).toFixed(3);
+  // Standard normal CDF via erf (Abramowitz & Stegun 7.1.26, error < 1.5e-7; 1e-6 is taken off to stay below it).
+  const phi = (x: number) => {
+    const z = Math.abs(x) / Math.SQRT2;
+    const t = 1 / (1 + 0.3275911 * z);
+    const erf = 1 - ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-z * z);
+    return (x >= 0 ? (1 + erf) / 2 : (1 - erf) / 2) - 1e-6;
+  };
 
-  /** The blur radius in px, from the engine's space-16 (the same in every brand). */
-  const sigma = (input: BrandInput) => {
-    const v = toCssVariables(generateTheme(input), 'dark')['--syntara-space-16'] ?? '';
-    const px = /^([\d.]+)(px|rem)$/.exec(v);
-    if (!px) throw new Error(`--syntara-space-16 not in px or rem: ${v}`);
-    return Number(px[1]) * (px[2] === 'rem' ? 16 : 1) * BLUR;
+  /** px of a theme length (rem at 16px), from the engine's variables. */
+  const vars = toCssVariables(generateTheme(vela as unknown as BrandInput), 'dark');
+  const px = (name: string) => {
+    const m = /^([\d.]+)(px|rem)$/.exec(vars[name] ?? '');
+    if (!m) throw new Error(`${name} not in px or rem: ${vars[name]}`);
+    return Number(m[1]) * (m[2] === 'rem' ? 16 : 1);
   };
-  /** Peak strength of a light `cqi` wide in a hero `width` px wide (phones double the lights below 640px). */
-  const peak = (cqi: number, width: number, s: number) => {
-    const r = (cqi * (width < 640 ? 2 : 1) * width) / 100 / 2;
-    return 1 - Math.exp(-(r * r) / (2 * s * s));
-  };
+  const S16 = px('--syntara-space-16');
+  const copyBlock = block('.copy');
+  const PAD_TOP = /padding-block: var\(--syntara-space-(\d+)\) var\(--syntara-space-(\d+)\);/.exec(copyBlock);
+  const padTop = px(`--syntara-space-${PAD_TOP![1]}`);
+  const padBottom = px(`--syntara-space-${PAD_TOP![2]}`);
+  const phoneGutter = px(`--syntara-space-${/--_gutter: var\(--syntara-space-(\d+)\);/.exec(block('.root'))![1]}`);
+  // The smallest copy: a title of one line at the phone size, on a 320px-wide hero.
+  const titleLine = px('--syntara-font-size-4xl') * Number(vars['--syntara-line-height-tight']);
+  const contentWidth = 320 - 2 * phoneGutter;
+  const axis = (a: number, b: number) => phi(a / S16) + phi(b / S16) - 1;
+  const top = padTop + BOX.block * S16;
+  const bottom = padBottom + BOX.block * S16;
+  const side = phoneGutter + BOX.inline * S16;
+  const COVER = Math.min(axis(top, titleLine + bottom), axis(bottom, titleLine + top)) * axis(side, contentWidth + side);
+  const V = (VEIL / 100) * COVER;
 
   const TENANTS = { vela, harbor, qamar, care, house, haat } as unknown as Record<string, BrandInput>;
-  type Worst = { ratio: number; at: string };
   const ROLES = ['text.default', 'text.subtle'] as const;
-  const LIGHTS = ['pointer', 'lightC', 'both'] as const;
 
-  /** Worst ratio per light × role, at one hero width. `both` is the pointer resting on light C. */
-  const worstFor = (inputs: BrandInput[], names: string[], width: number) => {
-    const s = sigma(inputs[0]!);
-    const aC = GLOW * C_OPACITY * peak(C_CQI, width, s);
-    const aP = GLOW * P_OPACITY * peak(P_CQI, width, s);
-    const worst = Object.fromEntries(
-      LIGHTS.flatMap((l) => ROLES.map((r) => [`${l} ${r}`, { ratio: Infinity, at: '' } as Worst])),
-    ) as Record<string, Worst>;
+  /** Worst ratio per role, with the veil at `veil` (0 = none), and with only the lights in `only` lit. */
+  const worstFor = (inputs: BrandInput[], names: string[], veil: number, only = 'ABCP') => {
+    const worst = Object.fromEntries(ROLES.map((r) => [r, { ratio: Infinity, at: '' }]));
     inputs.forEach((input, i) => {
-      const roles = generateTheme(input).schemes.dark.roles;
-      const canvas = roles['surface.canvas'].hex;
-      const lightC = over(mix(roles['action.primary.bg'].hex, roles['accent.bg'].hex, 50), canvas, aC);
-      const pointerColour = mix(roles['action.primary.bg'].hex, roles['text.default'].hex, P_MIX);
-      const bgs = { pointer: over(pointerColour, canvas, aP), lightC, both: over(pointerColour, lightC, aP) };
-      for (const l of LIGHTS) {
-        for (const r of ROLES) {
-          const v = contrastRatio(roles[r].hex, bgs[l]);
-          const w = worst[`${l} ${r}`]!;
-          if (v < w.ratio) Object.assign(w, { ratio: v, at: names[i] ?? `fuzz#${i}` });
-        }
+      const r = generateTheme(input).schemes.dark.roles;
+      const [primary, accent, wash, canvas] = [r['action.primary.bg'].hex, r['accent.bg'].hex, r['text.default'].hex, r['surface.canvas'].hex];
+      let bg = canvas;
+      if (only.includes('A')) bg = over(mix(primary, wash, LIGHTS.A.primary), bg, LIGHTS.A.opacity);
+      if (only.includes('B')) bg = over(mix(accent, wash, LIGHTS.B.accent), bg, LIGHTS.B.opacity);
+      if (only.includes('C')) bg = over(mix(primary, accent, 50), bg, LIGHTS.C.opacity);
+      if (only.includes('P')) bg = over(mix(primary, wash, LIGHTS.P.primary), bg, LIGHTS.P.opacity);
+      bg = over(canvas, bg, veil);
+      for (const role of ROLES) {
+        const v = contrastRatio(r[role].hex, bg);
+        if (v < worst[role]!.ratio) worst[role] = { ratio: v, at: names[i] ?? `fuzz#${i}` };
       }
     });
-    return { worst, strength: { lightC: aC, pointer: aP } };
+    return worst;
   };
-  const report = (w: Record<string, Worst>) =>
+  const report = (w: Record<string, { ratio: number; at: string }>) =>
     Object.fromEntries(Object.entries(w).map(([k, v]) => [k, `${floor3(v.ratio)} (${v.at})`]));
-
-  it('reads the numbers it measures from the CSS', () => {
-    expect({ GLOW, BLUR, C_OPACITY, C_CQI, P_OPACITY, P_CQI, P_MIX, WASH_DARK, C_IS_EVEN_MIX }).toEqual({
-      GLOW: 0.8,
-      BLUR: 1.5,
-      C_OPACITY: 0.6,
-      C_CQI: 26,
-      P_OPACITY: 0.7,
-      P_CQI: 24,
-      P_MIX: 60,
-      WASH_DARK: 'text-default',
-      C_IS_EVEN_MIX: true,
-    });
-  });
-
-  it('at 1200px the lights reach 0.732 (C) and 0.675 (pointer) of their opacity', () => {
-    const s = sigma(vela as unknown as BrandInput);
-    expect(s).toBe(96);
-    expect(floor3(peak(C_CQI, 1200, s))).toBe('0.732');
-    expect(floor3(peak(P_CQI, 1200, s))).toBe('0.675');
-  });
-
   const names = Object.keys(TENANTS);
-  const tenants = () => worstFor(names.map((n) => TENANTS[n]!), names, 1200);
+  const tenants = names.map((n) => TENANTS[n]!);
 
-  it('tenants at 1200px: text.default stays ≥ 4.5:1 under each light on its own', () => {
-    const { worst, strength } = tenants();
-    console.log('hero aurora dark, tenants, 1200px', { strength, ...report(worst) });
-    expect(worst['pointer text.default']!.ratio).toBeGreaterThanOrEqual(4.5);
-    expect(worst['lightC text.default']!.ratio).toBeGreaterThanOrEqual(4.5);
+  it('reads the numbers it proves from the CSS', () => {
+    expect({ GLOW, VEIL, WASH_DARK, LIGHTS, BOX }).toEqual({
+      GLOW: 0.8,
+      VEIL: 77,
+      WASH_DARK: 'text-default',
+      LIGHTS: {
+        A: { opacity: 0.8, primary: 70 },
+        B: { opacity: 0.8, accent: 75 },
+        C: { opacity: 0.48, even: true },
+        P: { opacity: 0.5599999999999999, primary: 60 },
+      },
+      BOX: { block: 1, inline: 2, blur: true, paints: true },
+    });
+    expect({ S16, padTop, padBottom, phoneGutter }).toEqual({ S16: 64, padTop: 64, padBottom: 80, phoneGutter: 16 });
   });
 
-  // KNOWN FAILURE, recorded on purpose (docs/log.md, 2026-10-04). Today the pointer light drops text.subtle below
-  // 4.5:1, and the pointer resting on light C drops text.default too. `it.fails` passes while that is true; once a
-  // fix lands it starts failing, and the fix should change it to `it`.
-  it.fails('tenants at 1200px: both text roles ≥ 4.5:1 under each light and where they overlap', () => {
-    const { worst } = tenants();
-    for (const k of Object.keys(worst)) expect(worst[k]!.ratio, k).toBeGreaterThanOrEqual(4.5);
+  it('keeps ≥ 96% of the veil behind the weakest text point, a corner of the smallest copy', () => {
+    console.log('hero aurora veil at the text', { cover: COVER.toFixed(4), veil: V.toFixed(4), titleLine });
+    expect(COVER).toBeGreaterThan(0.96);
   });
 
-  it('records how strong the lights get from phone to wide desktop', () => {
-    const s = sigma(vela as unknown as BrandInput);
-    const rows = [375, 639, 640, 1024, 1200, 1440, 1920].map((w) => ({
-      width: w,
-      lightC: floor3(GLOW * C_OPACITY * peak(C_CQI, w, s)),
-      pointer: floor3(GLOW * P_OPACITY * peak(P_CQI, w, s)),
-    }));
-    console.log('hero aurora light strength by width', rows);
-    // Wider heroes make bigger discs, and the fixed blur hides less of them: strength only grows with width (≥640).
-    expect(Number(rows.at(-1)!.pointer)).toBeGreaterThan(Number(rows[4]!.pointer));
+  it('without the veil, the pointer light alone takes text.subtle below 4.5:1 (why the veil exists)', () => {
+    const w = worstFor(tenants, names, 0, 'P');
+    console.log('hero aurora dark, no veil, pointer alone at full strength, tenants', report(w));
+    expect(w['text.subtle']!.ratio).toBeLessThan(4.5);
   });
 
-  it('1,000 fuzz brands at 1200px and 1920px: the worst ratios, for the record', async () => {
-    const fuzz = await loadFuzzInputs();
-    for (const width of [1200, 1920]) {
-      const { worst } = worstFor(fuzz, [], width);
-      console.log(`hero aurora dark, fuzz, ${width}px`, report(worst));
-      if (width === 1200) expect(worst['pointer text.subtle']!.ratio).toBeLessThan(4.5);
-    }
-    const wide = worstFor(names.map((n) => TENANTS[n]!), names, 1920).worst;
-    console.log('hero aurora dark, tenants, 1920px', report(wide));
+  it('tenants: text.default and text.subtle ≥ 4.5:1 with all four lights at full strength under the veil', () => {
+    const w = worstFor(tenants, names, V);
+    console.log('hero aurora dark, veiled, tenants', report(w));
+    for (const role of ROLES) expect(w[role]!.ratio, role).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('1,000 fuzz brands: the same', async () => {
+    const w = worstFor(await loadFuzzInputs(), [], V);
+    console.log('hero aurora dark, veiled, fuzz', report(w));
+    for (const role of ROLES) expect(w[role]!.ratio, role).toBeGreaterThanOrEqual(4.5);
   }, 60_000);
 });
