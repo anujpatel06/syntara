@@ -1,0 +1,384 @@
+/*
+ * Hero: Gallery. Tokens only; container breakpoints (640, 1024), the wall's geometry (container units, angles,
+ * opacity curve) are the only literals. Ambient durations are multiples of --syntara-motion-duration-slow.
+ */
+
+/* The wall's turn and lean, as angles so they can be animated and glide. */
+@property --_turn {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --_lean {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.root {
+  --_gutter: var(--syntara-space-4);
+  --_max: calc(var(--syntara-space-16) * 18.75); /* 1200px */
+  /*
+   * The wall, inside a drum of radius --_r seen from its centre, the viewer --_p from the screen. Cards are 2:3 and
+   * nearly fill their slot (radius × 2π/22), so the wall reads as one continuous band with thin gaps. Standing close
+   * (--_p well under --_r) makes the cards ahead about a quarter size and the ones at the sides tall. One set of
+   * numbers for every width (container units scale it); these are the ones Anuj approved on 2026-10-04.
+   */
+  --_cardW: 18cqi;
+  --_r: 72cqi;
+  --_p: 28cqi;
+  --_step: calc(360deg / 22);
+  /* How tall the middle row of cards is drawn: card height × the far-card scale --_p / (--_p + --_r). */
+  --_row: calc(var(--_cardW) * 1.5 * var(--_p) / (var(--_p) + var(--_r)));
+
+  container: hero-gallery / inline-size;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-block-size: calc(var(--syntara-space-16) * 12.5); /* 800px */
+  overflow: clip;
+  background:
+    radial-gradient(
+      60% 55% at 50% 50%,
+      var(--syntara-color-surface-canvas),
+      color-mix(in oklab, var(--syntara-color-surface-sunken) 70%, var(--syntara-color-surface-canvas))
+    );
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  text-align: center;
+  transition: --_lean calc(var(--syntara-motion-duration-slow) * 3) var(--syntara-motion-easing-out);
+}
+
+.root :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+.root :where(h1, h2, h3, h4, p) {
+  margin: 0;
+}
+
+@container hero-gallery (min-width: 640px) {
+  .root > * {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+
+/* ------------------------------------------------------------------ *
+ * Menu bar
+ * ------------------------------------------------------------------ */
+
+.menu {
+  display: flex;
+  align-items: center;
+  inline-size: 100%;
+  max-inline-size: var(--_max);
+  padding-block: var(--syntara-space-5);
+  padding-inline: var(--_gutter);
+  text-align: start;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin-inline-end: auto;
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-semibold);
+  text-decoration: none;
+}
+
+.mark {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-badge);
+  background-color: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+  font-size: var(--syntara-font-size-md);
+}
+
+.menuEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-5);
+}
+
+.signIn {
+  color: var(--syntara-color-text-subtle);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+}
+
+.signIn:hover {
+  color: var(--syntara-color-text-default);
+}
+
+.signIn:focus-visible,
+.logo:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--syntara-radius-badge);
+}
+
+/* ------------------------------------------------------------------ *
+ * Headline, above the wall's middle row
+ * ------------------------------------------------------------------ */
+
+.headline {
+  max-inline-size: calc(var(--syntara-space-16) * 11); /* 704px */
+  margin-block-start: auto;
+  padding-inline: var(--_gutter);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-3xl);
+  font-weight: var(--syntara-font-weight-regular);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-3xl);
+  text-wrap: balance;
+}
+
+@container hero-gallery (min-width: 640px) {
+  .headline {
+    font-size: var(--syntara-font-size-4xl);
+    letter-spacing: var(--syntara-font-tracking-4xl);
+  }
+}
+
+@container hero-gallery (min-width: 1024px) {
+  .headline {
+    font-size: var(--syntara-font-size-5xl);
+    letter-spacing: var(--syntara-font-tracking-5xl);
+  }
+}
+
+.line {
+  display: block;
+}
+
+/* ------------------------------------------------------------------ *
+ * The wall. The stage is the height of the middle row and sits between headline and ask; the cards are placed
+ * around its centre and the near ones at the sides overflow it upward and downward, behind the copy. Card angle
+ * --_t = slot + turn: 0 is straight ahead (far, small), ±90deg is level with the viewer at the sides (near, tall).
+ * Cards past about 100deg are beside or behind the viewer and fade out before they can grow over the copy.
+ * ------------------------------------------------------------------ */
+
+.stage {
+  position: relative;
+  z-index: -1;
+  inline-size: 100%;
+  block-size: var(--_row);
+  /* Room for the near side cards, which overflow the row up and down, plus breathing space from the copy. */
+  margin-block: calc(var(--_row) * 0.6 + var(--syntara-space-8)) calc(var(--_row) * 0.6 + var(--syntara-space-10));
+  perspective: var(--_p);
+  pointer-events: none;
+}
+
+/* A soft shadow on the floor under the middle of the wall, so it stands on something. */
+.stage::after {
+  content: '';
+  position: absolute;
+  inset-inline: 15%;
+  inset-block-start: 85%;
+  block-size: calc(var(--_row) * 0.9);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--syntara-color-text-default) 10%, transparent),
+    transparent
+  );
+  filter: blur(var(--syntara-space-3));
+}
+
+.wall {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateY(var(--_lean));
+}
+
+.card {
+  --_t: calc(var(--i) * var(--_step) + var(--_turn));
+
+  position: absolute;
+  inset-block-start: calc(50% - var(--_cardW) * 0.75);
+  inset-inline-start: calc(50% - var(--_cardW) / 2);
+  inline-size: var(--_cardW);
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--syntara-radius-container);
+  background-color: var(--syntara-color-surface-sunken);
+  box-shadow: var(--syntara-shadow-overlay);
+  /* A glossy floor: each card's reflection fades out below it (Chromium and Safari; elsewhere simply no floor). */
+  -webkit-box-reflect: below var(--syntara-space-2)
+    linear-gradient(transparent 62%, color-mix(in oklab, var(--syntara-color-text-default) 16%, transparent));
+  transform:
+    translate3d(calc(var(--_r) * sin(var(--_t))), 0, calc(var(--_r) * cos(var(--_t)) * -1))
+    rotateY(calc(var(--_t) * -1));
+  opacity: clamp(0, (cos(var(--_t)) + 0.17) * 8, 1);
+  backface-visibility: hidden;
+}
+
+/* Haze: the further a card is (cos of its angle → 1 straight ahead), the more it fades into the background, as distant
+   things do. Up to 45% straight ahead, none at the sides. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--syntara-color-surface-canvas);
+  opacity: clamp(0, cos(var(--_t)) * 0.45, 0.45);
+  pointer-events: none;
+}
+
+.image {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+.card[data-kind='mark'] {
+  display: grid;
+  place-items: center;
+  background-color: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+}
+
+.bigMark {
+  font-family: var(--syntara-font-heading);
+  font-size: calc(var(--_cardW) * 0.55);
+  font-weight: var(--syntara-font-weight-semibold);
+  line-height: var(--syntara-line-height-tight);
+}
+
+/* ------------------------------------------------------------------ *
+ * The ask: a short line and a slim dark bar
+ * ------------------------------------------------------------------ */
+
+.ask {
+  display: grid;
+  justify-items: center;
+  gap: var(--syntara-space-5);
+  inline-size: 100%;
+  max-inline-size: calc(var(--syntara-space-16) * 8); /* 512px */
+  margin-block-end: auto;
+  padding-block-end: var(--syntara-space-16);
+  padding-inline: var(--_gutter);
+}
+
+.body {
+  max-inline-size: 46ch;
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  text-wrap: balance;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  inline-size: 100%;
+  min-block-size: var(--syntara-space-12);
+  padding-block: var(--syntara-space-1);
+  padding-inline: var(--syntara-space-4) var(--syntara-space-1);
+  border-radius: var(--syntara-radius-field);
+  background-color: var(--syntara-color-surface-inverse);
+  color: var(--syntara-color-text-inverse);
+  box-shadow: var(--syntara-shadow-overlay);
+  text-align: start;
+}
+
+.bar:focus-within {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.barIcon {
+  flex: none;
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+  color: var(--syntara-color-text-inverse);
+}
+
+.field {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.input {
+  inline-size: 100%;
+  min-block-size: var(--syntara-space-10);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--syntara-color-text-inverse);
+  font: inherit;
+  font-size: var(--syntara-font-size-sm);
+  text-overflow: ellipsis;
+}
+
+.input::placeholder {
+  color: var(--syntara-color-text-inverse);
+  opacity: 0.75;
+}
+
+/* The bar draws the focus ring for the whole field. */
+.input:focus {
+  outline: none;
+}
+
+.send.send.send {
+  flex: none;
+  border-radius: var(--syntara-radius-field);
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion: the wall turns once every 72s (the other way in right-to-left) and leans toward the pointer. Nothing
+ * moves when reduced motion is asked for, or while paused.
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .wall {
+    animation: gallery-turn calc(var(--syntara-motion-duration-slow) * 225) linear infinite;
+  }
+
+  .wall:dir(rtl) {
+    animation-direction: reverse;
+  }
+
+  .root[data-paused] .wall {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+}
+
+@keyframes gallery-turn {
+  to {
+    --_turn: -360deg;
+  }
+}
+
+.pause.pause {
+  position: absolute;
+  inset-block-end: var(--syntara-space-4);
+  inset-inline-end: var(--syntara-space-4);
+  color: var(--syntara-color-text-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pause.pause {
+    display: none;
+  }
+}

@@ -962,5 +962,49 @@
     "eyebrow": "Available balance",
     "amount": 184250,
     "note": "+6.4% vs last month"
+  },
+  "hero": {
+    "menu": {
+      "label": "Main",
+      "links": [
+        "Personal",
+        "Business",
+        "Pricing"
+      ],
+      "signIn": "Log in",
+      "cta": "Get the app"
+    },
+    "announcement": {
+      "badge": "New",
+      "text": "Shared savings pots are here"
+    },
+    "headline": "See where your money goes.",
+    "headlineTail": "Every rupee, the moment it moves.",
+    "body": "Payments, savings pots and card controls in one calm app. Every rupee shows up the moment it moves, in words you can read.",
+    "primary": "Open an account",
+    "secondary": "See how it works",
+    "trust": "Free to open. No minimum balance.",
+    "pictureLabel": "The Vela app: your balance, spending this month and recent payments.",
+    "prompt": {
+      "label": "Ask Vela",
+      "placeholder": "Ask about your money, like “What did I spend on food in September?”",
+      "send": "Ask"
+    },
+    "cursors": [
+      "Priya",
+      "Arjun"
+    ],
+    "search": {
+      "label": "Search Vela",
+      "placeholder": "Search payments, cards and savings",
+      "button": "Search",
+      "chipsLabel": "Popular searches",
+      "chips": [
+        "Bills",
+        "Food & drink",
+        "Savings pots",
+        "Card controls"
+      ]
+    }
   }
 }

@@ -17,7 +17,7 @@ A Syntara theme is generated, not drawn. Six brand inputs go through the theme e
   </tbody>
 </Table>
 
-A new brand changes values, never names — so no component knows which brand it renders ([ADR-005](https://github.com/anujpatel06/strata/blob/main/docs/adr/005-token-tiers-and-naming.md)).
+A new brand changes values, never names — so no component knows which brand it renders ([ADR-005](https://github.com/anujpatel06/syntara/blob/main/docs/adr/005-token-tiers-and-naming.md)).
 
 ## A brand is six inputs
 
@@ -54,7 +54,7 @@ The 48 colour roles every theme resolves, with the CSS variable components read.
 
 Which role to use for what, and which pairs are safe together: [Using colour →](/docs/color)
 
-Other variables follow the same pattern: `--syntara-space-{0…16}`, `--syntara-radius-{button,field,container,badge,pill}`, `--syntara-font-{heading,body,mono}`, `--syntara-font-size-{xs…5xl}`, `--syntara-font-tracking-{xs…5xl}`, `--syntara-shadow-{raised,overlay}`, `--syntara-motion-*` and the density variables. The full contract is in `packages/theme-engine/src/types.ts`.
+Other variables follow the same pattern: `--syntara-space-{0…32}` (20, 24 and 32 are for gaps between website sections), `--syntara-radius-{button,field,container,badge,pill}`, `--syntara-font-{heading,body,mono}`, `--syntara-font-size-{xs…7xl}`, `--syntara-font-tracking-{xs…7xl}`, `--syntara-shadow-{raised,overlay}`, `--syntara-motion-*` and the density variables. The full contract is in `packages/theme-engine/src/types.ts`.
 
 ## ThemeScope
 

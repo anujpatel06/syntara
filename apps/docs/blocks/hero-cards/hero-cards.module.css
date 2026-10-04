@@ -1,0 +1,556 @@
+/*
+ * Hero: Card fan. Tokens only; container breakpoints (640, 1024), the fan's geometry (container units, angles,
+ * percentages) and the cursor paths are the only literals. Ambient durations are multiples of
+ * --syntara-motion-duration-slow. Rules that restyle a Syntara component triple their class (.x.x.x).
+ */
+
+@property --_tilt {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.root {
+  --_gutter: var(--syntara-space-4);
+  --_max: calc(var(--syntara-space-16) * 18.75); /* 1200px */
+  --_dir: 1;
+
+  container: hero-cards / inline-size;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: clip;
+  background:
+    radial-gradient(
+      70% 45% at 50% 100%,
+      color-mix(in oklab, var(--syntara-color-action-primary-bg) 22%, transparent),
+      transparent
+    ),
+    var(--syntara-color-surface-canvas);
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  text-align: center;
+  transition: --_tilt calc(var(--syntara-motion-duration-slow) * 3) var(--syntara-motion-easing-out);
+}
+
+.root:dir(rtl) {
+  --_dir: -1;
+}
+
+.root :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+.root :where(h1, h2, h3, h4, p, ul) {
+  margin: 0;
+}
+
+.root :where(ul) {
+  padding: 0;
+  list-style: none;
+}
+
+
+
+@container hero-cards (min-width: 640px) {
+  .root > * {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Menu bar: logo, the links in a pill in the middle, sign-in and a button
+ * ------------------------------------------------------------------ */
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-4);
+  inline-size: 100%;
+  max-inline-size: var(--_max);
+  padding-block: var(--syntara-space-5);
+  padding-inline: var(--_gutter);
+}
+
+@container hero-cards (min-width: 1024px) {
+  .menu {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin-inline-end: auto;
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-semibold);
+  text-decoration: none;
+}
+
+.mark {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-badge);
+  background-color: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+  font-size: var(--syntara-font-size-md);
+}
+
+.menuNav {
+  display: none;
+}
+
+@container hero-cards (min-width: 1024px) {
+  .menuNav {
+    display: block;
+  }
+}
+
+.menuLinks {
+  display: flex;
+  gap: var(--syntara-space-1);
+  padding: var(--syntara-space-1);
+  border: 1px solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-pill);
+  background-color: color-mix(in oklab, var(--syntara-color-surface-raised) 70%, transparent);
+}
+
+.menuLink {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--syntara-space-8);
+  padding-inline: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-pill);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+  transition:
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    background-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+
+.menuLink:hover {
+  color: var(--syntara-color-text-default);
+}
+
+.menuLink[aria-current='page'] {
+  background-color: var(--syntara-color-surface-default);
+  color: var(--syntara-color-text-default);
+  box-shadow: var(--syntara-shadow-raised);
+}
+
+.menuEnd {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--syntara-space-5);
+}
+
+.signIn {
+  color: var(--syntara-color-text-subtle);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+}
+
+.signIn:hover {
+  color: var(--syntara-color-text-default);
+}
+
+.menuLink:focus-visible,
+.signIn:focus-visible,
+.logo:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--syntara-radius-badge);
+}
+
+.menuCta.menuCta.menuCta {
+  border-radius: var(--syntara-radius-pill);
+}
+
+/* ------------------------------------------------------------------ *
+ * Copy
+ * ------------------------------------------------------------------ */
+
+.copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-inline-size: calc(var(--syntara-space-16) * 15); /* 960px: each half of the headline fits on one line */
+  padding-block: var(--syntara-space-10) var(--syntara-space-12);
+  padding-inline: var(--_gutter);
+}
+
+@container hero-cards (min-width: 1024px) {
+  .copy {
+    padding-block-start: var(--syntara-space-12);
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin-block-end: var(--syntara-space-5);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+
+.headline {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-4xl);
+  font-weight: var(--syntara-font-weight-semibold);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-4xl);
+  text-wrap: balance;
+}
+
+@container hero-cards (min-width: 640px) {
+  .headline {
+    font-size: var(--syntara-font-size-5xl);
+    letter-spacing: var(--syntara-font-tracking-5xl);
+  }
+}
+
+
+
+.line {
+  display: block;
+}
+
+.tail {
+  color: var(--syntara-color-text-subtle);
+}
+
+.body {
+  max-inline-size: 52ch;
+  margin-block-start: var(--syntara-space-5);
+  color: var(--syntara-color-text-subtle);
+  text-wrap: balance;
+}
+
+.buttons {
+  margin-block-start: var(--syntara-space-8);
+}
+
+.primary.primary.primary {
+  border-radius: var(--syntara-radius-pill);
+  box-shadow:
+    var(--syntara-shadow-raised),
+    0 0 var(--syntara-space-8) color-mix(in oklab, var(--syntara-color-action-primary-bg) 40%, transparent);
+}
+
+/* ------------------------------------------------------------------ *
+ * Cursors: two name tags drifting in the margins beside the copy (clear of the headline, which runs wide). Hidden on
+ * narrow screens, where there is no room beside it.
+ * ------------------------------------------------------------------ */
+
+.cursor {
+  position: absolute;
+  z-index: 3;
+  display: none;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+@container hero-cards (min-width: 1024px) {
+  .cursor {
+    display: inline-flex;
+  }
+}
+
+.cursor[data-n='0'] {
+  inset-block-start: 40%;
+  inset-inline-start: 7%;
+  --_bg: var(--syntara-color-action-primary-bg);
+  --_fg: var(--syntara-color-action-primary-fg);
+}
+
+.cursor[data-n='1'] {
+  inset-block-start: 50%;
+  inset-inline-end: 7%;
+  flex-direction: row-reverse;
+  --_bg: var(--syntara-color-surface-inverse);
+  --_fg: var(--syntara-color-text-inverse);
+}
+
+.cursorArrow {
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+  fill: var(--_bg);
+  filter: drop-shadow(0 1px 1px color-mix(in oklab, var(--syntara-color-text-default) 25%, transparent));
+}
+
+/* The arrow points into the page from either side, whatever the reading direction. */
+.cursor[data-n='1'] .cursorArrow {
+  scale: -1 1;
+}
+
+.cursorName {
+  margin-block-start: var(--syntara-space-4);
+  padding-block: var(--syntara-space-1);
+  padding-inline: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-pill);
+  background-color: var(--_bg);
+  color: var(--_fg);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  box-shadow: var(--syntara-shadow-raised);
+}
+
+/* ------------------------------------------------------------------ *
+ * The fan: five cards rising from the bottom edge, turned about a point below them. --k is -2…2 from the middle;
+ * the middle card sits highest and in front. Opens wider when the pointer is over it.
+ * ------------------------------------------------------------------ */
+
+.fan {
+  /* Card width, how far apart the cards sit, and how much each turns. Wider and steeper on hover. */
+  --_cardW: 46cqi;
+  --_spread: 20cqi;
+  --_angle: 7deg;
+
+  position: relative;
+  inline-size: 100%;
+  /* Follows the copy rather than sinking to the bottom of a tall screen; the hero ends where the fan is cut. */
+  block-size: calc(var(--_cardW) * 4 / 3 * 0.9);
+  margin-block-start: var(--syntara-space-4);
+}
+
+/* Sizes per width. On .fan, not .root (a container query can only restyle what is inside the container), and
+   after the defaults above so they win. */
+@container hero-cards (min-width: 640px) {
+  .fan {
+    --_cardW: 30cqi;
+    --_spread: 15cqi;
+  }
+}
+
+@container hero-cards (min-width: 1024px) {
+  .fan {
+    --_cardW: 21cqi;
+    --_spread: 13cqi;
+  }
+}
+
+.fan:hover {
+  --_spread: calc(var(--_cardW) * 0.78);
+  --_angle: 9deg;
+}
+
+.card {
+  position: absolute;
+  inset-block-start: var(--syntara-space-8);
+  inset-inline-start: calc(50% - var(--_cardW) / 2);
+  z-index: calc(10 - var(--k) * var(--k));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  inline-size: var(--_cardW);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: calc(var(--syntara-radius-container) * 1.6);
+  background-color: var(--_bg);
+  color: var(--_fg);
+  text-align: start;
+  /* Finish: a thin bright edge and a bright top lip (light catching it), a grey contact shadow, and a soft glow in
+     the card's own colour underneath. */
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--_fg) 14%, transparent),
+    inset 0 1px 0 color-mix(in oklab, var(--_fg) 35%, transparent),
+    var(--syntara-shadow-overlay),
+    0 var(--syntara-space-8) var(--syntara-space-16) calc(var(--syntara-space-4) * -1)
+      color-mix(in oklab, var(--_bg) 70%, transparent);
+  transform-origin: 50% 140%;
+  transform:
+    translateX(calc(var(--k) * var(--_spread) * var(--_dir)))
+    translateY(calc(var(--k) * var(--k) * var(--syntara-space-4)))
+    rotate(calc(var(--k) * var(--_angle) * var(--_dir) + var(--_tilt)));
+  transition: transform calc(var(--syntara-motion-duration-slow) * 1.5) var(--syntara-motion-easing-out);
+}
+
+/* Gloss: light catching the top corner. Above the art, below nothing that must be read (pointer-events off). */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(
+    150deg,
+    color-mix(in oklab, var(--_fg) 22%, transparent),
+    transparent 38%
+  );
+  pointer-events: none;
+}
+
+/*
+ * Five colour pairs the theme engine has already solved for readable text, so the title can sit straight on the
+ * card in any brand: its accent, its dark inverse, its primary (the middle card), and two lighter tints.
+ */
+.card[data-n='0'] { --_bg: var(--syntara-color-accent-bg); --_fg: var(--syntara-color-accent-fg); }
+.card[data-n='1'] { --_bg: var(--syntara-color-surface-inverse); --_fg: var(--syntara-color-text-inverse); }
+.card[data-n='2'] { --_bg: var(--syntara-color-action-primary-bg); --_fg: var(--syntara-color-action-primary-fg); }
+.card[data-n='3'] { --_bg: var(--syntara-color-accent-subtle); --_fg: var(--syntara-color-accent-text); }
+.card[data-n='4'] { --_bg: var(--syntara-color-action-secondary-bg); --_fg: var(--syntara-color-action-secondary-fg); }
+
+.card:hover {
+  z-index: 20;
+  transform:
+    translateX(calc(var(--k) * var(--_spread) * var(--_dir)))
+    translateY(calc(var(--k) * var(--k) * var(--syntara-space-4) - var(--syntara-space-10)))
+    rotate(calc(var(--k) * var(--_angle) * var(--_dir) * 0.6 + var(--_tilt)))
+    scale(1.04);
+}
+
+/* Title straight on the card's colour, big and bold, as in the reference. */
+.cardLabel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--syntara-space-1);
+  padding: var(--syntara-space-5) var(--syntara-space-5) 0;
+}
+
+.cardTitle {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-2xl);
+  font-weight: var(--syntara-font-weight-bold);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-2xl);
+}
+
+.cardMeta {
+  font-size: var(--syntara-font-size-sm);
+  opacity: 0.85;
+}
+
+/* The art runs edge to edge and fades up into the card's colour, so it belongs to the card rather than sitting on
+   it. The mask reads alpha alone; any opaque token works as "fully visible". */
+.cardImage {
+  display: block;
+  inline-size: 100%;
+  block-size: calc(100% + var(--syntara-space-6)); /* the pull-up below, given back so it still reaches the bottom */
+  margin-block-start: calc(var(--syntara-space-6) * -1);
+  object-fit: cover;
+  mask-image: linear-gradient(to bottom, transparent, var(--syntara-color-text-default) 30%);
+  user-select: none;
+  transition: scale calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
+}
+
+.card:hover .cardImage {
+  scale: 1.06;
+}
+
+.cardCta {
+  position: absolute;
+  /* Inside the card (which clips), at its bottom over the art, clear of the title. */
+  z-index: 3;
+  inset-block-end: var(--syntara-space-8);
+  inset-inline-start: var(--syntara-space-5);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  padding-block: var(--syntara-space-1);
+  padding-inline: var(--syntara-space-4) var(--syntara-space-1);
+  border-radius: var(--syntara-radius-pill);
+  background-color: var(--syntara-color-surface-default);
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  box-shadow: var(--syntara-shadow-overlay);
+  white-space: nowrap;
+}
+
+.cardCtaIcon {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-pill);
+  background-color: var(--syntara-color-accent-bg);
+  color: var(--syntara-color-text-default);
+}
+
+.cardCtaIcon svg {
+  inline-size: var(--syntara-space-4);
+  block-size: var(--syntara-space-4);
+}
+
+.cardCtaIcon:dir(rtl) svg {
+  scale: -1 1;
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion: the cursors drift on slow loops. Nothing moves with reduced motion asked for, or while paused; the fan
+ * then keeps its hover lift (a response to the pointer, not motion on its own) but without the tilt.
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .cursor[data-n='0'] {
+    animation: cards-drift-a calc(var(--syntara-motion-duration-slow) * 22) ease-in-out infinite alternate;
+  }
+
+  .cursor[data-n='1'] {
+    animation: cards-drift-b calc(var(--syntara-motion-duration-slow) * 28) ease-in-out infinite alternate;
+  }
+
+  .root[data-paused] .cursor {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root {
+    transition: none;
+  }
+
+  .card {
+    transition: none;
+  }
+}
+
+@keyframes cards-drift-a {
+  50% {
+    translate: var(--syntara-space-10) calc(var(--syntara-space-6) * -1);
+  }
+
+  to {
+    translate: var(--syntara-space-4) var(--syntara-space-8);
+  }
+}
+
+@keyframes cards-drift-b {
+  50% {
+    translate: calc(var(--syntara-space-8) * -1) var(--syntara-space-6);
+  }
+
+  to {
+    translate: calc(var(--syntara-space-3) * -1) calc(var(--syntara-space-8) * -1);
+  }
+}
+
+.pause.pause {
+  position: absolute;
+  z-index: 30;
+  inset-block-end: var(--syntara-space-4);
+  inset-inline-end: var(--syntara-space-4);
+  color: var(--syntara-color-text-subtle);
+  background-color: color-mix(in oklab, var(--syntara-color-surface-default) 70%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pause.pause {
+    display: none;
+  }
+}

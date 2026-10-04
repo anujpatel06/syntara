@@ -213,6 +213,12 @@ public struct SyntaraSpace: Equatable, Sendable {
     public let x12: CGFloat
     /// `--syntara-space-16` (points)
     public let x16: CGFloat
+    /// `--syntara-space-20` (points)
+    public let x20: CGFloat
+    /// `--syntara-space-24` (points)
+    public let x24: CGFloat
+    /// `--syntara-space-32` (points)
+    public let x32: CGFloat
 }
 
 /// Corner radii. Follows the brand's shape input. 9999 means "fully round".
@@ -262,6 +268,10 @@ public struct SyntaraFontSizes: Equatable, Sendable {
     public let xl4: CGFloat
     /// `--syntara-font-size-5xl` (points at the default text size)
     public let xl5: CGFloat
+    /// `--syntara-font-size-6xl` (points at the default text size)
+    public let xl6: CGFloat
+    /// `--syntara-font-size-7xl` (points at the default text size)
+    public let xl7: CGFloat
 }
 
 /// Font weights. The bundled font must include each weight (or be a variable font).
@@ -312,6 +322,10 @@ public struct SyntaraTracking: Equatable, Sendable {
     public let xl4: CGFloat
     /// `--syntara-font-tracking-5xl`
     public let xl5: CGFloat
+    /// `--syntara-font-tracking-6xl`
+    public let xl6: CGFloat
+    /// `--syntara-font-tracking-7xl`
+    public let xl7: CGFloat
     /// `--syntara-font-tracking-caps`
     public let caps: CGFloat
 }
@@ -598,7 +612,10 @@ public enum SyntaraTheme {
         x8: 32,
         x10: 40,
         x12: 48,
-        x16: 64
+        x16: 64,
+        x20: 80,
+        x24: 96,
+        x32: 128
     )
 
     public static let radius = SyntaraRadius(
@@ -624,7 +641,9 @@ public enum SyntaraTheme {
         xl2: 24,
         xl3: 32,
         xl4: 40,
-        xl5: 48
+        xl5: 48,
+        xl6: 60,
+        xl7: 72
     )
 
     public static let fontWeight = SyntaraFontWeights(
@@ -651,6 +670,8 @@ public enum SyntaraTheme {
         xl3: -0.022,
         xl4: -0.022,
         xl5: -0.022,
+        xl6: -0.022,
+        xl7: -0.022,
         caps: 0.08
     )
 

@@ -153,9 +153,9 @@ function buildScheme(scheme: Scheme): Omit<SchemeTheme, 'shadows'> {
 }
 
 const FOUNDATIONS: Foundations = {
-  space: { '0': 0, '1': 4, '2': 8, '3': 12, '4': 16, '5': 20, '6': 24, '8': 32, '10': 40, '12': 48, '16': 64 },
+  space: { '0': 0, '1': 4, '2': 8, '3': 12, '4': 16, '5': 20, '6': 24, '8': 32, '10': 40, '12': 48, '16': 64, '20': 80, '24': 96, '32': 128 },
   radius: { button: 8, field: 8, container: 12, badge: 6, pill: 9999 },
-  fontSize: { xs: 12, sm: 13, md: 14, lg: 16, xl: 20, '2xl': 24, '3xl': 32, '4xl': 40, '5xl': 48 },
+  fontSize: { xs: 12, sm: 13, md: 14, lg: 16, xl: 20, '2xl': 24, '3xl': 32, '4xl': 40, '5xl': 48, '6xl': 60, '7xl': 72 },
   lineHeight: { tight: 1.2, snug: 1.35, normal: 1.5 },
   fontWeight: { regular: 400, medium: 500, semibold: 600, bold: 700 },
   motion: {
@@ -284,7 +284,7 @@ export function makeFixtureTheme(): Theme {
       passed: checks.filter((c) => c.pass).length,
       failed: checks.filter((c) => !c.pass).length,
       adjustments: adjustments.length,
-      tokenCount: 339,
+      tokenCount: 344,
       generationMs: 0,
     },
   };
