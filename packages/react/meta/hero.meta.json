@@ -1,0 +1,61 @@
+{
+  "name": "hero",
+  "title": "Hero",
+  "description": "The opening section of a website page: a big headline, a sentence and what to do next, over slow lights in the brand's colours. Dark by default.",
+  "category": "layout",
+  "maturity": "alpha",
+  "exports": ["Hero"],
+  "files": ["hero.tsx", "hero.module.css"],
+  "dependencies": ["react-aria-components", "@syntara/icons"],
+  "registryDependencies": [],
+  "usage": "import { Button, Eyebrow, Hero } from '@syntara/react';\n\nexport function Landing() {\n  return (\n    <Hero\n      eyebrow={<Eyebrow>New: one wallet for every claim</Eyebrow>}\n      title=\"Health cover that pays\"\n      titleSecondary=\"before you do\"\n      description=\"Book a consult, pay at the pharmacy and claim lab tests from one app.\"\n      actions={<Button size=\"lg\">Get started</Button>}\n    />\n  );\n}",
+  "examples": [
+    { "name": "hero-demo", "title": "Hero", "description": "Eyebrow, a two-tone headline, a sentence and two buttons. Dark with glowing lights, even on a light page." },
+    { "name": "hero-search", "title": "With a search", "description": "actions takes anything: here a search field and its button." },
+    { "name": "hero-inherit", "title": "Follow the page", "description": "scheme=\"inherit\" uses the page's light or dark scheme instead of always being dark." }
+  ],
+  "props": [
+    { "component": "Hero", "name": "title", "type": "ReactNode", "required": true, "description": "The headline." },
+    { "component": "Hero", "name": "titleSecondary", "type": "ReactNode", "description": "A second headline line in the muted text colour." },
+    { "component": "Hero", "name": "description", "type": "ReactNode", "description": "One or two sentences under the headline." },
+    { "component": "Hero", "name": "eyebrow", "type": "ReactNode", "description": "A small line above the headline, such as an Eyebrow or a \"what's new\" Badge and Link." },
+    { "component": "Hero", "name": "actions", "type": "ReactNode", "description": "Buttons, a search field or chips. At most two buttons reads best." },
+    { "component": "Hero", "name": "variant", "type": "'aurora'", "default": "'aurora'", "description": "The decoration. More styles (orbit, gallery, cards) arrive one at a time (RFC-003)." },
+    { "component": "Hero", "name": "scheme", "type": "'dark' | 'inherit'", "default": "'dark'", "description": "dark: always the brand's dark colours, so the lights glow, even on a light page. inherit: follow the page." },
+    { "component": "Hero", "name": "theme", "type": "string", "description": "The tenant id, so a dark hero renders dark on the server. Otherwise it's copied from the nearest themed ancestor." },
+    { "component": "Hero", "name": "headingLevel", "type": "1 | 2 | 3 | 4", "default": "1", "description": "Level of the headline. Use 2 or lower for a hero inside a longer page." },
+    { "component": "Hero", "name": "pauseLabel", "type": "string", "default": "'Pause animation'", "description": "Accessible name of the pause toggle." }
+  ],
+  "accessibility": {
+    "keyboard": [{ "keys": "Space / Enter", "action": "On the pause toggle, pauses or resumes the lights." }],
+    "notes": [
+      "A section named by its headline (aria-labelledby).",
+      "WCAG 2.2.2: the lights loop slowly, so a pause toggle with a fixed name and aria-pressed is always shown. With reduced motion, nothing moves and the toggle is removed.",
+      "The decoration is aria-hidden. In the default dark scheme, text and buttons use the brand's dark roles, whose contrast the engine proves.",
+      "Two headline lines are read with a space between them."
+    ]
+  },
+  "guidelines": {
+    "do": ["Use one Hero per page, at the top.", "Keep the headline to two short lines."],
+    "dont": ["Don't put more than two buttons in actions.", "Don't place text over the lights outside the Hero's own copy."]
+  },
+  "tokens": [
+    "color.surface.canvas",
+    "color.text.default",
+    "color.text.subtle",
+    "color.action.primary.bg",
+    "color.accent.bg",
+    "color.focus.ring",
+    "font.heading",
+    "font.size.4xl",
+    "font.size.5xl",
+    "font.size.6xl",
+    "font.size.lg",
+    "line-height.tight",
+    "space.16",
+    "space.20",
+    "motion.duration.slow",
+    "control.height",
+    "radius.button"
+  ]
+}

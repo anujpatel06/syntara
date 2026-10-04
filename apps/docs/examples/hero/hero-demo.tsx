@@ -2,27 +2,29 @@
 
 import { Button, Eyebrow, Hero } from '@syntara/react';
 import { IconArrowRight, IconSparkles } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   return (
     <Hero
       headingLevel={2}
       eyebrow={
         <Eyebrow icon={<IconSparkles />} tone="brand">
-          New: one wallet for every claim
+          {t('New: one wallet for every claim')}
         </Eyebrow>
       }
-      title="Health cover that pays"
-      titleSecondary="before you do"
-      description="Book a consult, pay at the pharmacy and claim lab tests from one app, with cashless care at 4,000 partners."
+      title={t('Health cover that pays')}
+      titleSecondary={t('before you do')}
+      description={t('Book a consult, pay at the pharmacy and claim lab tests from one app, with cashless care at partner clinics.')}
       actions={
         <>
           <Button size="lg">
-            Get started
+            {t('Get started')}
             <IconArrowRight aria-hidden />
           </Button>
           <Button size="lg" variant="outline">
-            See plans
+            {t('See plans')}
           </Button>
         </>
       }
