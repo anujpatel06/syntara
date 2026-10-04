@@ -1,0 +1,298 @@
+/* Footer: an oversized wordmark cut off by a hairline horizon, lit from the top-start corner, over an aside and link
+   columns. Everything is laid out by the footer's own width, so it holds in a narrow column as well as a full page. */
+
+.footer {
+  box-sizing: border-box;
+  /* A size container has no width of its own, so it would collapse to 0 in a shrink-to-fit parent. Fill it instead. */
+  inline-size: 100%;
+  container: syntara-footer / inline-size;
+  overflow: clip;
+  /* The page background, the darkest role in dark schemes: the wordmark needs a near-black ground to read as lit. */
+  background: var(--syntara-color-surface-canvas);
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+}
+
+/* ---- Wordmark ---------------------------------------------------------------------------------------------- */
+
+.wordmark {
+  position: relative;
+  padding-block-start: clamp(var(--syntara-space-10), 6cqi, var(--syntara-space-16));
+  padding-inline: clamp(var(--syntara-space-4), 6.5cqi, var(--syntara-space-16));
+  /* The horizon: a full-bleed hairline exactly where the letters are cut. */
+  box-shadow: inset 0 calc(var(--syntara-hairline) * -1) 0 0 var(--syntara-color-border-default);
+}
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  /* The glow may spill above and beside the word; only the bottom is cut, by the clip path in the SVG. */
+  overflow: visible;
+}
+.text {
+  font-family: var(--syntara-font-heading);
+  font-weight: var(--syntara-font-weight-bold);
+  /* Tight like a display cut. Tracking tokens are em, so this follows the type pair and is 0 for Arabic-capable pairs. */
+  letter-spacing: var(--syntara-font-tracking-5xl);
+}
+/* The light enters at the start corner whatever the direction, like the shadows (CONVENTIONS, rim light). */
+.letters {
+  direction: ltr;
+}
+.glow {
+  fill: none;
+  stroke-width: 6;
+}
+/* Centred on the outline with the face over its inner half, so 0.6 units show. */
+.edge {
+  fill: none;
+  stroke-width: 1.2;
+}
+.hit {
+  fill: transparent;
+}
+.face {
+  pointer-events: none;
+}
+
+/* The light is off until the pointer is over a letter. It arrives quickly and leaves slowly, so it trails the pointer
+   across the word like a reflection. Opacity only, so it stays under reduced motion too. */
+.glyph .glow,
+.glyph .edge {
+  opacity: 0;
+  transition: opacity var(--syntara-motion-duration-slow) var(--syntara-motion-easing);
+}
+.glyph:hover .edge {
+  opacity: 1;
+  transition-duration: var(--syntara-motion-duration-fast);
+}
+.glyph:hover .glow {
+  opacity: 0.7;
+  transition-duration: var(--syntara-motion-duration-fast);
+}
+/* Touch screens have no hover: the first letter keeps a soft light, so the effect is still seen. */
+@media (hover: none) {
+  .glyph:first-of-type .edge {
+    opacity: 0.8;
+  }
+  .glyph:first-of-type .glow {
+    opacity: 0.5;
+  }
+}
+
+/* Opaque, mixed into the footer's own background, so it hides the strokes beneath and looks the same as a tint. */
+.faceTop {
+  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 8%, var(--syntara-color-surface-canvas));
+}
+.faceBottom {
+  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 6%, var(--syntara-color-surface-canvas));
+}
+.lightHot {
+  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 80%, transparent);
+}
+.lightWarm {
+  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 32%, transparent);
+}
+.lightWord {
+  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 40%, transparent);
+}
+.lightOff {
+  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 12%, transparent);
+}
+
+/* ---- Body -------------------------------------------------------------------------------------------------- */
+
+.body {
+  display: grid;
+  gap: var(--syntara-space-10);
+  padding-block: clamp(var(--syntara-space-12), 12cqi, calc(var(--syntara-space-16) * 3)) var(--syntara-space-16);
+  padding-inline: clamp(var(--syntara-space-4), 6.5cqi, var(--syntara-space-16));
+}
+/* The light that got past the letters, pooling on the floor under the horizon: a wide, shallow ellipse that is
+   brightest against the line and gone before the links start. Dark schemes only: on a light page a tint of the text
+   colour reads as a smudge, not light. --syntara-sheen is none exactly in light schemes (CONVENTIONS, Surface recipe). */
+@container not style(--syntara-sheen: none) {
+  .body {
+    background: radial-gradient(
+        ellipse 42% calc(var(--syntara-space-16) * 3.5) at 46% 0,
+        color-mix(in oklab, var(--syntara-color-text-default) 7%, transparent),
+        color-mix(in oklab, var(--syntara-color-text-default) 3%, transparent) 45%,
+        transparent 100%
+      )
+      no-repeat;
+  }
+}
+@container syntara-footer (inline-size >= 960px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    gap: var(--syntara-space-16);
+  }
+}
+
+.aside {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: var(--syntara-space-8);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  line-height: var(--syntara-line-height-normal);
+}
+.aside :where(address) {
+  font-style: normal;
+}
+.aside :where(p, address) {
+  margin: 0;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, calc(var(--syntara-space-16) * 2)), 1fr));
+  gap: var(--syntara-space-10) var(--syntara-space-6);
+}
+
+.column {
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-5);
+}
+.columnTitle {
+  margin: 0;
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-md);
+  letter-spacing: var(--syntara-font-tracking-md);
+  font-weight: var(--syntara-font-weight-medium);
+  line-height: var(--syntara-line-height-snug);
+}
+.list {
+  display: grid;
+  gap: var(--syntara-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.item {
+  display: flex;
+}
+
+/* ---- Links ------------------------------------------------------------------------------------------------- */
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-badge);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-md);
+  letter-spacing: var(--syntara-font-tracking-md);
+  text-decoration: none;
+  outline: 0 solid transparent;
+  transition:
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+.link[data-hovered] {
+  color: var(--syntara-color-text-default);
+}
+.link[data-focus-visible] {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- Social links ------------------------------------------------------------------------------------------ */
+
+.social {
+  box-sizing: border-box;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-control-height);
+  block-size: var(--syntara-control-height);
+  border: 1px solid transparent;
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-raised);
+  box-shadow:
+    0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle),
+    var(--syntara-shadow-raised);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-md);
+  outline: 0 solid transparent;
+  transition:
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    box-shadow var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+.social[data-hovered] {
+  color: var(--syntara-color-text-default);
+  box-shadow:
+    0 0 0 var(--syntara-hairline) var(--syntara-color-border-default),
+    var(--syntara-shadow-overlay);
+}
+.social[data-focus-visible] {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+}
+.socialIcon {
+  display: inline-flex;
+  font-size: 1.25em;
+}
+.socialIcon :where(svg) {
+  inline-size: 1em;
+  block-size: 1em;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .social {
+    transition:
+      color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      box-shadow var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      translate var(--syntara-motion-duration-spring) var(--syntara-motion-spring),
+      scale var(--syntara-motion-duration-spring) var(--syntara-motion-spring);
+  }
+  .social[data-hovered] {
+    translate: 0 -1px;
+  }
+  .social[data-pressed] {
+    scale: 0.96;
+  }
+}
+
+/* ---- Status pill ------------------------------------------------------------------------------------------- */
+
+.status {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin: 0;
+  min-block-size: var(--syntara-control-height);
+  padding-inline: var(--syntara-space-4) var(--syntara-space-5);
+  border: 1px solid transparent;
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-raised);
+  box-shadow: 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-sm);
+  letter-spacing: var(--syntara-font-tracking-sm);
+}
+.dot {
+  flex: none;
+  inline-size: var(--syntara-space-2);
+  block-size: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--_dot);
+  /* A soft halo in the same colour, so the dot reads as lit rather than printed. */
+  box-shadow: 0 0 0 calc(var(--syntara-space-1) * 0.75) color-mix(in oklab, var(--_dot) 22%, transparent);
+}
+.status[data-tone='success'] {
+  --_dot: var(--syntara-color-feedback-success-fg);
+}
+.status[data-tone='warning'] {
+  --_dot: var(--syntara-color-feedback-warning-fg);
+}
+.status[data-tone='danger'] {
+  --_dot: var(--syntara-color-feedback-danger-fg);
+}
+.status[data-tone='neutral'] {
+  --_dot: var(--syntara-color-text-subtle);
+}

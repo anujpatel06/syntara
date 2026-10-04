@@ -6,6 +6,53 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 — Footer, from Anuj's reference
+
+**Changed**
+- **New component `Footer`** (`packages/react/src/ui/footer.tsx`, alpha), with `FooterColumn`, `FooterLink`, `FooterSocialLink`
+  and `FooterStatus`. An oversized wordmark in the brand's heading font, sized to fill the width and cut off by a full-bleed
+  hairline; under it an aside (address, round icon links, a status pill) and columns of links. Lays out by its own width
+  (container queries): five columns from 960px, two on phones.
+- **The light follows the pointer.** Each letter has its own lit outline and soft glow, off until the pointer is over it;
+  it arrives in `duration-fast` and leaves in `duration-slow`, so it trails across the word. Touch screens keep the first
+  letter softly lit. Joining scripts (Arabic, Hebrew, Indic) light as one piece, so shaping isn't broken. Letters are
+  re-measured when fonts load, when the brand, scheme or density changes, and when the pointer enters.
+- **Previews speak the tenant's language (ADR-042's `useCopy`).** All four examples translate: Qamar shows the
+  footer in Arabic, right to left, with the wordmark سينتارا; Haat in Hindi, सिंटारा. 46 strings added to
+  `examples/_copy/ar.json` and `hi.json`; the Code tab still strips back to plain English (0 `t()` left in 4 of 4).
+- **The crop follows the script.** Latin is cut through the lower body of its capitals; Arabic, Hebrew and Indic words
+  are cut just under the baseline (a Latin cut left only Arabic dots and alefs showing).
+- **No seams in joined scripts.** The lit edge and glow are strokes drawn *behind* an opaque face (the tint mixed into
+  `surface.canvas`), so only light outside the letter shows and the overlaps between joined glyphs stay hidden. A
+  morphology-filter outline was tried first and dropped: it filled letters with blocks of light.
+- A pool of light under the horizon, dark schemes only (`@container not style(--syntara-sheen: none)`).
+- Four examples, `meta/footer.meta.json`, `test/footer.test.tsx` (8 tests), changeset `footer.md`.
+
+**Decided**
+- Footer is a component, not a block or the site footer: **Anuj**.
+- Light mode follows the theme: **Claude recommended, Anuj accepted**.
+- The glow shows only on the hovered letter: **Anuj**.
+- The footer examples follow the tenant's language (Qamar Arabic): **Anuj**.
+- Background is the brand's `surface.canvas` (near-black, brand-tinted: house dark `#0d0d0e`), not pure black as in the
+  reference, because the system has no pure-black role: **Claude recommended, Anuj accepted** ("do it").
+
+**Results**
+- `pnpm --filter @syntara/react exec vitest run`: 58 files, 505 tests passed.
+- `pnpm check:meta`: footer `alpha`, meets `alpha`, 0 errors. `pnpm drift` on both footer files: 0 findings, 100.0 / 100.
+- `tsc --noEmit` for `@syntara/react` and `@syntara/docs typecheck`: clean.
+- Screenshots (vela light, harbor dark with hover, qamar light RTL, care compact, house 390px) looked at by Claude. They
+  were taken on the docs component page with a temporary script that lifted the example to full width and swapped the
+  brand attribute: not `/screenshots`' playground, which fails to load in this worktree (below).
+
+**Next**
+- Anuj (or a native reader) to review the Arabic and Hindi footer wording, written by Claude this session.
+- Anuj's review of the look. The full `/verify` (docs production build and axe sweep) has not been run; run it before commit.
+- The playground fails in a fresh worktree: `use-sync-external-store/shim` "does not provide an export named
+  'useSyncExternalStore'" (Vite dependency pre-bundling, also with `--force`). Not caused by Footer.
+- A real social-icon set (X, GitHub, LinkedIn, YouTube) doesn't exist in `@syntara/icons`; examples use generic icons.
+
+---
+
 ## 2026-10-04 — A flow for conflicts (GOVERNANCE.md §9, ADR-043)
 
 **Changed**
