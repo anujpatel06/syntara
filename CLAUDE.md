@@ -24,10 +24,8 @@ Anuj owns design decisions. You pair on engineering and push back when he's wron
   `workspace:*` ships literally, and `+ pkg@version` means npm staged it — check `npm view` before believing it.
 - **The repo is public** (ADR-037). Done: the pre-publication audit, the scrub of job-search framing, the
   Syntara screenshots, and `private: false` — which also unblocked branch protection and GitHub auto-merge, both
-  now on for `main` with the two CI jobs required. **ADR-037 asked for a cold clone on a machine without this
-  pnpm store before flipping, and that was not run**: the visibility change was made on Anuj's instruction after
-  a secret scan of all 101 commits (no credentials, no personal data beyond the committed author address). The
-  cold clone is still worth doing, now as a check rather than a gate. Left: the 21st.dev listing, where it is
+  now on for `main` with the two CI jobs required. The cold clone ADR-037 asked for was run on 2026-10-05, after the flip: a fresh clone of `main` (44ca23a) on an
+  empty pnpm store installed, typechecked, passed every package's tests and built all 315 docs pages. Left: the 21st.dev listing, where it is
   still unknown whether a pnpm monorepo is accepted.
 - **Waiting on Anuj:** review Haat's Hindi copy; the clipping found in the Arabic and Latin type pairs; and seven ADR questions — **020** (Haat's name, industry and brand inputs), **024** (the whole ADR is Proposed), **025** (the API shape of the generated native files), **026** (accepted for the docs site, review pending), **032** (whether a Hindi reader agrees that रय reads as initials), **034** and **035** (accepted by Claude, review pending).
 - **Known gaps:** listed at the end of the latest entry in `docs/log.md`.

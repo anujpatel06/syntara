@@ -26,10 +26,12 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
   warnings, no `workspace:` leaks; `renderToString(<Button>)` rendered; 122 exports; both CSS files the README names
   are present. Needs React 19 in the app, which the install page already states.
 - `node scripts/check-override-weight.mjs`: every override outweighs the component rule.
+- **Cold clone (ADR-037's unrun check):** `git clone` of the public repo at 44ca23a, `pnpm install --frozen-lockfile`
+  on an empty store (28.4s, exit 0), `pnpm typecheck` exit 0, `pnpm test` exit 0 (react 531, icons 959, theme-engine
+  309 + 1 skipped, mcp 193, sdui 150, audit 77, codemods 8), `pnpm --filter @syntara/docs build` exit 0, 315/315 pages.
 
 **Next**
 - Anuj: 6 kept worktrees (3 with unsaved edits, 3 unmerged) and 10 unmerged branches need a keep/drop call.
-- Cold clone of the public repo on a clean pnpm store (ADR-037's unrun check).
 - Anuj's review queue: Haat Hindi copy, script clipping, ADRs 020, 024, 025, 026, 032, 034, 035.
 
 ---
