@@ -1,0 +1,7 @@
+/* No box around the overview (Anuj, 2026-10-04: "remove the outer box"): the tiles sit straight on the page.
+   The scope still gives them the demo tenant's tokens. */
+.stage.stage {
+  display: block;
+  margin-block: var(--syntara-space-2);
+  background: none;
+}

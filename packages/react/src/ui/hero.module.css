@@ -527,3 +527,195 @@
     corner-shape: round;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * variant="gallery" — ported from apps/docs/blocks/hero-gallery (minus its menu bar and ask bar). A curved wall of
+ * pictures seen from inside a drum turns slowly between the headline and the description: small and hazy straight
+ * ahead, tall and near at the sides. Pure CSS: each card's angle is its slot plus one turning angle (an animated
+ * @property), its position sin()/cos() of that angle. The pointer leans the whole wall.
+ * ------------------------------------------------------------------ */
+
+/* @property names are global to the page, so these carry the component's name. */
+@property --_hero-turn {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --_hero-lean {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.root[data-variant='gallery'] {
+  /* The drum: radius --_r, the viewer --_p from the screen. Cards are 2:3 and nearly fill their slot (radius × 2π/22).
+     One set of numbers for every width (container units scale it); Anuj approved them on the block, 2026-10-04. */
+  --_cardW: 18cqi;
+  --_r: 72cqi;
+  --_p: 28cqi;
+  --_step: calc(360deg / 22);
+  /* How tall the middle row is drawn: card height × the far-card scale --_p / (--_p + --_r). */
+  --_row: calc(var(--_cardW) * 1.5 * var(--_p) / (var(--_p) + var(--_r)));
+
+  min-block-size: calc(var(--syntara-space-16) * 12.5); /* 800px */
+  background: radial-gradient(
+    60% 55% at 50% 50%,
+    var(--syntara-color-surface-canvas),
+    color-mix(in oklab, var(--syntara-color-surface-sunken) 70%, var(--syntara-color-surface-canvas))
+  );
+  transition: --_hero-lean calc(var(--syntara-motion-duration-slow) * 3) var(--syntara-motion-easing-out);
+}
+
+.root[data-variant='gallery'] .copy {
+  max-inline-size: calc(var(--syntara-space-16) * 11); /* 704px */
+  padding-block: var(--syntara-space-16) 0;
+}
+
+.root[data-variant='gallery'] .title {
+  font-size: var(--syntara-font-size-3xl);
+  font-weight: var(--syntara-font-weight-regular);
+  letter-spacing: var(--syntara-font-tracking-3xl);
+}
+
+@container syntara-hero (min-width: 640px) {
+  .root[data-variant='gallery'] .title {
+    font-size: var(--syntara-font-size-4xl);
+    letter-spacing: var(--syntara-font-tracking-4xl);
+  }
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .root[data-variant='gallery'] .title {
+    font-size: var(--syntara-font-size-5xl);
+    letter-spacing: var(--syntara-font-tracking-5xl);
+  }
+}
+
+/* Below the wall: the description and the actions. */
+.below {
+  display: grid;
+  justify-items: center;
+  gap: var(--syntara-space-5);
+  inline-size: 100%;
+  max-inline-size: calc(var(--syntara-space-16) * 8); /* 512px */
+  padding-block-end: var(--syntara-space-16);
+  padding-inline: var(--_gutter);
+}
+
+.below .description {
+  margin: 0;
+  max-inline-size: 46ch;
+  font-size: var(--syntara-font-size-md);
+}
+
+.below .actions {
+  margin: 0;
+}
+
+/* The stage is the height of the middle row; near cards at the sides overflow it up and down, behind the copy. */
+.stage {
+  position: relative;
+  z-index: -1;
+  inline-size: 100%;
+  block-size: var(--_row);
+  margin-block: calc(var(--_row) * 0.6 + var(--syntara-space-8)) calc(var(--_row) * 0.6 + var(--syntara-space-10));
+  perspective: var(--_p);
+  pointer-events: none;
+}
+
+/* A soft shadow on the floor under the middle of the wall, so it stands on something. */
+.stage::after {
+  content: '';
+  position: absolute;
+  inset-inline: 15%;
+  inset-block-start: 85%;
+  block-size: calc(var(--_row) * 0.9);
+  background: radial-gradient(closest-side, color-mix(in oklab, var(--syntara-color-text-default) 10%, transparent), transparent);
+  filter: blur(var(--syntara-space-3));
+}
+
+.wall {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateY(var(--_hero-lean));
+}
+
+/* Card angle --_t = slot + turn: 0 is straight ahead (far, small), ±90deg level with the viewer at the sides (near,
+   tall). Cards past about 100deg fade out before they can grow over the copy. */
+.card {
+  --_t: calc(var(--i) * var(--_step) + var(--_hero-turn));
+
+  position: absolute;
+  inset-block-start: calc(50% - var(--_cardW) * 0.75);
+  inset-inline-start: calc(50% - var(--_cardW) / 2);
+  inline-size: var(--_cardW);
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: var(--syntara-radius-container);
+  background-color: var(--syntara-color-surface-sunken);
+  box-shadow: var(--syntara-shadow-overlay);
+  /* A glossy floor: each card's reflection fades out below it (Chromium and Safari; elsewhere simply no floor). */
+  -webkit-box-reflect: below var(--syntara-space-2)
+    linear-gradient(transparent 62%, color-mix(in oklab, var(--syntara-color-text-default) 16%, transparent));
+  transform:
+    translate3d(calc(var(--_r) * sin(var(--_t))), 0, calc(var(--_r) * cos(var(--_t)) * -1))
+    rotateY(calc(var(--_t) * -1));
+  opacity: clamp(0, (cos(var(--_t)) + 0.17) * 8, 1);
+  backface-visibility: hidden;
+}
+
+/* Haze: the further a card is (cos → 1 straight ahead), the more it fades into the background. Up to 45%. */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--syntara-color-surface-canvas);
+  opacity: clamp(0, cos(var(--_t)) * 0.45, 0.45);
+  pointer-events: none;
+}
+
+.image {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  user-select: none;
+}
+
+/* Brand tiles: the brand's own colour, so the wall still reads as the brand with any pictures. */
+.card[data-kind='brand'] {
+  background: radial-gradient(
+      120% 80% at 50% 0%,
+      color-mix(in oklab, var(--syntara-color-action-primary-bg), var(--syntara-color-accent-bg) 35%),
+      var(--syntara-color-action-primary-bg)
+    );
+}
+
+/* Motion: the wall turns once every 72s (the other way in right-to-left) and leans toward the pointer. */
+@media (prefers-reduced-motion: no-preference) {
+  .wall {
+    animation: syntara-hero-turn calc(var(--syntara-motion-duration-slow) * 225) linear infinite;
+  }
+
+  .wall:dir(rtl) {
+    animation-direction: reverse;
+  }
+
+  .root[data-paused] .wall {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root[data-variant='gallery'] {
+    transition: none;
+  }
+}
+
+@keyframes syntara-hero-turn {
+  to {
+    --_hero-turn: -360deg;
+  }
+}
