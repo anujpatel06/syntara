@@ -6,6 +6,34 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — Install check, machine cleanup, stranded edits saved
+
+**Changed**
+- **Block viewer frames hand the scroll back to the page** at their end (`overscroll-behavior: contain` removed), so
+  the wheel no longer dies at the bottom of each block on the blocks page. Stranded uncommitted since 2026-10-02.
+- **CLAUDE.md:** "show first, check once" verification rule (stranded since 2026-10-02); ADR count line 037 → 045.
+- Outside the repo: corepack's default pnpm pinned to 10.28.0 (`corepack install -g pnpm@10.28.0`); its 0.34.0
+  could not start pnpm 12.6.0 (`Cannot find module …/pnpm.cjs`). 13 merged worktrees and 27 merged branches removed;
+  two orphaned `next dev` servers (ports 3197, 3200) stopped.
+
+**Decided**
+- `docs/marketing/` stays out of the public repo: `launch-video.md` names target companies, the kind of framing
+  ADR-037's scrub removed. **Claude recommended, pending Anuj.**
+- `.claude/launch.json` local additions not committed: they hold absolute paths to this machine's worktrees. **Claude.**
+
+**Results**
+- Fresh install from npm in an empty folder, pnpm 10.28.0: `@syntara/react` 0.1.1 and `@syntara/tokens` 0.1.0, no
+  warnings, no `workspace:` leaks; `renderToString(<Button>)` rendered; 122 exports; both CSS files the README names
+  are present. Needs React 19 in the app, which the install page already states.
+- `node scripts/check-override-weight.mjs`: every override outweighs the component rule.
+
+**Next**
+- Anuj: 6 kept worktrees (3 with unsaved edits, 3 unmerged) and 10 unmerged branches need a keep/drop call.
+- Cold clone of the public repo on a clean pnpm store (ADR-037's unrun check).
+- Anuj's review queue: Haat Hindi copy, script clipping, ADRs 020, 024, 025, 026, 032, 034, 035.
+
+---
+
 ## 2026-10-04 — Inside a card, inner surfaces are outlines (ADR-045)
 
 **Changed**

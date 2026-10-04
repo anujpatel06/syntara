@@ -31,7 +31,7 @@ Anuj owns design decisions. You pair on engineering and push back when he's wron
   still unknown whether a pnpm monorepo is accepted.
 - **Waiting on Anuj:** review Haat's Hindi copy; the clipping found in the Arabic and Latin type pairs; and seven ADR questions — **020** (Haat's name, industry and brand inputs), **024** (the whole ADR is Proposed), **025** (the API shape of the generated native files), **026** (accepted for the docs site, review pending), **032** (whether a Hindi reader agrees that रय reads as initials), **034** and **035** (accepted by Claude, review pending).
 - **Known gaps:** listed at the end of the latest entry in `docs/log.md`.
-- **ADRs run to 037.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
+- **ADRs run to 045.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
 
 ## Run it
 
@@ -50,7 +50,18 @@ pnpm tokens                # tenant token files → packages/tokens/dist
 pnpm --filter @syntara/react build      # npm build → packages/react/dist
 ```
 
-Use `/verify` before saying work is done, and `/screenshots` after any UI change.
+**Verifying, and when.** Show first, check once.
+
+- Anything with a look: build it, screenshot it, show Anuj — then stop. No checks on a
+  design he has not approved yet. One `node scripts/shoot.mjs <url> <out.png>` is enough
+  to show a look.
+- After he approves: `/verify` once before committing, and `/screenshots` (every tenant ×
+  scheme × RTL × width) once. Not between edits.
+- Exception, and say it in one line rather than silently doing it: if a change moves a
+  number the site shows a visitor — the hero's contrast figure, the solver counts, the
+  fuzz pass rate — that number must be re-measured before it is repeated. Ask whether to
+  measure now or after approval. Writing a new measuring script is its own piece of work;
+  get a yes before starting one.
 
 ## Repo map
 
