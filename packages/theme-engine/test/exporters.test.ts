@@ -32,7 +32,7 @@ const compactTheme: Theme = { ...theme, input: { ...theme.input, density: 'compa
 describe('CSS variable contract (parsed from types.ts)', () => {
   it('parses every non-colour contract variable', () => {
     const vars = contractFoundationVars();
-    expect(vars).toHaveLength(76);
+    expect(vars).toHaveLength(83);
     expect(vars).toContain('--syntara-chart-4');
     expect(vars).toContain('--syntara-chart-grid');
     expect(vars).toContain('--syntara-space-16');
@@ -171,9 +171,9 @@ describe('toDTCG', () => {
   const doc = toDTCG(theme);
   const leaves = collectLeaves(doc);
 
-  it('has exactly 339 leaf tokens in the documented structure', () => {
-    expect(countLeafTokens(doc)).toBe(339);
-    expect(leaves).toHaveLength(339);
+  it('has exactly 344 leaf tokens in the documented structure', () => {
+    expect(countLeafTokens(doc)).toBe(344);
+    expect(leaves).toHaveLength(344);
     const count = (prefix: string) => leaves.filter((l) => l.path.startsWith(prefix)).length;
     expect(count('primitive.color.')).toBe(2 * 7 * 12);
     expect(count('semantic.light.color.')).toBe(48);
@@ -181,10 +181,10 @@ describe('toDTCG', () => {
     expect(count('semantic.light.shadow.') + count('semantic.dark.shadow.')).toBe(6);
     expect(count('semantic.light.glass.') + count('semantic.dark.glass.')).toBe(4);
     expect(count('semantic.light.chart.') + count('semantic.dark.chart.')).toBe(12);
-    expect(count('foundation.space.')).toBe(11);
+    expect(count('foundation.space.')).toBe(14);
     expect(count('foundation.radius.')).toBe(5);
     expect(count('foundation.font.family.')).toBe(3);
-    expect(count('foundation.font.size.')).toBe(9);
+    expect(count('foundation.font.size.')).toBe(11);
     expect(count('foundation.font.lineHeight.')).toBe(3);
     expect(count('foundation.font.weight.')).toBe(4);
     expect(count('foundation.motion.duration.')).toBe(4);

@@ -78,7 +78,7 @@ export function normalizeBrandInput(input: BrandInput): ResolvedBrandInput {
  * The spring's linear() easing is CSS-only (DTCG has no type for it), so it isn't counted.
  */
 export function countTokens(): number {
-  return 2 * 7 * 12 + 2 * ROLES.length + 6 + 4 + 12 + 11 + 5 + 3 + 9 + 3 + 4 + 4 + 2 + 12;
+  return 2 * 7 * 12 + 2 * ROLES.length + 6 + 4 + 12 + 14 + 5 + 3 + 11 + 3 + 4 + 4 + 2 + 12;
 }
 
 export function generateTheme(input: BrandInput): Theme {

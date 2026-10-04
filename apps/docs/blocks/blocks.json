@@ -47,5 +47,33 @@
     "description": "A full data table page: search, status filter, sorting, row selection with bulk actions, CSV export, density, pagination, empty and loading states.",
     "categories": ["data", "tables"],
     "contentKeys": ["locale", "currency", "product", "activity"]
+  },
+  {
+    "name": "hero-orbit",
+    "title": "Hero: Orbit",
+    "description": "Website hero: rings of the brand colour ripple out from the main action and lean toward the pointer.",
+    "categories": ["marketing"],
+    "contentKeys": ["locale", "currency", "product", "nav", "overview", "hero"]
+  },
+  {
+    "name": "hero-gallery",
+    "title": "Hero: Gallery",
+    "description": "Website hero: a turning 3D wall of pictures behind the headline, with an ask-anything bar.",
+    "categories": ["marketing"],
+    "contentKeys": ["locale", "currency", "product", "nav", "overview", "hero"]
+  },
+  {
+    "name": "hero-cards",
+    "title": "Hero: Card fan",
+    "description": "Website hero: a fan of five brand-coloured cards that opens on hover, with drifting name-tag cursors.",
+    "categories": ["marketing"],
+    "contentKeys": ["locale", "currency", "product", "nav", "overview", "hero"]
+  },
+  {
+    "name": "hero-aurora",
+    "title": "Hero: Aurora",
+    "description": "Website hero: soft brand-colour lights drift behind a big search bar with quick-pick chips.",
+    "categories": ["marketing"],
+    "contentKeys": ["locale", "currency", "product", "nav", "overview", "hero"]
   }
 ]
