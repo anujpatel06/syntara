@@ -94,17 +94,28 @@
 .faceBottom {
   stop-color: color-mix(in oklab, var(--syntara-color-text-default) 6%, var(--syntara-color-surface-canvas));
 }
+/* The light's colour. White-ish in dark schemes, like light on glass. In light schemes a tint of the text colour
+   reads as a black outline and a grey smudge, so the light takes the brand's text colour instead. --syntara-sheen is
+   none exactly in light schemes (CONVENTIONS, Surface recipe). */
+.wordmark {
+  --_light: var(--syntara-color-text-default);
+}
+@container style(--syntara-sheen: none) {
+  .wordmark {
+    --_light: var(--syntara-color-text-brand);
+  }
+}
 .lightHot {
-  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 80%, transparent);
+  stop-color: color-mix(in oklab, var(--_light) 80%, transparent);
 }
 .lightWarm {
-  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 32%, transparent);
+  stop-color: color-mix(in oklab, var(--_light) 32%, transparent);
 }
 .lightWord {
-  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 40%, transparent);
+  stop-color: color-mix(in oklab, var(--_light) 40%, transparent);
 }
 .lightOff {
-  stop-color: color-mix(in oklab, var(--syntara-color-text-default) 12%, transparent);
+  stop-color: color-mix(in oklab, var(--_light) 12%, transparent);
 }
 
 /* ---- Body -------------------------------------------------------------------------------------------------- */
