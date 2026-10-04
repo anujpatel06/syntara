@@ -120,7 +120,7 @@ Strings are always drawn as text. There's no `html` prop and no way to send mark
 
 ### Tokens only
 
-No prop takes a raw colour or size. Colour is `tone`, emphasis is `variant`, size is `size`: each an enum of the component's own values. Layout gaps on `Stack` and `Inline` are token names: `space-0` to `space-16` (from the theme engine's space scale) or `section-gap`, which follows the client's density. `Text` and `Heading` sizes are font-size token names.
+No prop takes a raw colour or size. Colour is `tone`, emphasis is `variant`, size is `size`: each an enum of the component's own values. Layout gaps on `Stack` and `Inline` are token names: `space-0` to `space-16` (from the theme engine's space scale; 20, 24 and 32 are website-only, ADR-043) or `section-gap`, which follows the client's density. `Text` and `Heading` sizes are font-size token names.
 
 ### No brand in a screen
 

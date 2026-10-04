@@ -22,5 +22,10 @@ export const BLOCK_COMPONENTS: Record<string, ComponentType<BlockProps>> = {
   'request-flow': dynamic(() => import('@/blocks/request-flow/request-flow').then((m) => as(m.RequestFlow))),
   settings: dynamic(() => import('@/blocks/settings/settings').then((m) => as(m.Settings))),
   'sign-in': dynamic(() => import('@/blocks/sign-in/sign-in').then((m) => as(m.SignIn))),
+  'hero-aurora': dynamic(() => import('@/blocks/hero-aurora/hero-aurora').then((m) => as(m.HeroAurora))),
+  'hero-cards': dynamic(() => import('@/blocks/hero-cards/hero-cards').then((m) => as(m.HeroCards))),
+  'hero-gallery': dynamic(() => import('@/blocks/hero-gallery/hero-gallery').then((m) => as(m.HeroGallery))),
+  'hero-orbit': dynamic(() => import('@/blocks/hero-orbit/hero-orbit').then((m) => as(m.HeroOrbit))),
+  hero: dynamic(() => import('@/blocks/hero/hero').then((m) => as(m.Hero))),
   'activity-table': dynamic(() => import('@/blocks/activity-table/activity-table').then((m) => as(m.ActivityTable))),
 };

@@ -75,13 +75,19 @@ export function iconNamesFrom(mod: Record<string, unknown>): string[] {
 
 /**
  * Gap tokens from the theme engine's token contract (packages/theme-engine/src/types.ts): every `space` key as
- * `space-<key>`, plus `section-gap`, which follows the client's density.
+ * `space-<key>`, plus `section-gap`, which follows the client's density. Space 20/24/32 are left out: they are the
+ * gaps between website sections (ADR-043), not app screens, and adding them would widen the wire for nothing.
  */
+const WEBSITE_ONLY_SPACE = new Set(['20', '24', '32']);
+
 export function readGapTokens(): string[] {
   const source = readFileSync(path.join(REPO_ROOT, 'packages/theme-engine/src/types.ts'), 'utf8');
   const block = /\bspace:\s*\{([^}]*)\}/.exec(source);
   if (!block?.[1]) throw new Error('theme-engine types.ts: no `space: { … }` block found; the gap tokens come from it.');
-  const keys = [...block[1].matchAll(/'(\d+)'\s*:/g)].map((m) => m[1]!).sort((a, b) => Number(a) - Number(b));
+  const keys = [...block[1].matchAll(/'(\d+)'\s*:/g)]
+    .map((m) => m[1]!)
+    .filter((k) => !WEBSITE_ONLY_SPACE.has(k))
+    .sort((a, b) => Number(a) - Number(b));
   if (keys.length === 0) throw new Error('theme-engine types.ts: the space block has no keys.');
   if (!source.includes('--syntara-section-gap')) throw new Error('theme-engine types.ts no longer lists --syntara-section-gap.');
   return [...keys.map((k) => `space-${k}`), 'section-gap'];

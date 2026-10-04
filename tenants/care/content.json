@@ -966,5 +966,49 @@
     "eyebrow": "Shared OPD wallet",
     "amount": 7400,
     "note": "used of ₹18,000 · ₹10,600 left"
+  },
+  "hero": {
+    "menu": {
+      "label": "Main",
+      "links": [
+        "For families",
+        "For employers",
+        "Hospitals"
+      ],
+      "signIn": "Log in",
+      "cta": "Check benefits"
+    },
+    "announcement": {
+      "badge": "New",
+      "text": "Add your parents to your cover"
+    },
+    "headline": "Health cover your family understands.",
+    "headlineTail": "Every benefit, in plain words.",
+    "body": "See what's covered, what's left in your wallet and how to claim, for everyone on your plan.",
+    "primary": "Check your benefits",
+    "secondary": "Talk to us",
+    "trust": "Provided by your employer. Nothing to fill in to start.",
+    "pictureLabel": "The Care app: your wallet, hospital cover and recent visits.",
+    "prompt": {
+      "label": "Ask Care",
+      "placeholder": "Ask about your benefits, like “Is physiotherapy covered for my son?”",
+      "send": "Ask"
+    },
+    "cursors": [
+      "Arjun",
+      "Meenal"
+    ],
+    "search": {
+      "label": "Search Care",
+      "placeholder": "Search benefits, hospitals and claims",
+      "button": "Search",
+      "chipsLabel": "Popular searches",
+      "chips": [
+        "OPD wallet",
+        "Physiotherapy",
+        "Dental",
+        "Family"
+      ]
+    }
   }
 }

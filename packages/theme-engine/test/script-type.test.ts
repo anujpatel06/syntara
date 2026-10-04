@@ -112,7 +112,7 @@ describe('Haat: script tokens reach every exporter', () => {
     expect(v['--syntara-font-size-xs']).toBe('12px');
     // The per-size curve is unchanged (it is 0 or negative; measured, it breaks no headline).
     const vela = toCssVariables(generateTheme({ ...HAAT, typePair: 'precise' }), 'light');
-    for (const k of ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl']) expect(v[`--syntara-font-tracking-${k}`]).toBe(vela[`--syntara-font-tracking-${k}`]);
+    for (const k of ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl']) expect(v[`--syntara-font-tracking-${k}`]).toBe(vela[`--syntara-font-tracking-${k}`]);
     // Same variable names, same order, as a Latin pair: consumers of toCssVariables need no change.
     expect(Object.keys(v)).toEqual(Object.keys(vela));
     const css = toCSS(theme, { selector: '[data-syntara-theme="haat"]' });
@@ -152,6 +152,10 @@ describe('every pair exports exactly the tokens it is meant to', () => {
    * which changed the token *names* and no token *value*; and re-recorded again on 2026-09-28 for the clipping fix
    * (ADR-031), which gave six pairs their own measured line heights.
    *
+   * Re-recorded on 2026-10-04 for the website display sizes (ADR-043): font-size 6xl/7xl, their tracking, and
+   * space 20/24/32. Checked before re-recording: with those new tokens removed, every pair's CSS, DTCG and CSS
+   * variables hashed to the previous row exactly, so the change only adds. shadcn is unchanged (it emits no sizes).
+   *
    * What the table pins now is which pairs moved. `precise` and `modern` are byte-identical to every earlier
    * recording — they clipped nothing, so they kept the shared 1.2/1.35/1.5 and must not drift. The other six each
    * changed in exactly three of the four columns: CSS, DTCG and the CSS variables carry line heights, and the
@@ -159,14 +163,14 @@ describe('every pair exports exactly the tokens it is meant to', () => {
    * shape is a regression, not a re-recording.
    */
   const BEFORE: [TypePairId, css: string, dtcg: string, shadcn: string, vars: string][] = [
-    ['precise', '1e3c13e70999f951', 'b71cda0e0880abe5', '7d28a1aad0f2c6d9', 'f670f86360cb0285'],
-    ['calm', '6e7ca70f192ff255', '5db14dd59b40db2e', '76867bc7a1f22b70', '454be3fff391ca98'],
-    ['friendly', '82af543a578f7fa0', 'd8b83ed8663dab35', 'e38f3efee6290ae4', '5543616e1b1651f0'],
-    ['technical', '71c8d62e5ac0ecfc', '1fac86020fac8824', '0c23a07967510672', '2a56d23ded99ad42'],
-    ['bilingual-round', 'd60f88ff2c791db1', '6608ce69b911c1c8', '9ef142c32702e62b', '227c32712564ed03'],
-    ['bilingual-classic', 'a97d05da0cf490b9', 'd94700de5cb9d2c9', '47c9bbe33dc2a983', 'c493cf80a1feb766'],
-    ['editorial', '89851aab92613c47', '2b3ef3336fc483b5', '8b7f0a706369ea2d', '4b8f48fb8ff3000f'],
-    ['modern', '808f8ffdacc2ad8e', '8e537795ec21711a', '9de8d1fb2bdd5b94', '556fcbecbb155f39'],
+    ['precise', '5e2ee4b29d3e61c5', '7f5aa020b760f34b', '7d28a1aad0f2c6d9', 'e05a04d41aaebfc5'],
+    ['calm', '639f61f6ce153425', '2027c1bdfb4b40e7', '76867bc7a1f22b70', 'be14c53236a4356a'],
+    ['friendly', 'b8394e99cbb494f0', '56792303dd193a59', 'e38f3efee6290ae4', '5e0ec80fff54e59d'],
+    ['technical', '8780e3e52614d7f2', 'd78c9a02075cb296', '0c23a07967510672', 'a96ec6cec87076b4'],
+    ['bilingual-round', '7254a3a330d7a572', '937ea2c6a4a87bd4', '9ef142c32702e62b', '19021d775711b00e'],
+    ['bilingual-classic', '70a03e5191aa27a3', '7d3d4df062325d8b', '47c9bbe33dc2a983', '75866ea069269d86'],
+    ['editorial', '5c9e516e44319d10', '31d63016e084215b', '8b7f0a706369ea2d', 'b8e892373de77559'],
+    ['modern', '14ef6572a82e33f9', 'e395d3c676c1dafa', '9de8d1fb2bdd5b94', 'b75ab39ea67fad20'],
   ];
   const inputs = fuzzInputs().slice(0, 8);
 

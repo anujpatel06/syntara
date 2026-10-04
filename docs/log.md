@@ -6,6 +6,74 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 (website blocks) — display sizes, and five animated hero sections
+
+Branch `feat/marketing-blocks`, its own worktree (`../strata-marketing`) cut from `origin/main` at d3a538a, because
+the session's checkout was 4 commits behind main with another session's edits in it.
+
+**Changed**
+- **Spec:** `docs/design/marketing-blocks.md`, the standard for website sections (references, measurable rules, the
+  "generic" anti-list). Rewritten twice in-session as Anuj's taste became clear (see Decided).
+- **Engine — display sizes (ADR-043):** `font-size 6xl/7xl` (60/72px) with their tracking, `space 20/24/32`
+  (80/96/128px), in CSS, DTCG, Figma and the Kotlin/Swift token files. Additive only. The server-driven UI keeps
+  `space-0…16` as gaps (no schema bump). Changeset `website-display-sizes` (minor: theme-engine, tokens).
+- **Five hero blocks** in `apps/docs/blocks/`, all from real components, all with tenant copy for the five brands,
+  all with a pause button (WCAG 2.2.2) and stillness under reduced motion:
+  - `hero` — headline, two actions and a layered product picture over a brand-colour ribbon (round 1; Anuj called
+    it a plain page; kept, not deleted).
+  - `hero-orbit` — rings of the brand colour ripple out from the main action and lean toward the pointer.
+  - `hero-gallery` — a turning 3D wall of 20 pictures (pure CSS: `sin()`/`cos()` on an animated `@property`) behind
+    the headline, haze, floor reflections, a slim ask bar.
+  - `hero-cards` — a fan of five cards in solved colour pairs that opens on hover, drifting name-tag cursors.
+  - `hero-aurora` — drifting brand-colour lights (one follows the pointer), a search bar and chips that fill it.
+- **20 pictures** (Unsplash License) in `apps/docs/public/hero-gallery/`, credited per file in `GALLERY_IMAGES`.
+- Tenant `content.json`: a `hero` object per brand (menu, headline + tail, body, prompt, search, cursors). Arabic and
+  Hindi copy is Claude's draft, not reviewed.
+- Each hero folder carries an identical `*.content.ts` so it installs from the registry alone;
+  `scripts/check-hero-content.mjs` fails while the copies differ.
+- MCP `get_tokens space` budget 900 → 1,000 bytes (971 measured after the new spaces).
+
+**Decided**
+- Website sections, the core landing set, hero first; references Linear/Vercel, Stripe, Apple, Notion/Cal.com: **Anuj**.
+- Display sizes in the engine, option A of three: **Anuj** (ADR-043). Keeping them out of SDUI gaps and the MCP
+  budget change: **Claude**, pending Anuj.
+- Brand ribbon over Dark stage / Framed panel: **Anuj**; then dropped for animated references he supplied: **Anuj**.
+- Build the five one at a time, each approved before the next (Claude pushed back on fanning out): **Claude
+  recommended, Anuj accepted**.
+- Orbit: no accent in the centre ring, a light pill at its centre: **Anuj** ("this orangish blackish is not looking
+  good"). Horizon: removed: **Anuj**. Gallery: free-licence images, all 20 picks approved: **Anuj**; depth (haze,
+  reflections, floor shadow): **Anuj** asked for "shadow or something", the method is **Claude**. Card fan finish:
+  **Anuj** ("so flat"). Aurora: approved: **Anuj**.
+- No logo strips and no invented user counts in any hero, although two references had them: **Claude**, per the spec.
+
+**Results** (`/verify` steps 1–9 in the worktree, served build `Nbw9TvdiIjYaHH24jQB8w` on :3000)
+- `pnpm typecheck`: 0 errors. `pnpm test`: 2,181 passing across 7 packages, 0 failing; `check-test-counts.mjs`: the
+  README row matches. Engine 309 passing + 1 skipped.
+- Additive check for ADR-043, before re-recording the fingerprints in `test/script-type.test.ts`: with the new
+  tokens removed, 32 of 32 hashes (8 pairs × CSS, DTCG, shadcn, CSS variables) equal the previous rows.
+- `pnpm test:themes`: 118,000 of 118,000 checks pass; median adjustments per brand 4 (unchanged).
+- `pnpm check:meta` exit 0; `pnpm registry`: 80 items, all 5 hero blocks ok; `check-override-weight`: 0.
+- `pnpm --filter @syntara/docs build`: 90/90 pages; `check-ssr-tabs`: 0 of 89 pages missing a panel.
+- `check-hydration`: 146 routes × 2 schemes, 0 failures. `check-theme-links` 0 of 5; `check-narrow-overflow` 292
+  checks, 0 sideways; `check-csp` 146 routes, 0; `axe-sweep` 146 × 2, 0 violation nodes; `check-overlay-exit` 108
+  tooltips + 4 popovers, 0.
+- What the run caught and fixed: MCP `get_pattern (list)` 3,105 bytes against a 2,500 budget (descriptions shortened,
+  2,454); registry: each hero imported `../hero/hero.content` (now an identical copy per folder); all 60 hero view
+  routes "never hydrated": the heroes had no `<main>` (now `<main>` at heading level 1, `<section>` above it).
+- Shipped: `grep -rl "hero-orbit\|Shared savings pots" apps/docs/out/_next/static` 3 files; `out/blocks/` has all 5.
+- `/screenshots`: 5 heroes × (vela light, harbor dark, qamar light RTL, vela 390px) = 20 shots, looked at. One fault:
+  the round-1 `hero` ribbon ran under the end of its body text at 1280px; ribbon narrowed to 40%. That one change
+  came after the full run and is checked by screenshot only (vela, qamar, harbor).
+- Not done: contrast measured on moving visuals beyond axe's one frame under reduced motion; a VoiceOver/NVDA pass;
+  native review of the Arabic and Hindi hero copy.
+
+**Next**
+- Anuj: whether to keep or delete the round-1 `hero` block; review the Arabic and Hindi hero copy.
+- The other website sections (header, features, call-to-action band, footer) in a fresh session, to this standard.
+- A link-styled button: the heroes use `Button` for actions that should navigate.
+
+---
+
 ## 2026-10-03 (21st.dev-style pieces) — Marquee, PromptComposer, the AI reply, and previews in the tenant's language
 
 Four branches, one PR each. This entry lives on `feat/docs-preview-locale`; the other three carry no log edit, so

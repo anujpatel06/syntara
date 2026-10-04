@@ -1,0 +1,430 @@
+/*
+ * Hero: Aurora. Tokens only; container breakpoints (640, 1024), the lights' sizes and places (container units,
+ * percentages) and their strength are the only literals. Ambient durations are multiples of
+ * --syntara-motion-duration-slow. Rules that restyle a Syntara component triple their class (.x.x.x).
+ */
+
+.root {
+  --_gutter: var(--syntara-space-4);
+  --_max: calc(var(--syntara-space-16) * 18.75); /* 1200px */
+  /* How strong the lights are: soft on a light page, softer on a dark one, where colour glows more. */
+  --_glow: 0.55;
+  /* What the lights are washed toward: the page on a light scheme (pastel), the light text colour on a dark one, so
+     they glow (mixing toward a dark page, or plain transparency on it, turned Harbor's orange brown). */
+  --_wash: var(--syntara-color-surface-canvas);
+  --_mx: 50%;
+  --_my: 45%;
+
+  container: hero-aurora / inline-size;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-block-size: calc(var(--syntara-space-16) * 11); /* 704px */
+  overflow: clip;
+  background-color: var(--syntara-color-surface-canvas);
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  text-align: center;
+}
+
+:where([data-syntara-scheme='dark']) .root {
+  --_glow: 0.6;
+  --_wash: var(--syntara-color-text-default);
+}
+
+@media (prefers-color-scheme: dark) {
+  :where([data-syntara-scheme='auto']) .root {
+    --_glow: 0.6;
+    --_wash: var(--syntara-color-text-default);
+  }
+}
+
+.root :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+.root :where(h1, h2, h3, h4, p, ul) {
+  margin: 0;
+}
+
+.root :where(ul) {
+  padding: 0;
+  list-style: none;
+}
+
+@container hero-aurora (min-width: 640px) {
+  .root > * {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Lights: big blurred circles of the brand's primary, accent and a mix, drifting slowly; one follows the pointer.
+ * ------------------------------------------------------------------ */
+
+.lights {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.light {
+  --_size: 1;
+
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(calc(var(--syntara-space-16) * 1.5));
+  opacity: var(--_glow);
+}
+
+/* Phones: the lights would be too small to see at page-relative sizes, so they grow. */
+@container hero-aurora (max-width: 639.98px) {
+  .light {
+    --_size: 2;
+  }
+}
+
+/* Far top corner, the primary. */
+.lightA {
+  inset-block-start: -18%;
+  inset-inline-end: -10%;
+  inline-size: calc(48cqi * var(--_size));
+  background-color: color-mix(in oklab, var(--syntara-color-action-primary-bg) 70%, var(--_wash));
+}
+
+/* Near bottom corner, the accent. */
+.lightB {
+  inset-block-end: -22%;
+  inset-inline-start: -12%;
+  inline-size: calc(44cqi * var(--_size));
+  background-color: color-mix(in oklab, var(--syntara-color-accent-bg) 75%, var(--_wash));
+}
+
+/* A small mix of the two, high on the far side. Kept faint: it passes behind the headline. */
+.lightC {
+  inset-block-start: 8%;
+  inset-inline-start: 58%;
+  inline-size: calc(26cqi * var(--_size));
+  background-color: color-mix(in oklab, var(--syntara-color-action-primary-bg), var(--syntara-color-accent-bg));
+  opacity: calc(var(--_glow) * 0.6);
+}
+
+/* Follows the pointer with a lag. Physical left/top on purpose: the pointer's position is physical. */
+.lightPointer {
+  inset-block-start: var(--_my);
+  left: var(--_mx);
+  inline-size: calc(24cqi * var(--_size));
+  translate: -50% -50%;
+  background-color: color-mix(in oklab, var(--syntara-color-action-primary-bg) 60%, var(--_wash));
+  opacity: calc(var(--_glow) * 0.7);
+  transition:
+    left calc(var(--syntara-motion-duration-slow) * 4) var(--syntara-motion-easing-out),
+    inset-block-start calc(var(--syntara-motion-duration-slow) * 4) var(--syntara-motion-easing-out);
+}
+
+/* ------------------------------------------------------------------ *
+ * Menu bar: logo, centred links with the current one underlined, two pills
+ * ------------------------------------------------------------------ */
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-4);
+  inline-size: 100%;
+  max-inline-size: var(--_max);
+  padding-block: var(--syntara-space-5);
+  padding-inline: var(--_gutter);
+}
+
+@container hero-aurora (min-width: 1024px) {
+  .menu {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin-inline-end: auto;
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-semibold);
+  text-decoration: none;
+}
+
+.mark {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-badge);
+  background-color: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+  font-size: var(--syntara-font-size-md);
+}
+
+.menuNav {
+  display: none;
+}
+
+@container hero-aurora (min-width: 1024px) {
+  .menuNav {
+    display: block;
+  }
+}
+
+.menuLinks {
+  display: flex;
+  gap: var(--syntara-space-10);
+}
+
+.menuLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--syntara-space-8);
+  color: var(--syntara-color-text-subtle);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+  transition: color var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+
+.menuLink:hover,
+.menuLink[aria-current='page'] {
+  color: var(--syntara-color-text-default);
+}
+
+/* The current page: a short bar in the brand colour under the word. */
+.menuLink[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 15%;
+  block-size: calc(var(--syntara-space-1) / 2);
+  border-radius: var(--syntara-radius-pill);
+  background-color: var(--syntara-color-action-primary-bg);
+}
+
+.menuLink:focus-visible,
+.logo:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--syntara-radius-badge);
+}
+
+.menuEnd {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--syntara-space-3);
+}
+
+.pill.pill.pill {
+  border-radius: var(--syntara-radius-pill);
+}
+
+/* ------------------------------------------------------------------ *
+ * Copy, search and chips
+ * ------------------------------------------------------------------ */
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
+  max-inline-size: calc(var(--syntara-space-16) * 13); /* 832px */
+  margin-block: auto;
+  padding-block: var(--syntara-space-12) var(--syntara-space-20);
+  padding-inline: var(--_gutter);
+}
+
+.headline {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-4xl);
+  font-weight: var(--syntara-font-weight-semibold);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-4xl);
+  text-wrap: balance;
+}
+
+@container hero-aurora (min-width: 640px) {
+  .headline {
+    font-size: var(--syntara-font-size-5xl);
+    letter-spacing: var(--syntara-font-tracking-5xl);
+  }
+}
+
+@container hero-aurora (min-width: 1024px) {
+  .headline {
+    font-size: var(--syntara-font-size-6xl);
+    letter-spacing: var(--syntara-font-tracking-6xl);
+  }
+}
+
+.line {
+  display: block;
+}
+
+.body {
+  max-inline-size: 52ch;
+  margin-block-start: var(--syntara-space-5);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-lg);
+  text-wrap: balance;
+}
+
+/* The search: one frosted pill holding the field and its button. */
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  inline-size: 100%;
+  max-inline-size: calc(var(--syntara-space-16) * 10); /* 640px */
+  min-block-size: var(--syntara-space-16);
+  margin-block-start: var(--syntara-space-10);
+  padding-block: var(--syntara-space-2);
+  padding-inline: var(--syntara-space-6) var(--syntara-space-2);
+  border: 1px solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-pill);
+  background-color: color-mix(in oklab, var(--syntara-color-surface-default) 82%, transparent);
+  backdrop-filter: blur(var(--syntara-space-4));
+  box-shadow: var(--syntara-shadow-overlay);
+  text-align: start;
+}
+
+.bar:focus-within {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.field {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--syntara-space-3);
+  min-inline-size: 0;
+}
+
+.searchIcon {
+  flex: none;
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+  color: var(--syntara-color-text-subtle);
+}
+
+.input {
+  flex: 1;
+  min-inline-size: 0;
+  min-block-size: var(--syntara-space-10);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--syntara-color-text-default);
+  font: inherit;
+  font-size: var(--syntara-font-size-lg);
+  text-overflow: ellipsis;
+}
+
+.input::placeholder {
+  color: var(--syntara-color-text-subtle);
+}
+
+/* The bar draws the focus ring for the whole field. The browser's own clear (×) is hidden; Escape clears. */
+.input:focus {
+  outline: none;
+}
+
+.input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchButton.searchButton.searchButton {
+  flex: none;
+  min-block-size: var(--syntara-space-12);
+  padding-inline: var(--syntara-space-6);
+  border-radius: var(--syntara-radius-pill);
+}
+
+.chips.chips {
+  margin-block-start: var(--syntara-space-5);
+}
+
+/* Centre the chips under the bar (the group lays them out as a wrapping row). */
+.chips.chips :where([role='grid'], [role='listbox']) {
+  justify-content: center;
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion: the three lights drift on long, out-of-step loops. Nothing moves with reduced motion asked for, or while
+ * paused; the pointer light then stays put.
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightA {
+    animation: aurora-a calc(var(--syntara-motion-duration-slow) * 60) ease-in-out infinite alternate;
+  }
+
+  .lightB {
+    animation: aurora-b calc(var(--syntara-motion-duration-slow) * 75) ease-in-out infinite alternate;
+  }
+
+  .lightC {
+    animation: aurora-c calc(var(--syntara-motion-duration-slow) * 50) ease-in-out infinite alternate;
+  }
+
+  .root[data-paused] .light {
+    animation-play-state: paused;
+  }
+
+  .root[data-paused] .lightPointer {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightPointer {
+    display: none;
+  }
+}
+
+@keyframes aurora-a {
+  to {
+    translate: -14cqi 10cqi;
+    scale: 1.15;
+  }
+}
+
+@keyframes aurora-b {
+  to {
+    translate: 16cqi -8cqi;
+    scale: 0.9;
+  }
+}
+
+@keyframes aurora-c {
+  to {
+    translate: -20cqi 6cqi;
+  }
+}
+
+.pause.pause {
+  position: absolute;
+  inset-block-end: var(--syntara-space-4);
+  inset-inline-end: var(--syntara-space-4);
+  color: var(--syntara-color-text-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pause.pause {
+    display: none;
+  }
+}

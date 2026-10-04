@@ -1,0 +1,599 @@
+/*
+ * Hero. Spec: docs/design/marketing-blocks.md. Tokens only; container breakpoints (640, 1024) and the ribbon's
+ * geometry (percentages, angle) are the only literals. Rules that restyle a Syntara component double their class
+ * (.x.x) so they outweigh the component's own rule whatever the stylesheet order.
+ */
+
+.root {
+  --_gutter: var(--syntara-space-4);
+  --_max: calc(var(--syntara-space-16) * 18.75); /* 1200px content column */
+  --_step: calc(var(--syntara-motion-duration-fast) / 2); /* 60ms between entrance items */
+
+  container: hero / inline-size;
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  overflow: clip;
+  background-color: var(--syntara-color-surface-canvas);
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  text-align: start;
+}
+
+.root :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+.root :where(h1, h2, h3, h4, p, ul) {
+  margin: 0;
+}
+
+.root :where(ul) {
+  padding: 0;
+  list-style: none;
+}
+
+@container hero (min-width: 640px) {
+  .root > * {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Brand ribbon: two crisp diagonal bands in the brand's primary and accent, rising toward the far top corner and
+ * fading out before they reach the text. Wide: in the top far corner, below the menu bar. Narrow: a second copy
+ * inside the picture's stage, peeking out above the app window. No text is ever drawn on it.
+ * ------------------------------------------------------------------ */
+
+.ribbon {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  /* The far tip fades to nothing, so the band never ends abruptly near the copy. */
+  mask-image: linear-gradient(to left, var(--syntara-color-text-default) 55%, transparent);
+}
+
+.ribbon::before,
+.ribbon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+/* The main band: primary into accent along its length. */
+.ribbon::before {
+  background: linear-gradient(
+    200deg,
+    var(--syntara-color-accent-bg) 8%,
+    color-mix(in oklab, var(--syntara-color-action-primary-bg), var(--syntara-color-accent-bg)) 38%,
+    var(--syntara-color-action-primary-bg) 70%
+  );
+  clip-path: polygon(100% 0%, 100% 34%, 0% 100%, 0% 74%);
+}
+
+/* A thinner band just above it, lighter, for depth. */
+.ribbon::after {
+  background: linear-gradient(
+    200deg,
+    color-mix(in oklab, var(--syntara-color-accent-bg) 55%, var(--syntara-color-surface-canvas)),
+    color-mix(in oklab, var(--syntara-color-action-primary-bg) 45%, var(--syntara-color-surface-canvas))
+  );
+  clip-path: polygon(100% 0%, 100% 6%, 0% 72%, 0% 66%);
+  opacity: 0.85;
+}
+
+/* Mirrored for right-to-left: the bands rise toward the far corner either way. */
+.ribbon:dir(rtl) {
+  scale: -1 1;
+}
+
+.ribbonWide {
+  display: none;
+  inset-block-start: var(--syntara-space-20);
+  inset-inline-end: 0;
+  inline-size: 40%; /* the copy takes 60%; the ribbon stays clear of it */
+  block-size: 62%;
+}
+
+@container hero (min-width: 1024px) {
+  .ribbonWide {
+    display: block;
+  }
+}
+
+.ribbonNarrow {
+  /* Starts inside the 64px gap above the window and slices behind its top edge, edge to edge of the page. */
+  inset-block-start: calc(var(--syntara-space-12) * -1);
+  inset-inline: calc(var(--_gutter) * -1);
+  block-size: calc(var(--syntara-space-12) * 2.5);
+  mask-image: none;
+}
+
+@container hero (min-width: 1024px) {
+  .ribbonNarrow {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Menu bar
+ * ------------------------------------------------------------------ */
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-8);
+  max-inline-size: var(--_max);
+  margin-inline: auto;
+  padding-block: var(--syntara-space-4);
+  padding-inline: var(--_gutter);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-semibold);
+  text-decoration: none;
+}
+
+.mark,
+.appMark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-badge);
+  background-color: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+  font-size: var(--syntara-font-size-md);
+}
+
+.menuNav {
+  display: none;
+}
+
+@container hero (min-width: 1024px) {
+  .menuNav {
+    display: block;
+  }
+}
+
+.menuLinks {
+  display: flex;
+  gap: var(--syntara-space-6);
+}
+
+.menuLink {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--syntara-space-6);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-md);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+  transition: color var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+
+.menuLink:hover {
+  color: var(--syntara-color-text-default);
+}
+
+.menuLink:focus-visible,
+.logo:focus-visible,
+.announcement:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--syntara-radius-badge);
+}
+
+.menuEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-5);
+  margin-inline-start: auto;
+}
+
+.signIn {
+  display: none;
+}
+
+@container hero (min-width: 640px) {
+  .signIn {
+    display: inline-flex;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Copy
+ * ------------------------------------------------------------------ */
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-16);
+  max-inline-size: var(--_max);
+  margin-inline: auto;
+  padding-block: var(--syntara-space-12) 0;
+  padding-inline: var(--_gutter);
+}
+
+@container hero (min-width: 1024px) {
+  .inner {
+    padding-block-start: var(--syntara-space-20);
+  }
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+@container hero (min-width: 1024px) {
+  /* Leaves the far side to the ribbon. */
+  .copy {
+    max-inline-size: 60%;
+  }
+}
+
+.announcement {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  min-block-size: var(--syntara-space-8);
+  margin-block-end: var(--syntara-space-6);
+  padding-block: var(--syntara-space-1);
+  padding-inline: var(--syntara-space-1) var(--syntara-space-3);
+  border: 1px solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-pill);
+  background-color: var(--syntara-color-surface-default);
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+  transition:
+    border-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    background-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+
+.announcement.announcement:focus-visible {
+  border-radius: var(--syntara-radius-pill);
+}
+
+.announcement:hover {
+  border-color: var(--syntara-color-border-default);
+  background-color: var(--syntara-color-surface-raised);
+}
+
+.announcementText {
+  color: var(--syntara-color-text-subtle);
+}
+
+.arrow {
+  inline-size: 1em;
+  block-size: 1em;
+  flex: none;
+  transition: margin var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+
+/* A small nudge toward the end on hover. Margins, not transforms, so it follows the reading direction. */
+.announcement:hover .arrow {
+  margin-inline: calc(var(--syntara-space-1) / 2) calc(var(--syntara-space-1) / -2);
+}
+
+.headline {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-4xl);
+  font-weight: var(--syntara-font-weight-semibold);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-4xl);
+  text-wrap: balance;
+}
+
+@container hero (min-width: 640px) {
+  .headline {
+    font-size: var(--syntara-font-size-6xl);
+    letter-spacing: var(--syntara-font-tracking-6xl);
+  }
+}
+
+@container hero (min-width: 1024px) {
+  .headline {
+    font-size: var(--syntara-font-size-7xl);
+    letter-spacing: var(--syntara-font-tracking-7xl);
+  }
+}
+
+/* Two-tone: the second sentence is the same size, muted. */
+.tail {
+  color: var(--syntara-color-text-subtle);
+}
+
+.headline em {
+  font-style: italic;
+}
+
+/* Arabic and Devanagari have no true italic (a browser would slant the letters); the emphasis is the brand colour. */
+.headline:lang(ar) em,
+.headline:lang(hi) em {
+  font-style: normal;
+  color: var(--syntara-color-text-brand);
+}
+
+.body {
+  max-inline-size: 60ch;
+  margin-block-start: var(--syntara-space-6);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-lg);
+  text-wrap: pretty;
+}
+
+@container hero (min-width: 640px) {
+  .body {
+    font-size: var(--syntara-font-size-xl);
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-3);
+  margin-block-start: var(--syntara-space-10);
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--syntara-space-3);
+}
+
+.trust {
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+
+/* ------------------------------------------------------------------ *
+ * Product picture: an app window with a side menu, fading into the page at the bottom, the floating card hanging
+ * over its edge.
+ * ------------------------------------------------------------------ */
+
+.stage {
+  position: relative;
+  isolation: isolate;
+}
+
+.picture {
+  position: relative;
+}
+
+.window {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  /* Fades into the page at the bottom. On the window only: a mask clips everything outside its element, and the
+     ribbon and floating card sit outside it. The mask reads alpha alone; any opaque token means "fully visible". */
+  mask-image: linear-gradient(to bottom, var(--syntara-color-text-default) 62%, transparent 100%);
+  overflow: hidden;
+  border: 1px solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-container);
+  background-color: var(--syntara-color-surface-default);
+  box-shadow: var(--syntara-shadow-overlay);
+}
+
+@container hero (min-width: 640px) {
+  .window {
+    grid-template-columns: calc(var(--syntara-space-16) * 3) minmax(0, 1fr); /* 192px side menu */
+  }
+}
+
+@container hero (min-width: 1024px) {
+  /* Room on the far side for the floating card to hang over the edge. */
+  .window {
+    margin-inline-end: var(--syntara-space-16);
+  }
+}
+
+.side {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-6);
+  padding: var(--syntara-space-3) var(--syntara-space-4);
+  border-block-end: 1px solid var(--syntara-color-border-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+
+@container hero (min-width: 640px) {
+  .side {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--syntara-space-5);
+    padding: var(--syntara-space-5) var(--syntara-space-3);
+    border-block-end: 0;
+    border-inline-end: 1px solid var(--syntara-color-border-subtle);
+  }
+}
+
+.appBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  padding-inline: var(--syntara-space-2);
+  font-weight: var(--syntara-font-weight-semibold);
+}
+
+.appMark {
+  inline-size: var(--syntara-space-6);
+  block-size: var(--syntara-space-6);
+  font-size: var(--syntara-font-size-xs);
+}
+
+.sideNav {
+  display: none;
+}
+
+@container hero (min-width: 640px) {
+  .sideNav {
+    display: grid;
+    gap: var(--syntara-space-1);
+  }
+}
+
+.sideItem {
+  padding: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-field);
+  color: var(--syntara-color-text-subtle);
+}
+
+.sideItem[data-current] {
+  background-color: var(--syntara-color-surface-selected);
+  color: var(--syntara-color-text-default);
+  font-weight: var(--syntara-font-weight-medium);
+}
+
+.screen {
+  display: grid;
+  gap: var(--syntara-space-5);
+  align-content: start;
+  padding: var(--syntara-space-5) var(--syntara-space-4);
+  background-color: var(--syntara-color-surface-canvas);
+}
+
+@container hero (min-width: 640px) {
+  .screen {
+    padding: var(--syntara-space-8);
+  }
+}
+
+.greeting {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-xl);
+  font-weight: var(--syntara-font-weight-semibold);
+  line-height: var(--syntara-line-height-snug);
+}
+
+.stats.stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--syntara-space-3);
+  margin: 0;
+}
+
+@container hero (min-width: 640px) {
+  .stats.stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Narrow: one figure is enough to say "this is the product". */
+@container hero (max-width: 639.98px) {
+  .stats.stats > :nth-child(n + 2) {
+    display: none;
+  }
+}
+
+.list {
+  border: 1px solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-container);
+  background-color: var(--syntara-color-surface-default);
+}
+
+.listTitle {
+  padding: var(--syntara-space-3) var(--syntara-space-4);
+  border-block-end: 1px solid var(--syntara-color-border-subtle);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-semibold);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syntara-space-4);
+  padding: var(--syntara-space-3) var(--syntara-space-4);
+}
+
+.row + .row {
+  border-block-start: 1px solid var(--syntara-color-border-subtle);
+}
+
+.rowText {
+  display: grid;
+  min-inline-size: 0;
+}
+
+.rowTitle,
+.rowMeta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowTitle {
+  font-weight: var(--syntara-font-weight-medium);
+}
+
+.rowMeta {
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+
+.rowAmount {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--syntara-font-weight-medium);
+}
+
+/* Stripe's layering: one smaller card hanging over the window's far edge. Only from 1024px: narrower, there is no
+   room beside the window and the card would cover the figures or the greeting. */
+.float {
+  display: none;
+}
+
+@container hero (min-width: 1024px) {
+  .float {
+    position: absolute;
+    inset-block-start: 30%;
+    inset-inline-end: 0;
+    display: grid;
+    gap: var(--syntara-space-2);
+    inline-size: calc(var(--syntara-space-16) * 4.5); /* 288px */
+    padding: var(--syntara-space-4);
+    border: 1px solid var(--syntara-color-border-subtle);
+    border-radius: var(--syntara-radius-container);
+    background-color: var(--syntara-color-surface-raised);
+    box-shadow: var(--syntara-shadow-raised);
+  }
+}
+
+.floatCaption {
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+
+/* ------------------------------------------------------------------ *
+ * Entrance: fade in and rise 8px, 60ms apart, four steps at most. CSS only, so text shows if scripts fail.
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .enter {
+    animation: hero-rise var(--syntara-motion-duration-slow) var(--syntara-motion-easing-out) both;
+  }
+
+  .copy > .enter:nth-child(2) { animation-delay: var(--_step); }
+  .copy > .enter:nth-child(3) { animation-delay: calc(var(--_step) * 2); }
+  .copy > .enter:nth-child(n + 4),
+  .stage.enter { animation-delay: calc(var(--_step) * 3); }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--syntara-space-2));
+  }
+}
