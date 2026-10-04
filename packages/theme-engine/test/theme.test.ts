@@ -199,8 +199,8 @@ describe('normalizeBrandInput', () => {
 describe('countTokens', () => {
   it('matches the documented formula', () => {
     expect(ROLES.length).toBe(48);
-    expect(countTokens()).toBe(2 * 7 * 12 + 2 * 48 + 6 + 4 + 12 + 11 + 5 + 3 + 9 + 3 + 4 + 4 + 2 + 12);
-    expect(countTokens()).toBe(339);
+    expect(countTokens()).toBe(2 * 7 * 12 + 2 * 48 + 6 + 4 + 12 + 14 + 5 + 3 + 11 + 3 + 4 + 4 + 2 + 12);
+    expect(countTokens()).toBe(344);
   });
 });
 

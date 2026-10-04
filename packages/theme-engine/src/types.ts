@@ -169,11 +169,11 @@ export interface DensityTokens {
 
 export interface Foundations {
   /** px. Keys are 4pt-grid multipliers. */
-  space: { '0': 0; '1': 4; '2': 8; '3': 12; '4': 16; '5': 20; '6': 24; '8': 32; '10': 40; '12': 48; '16': 64 };
+  space: { '0': 0; '1': 4; '2': 8; '3': 12; '4': 16; '5': 20; '6': 24; '8': 32; '10': 40; '12': 48; '16': 64; '20': 80; '24': 96; '32': 128 };
   /** px. Depends on `shape`. */
   radius: { button: number; field: number; container: number; badge: number; pill: number };
   /** px */
-  fontSize: { xs: number; sm: number; md: number; lg: number; xl: number; '2xl': number; '3xl': number; '4xl': number; '5xl': number };
+  fontSize: { xs: number; sm: number; md: number; lg: number; xl: number; '2xl': number; '3xl': number; '4xl': number; '5xl': number; '6xl': number; '7xl': number };
   lineHeight: { tight: number; snug: number; normal: number };
   fontWeight: { regular: number; medium: number; semibold: number; bold: number };
   /**
@@ -268,12 +268,12 @@ export interface Theme {
  *
  * Colour roles:  --syntara-color-<role>, dots → dashes, camelCase → kebab
  *                e.g. feedback.success.onSolid → --syntara-color-feedback-success-on-solid
- * Space:         --syntara-space-{0,1,2,3,4,5,6,8,10,12,16}        (px)
+ * Space:         --syntara-space-{0,1,2,3,4,5,6,8,10,12,16,20,24,32} (px)
  * Radius:        --syntara-radius-{button,field,container,badge,pill} (px)
  * Fonts:         --syntara-font-heading | --syntara-font-body | --syntara-font-mono (stacks)
  *                --syntara-font-heading-tracking
- * Type scale:    --syntara-font-size-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl}  (px)
- * Tracking:      --syntara-font-tracking-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,caps}  (em; 0 for Arabic-capable pairs; caps 0 for Devanagari)
+ * Type scale:    --syntara-font-size-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl}  (px)
+ * Tracking:      --syntara-font-tracking-{xs,sm,md,lg,xl,2xl,3xl,4xl,5xl,6xl,7xl,caps}  (em; 0 for Arabic-capable pairs; caps 0 for Devanagari)
  * Icons:         --syntara-icon-stroke  (unitless SVG stroke width)
  *                --syntara-line-height-{tight,snug,normal}         (unitless)
  *                --syntara-font-weight-{regular,medium,semibold,bold}

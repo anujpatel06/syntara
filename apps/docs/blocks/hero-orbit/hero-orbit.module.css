@@ -1,0 +1,391 @@
+/*
+ * Hero: Orbit. Tokens only; container breakpoints (640, 1024), ring/star percentages and the ripple scale are the only
+ * literals. Ambient durations are multiples of --syntara-motion-duration-slow (320ms). Rules that restyle a Syntara
+ * component double their class (.x.x).
+ */
+
+.root {
+  --_gutter: var(--syntara-space-4);
+  --_max: calc(var(--syntara-space-16) * 18.75); /* 1200px */
+  --_stepX: var(--syntara-space-8); /* how far each ring reaches past the last, sideways */
+  --_stepY: var(--syntara-space-6); /* …and up and down */
+  --_loop: calc(var(--syntara-motion-duration-slow) * 20); /* 6.4s ripple */
+  --_px: 0;
+  --_py: 0;
+  /* The light at the centre and its text: white with dark text on a light page, near-white with dark text on a dark
+     one. Set per scheme, not from the brand's on-primary colour, which is dark for light brands (Qamar's gold). */
+  --_lamp: var(--syntara-color-surface-default);
+  --_lampText: var(--syntara-color-text-default);
+
+  container: hero-orbit / inline-size;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-block-size: calc(var(--syntara-space-16) * 12); /* 768px */
+  overflow: clip;
+  background:
+    radial-gradient(
+      70% 60% at 85% 90%,
+      color-mix(in oklab, var(--syntara-color-action-primary-bg) 10%, transparent),
+      transparent
+    ),
+    var(--syntara-color-surface-canvas);
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  text-align: start;
+}
+
+.root :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+.root :where(h1, h2, h3, h4, p, ul) {
+  margin: 0;
+}
+
+.root :where(ul) {
+  padding: 0;
+  list-style: none;
+}
+
+@container hero-orbit (min-width: 640px) {
+  .root > * {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+@container hero-orbit (min-width: 1024px) {
+  .root > * {
+    --_stepX: var(--syntara-space-16);
+    --_stepY: var(--syntara-space-12);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Stars
+ * ------------------------------------------------------------------ */
+
+.stars {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  display: none;
+  pointer-events: none;
+}
+
+/* Dark scheme (same selectors the theme CSS uses): the lamp flips to the light text colour. */
+:where([data-syntara-scheme='dark']) .root {
+  --_lamp: var(--syntara-color-text-default);
+  --_lampText: var(--syntara-color-surface-canvas);
+}
+
+@media (prefers-color-scheme: dark) {
+  :where([data-syntara-scheme='auto']) .root {
+    --_lamp: var(--syntara-color-text-default);
+    --_lampText: var(--syntara-color-surface-canvas);
+  }
+}
+
+/* Stars only in the dark scheme: on a light page they read as dust. Same selectors the theme CSS uses for dark. */
+:where([data-syntara-scheme='dark']) .stars {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :where([data-syntara-scheme='auto']) .stars {
+    display: block;
+  }
+}
+
+.star {
+  position: absolute;
+  inline-size: calc(var(--syntara-space-1) / 2);
+  block-size: calc(var(--syntara-space-1) / 2);
+  border-radius: var(--syntara-radius-pill);
+  background-color: var(--syntara-color-text-subtle);
+  opacity: 0.45;
+}
+
+.star[data-big] {
+  inline-size: var(--syntara-space-1);
+  block-size: var(--syntara-space-1);
+}
+
+/* ------------------------------------------------------------------ *
+ * Menu bar
+ * ------------------------------------------------------------------ */
+
+.menu {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-10);
+  inline-size: 100%;
+  max-inline-size: var(--_max);
+  margin-inline: auto;
+  padding-block: var(--syntara-space-6);
+  padding-inline: var(--_gutter);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin-inline-end: auto;
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-semibold);
+  text-decoration: none;
+}
+
+.mark {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-badge);
+  background-color: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+  font-size: var(--syntara-font-size-md);
+}
+
+.menuNav {
+  display: none;
+}
+
+@container hero-orbit (min-width: 1024px) {
+  .menuNav {
+    display: block;
+  }
+}
+
+.menuLinks {
+  display: flex;
+  gap: var(--syntara-space-8);
+}
+
+.menuLink {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--syntara-space-6);
+  color: var(--syntara-color-text-subtle);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+  transition: color var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+
+.menuLink:hover {
+  color: var(--syntara-color-text-default);
+}
+
+.menuLink:focus-visible,
+.logo:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--syntara-radius-badge);
+}
+
+/* ------------------------------------------------------------------ *
+ * Copy and the ringed action
+ * ------------------------------------------------------------------ */
+
+.inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: calc(var(--syntara-space-24) + var(--syntara-space-16));
+  inline-size: 100%;
+  max-inline-size: var(--_max);
+  margin-inline: auto;
+  padding-block: var(--syntara-space-16) calc(var(--syntara-space-24) + var(--syntara-space-8));
+  padding-inline: var(--_gutter);
+}
+
+@container hero-orbit (min-width: 1024px) {
+  .inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--syntara-space-16);
+    padding-block: var(--syntara-space-32) var(--syntara-space-24);
+  }
+}
+
+.copy {
+  display: grid;
+  gap: var(--syntara-space-8);
+  max-inline-size: calc(var(--syntara-space-16) * 9); /* 576px */
+}
+
+.headline {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-4xl);
+  font-weight: var(--syntara-font-weight-medium);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-4xl);
+  text-wrap: balance;
+}
+
+@container hero-orbit (min-width: 640px) {
+  .headline {
+    font-size: var(--syntara-font-size-6xl);
+    letter-spacing: var(--syntara-font-tracking-6xl);
+  }
+}
+
+@container hero-orbit (min-width: 1024px) {
+  .headline {
+    font-size: var(--syntara-font-size-7xl);
+    letter-spacing: var(--syntara-font-tracking-7xl);
+  }
+}
+
+.tail {
+  color: var(--syntara-color-text-subtle);
+}
+
+.body {
+  max-inline-size: 46ch;
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-lg);
+  text-wrap: pretty;
+}
+
+@container hero-orbit (min-width: 640px) {
+  .body {
+    font-size: var(--syntara-font-size-xl);
+  }
+}
+
+/* The action sits in the middle of the rings. Narrow: centred under the copy. Wide: the far bottom corner. */
+.core {
+  position: relative;
+  align-self: center;
+}
+
+@container hero-orbit (min-width: 1024px) {
+  .core {
+    margin-inline-end: var(--syntara-space-16);
+  }
+}
+
+.cta.cta {
+  position: relative;
+  border-radius: var(--syntara-radius-pill);
+  padding-inline: var(--syntara-space-10);
+  min-block-size: var(--syntara-space-16);
+  font-size: var(--syntara-font-size-lg);
+  letter-spacing: var(--syntara-font-tracking-caps);
+  text-transform: uppercase;
+  box-shadow:
+    var(--syntara-shadow-raised),
+    0 0 var(--syntara-space-12) color-mix(in oklab, var(--_lamp) 35%, transparent);
+}
+
+/* Arabic and Devanagari have no case; caps tracking is 0 for them already (theme engine). */
+
+/* A light pill in both schemes, like a lamp at the centre of the rings. Tripled class (with the states): the
+   button's own variant rules are up to three selectors deep. */
+.cta.cta.cta,
+.cta.cta.cta:is([data-hovered], [data-pressed]) {
+  --_bg: var(--_lamp);
+  --_fg: var(--_lampText);
+  --_border: var(--_lamp);
+}
+
+.cta.cta.cta[data-hovered] {
+  --_bg: color-mix(in oklab, var(--_lamp) 90%, var(--syntara-color-action-primary-bg));
+}
+
+.rings {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+/*
+ * Ring --i: 1 is innermost, 7 outermost. Each reaches one step further and holds less of the brand colour, from 87%
+ * at the centre to 9% at the edge, so the strong colour is only ever far from the copy.
+ */
+.ring {
+  position: absolute;
+  inset-block: calc(var(--_stepY) * var(--i) * -1);
+  inset-inline: calc(var(--_stepX) * var(--i) * -1);
+  border-radius: var(--syntara-radius-pill);
+  background-color: color-mix(
+    in oklab,
+    var(--syntara-color-action-primary-bg) calc(100% - var(--i) * 13%),
+    var(--syntara-color-surface-canvas)
+  );
+}
+
+/* The innermost ring is the brightest: the brand colour lit from above, mixed toward the lamp colour (light in
+   both schemes). No second hue: an accent here turned muddy on some brands (Harbor's
+   orange on teal read brown; Anuj, 2026-10-04). */
+.ring:last-child {
+  background-image: radial-gradient(
+    120% 90% at 50% 15%,
+    color-mix(in oklab, var(--syntara-color-action-primary-bg), var(--_lamp) 30%),
+    transparent 75%
+  );
+  box-shadow: 0 0 var(--syntara-space-16) color-mix(in oklab, var(--syntara-color-action-primary-bg) 45%, transparent);
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion: rings ripple outward and lean toward the pointer (outer rings lean further, for depth); stars twinkle.
+ * Nothing moves when reduced motion is asked for, or while paused.
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .ring {
+    translate:
+      calc(var(--_px) * var(--i) * var(--syntara-space-2))
+      calc(var(--_py) * var(--i) * var(--syntara-space-1));
+    transition: translate calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
+    animation: orbit-ripple var(--_loop) ease-in-out infinite;
+    animation-delay: calc(var(--i) * var(--syntara-motion-duration-slow) * 1.5);
+  }
+
+  .star {
+    animation: orbit-twinkle calc(var(--syntara-motion-duration-slow) * 10) ease-in-out infinite;
+    animation-delay: calc(var(--_d) * var(--syntara-motion-duration-slow) * -10);
+  }
+
+  .root[data-paused] :is(.ring, .star) {
+    animation-play-state: paused;
+  }
+
+  .root[data-paused] .ring {
+    translate: none;
+  }
+}
+
+@keyframes orbit-ripple {
+  50% {
+    scale: 1.035;
+  }
+}
+
+@keyframes orbit-twinkle {
+  50% {
+    opacity: 0.1;
+  }
+}
+
+.pause.pause {
+  position: absolute;
+  inset-block-end: var(--syntara-space-4);
+  inset-inline-end: var(--syntara-space-4);
+  color: var(--syntara-color-text-subtle);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pause.pause {
+    display: none;
+  }
+}

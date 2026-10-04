@@ -50,10 +50,10 @@ describe.each(TENANTS)('$name', (input) => {
     }
   });
 
-  it('toDTCG leaf count matches the engine summary (339)', () => {
+  it('toDTCG leaf count matches the engine summary (344)', () => {
     const doc = toDTCG(theme);
     expect(countLeafTokens(doc)).toBe(theme.summary.tokenCount);
-    expect(countLeafTokens(doc)).toBe(339);
+    expect(countLeafTokens(doc)).toBe(344);
   });
 
   it('toDTCG: types resolvable, aliases resolve, colour objects valid', () => {
