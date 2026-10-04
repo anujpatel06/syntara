@@ -1,0 +1,529 @@
+/*
+ * Hero. Tokens only; container breakpoints (640, 1024), the lights' sizes and places (container units, percentages)
+ * and their strength are the only literals. Ambient durations are multiples of --syntara-motion-duration-slow.
+ * Ported from the docs block apps/docs/blocks/hero-aurora (spec: docs/design/marketing-blocks.md), minus its menu
+ * bar and search, which belong to the page.
+ */
+
+.root {
+  --_gutter: var(--syntara-space-4);
+  /* How strong the lights are: bright, since the hero is dark by default (scheme="dark"). */
+  --_glow: 0.8;
+  /* What the lights are washed toward: the page on a light scheme (pastel), the light text colour on a dark one, so
+     they glow (mixing toward a dark page turned Harbor's orange brown). The theme sets color-scheme, so light-dark()
+     follows the scope's scheme, not the browser's. */
+  --_wash: light-dark(var(--syntara-color-surface-canvas), var(--syntara-color-text-default));
+  --_mx: 50%;
+  --_my: 45%;
+
+  box-sizing: border-box;
+  container: syntara-hero / inline-size;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-block-size: calc(var(--syntara-space-16) * 9); /* 576px */
+  overflow: clip;
+  background-color: var(--syntara-color-surface-canvas);
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  text-align: center;
+}
+
+.root :where(*, *::before, *::after) {
+  box-sizing: border-box;
+}
+
+@container syntara-hero (min-width: 640px) {
+  .copy {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Lights: big blurred circles of the brand's primary, accent and a mix, drifting slowly; one follows the pointer.
+ * ------------------------------------------------------------------ */
+
+.lights {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.light {
+  --_size: 1;
+
+  position: absolute;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(calc(var(--syntara-space-16) * 1.5));
+  opacity: var(--_glow);
+}
+
+/* Phones: the lights would be too small to see at page-relative sizes, so they grow. */
+@container syntara-hero (max-width: 639.98px) {
+  .light {
+    --_size: 2;
+  }
+}
+
+/* Far top corner, the primary. */
+.lightA {
+  inset-block-start: -18%;
+  inset-inline-end: -10%;
+  inline-size: calc(48cqi * var(--_size));
+  background-color: color-mix(in oklab, var(--syntara-color-action-primary-bg) 70%, var(--_wash));
+}
+
+/* Near bottom corner, the accent. */
+.lightB {
+  inset-block-end: -22%;
+  inset-inline-start: -12%;
+  inline-size: calc(44cqi * var(--_size));
+  background-color: color-mix(in oklab, var(--syntara-color-accent-bg) 75%, var(--_wash));
+}
+
+/* A small mix of the two, high on the far side. Kept faint: it passes behind the headline. */
+.lightC {
+  inset-block-start: 8%;
+  inset-inline-start: 58%;
+  inline-size: calc(26cqi * var(--_size));
+  background-color: color-mix(in oklab, var(--syntara-color-action-primary-bg), var(--syntara-color-accent-bg));
+  opacity: calc(var(--_glow) * 0.6);
+}
+
+/* Follows the pointer with a lag. Physical left/top on purpose: the pointer's position is physical. */
+.lightPointer {
+  inset-block-start: var(--_my);
+  left: var(--_mx);
+  inline-size: calc(24cqi * var(--_size));
+  translate: -50% -50%;
+  background-color: color-mix(in oklab, var(--syntara-color-action-primary-bg) 60%, var(--_wash));
+  opacity: calc(var(--_glow) * 0.7);
+}
+
+/* ------------------------------------------------------------------ *
+ * Copy
+ * ------------------------------------------------------------------ */
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
+  max-inline-size: calc(var(--syntara-space-16) * 13); /* 832px */
+  padding-block: var(--syntara-space-16) var(--syntara-space-20);
+  padding-inline: var(--_gutter);
+}
+
+.eyebrow {
+  display: flex;
+  justify-content: center;
+  margin-block-end: var(--syntara-space-6);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-4xl);
+  font-weight: var(--syntara-font-weight-semibold);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-4xl);
+  text-wrap: balance;
+}
+
+@container syntara-hero (min-width: 640px) {
+  .title {
+    font-size: var(--syntara-font-size-5xl);
+    letter-spacing: var(--syntara-font-tracking-5xl);
+  }
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .title {
+    font-size: var(--syntara-font-size-6xl);
+    letter-spacing: var(--syntara-font-tracking-6xl);
+  }
+}
+
+.line {
+  display: block;
+}
+
+/* Two-tone headline: the second line in the muted text colour (spec: the Stripe take). */
+.secondary {
+  color: var(--syntara-color-text-subtle);
+}
+
+.description {
+  max-inline-size: 52ch;
+  margin: 0;
+  margin-block-start: var(--syntara-space-6);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-lg);
+  text-wrap: balance;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--syntara-space-3);
+  inline-size: 100%;
+  margin-block-start: var(--syntara-space-8);
+}
+
+/* ------------------------------------------------------------------ *
+ * Pause toggle (WCAG 2.2.2): a quiet icon button in the far bottom corner.
+ * ------------------------------------------------------------------ */
+
+.pause {
+  position: absolute;
+  inset-block-end: var(--syntara-space-4);
+  inset-inline-end: var(--syntara-space-4);
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-control-height);
+  block-size: var(--syntara-control-height);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--syntara-radius-button);
+  background: transparent;
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-md);
+  cursor: default;
+  transition:
+    background-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+
+.pause[data-hovered],
+.pause[data-selected] {
+  background: color-mix(in oklab, var(--syntara-color-text-default) 6%, transparent);
+  color: var(--syntara-color-text-default);
+}
+
+.pause[data-focus-visible] {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.pause svg {
+  inline-size: 1em;
+  block-size: 1em;
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion: the three lights drift on long, out-of-step loops; the pointer light trails the pointer. Nothing moves with
+ * reduced motion asked for, or while paused.
+ * ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .lightA {
+    animation: syntara-hero-a calc(var(--syntara-motion-duration-slow) * 60) ease-in-out infinite alternate;
+  }
+
+  .lightB {
+    animation: syntara-hero-b calc(var(--syntara-motion-duration-slow) * 75) ease-in-out infinite alternate;
+  }
+
+  .lightC {
+    animation: syntara-hero-c calc(var(--syntara-motion-duration-slow) * 50) ease-in-out infinite alternate;
+  }
+
+  .lightPointer {
+    transition:
+      left calc(var(--syntara-motion-duration-slow) * 4) var(--syntara-motion-easing-out),
+      inset-block-start calc(var(--syntara-motion-duration-slow) * 4) var(--syntara-motion-easing-out);
+  }
+
+  .root[data-paused] .light {
+    animation-play-state: paused;
+  }
+
+  .root[data-paused] .lightPointer {
+    transition: none;
+  }
+
+  .pause[data-pressed] {
+    scale: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightPointer,
+  .pause {
+    display: none;
+  }
+}
+
+@keyframes syntara-hero-a {
+  to {
+    translate: -14cqi 10cqi;
+    scale: 1.15;
+  }
+}
+
+@keyframes syntara-hero-b {
+  to {
+    translate: 16cqi -8cqi;
+    scale: 0.9;
+  }
+}
+
+@keyframes syntara-hero-c {
+  to {
+    translate: -20cqi 6cqi;
+  }
+}
+
+@supports (corner-shape: squircle) {
+  .pause {
+    corner-shape: squircle;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Layout wrapper: aurora stacks everything centred; orbit puts the copy on the start side and the ringed actions on
+ * the far side.
+ * ------------------------------------------------------------------ */
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: 100%;
+}
+
+/* ------------------------------------------------------------------ *
+ * variant="orbit" — ported from apps/docs/blocks/hero-orbit (minus its menu bar). Rings of the brand colour ripple
+ * out around the actions and lean toward the pointer; faint stars twinkle behind. The strongest colour is only ever
+ * at the centre of the rings, far from the copy.
+ * ------------------------------------------------------------------ */
+
+.root[data-variant='orbit'] {
+  --_stepX: var(--syntara-space-8); /* how far each ring reaches past the last, sideways */
+  --_stepY: var(--syntara-space-6); /* …and up and down */
+  --_loop: calc(var(--syntara-motion-duration-slow) * 20); /* 6.4s ripple */
+  --_px: 0;
+  --_py: 0;
+
+  min-block-size: calc(var(--syntara-space-16) * 11); /* 704px */
+  background:
+    radial-gradient(
+      70% 60% at 85% 90%,
+      color-mix(in oklab, var(--syntara-color-action-primary-bg) 10%, transparent),
+      transparent
+    ),
+    var(--syntara-color-surface-canvas);
+  text-align: start;
+}
+
+.root[data-variant='orbit'] .inner {
+  flex: 1;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: calc(var(--syntara-space-24) + var(--syntara-space-8));
+  max-inline-size: calc(var(--syntara-space-16) * 18.75); /* 1200px */
+  padding-block: var(--syntara-space-16) calc(var(--syntara-space-24) + var(--syntara-space-8));
+  padding-inline: var(--_gutter);
+}
+
+@container syntara-hero (min-width: 640px) {
+  .root[data-variant='orbit'] .inner {
+    --_gutter: var(--syntara-space-8);
+  }
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .root[data-variant='orbit'] .inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--syntara-space-16);
+    padding-block: var(--syntara-space-24);
+  }
+}
+
+.root[data-variant='orbit'] .copy {
+  align-items: start;
+  max-inline-size: calc(var(--syntara-space-16) * 9); /* 576px */
+  padding: 0;
+}
+
+.root[data-variant='orbit'] .eyebrow {
+  justify-content: start;
+}
+
+.root[data-variant='orbit'] .title {
+  font-weight: var(--syntara-font-weight-medium);
+}
+
+@container syntara-hero (min-width: 640px) {
+  .root[data-variant='orbit'] .title {
+    font-size: var(--syntara-font-size-6xl);
+    letter-spacing: var(--syntara-font-tracking-6xl);
+  }
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .root[data-variant='orbit'] .title {
+    font-size: var(--syntara-font-size-7xl);
+    letter-spacing: var(--syntara-font-tracking-7xl);
+  }
+}
+
+.root[data-variant='orbit'] .description {
+  max-inline-size: 46ch;
+  text-wrap: pretty;
+}
+
+/* The actions sit in the middle of the rings. Narrow: centred under the copy. Wide: the far bottom corner. */
+.core {
+  position: relative;
+  align-self: center;
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .core {
+    margin-inline-end: var(--syntara-space-16);
+  }
+}
+
+.coreActions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--syntara-space-3);
+}
+
+.rings {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Ring --i: 1 is innermost, 7 outermost. Each reaches one step further and holds less of the brand colour, from 87%
+   at the centre to 9% at the edge. */
+.ring {
+  position: absolute;
+  inset-block: calc(var(--_stepY) * var(--i) * -1);
+  inset-inline: calc(var(--_stepX) * var(--i) * -1);
+  border-radius: var(--syntara-radius-pill);
+  background-color: color-mix(
+    in oklab,
+    var(--syntara-color-action-primary-bg) calc(100% - var(--i) * 13%),
+    var(--syntara-color-surface-canvas)
+  );
+}
+
+/* The innermost ring is the brightest: the brand colour lit from above. No second hue (Harbor's orange on teal read
+   brown; Anuj, 2026-10-04). */
+.ring:last-child {
+  background-image: radial-gradient(
+    120% 90% at 50% 15%,
+    color-mix(in oklab, var(--syntara-color-action-primary-bg), var(--syntara-color-text-default) 30%),
+    transparent 75%
+  );
+  box-shadow: 0 0 var(--syntara-space-16) color-mix(in oklab, var(--syntara-color-action-primary-bg) 45%, transparent);
+}
+
+.stars {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Stars only show on a dark scheme (on a light page they read as dust): transparent there, via the scope's
+   color-scheme, never prefers-color-scheme. */
+.star {
+  position: absolute;
+  inline-size: calc(var(--syntara-space-1) / 2);
+  block-size: calc(var(--syntara-space-1) / 2);
+  border-radius: var(--syntara-radius-pill);
+  background-color: light-dark(transparent, var(--syntara-color-text-subtle));
+  opacity: 0.45;
+}
+
+.star[data-big] {
+  inline-size: var(--syntara-space-1);
+  block-size: var(--syntara-space-1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ring {
+    translate:
+      calc(var(--_px) * var(--i) * var(--syntara-space-2))
+      calc(var(--_py) * var(--i) * var(--syntara-space-1));
+    transition: translate calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
+    animation: syntara-hero-ripple var(--_loop) ease-in-out infinite;
+    animation-delay: calc(var(--i) * var(--syntara-motion-duration-slow) * 1.5);
+  }
+
+  .star {
+    animation: syntara-hero-twinkle calc(var(--syntara-motion-duration-slow) * 10) ease-in-out infinite;
+    animation-delay: calc(var(--_d) * var(--syntara-motion-duration-slow) * -10);
+  }
+
+  .root[data-paused] :is(.ring, .star) {
+    animation-play-state: paused;
+  }
+
+  .root[data-paused] .ring {
+    translate: none;
+  }
+}
+
+@keyframes syntara-hero-ripple {
+  50% {
+    scale: 1.035;
+  }
+}
+
+@keyframes syntara-hero-twinkle {
+  50% {
+    opacity: 0.1;
+  }
+}
+
+/* The lamp: buttons at the centre of the rings are a white pill with dark text, in both schemes (Anuj, 2026-10-04:
+   "change the button colour to white"). White is the scheme's lightest text-safe pair, never a raw colour: on a dark
+   scheme text.default (near-white) with surface.canvas text, on a light one surface.default with text.default. Both
+   pairs are text-on-surface pairs the engine proves at 4.5:1.
+   Button keeps its colours in --_bg / --_fg / --_border; the class is tripled (with the state attribute) to outrank
+   Button's own variant and state rules, which go up to four selectors deep. */
+.coreActions {
+  --_lamp: light-dark(var(--syntara-color-surface-default), var(--syntara-color-text-default));
+  --_lampText: light-dark(var(--syntara-color-text-default), var(--syntara-color-surface-canvas));
+}
+
+.coreActions.coreActions.coreActions > [data-rac],
+.coreActions.coreActions.coreActions > [data-rac]:is([data-hovered], [data-pressed]) {
+  --_bg: var(--_lamp);
+  --_fg: var(--_lampText);
+  --_border: var(--_lamp);
+  border-radius: var(--syntara-radius-pill);
+  box-shadow:
+    var(--syntara-shadow-raised),
+    0 0 var(--syntara-space-12) color-mix(in oklab, var(--_lamp) 35%, transparent);
+}
+
+.coreActions.coreActions.coreActions > [data-rac][data-hovered] {
+  --_bg: color-mix(in oklab, var(--_lamp) 90%, var(--syntara-color-action-primary-bg));
+}
+
+/* Button squares its corners off with corner-shape: squircle; the lamp is a true pill. */
+@supports (corner-shape: squircle) {
+  .coreActions.coreActions.coreActions > [data-rac] {
+    corner-shape: round;
+  }
+}

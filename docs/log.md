@@ -49,6 +49,10 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 - Build D0kYAuDj844HQsGjI0Udl: `check-hydration` 0 of 286; `check-theme-links` 0 of 5; `check-narrow-overflow` 0
   sideways of 286; `check-csp` 0 of 143; `axe-sweep` 0 violation nodes over 143 routes × 2 schemes;
   `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
+- After merging `origin/main` at 983fd22 (Hero, #51): `pnpm test` all passing (react 527 = main's 519 + 8 here), README
+  row fixed by `check-test-counts --fix`; `pnpm typecheck` and `pnpm check:meta` exit 0. Re-running
+  `pnpm --filter @syntara/sdui generate` found the committed `validator.generated.js` stale (0 mentions of `surface`,
+  now 5); regenerated in the merge commit.
 - Screenshots looked at by Claude: the brand rail before/after/flat in dark; dashboard-overview vela light, harbor
   dark, qamar light (top-level Alert and StatTiles unchanged, as intended); settings harbor dark; benefits-overview
   care light (Alert in a card is now an outline); request-flow qamar dark RTL; portfolio vela dark at 390px; the
