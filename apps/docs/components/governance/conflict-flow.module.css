@@ -1,0 +1,211 @@
+.root {
+  container-type: inline-size;
+  display: grid;
+  gap: var(--syntara-space-6);
+  margin-block: var(--syntara-space-6);
+}
+
+/* The four steps stack with arrows pointing down; from 40rem of column they sit in one row with arrows pointing
+   along the line. Never 3 + 1: a lone fourth card left an arrow pointing at nothing. */
+.steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--syntara-space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-2);
+  padding: var(--syntara-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-color-surface-raised);
+  box-shadow:
+    0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle),
+    var(--syntara-shadow-raised);
+}
+
+/* The arrow between steps: a chevron below every step but the last (stacked), or at its inline end (in a row). */
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  inset-block-end: calc(var(--syntara-space-5) / -2 - var(--syntara-space-1));
+  inset-inline-start: 50%;
+  inline-size: var(--syntara-space-2);
+  block-size: var(--syntara-space-2);
+  border-block-start: 2px solid var(--syntara-color-border-strong);
+  border-inline-end: 2px solid var(--syntara-color-border-strong);
+  rotate: 135deg;
+  translate: -50% 0;
+  z-index: 1;
+}
+
+@container (min-width: 40rem) {
+  .steps {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--syntara-space-4);
+  }
+
+  .step:not(:last-child)::after {
+    inset-block-end: auto;
+    inset-inline-start: auto;
+    inset-inline-end: calc(var(--syntara-space-4) / -2 - var(--syntara-space-1));
+    inset-block-start: 50%;
+    rotate: 45deg;
+    translate: 0 -50%;
+  }
+
+  :dir(rtl) .step:not(:last-child)::after {
+    rotate: -135deg;
+  }
+
+  /* .root first: the base .kindList rule sits later in this file and would otherwise win. */
+  .root .kindList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.stepNumber {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-accent-subtle);
+  color: var(--syntara-color-accent-text);
+  font-weight: var(--syntara-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.stepTitle {
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-semibold);
+  letter-spacing: var(--syntara-font-heading-tracking);
+}
+
+.stepBody {
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  line-height: var(--syntara-line-height-normal);
+}
+
+/* Sort is the step that branches: it carries the accent ring so the eye follows it down to the three kinds. */
+.step[data-step='sort'] {
+  box-shadow:
+    0 0 0 1px var(--syntara-color-accent-text),
+    var(--syntara-shadow-raised);
+}
+
+.kinds,
+.priority {
+  display: grid;
+  gap: var(--syntara-space-3);
+}
+
+.kindsTitle {
+  margin: 0;
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-md);
+  font-weight: var(--syntara-font-weight-semibold);
+}
+
+.kindList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--syntara-space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kind {
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-2);
+  padding: var(--syntara-space-4);
+  border-inline-start: 2px solid var(--syntara-color-accent-text);
+  /* Square on the ruled side, so the accent line stays straight; rounded on the other. */
+  border-start-end-radius: var(--syntara-radius-badge);
+  border-end-end-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-sunken);
+}
+
+.kindTitle {
+  color: var(--syntara-color-text-default);
+  font-weight: var(--syntara-font-weight-semibold);
+}
+
+.kindRule {
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-sm);
+  line-height: var(--syntara-line-height-normal);
+}
+
+.kindOutcome {
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  line-height: var(--syntara-line-height-normal);
+}
+
+.priorityLead {
+  margin: 0;
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+
+/* The ranks read as a chain: 1 › 2 › 3 › 4, wrapping on narrow screens. */
+.ranks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rank {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  padding-block: var(--syntara-space-1);
+  padding-inline: var(--syntara-space-1) var(--syntara-space-3);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-raised);
+  box-shadow: 0 0 0 var(--syntara-hairline) var(--syntara-color-border-default);
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+}
+
+.rank:not(:last-child)::after {
+  content: '›';
+  margin-inline-start: var(--syntara-space-2);
+  margin-inline-end: calc(var(--syntara-space-3) * -1 - var(--syntara-space-2) / 2);
+  color: var(--syntara-color-text-subtle);
+}
+
+:dir(rtl) .rank:not(:last-child)::after {
+  content: '‹';
+}
+
+.rankNumber {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-6);
+  block-size: var(--syntara-space-6);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-accent-subtle);
+  color: var(--syntara-color-accent-text);
+  font-size: var(--syntara-font-size-xs);
+  font-weight: var(--syntara-font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
