@@ -243,8 +243,8 @@ export function BrandsSection() {
               {/* Each card keeps its own brand — that is what this section is for — but its light/dark follows the
                   showcase toolbar above (see TenantScope). It used to follow the site's scheme only, so pressing
                   Light up there left this whole rail dark. */}
-              <TenantScope theme={t.id} locale={t.locale} className={styles.tenantScope}>
-                <TenantCard tenant={t} level={3} />
+              <TenantScope theme={t.id} locale={t.locale} className={`${styles.tenantScope} ${styles.tenantScopeFlat}`}>
+                <TenantCard tenant={t} level={3} flat />
               </TenantScope>
             </div>
             <figcaption className={styles.tenantCaption}>

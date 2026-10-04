@@ -198,6 +198,13 @@ background:
   - `<elevation>` is `--syntara-shadow-raised` for inline containers (Alert, cards) and `--syntara-shadow-overlay` for floating ones (Toast).
   - No heavier shadows, and no tone-coloured edges: the tone lives in the status shape.
 - Keep `border: 1px solid transparent`: the rim paints there, and forced-colours mode draws it as the edge.
+- **Inside a card, inner surfaces are outlines (ADR-045, Anuj 2026-10-04).** Card publishes `--syntara-surface-nest: card`
+  (`none` on `feature`). A surface that can sit in a card (Alert, StatTile, a nested Card, FileUpload rows) adds
+  `@container style(--syntara-surface-nest: card) { .x:not([data-surface='raised']) { … } }` that drops the face, rim and
+  shadow and keeps only `0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle)`. Give it `surface?: 'auto' | 'raised'`.
+  Anything that must match the face (a knockout, a ring) uses `--syntara-surface-nest-face`, never `var(--_face)`.
+  Floating surfaces (Toast) and controls (buttons, pills, fields) keep their faces. Prove the status shape and text
+  against every plain card face (`nestedOutlineWorst` in `test/status-icon-contrast.ts`).
 - Add the rim in dark only. `--syntara-sheen` is `none` exactly in light schemes, so it serves as the scheme signal
   without naming a scheme. It keeps that job even though nothing paints it any more (ADR-038): it is still the one
   token whose value differs by scheme without a scheme in its name.

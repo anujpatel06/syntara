@@ -72,3 +72,45 @@ export function statusIconWorst(inputs: BrandInput[], names?: string[]): IconWor
   });
   return worst;
 }
+
+/**
+ * Style A (Anuj, 2026-10-04): inside a Card, Alert, StatTile, a nested Card and FileUpload's rows have no face, so
+ * what they show sits on the card's face. Default and outline cards are surface.raised; showcase is surface.raised
+ * in light and surface.sunken in dark; a ghost card shows the page (surface.canvas or surface.default). Feature cards
+ * opt out (their glow is not a plain surface). So the outline is proven against all four plain surfaces.
+ */
+export const NESTED_FACES = ['surface.raised', 'surface.sunken', 'surface.canvas', 'surface.default'] as const;
+
+export interface NestedWorst {
+  /** feedback.<tone>.fg, the status shape, ≥ 3:1. */
+  shape: number;
+  /** text.subtle, the neutral shape, ≥ 3:1 (and as body text, ≥ 4.5:1). */
+  subtle: number;
+  /** text.default, titles and figures, ≥ 4.5:1. */
+  text: number;
+  at: { shape: string; subtle: string; text: string };
+}
+
+export function nestedOutlineWorst(inputs: BrandInput[], names?: string[]): NestedWorst {
+  const worst: NestedWorst = { shape: Infinity, subtle: Infinity, text: Infinity, at: { shape: '', subtle: '', text: '' } };
+  const track = (key: 'shape' | 'subtle' | 'text', v: number, at: string) => {
+    if (v < worst[key]) {
+      worst[key] = v;
+      worst.at[key] = at;
+    }
+  };
+  inputs.forEach((input, i) => {
+    const theme = generateTheme(input);
+    const who = names?.[i] ?? `fuzz#${i}`;
+    for (const scheme of ['light', 'dark'] as const) {
+      const r = theme.schemes[scheme].roles;
+      for (const f of NESTED_FACES) {
+        const face = r[f].hex;
+        for (const t of STATUS_TONES) track('shape', contrastRatio(r[`feedback.${t}.fg`].hex, face), `${who} ${scheme} ${t} on ${f}`);
+        track('subtle', contrastRatio(r['text.subtle'].hex, face), `${who} ${scheme} on ${f}`);
+        track('text', contrastRatio(r['text.default'].hex, face), `${who} ${scheme} on ${f}`);
+      }
+    }
+  });
+  return worst;
+}

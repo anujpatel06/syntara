@@ -59,6 +59,11 @@ export interface StatTileProps extends HTMLAttributes<HTMLElement> {
    * (surface.canvas in light, surface.default in dark), no shadow. Its corner follows the card's.
    */
   variant?: 'default' | 'outline' | 'ghost' | 'editorial';
+  /**
+   * `auto` (default): inside a Card it's an outline only (no face, no shadow, a hairline edge) for `default` and `outline` tiles, so a card doesn't read
+   * as filled boxes in a filled box; anywhere else it has its raised face. `raised` keeps the face inside a card too.
+   */
+  surface?: 'auto' | 'raised';
   ref?: Ref<HTMLElement>;
 }
 
@@ -80,6 +85,7 @@ export function StatTile({
   sparkline,
   size = 'md',
   variant = 'default',
+  surface = 'auto',
   className,
   ref,
   ...rest
@@ -110,6 +116,7 @@ export function StatTile({
       ref={ref as Ref<HTMLDivElement & HTMLDListElement>}
       data-size={size}
       data-variant={variant}
+      data-surface={surface === 'raised' ? 'raised' : undefined}
       data-sparkline={points ? '' : undefined}
       className={cx(styles.tile, className)}
     >
