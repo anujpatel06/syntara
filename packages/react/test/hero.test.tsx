@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Hero } from '../src/ui/hero';
 
@@ -74,6 +74,52 @@ describe('Hero', () => {
     const section = screen.getByRole('region', { name: 'Plans' });
     expect(section).toHaveAttribute('data-syntara-theme', 'qamar');
     expect(section).toHaveAttribute('data-syntara-scheme', 'dark');
+  });
+
+  describe('variant="orbit"', () => {
+    it('puts the actions at the centre of the rings, after the copy, and hides rings and stars', () => {
+      const { container } = render(
+        <Hero variant="orbit" title="Money that moves" actions={<button type="button">Open an account</button>} />,
+      );
+      const section = container.querySelector('section')!;
+      expect(section).toHaveAttribute('data-variant', 'orbit');
+      const button = screen.getByRole('button', { name: 'Open an account' });
+      const heading = screen.getByRole('heading', { name: 'Money that moves' });
+      // Reading order: the headline comes before the action.
+      expect(heading.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      // The action shares a parent with the rings, which are decoration.
+      const rings = button.parentElement!.previousElementSibling!;
+      expect(rings).toHaveAttribute('aria-hidden', 'true');
+      expect(rings.children).toHaveLength(7);
+      // 48 stars from a fixed seed, hidden too; no aurora lights.
+      const decoration = [...section.children].filter((el) => el.getAttribute('aria-hidden') === 'true');
+      expect(decoration).toHaveLength(1);
+      expect(decoration[0]!.children).toHaveLength(48);
+    });
+
+    it('draws the same star field on every render (server and browser agree)', () => {
+      const stars = () => {
+        const section = render(<Hero variant="orbit" title="A" />).container.querySelector('section')!;
+        return [...section.children[0]!.children].map((s) => (s as HTMLElement).getAttribute('style'));
+      };
+      const first = stars();
+      expect(first).toHaveLength(48);
+      expect(stars()).toEqual(first);
+    });
+
+    it('lets the rings lean toward the pointer and settle when it leaves', () => {
+      const { container } = render(<Hero variant="orbit" title="A" />);
+      const section = container.querySelector('section')!;
+      section.getBoundingClientRect = () => ({ left: 0, top: 0, width: 200, height: 100, right: 200, bottom: 100, x: 0, y: 0, toJSON() {} });
+      // jsdom has no PointerEvent, so fireEvent.pointerMove drops clientX; a MouseEvent of that type carries it.
+      const move = new MouseEvent('pointermove', { bubbles: true, clientX: 150, clientY: 25 });
+      Object.defineProperty(move, 'pointerType', { value: 'mouse' });
+      section.dispatchEvent(move);
+      expect(section.style.getPropertyValue('--_px')).toBe('0.500');
+      expect(section.style.getPropertyValue('--_py')).toBe('-0.500');
+      fireEvent.pointerLeave(section);
+      expect(section.style.getPropertyValue('--_px')).toBe('0');
+    });
   });
 
   it('hides the decoration from assistive tech', () => {
