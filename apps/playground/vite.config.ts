@@ -35,5 +35,16 @@ function liveBarrel(): Plugin {
 export default defineConfig({
   plugins: [liveBarrel(), react()],
   resolve: { dedupe: ['react', 'react-dom', 'react-aria-components'] },
+  // The live barrel is a virtual module, so Vite's dependency scan never sees src/ui's imports and serves
+  // react-aria-components unbundled. Its CommonJS dependency use-sync-external-store then reaches the browser
+  // as raw CJS ("does not provide an export named 'useSyncExternalStore'") and every page renders blank on a
+  // fresh install. Pre-bundling them up front converts the CJS. They are reached through @syntara/react (the
+  // playground doesn't depend on them directly, and pnpm won't resolve them from here), hence the `a > b` form.
+  optimizeDeps: {
+    include: [
+      '@syntara/react > react-aria-components',
+      '@syntara/react > @internationalized/date',
+    ],
+  },
   server: { host: '127.0.0.1' },
 });
