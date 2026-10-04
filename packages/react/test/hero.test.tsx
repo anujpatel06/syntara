@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Hero } from '../src/ui/hero';
 
@@ -69,6 +69,18 @@ describe('Hero', () => {
     expect(section()).not.toHaveAttribute('data-syntara-theme');
   });
 
+  it('follows the page when it switches brand afterwards', async () => {
+    const { container } = render(
+      <div data-syntara-theme="vela">
+        <Hero title="Plans" />
+      </div>,
+    );
+    const section = screen.getByRole('region', { name: 'Plans' });
+    expect(section).toHaveAttribute('data-syntara-theme', 'vela');
+    (container.firstElementChild as HTMLElement).setAttribute('data-syntara-theme', 'haat');
+    await waitFor(() => expect(section).toHaveAttribute('data-syntara-theme', 'haat'));
+  });
+
   it('renders dark on the server when given the theme', () => {
     render(<Hero title="Plans" theme="qamar" />);
     const section = screen.getByRole('region', { name: 'Plans' });
@@ -119,6 +131,47 @@ describe('Hero', () => {
       expect(section.style.getPropertyValue('--_py')).toBe('-0.500');
       fireEvent.pointerLeave(section);
       expect(section.style.getPropertyValue('--_px')).toBe('0');
+    });
+  });
+
+  describe('variant="gallery"', () => {
+    const images = [{ src: '/a.webp' }, { src: '/b.webp' }, { src: '/c.webp' }];
+
+    it('puts the wall between the headline and the description, hidden and out of the tab order', () => {
+      const { container } = render(
+        <Hero
+          variant="gallery"
+          images={images}
+          title="Every idea"
+          description="One canvas."
+          actions={<button type="button">Start</button>}
+        />,
+      );
+      const heading = screen.getByRole('heading', { name: 'Every idea' });
+      const wall = container.querySelector('[inert]')!;
+      const description = screen.getByText('One canvas.');
+      expect(wall).toHaveAttribute('aria-hidden', 'true');
+      expect(heading.compareDocumentPosition(wall) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(wall.compareDocumentPosition(description) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(description.compareDocumentPosition(screen.getByRole('button', { name: 'Start' })) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    });
+
+    it('fills 20 cards with the pictures in order, repeating, plus 2 brand tiles', () => {
+      const { container } = render(<Hero variant="gallery" images={images} title="A" />);
+      const cards = container.querySelectorAll('[data-kind]');
+      expect(cards).toHaveLength(22);
+      expect(container.querySelectorAll('[data-kind="brand"]')).toHaveLength(2);
+      const srcs = [...container.querySelectorAll('img')].map((img) => img.getAttribute('src'));
+      expect(srcs).toHaveLength(20);
+      expect(srcs.slice(0, 4)).toEqual(['/a.webp', '/b.webp', '/c.webp', '/a.webp']);
+      // Decoration: no alt text to announce.
+      for (const img of container.querySelectorAll('img')) expect(img).toHaveAttribute('alt', '');
+    });
+
+    it('with no pictures, every card is a brand tile', () => {
+      const { container } = render(<Hero variant="gallery" title="A" />);
+      expect(container.querySelectorAll('img')).toHaveLength(0);
+      expect(container.querySelectorAll('[data-kind="brand"]')).toHaveLength(22);
     });
   });
 

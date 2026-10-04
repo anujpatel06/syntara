@@ -11,8 +11,11 @@ import { CodeBlock } from '@/components/mdx/code-block';
 import { PackageCommand } from '@/components/mdx/package-command';
 import { H2, H3, P, Steps, Table, A } from '@/components/mdx/prose';
 import { ComponentPreview } from '@/components/preview/component-preview';
+import { ExampleOverview } from '@/components/preview/example-overview';
 import { CATEGORY_LABEL, type ComponentMeta, type Deprecation, type PropDoc } from '@/lib/meta-types';
 import { getAllMeta, getMeta, heroExample } from '@/lib/meta';
+import { OVERVIEWS } from '@/lib/overviews';
+import { getTenants } from '@/lib/tenants';
 import { readRepoFile } from '@/lib/repo';
 import { githubBlob } from '@/lib/site';
 import { slugify } from '@/lib/slug';
@@ -42,7 +45,7 @@ function toc(meta: ComponentMeta): TocItem[] {
     { id: 'installation', title: 'Installation', depth: 2 },
     { id: 'usage', title: 'Usage', depth: 2 },
   ];
-  const more = meta.examples.slice(1);
+  const more = meta.examples.slice(OVERVIEWS[meta.name] ? 0 : 1);
   if (more.length) {
     items.push({ id: 'examples', title: 'Examples', depth: 2 });
     for (const e of more) items.push({ id: `example-${slugify(e.title)}`, title: e.title, depth: 3 });
@@ -151,7 +154,8 @@ export default async function ComponentPage({ params }: { params: Promise<{ name
   const sourcePath = `packages/react/src/ui/${meta.name}.tsx`;
   const mainExport = meta.exports[0] ?? meta.title.replace(/\s+/g, '');
   const importLine = `import { ${meta.exports.join(', ') || mainExport} } from '@syntara/react';`;
-  const moreExamples = meta.examples.slice(1);
+  // With an overview on top, no example is shown up there, so none is skipped here.
+  const moreExamples = meta.examples.slice(OVERVIEWS[meta.name] ? 0 : 1);
   const files = meta.files.map((file) => ({ file, source: readRepoFile('packages', 'react', 'src', 'ui', file) }));
 
   return (
@@ -188,7 +192,12 @@ export default async function ComponentPage({ params }: { params: Promise<{ name
         <h2 id="preview" className="visually-hidden">
           Preview
         </h2>
-        <ComponentPreview name={heroExample(meta)} label={`${meta.title}`} />
+        {OVERVIEWS[meta.name] ? (
+          // Every style side by side, no stage controls; each tile opens its own page with them (lib/overviews.ts).
+          <ExampleOverview name={OVERVIEWS[meta.name]!} label={`${meta.title} styles`} theme={getTenants()[0]?.id ?? 'vela'} />
+        ) : (
+          <ComponentPreview name={heroExample(meta)} label={`${meta.title}`} />
+        )}
       </section>
 
       <H2 id="installation">Installation</H2>

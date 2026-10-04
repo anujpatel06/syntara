@@ -65,4 +65,5 @@ doesn't help consumers, who can't install blocks (ADR-011 revision: the registry
 - [x] Tests (slots, heading level, pause toggle, dark scope)
 - [x] Changeset
 - [x] `orbit` (Anuj approved 2026-10-04, after asking for a white button at the centre)
-- [ ] `gallery`, `cards`, one PR each
+- [x] `gallery` (Anuj approved 2026-10-04; the Hero page now opens with every style side by side, each linking to its own page)
+- [ ] `cards`
