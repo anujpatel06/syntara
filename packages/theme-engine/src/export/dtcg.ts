@@ -1,7 +1,7 @@
 /**
  * Theme → W3C Design Tokens Format Module 2025.10 JSON.
  *
- * Tree (the engine's countTokens() relies on this exact shape — 339 leaf tokens):
+ * Tree (the engine's countTokens() relies on this exact shape — 344 leaf tokens):
  *   primitive.color.<scheme>.<ramp>.<1–12>                 168
  *   semantic.<scheme>.color.<role path>                      96  (alias to a primitive when the role is a ramp step)
  *   semantic.<scheme>.shadow.{raised,overlay,highlight}       6
