@@ -6,6 +6,8 @@ import { PackageCommand } from '@/components/mdx/package-command';
 import { Pre } from '@/components/mdx/pre';
 import { A, Blockquote, H2, H3, H4, Hr, InlineCode, Li, Ol, P, Steps, Strong, Table, Ul } from '@/components/mdx/prose';
 import { ComponentPreview } from '@/components/preview/component-preview';
+import { ConflictFlow } from '@/components/governance/conflict-flow';
+import { ConflictForm } from '@/components/governance/conflict-form';
 import {
   AdrLink,
   AdrList,
@@ -62,6 +64,8 @@ const components: MDXComponents = {
   CodeBlock,
   ColorTenantPicker,
   ComponentPreview,
+  ConflictFlow,
+  ConflictForm,
   ContrastPairs,
   DensityTable,
   DoDont,
