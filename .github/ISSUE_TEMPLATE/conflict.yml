@@ -1,0 +1,48 @@
+name: Conflict
+description: Two rules, two products, or you and a past decision pull in different directions.
+labels: [conflict]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every conflict goes raise → sort → decide → record. See GOVERNANCE.md §9.
+        In case of conflict: **accessibility over not breaking consumers over brand wishes over speed.**
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of conflict is it?
+      options:
+        - Two rules clash (settled by the priority order)
+        - I disagree with a past decision (needs new information)
+        - Two products or brands want opposite things
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: clash
+    attributes:
+      label: What clashes
+      description: Name both sides. For a rule clash, name both rules. For a past decision, link its ADR or RFC.
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Where it shows up
+      description: Which screen, product or brand is affected? Attach a screenshot if you can.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: New information (for a past decision)
+      description: A measurement, a bug, or a user need nobody knew about when the decision was made. Disagreeing with the trade-off isn't new information.
+  - type: checkboxes
+    id: tried
+    attributes:
+      label: Before you open this
+      options:
+        - label: I checked whether a prop, variant or brand input already covers both sides (§4)
+          required: false
+        - label: I searched for an existing ADR or RFC on this
+          required: false

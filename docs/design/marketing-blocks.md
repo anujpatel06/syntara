@@ -24,7 +24,7 @@ Sizes in px are the current token values; the CSS uses the tokens, never the num
 - **Width.** Content column max 1200px (`space-16 × 18.75`), centred, side gutter 16px narrow / 32px from 640px.
 - **Section spacing (top and bottom).** 64px narrow. Wide: 96px (`space-24`).
 - **Headline (hero only).** 40px narrow → 60px from 640px → 72px from 1024px (`4xl` → `6xl` → `7xl`). Line height `tight`
-  for now: a tighter display value needs clipping measured per type pair first (ADR-043). Tracking: `--syntara-font-heading-tracking`.
+  for now: a tighter display value needs clipping measured per type pair first (ADR-044). Tracking: `--syntara-font-heading-tracking`.
   Max 18 characters per line in Latin (`max-inline-size: 18ch`), so it breaks into 2 lines, never 4.
 - **Section headings (other blocks).** 32px narrow → 48px wide (`3xl` → `5xl`, already exist).
 - **Body under a headline.** 18–20px (`lg`/`xl`), muted text colour, max 60 characters per line.
@@ -98,4 +98,4 @@ fading into the page at the bottom, the floating card hanging over its edge).
 
 ## Decisions
 
-- **Display sizes** — added to the engine (Anuj, option A). ADR-043.
+- **Display sizes** — added to the engine (Anuj, option A). ADR-044.

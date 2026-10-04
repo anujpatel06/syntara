@@ -152,7 +152,7 @@ describe('every pair exports exactly the tokens it is meant to', () => {
    * which changed the token *names* and no token *value*; and re-recorded again on 2026-09-28 for the clipping fix
    * (ADR-031), which gave six pairs their own measured line heights.
    *
-   * Re-recorded on 2026-10-04 for the website display sizes (ADR-043): font-size 6xl/7xl, their tracking, and
+   * Re-recorded on 2026-10-04 for the website display sizes (ADR-044): font-size 6xl/7xl, their tracking, and
    * space 20/24/32. Checked before re-recording: with those new tokens removed, every pair's CSS, DTCG and CSS
    * variables hashed to the previous row exactly, so the change only adds. shadcn is unchanged (it emits no sizes).
    *

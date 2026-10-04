@@ -20,7 +20,7 @@ const BUDGETS: Array<{ label: string; tool: string; args: Record<string, unknown
   { label: 'get_component button', tool: 'get_component', args: { name: 'button' }, budget: 8_000 },
   { label: 'get_tokens (no category)', tool: 'get_tokens', args: {}, budget: 400 },
   { label: 'get_tokens color', tool: 'get_tokens', args: { category: 'color' }, budget: 5_500 },
-  { label: 'get_tokens space', tool: 'get_tokens', args: { category: 'space' }, budget: 1_000 }, // 900 until ADR-043 added space 20/24/32 (971 bytes measured)
+  { label: 'get_tokens space', tool: 'get_tokens', args: { category: 'space' }, budget: 1_000 }, // 900 until ADR-044 added space 20/24/32 (971 bytes measured)
   { label: 'get_pattern (list)', tool: 'get_pattern', args: {}, budget: 2_500 },
   { label: 'get_pattern settings', tool: 'get_pattern', args: { name: 'settings' }, budget: 1_500 },
   { label: 'get_example button', tool: 'get_example', args: { component: 'button' }, budget: 1_500 },
@@ -58,7 +58,7 @@ describe('response sizes', () => {
 
   it('list_components covers every meta file', async () => {
     const r = await h.call('list_components');
-    expect(r.json.count).toBe(55);
+    expect(r.json.count).toBe(56);
   });
 
   it('responses are compact JSON: no indentation or line breaks between fields', async () => {

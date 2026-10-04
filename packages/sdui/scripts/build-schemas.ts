@@ -76,7 +76,7 @@ export function iconNamesFrom(mod: Record<string, unknown>): string[] {
 /**
  * Gap tokens from the theme engine's token contract (packages/theme-engine/src/types.ts): every `space` key as
  * `space-<key>`, plus `section-gap`, which follows the client's density. Space 20/24/32 are left out: they are the
- * gaps between website sections (ADR-043), not app screens, and adding them would widen the wire for nothing.
+ * gaps between website sections (ADR-044), not app screens, and adding them would widen the wire for nothing.
  */
 const WEBSITE_ONLY_SPACE = new Set(['20', '24', '32']);
 

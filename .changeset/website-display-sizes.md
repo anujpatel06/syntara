@@ -3,7 +3,7 @@
 '@syntara/tokens': minor
 ---
 
-Display sizes for website sections (ADR-043).
+Display sizes for website sections (ADR-044).
 
 New tokens, in every brand: `--syntara-font-size-6xl` (60px) and `-7xl` (72px), with their tracking
 (`--syntara-font-tracking-6xl`, `-7xl`), and `--syntara-space-20` (80px), `-24` (96px) and `-32` (128px) for the gaps

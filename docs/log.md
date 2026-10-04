@@ -14,7 +14,7 @@ the session's checkout was 4 commits behind main with another session's edits in
 **Changed**
 - **Spec:** `docs/design/marketing-blocks.md`, the standard for website sections (references, measurable rules, the
   "generic" anti-list). Rewritten twice in-session as Anuj's taste became clear (see Decided).
-- **Engine — display sizes (ADR-043):** `font-size 6xl/7xl` (60/72px) with their tracking, `space 20/24/32`
+- **Engine — display sizes (ADR-044):** `font-size 6xl/7xl` (60/72px) with their tracking, `space 20/24/32`
   (80/96/128px), in CSS, DTCG, Figma and the Kotlin/Swift token files. Additive only. The server-driven UI keeps
   `space-0…16` as gaps (no schema bump). Changeset `website-display-sizes` (minor: theme-engine, tokens).
 - **Four hero blocks** in `apps/docs/blocks/`, all from real components, all with tenant copy for the five brands,
@@ -35,7 +35,7 @@ the session's checkout was 4 commits behind main with another session's edits in
 
 **Decided**
 - Website sections, the core landing set, hero first; references Linear/Vercel, Stripe, Apple, Notion/Cal.com: **Anuj**.
-- Display sizes in the engine, option A of three: **Anuj** (ADR-043). Keeping them out of SDUI gaps and the MCP
+- Display sizes in the engine, option A of three: **Anuj** (ADR-044). Keeping them out of SDUI gaps and the MCP
   budget change: **Claude**, pending Anuj.
 - Brand ribbon over Dark stage / Framed panel: **Anuj**; then dropped for animated references he supplied: **Anuj**.
 - Build the five one at a time, each approved before the next (Claude pushed back on fanning out): **Claude
@@ -49,7 +49,7 @@ the session's checkout was 4 commits behind main with another session's edits in
 **Results** (`/verify` steps 1–9 in the worktree, served build `Nbw9TvdiIjYaHH24jQB8w` on :3000)
 - `pnpm typecheck`: 0 errors. `pnpm test`: 2,181 passing across 7 packages, 0 failing; `check-test-counts.mjs`: the
   README row matches. Engine 309 passing + 1 skipped.
-- Additive check for ADR-043, before re-recording the fingerprints in `test/script-type.test.ts`: with the new
+- Additive check for ADR-044, before re-recording the fingerprints in `test/script-type.test.ts`: with the new
   tokens removed, 32 of 32 hashes (8 pairs × CSS, DTCG, shadcn, CSS variables) equal the previous rows.
 - `pnpm test:themes`: 118,000 of 118,000 checks pass; median adjustments per brand 4 (unchanged).
 - `pnpm check:meta` exit 0; `pnpm registry`: 80 items, all 5 hero blocks ok; `check-override-weight`: 0.
@@ -71,6 +71,39 @@ the session's checkout was 4 commits behind main with another session's edits in
 - Anuj: review the Arabic and Hindi hero copy.
 - The other website sections (header, features, call-to-action band, footer) in a fresh session, to this standard.
 - A link-styled button: the heroes use `Button` for actions that should navigate.
+
+---
+
+## 2026-10-04 — A flow for conflicts (GOVERNANCE.md §9, ADR-043)
+
+**Changed**
+- **`GOVERNANCE.md` §9, "When things conflict".** One path for every conflict: raise, sort, decide, record. Three
+  kinds: two rules clash (settled by a ranked priority order), someone disagrees with a past decision (reopened only
+  with significant new information), two products want opposite things (prop, variant or brand input first, else a
+  local override until three products need it). With a Mermaid flowchart.
+- **`.github/ISSUE_TEMPLATE/conflict.yml`**, a "Conflict" issue form that asks for the kind, both sides, where it
+  shows up and, for a past decision, the new information.
+- **`docs/research/2026-10-04-conflict-management.md`**: who has done which piece. W3C (ranked priorities), Go and
+  Ousterhout (reopen only with new information), Brad Frost and Primer (local first, promote later), Carbon (named
+  champion, fixed comment window), MADR (decision-makers field). Two of Claude's from-memory claims were wrong and
+  are corrected there: GOV.UK's working-group page is gone, and Polaris has no formal RFC process.
+
+**Decided**
+- Build the flow plus the issue form, not automatic detection yet: **Anuj** (ADR-043).
+- Priority order, accessibility over not breaking consumers over brand wishes over speed: **Anuj** (ADR-043).
+- §9 at the end rather than renumbering §5, which other files point to; no fixed comment window: **Claude
+  recommended, Anuj accepted**.
+
+**Results**
+- Flow tested on one real case, RFC-001 (Button `tone`): it lands where the RFC decided. Reasoning in ADR-043.
+- The form parses: `js-yaml` load of `conflict.yml` → 6 fields, labels `[ 'conflict' ]`.
+- No code changed, so `/verify` was not run.
+
+**Next**
+- The research note's follow-ups before any public "nobody else does this" wording (Material, Backpack, Orbit,
+  the Salesforce and Curtis sources first-hand).
+- Automatic detection (the drift auditor opening a Conflict issue) once a few real conflicts have used the form.
+- Per-kind labels need a GitHub Action; not built.
 
 ---
 

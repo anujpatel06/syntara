@@ -1,4 +1,4 @@
-# ADR-043: Display sizes for website sections
+# ADR-044: Display sizes for website sections
 
 - **Status:** Accepted. **Anuj** chose to add display sizes to the engine (option A, 2026-10-04). Keeping them out
   of the server-driven UI gaps, and raising the MCP `get_tokens space` budget from 900 to 1,000 bytes, are

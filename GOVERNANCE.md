@@ -131,3 +131,39 @@ Every component is alpha, beta or stable. The criteria, and how each is checked,
 - **The log** (`docs/log.md`) records each session: changed, decided, results, next.
 
 An accepted ADR or RFC isn't rewritten. A change of mind is a new record that supersedes the old one.
+
+## 9. When things conflict
+
+Most requests go through §3 and §4 without a fight. This section is for the ones that don't. Every conflict follows one path: **raise, sort, decide, record.** Where each step comes from is in [the research note](docs/research/2026-10-04-conflict-management.md).
+
+```mermaid
+flowchart TD
+  R[Raise: open a Conflict issue] --> S{What kind?}
+  S -->|Two rules clash| A[Apply the priority order]
+  S -->|Disagree with a past decision| B{Significant new information?}
+  S -->|Two products want opposite things| C{Can it be a prop, variant or brand input?}
+  B -->|No| B1[Decision stands, reply links the record]
+  B -->|Yes| B2[New RFC]
+  C -->|Yes| C1[Extend or add a variant, §4]
+  C -->|No| C2[Local override, back to the system at three products]
+  A --> D[Decide: design lead writes the reason on the issue]
+  B2 --> D
+  C1 --> D
+  C2 --> D
+  B1 --> E
+  D --> E[Record: ADR that names who decided]
+```
+
+**1. Raise.** Open a *Conflict* issue (`.github/ISSUE_TEMPLATE/conflict.yml`). It asks what clashes, which screen or product it affects, and which of the three kinds it is.
+
+**2. Sort.** Every conflict is one of three kinds.
+
+- **Two rules clash.** In case of conflict: **accessibility over not breaking consumers over brand wishes over speed.** The higher one wins, without a debate. Accessibility means WCAG 2.2 AA (principle 2). Not breaking consumers means §5: no removal without a way out. A brand wish is anything a tenant wants that the first two don't require. The form of this rule is borrowed from the W3C's *priority of constituencies*.
+- **Someone disagrees with a past decision.** A decision is reopened only with significant new information: a measurement, a bug, a user need nobody knew about when it was made. Disagreeing with the trade-off is not new information. Without it, the decision stands and the reply links the ADR or RFC that made it. With it, the change is a new RFC, and an accepted record is superseded rather than rewritten (§8). The rule is John Ousterhout's, as used by the Go project.
+- **Two products want opposite things.** First ask whether both can be served by a prop, a variant or a brand input. A brand is data, so a difference between tenants usually belongs in `brand.json`, not in a fork (principle 1). If neither fits, it stays a local override in the product that needs it (§4). When the same override turns up in three products, it comes back as a request for the system (Robert Glass's rule of three).
+
+**3. Decide.** The design lead decides, within the review times in §3, and writes the reason on the issue. A conflict that the priority order settles still gets a one-line reply naming which rule won.
+
+**4. Record.** Every decided conflict ends in an ADR whose *Decided by* line names a person (§1, principle 5). A conflict settled by an existing record links that record instead of making a new one.
+
+**Not enforced yet:** nothing checks that a conflict issue ends in a record. It's a working agreement, like §6.
