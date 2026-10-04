@@ -32,7 +32,11 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 - Footer is a component, not a block or the site footer: **Anuj**.
 - Light mode follows the theme: **Claude recommended, Anuj accepted**.
 - The glow shows only on the hovered letter: **Anuj**.
-- The footer examples follow the tenant's language (Qamar Arabic): **Anuj**.
+- The footer examples follow the tenant's language (Qamar Arabic): **Anuj**. Anuj reviewed the Arabic and Hindi wording.
+- Long names: the wordmark's height stays between a floor and a ceiling, plus a "use a short name" guideline:
+  **Claude recommended, Anuj accepted**. Ceiling `space-16 × 3`; floor `clamp(space-6, 4cqi, space-12)`. Measured in
+  the browser (5 names, 4 to 30 characters): at 1440px all fit (192, 192, 103, 77, 52px); at 768px only the 30-character
+  name runs off (28px); at 390px names up to 14 characters fit and the 21- and 30-character ones run off at 24px.
 - Background is the brand's `surface.canvas` (near-black, brand-tinted: house dark `#0d0d0e`), not pure black as in the
   reference, because the system has no pure-black role: **Claude recommended, Anuj accepted** ("do it").
 
@@ -55,10 +59,7 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
   five name lengths (4 to 30 characters, wordmark 406px to 52px tall at 1440px, 98px to 13px at 390px).
 
 **Next**
-- Anuj (or a native reader) to review the Arabic and Hindi footer wording, written by Claude this session.
-- **Long names: Anuj to choose.** The wordmark fills the width, so 30 characters is 13px tall on a phone and 4
-  characters is 406px on a laptop. Claude recommended a size floor and ceiling (long names run off the end, short
-  names stop growing) plus a "use a short name" guideline.
+- Full `/verify` for the long-name change below, once Anuj approves its look.
 - The playground fails in a fresh worktree: `use-sync-external-store/shim` "does not provide an export named
   'useSyncExternalStore'" (Vite dependency pre-bundling, also with `--force`). Not caused by Footer.
 - A real social-icon set (X, GitHub, LinkedIn, YouTube) doesn't exist in `@syntara/icons`; examples use generic icons.

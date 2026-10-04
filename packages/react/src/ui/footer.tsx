@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useId, useLayoutEffect, useRef, useState, type HTMLAttributes, type JSX, type ReactNode, type Ref } from 'react';
+import { useCallback, useId, useLayoutEffect, useRef, useState, type CSSProperties, type HTMLAttributes, type JSX, type ReactNode, type Ref } from 'react';
 import { Link as RACLink, composeRenderProps, type LinkProps as RACLinkProps } from 'react-aria-components';
 import styles from './footer.module.css';
 
@@ -114,7 +114,14 @@ function Wordmark({ text }: { text: string }): JSX.Element {
   return (
     // Also measured as the pointer arrives, the one moment the outlines show: it catches any font swap no event reported.
     <div className={styles.wordmark} aria-hidden="true" onPointerEnter={measure}>
-      <svg className={styles.svg} viewBox={`0 ${TOP} ${width} ${h}`} preserveAspectRatio="xMidYMax meet" focusable="false">
+      <svg
+        className={styles.svg}
+        viewBox={`0 ${TOP} ${width} ${h}`}
+        preserveAspectRatio="xMidYMax meet"
+        focusable="false"
+        // The word's width over its height, so the CSS can hold its height between a floor and a ceiling.
+        style={{ '--_ratio': width / h } as CSSProperties}
+      >
         <defs>
           {/* The letters' face: a faint tint of the text colour, a touch darker at the cut. */}
           <linearGradient id={`${id}-face`} x1="0" y1={TOP} x2="0" y2={CUT} gradientUnits="userSpaceOnUse">
