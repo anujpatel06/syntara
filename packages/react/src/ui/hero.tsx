@@ -10,8 +10,19 @@ const cx = (...c: Array<string | false | null | undefined>) => c.filter(Boolean)
 /** useLayoutEffect in the browser (so the copied theme lands before paint), useEffect on the server (no warning). */
 const useIsoLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
-/** The hero's style. More arrive one at a time (RFC-003): gallery, cards. */
-export type HeroVariant = 'aurora' | 'orbit';
+/** The hero's style. One more arrives (RFC-003): cards. */
+export type HeroVariant = 'aurora' | 'orbit' | 'gallery';
+
+/** A picture for `variant="gallery"`. The wall is decoration, so pictures carry no alt text. */
+export interface HeroImage {
+  src: string;
+}
+
+/** Gallery: cards around the full circle, two of them brand-colour tiles opposite each other (one is always near view). */
+const CARDS = 22;
+const BRAND_TILES = new Set([5, 16]);
+/** How far (degrees) the wall leans either way as the pointer crosses the hero. */
+const LEAN = 10;
 
 const RINGS = 7;
 
@@ -36,6 +47,7 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /**
    * The style. `aurora` (default): soft lights in the brand's primary and accent drift behind centred text.
    * `orbit`: text on the start side; rings of the brand colour ripple out around `actions` on the far side.
+   * `gallery`: a curved wall of `images` turns slowly between the headline and the description.
    */
   variant?: HeroVariant;
   /** Level of the headline. Default 1, for a page's hero; use 2 or lower for a hero inside a longer page. */
@@ -48,6 +60,8 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   scheme?: 'dark' | 'inherit';
   /** The tenant id, when known, so a dark hero renders dark on the server. Otherwise it's read from the page. */
   theme?: string;
+  /** Pictures for `variant="gallery"`, used in order and repeated to fill 20 cards. Ignored by other styles. */
+  images?: HeroImage[];
   /** Names the pause toggle. It's a toggle, so the name stays and its pressed state says paused. Default "Pause animation". */
   pauseLabel?: string;
   ref?: Ref<HTMLElement>;
@@ -72,6 +86,7 @@ export function Hero({
   pauseLabel = 'Pause animation',
   scheme = 'dark',
   theme,
+  images = [],
   className,
   ref,
   ...rest
@@ -84,13 +99,25 @@ export function Hero({
   // A dark scope needs the theme and the scheme on the same element (the token CSS keys off both). Copy the theme
   // and density from the nearest ancestor that has them, like the overlay helper does when an overlay opens.
   const [inherited, setInherited] = useState<{ theme?: string; density?: string }>({});
+  // Keep following them: when the page switches brand or density (a theme picker, the docs preview), the hero has to
+  // switch too, or it stays in the brand it first saw.
   useIsoLayoutEffect(() => {
     if (scheme !== 'dark' || theme) return;
     const host = own.current?.parentElement;
-    setInherited({
-      theme: host?.closest('[data-syntara-theme]')?.getAttribute('data-syntara-theme') ?? undefined,
-      density: host?.closest('[data-syntara-density]')?.getAttribute('data-syntara-density') ?? undefined,
-    });
+    if (!host) return;
+    const themed = host.closest('[data-syntara-theme]');
+    const dense = host.closest('[data-syntara-density]');
+    const read = () =>
+      setInherited({
+        theme: themed?.getAttribute('data-syntara-theme') ?? undefined,
+        density: dense?.getAttribute('data-syntara-density') ?? undefined,
+      });
+    read();
+    const observer = new MutationObserver(read);
+    for (const el of new Set([themed, dense])) {
+      if (el) observer.observe(el, { attributes: true, attributeFilter: ['data-syntara-theme', 'data-syntara-density'] });
+    }
+    return () => observer.disconnect();
   }, [scheme, theme]);
   const darkTheme = scheme === 'dark' ? (theme ?? inherited.theme) : undefined;
 
@@ -107,12 +134,33 @@ export function Hero({
     el.style.setProperty('--_my', `${(y * 100).toFixed(1)}%`);
     el.style.setProperty('--_px', (x * 2 - 1).toFixed(3));
     el.style.setProperty('--_py', (y * 2 - 1).toFixed(3));
+    el.style.setProperty('--_hero-lean', `${((x * 2 - 1) * LEAN).toFixed(1)}deg`);
   };
   const onPointerLeave = (e: PointerEvent<HTMLElement>) => {
     rest.onPointerLeave?.(e);
     own.current?.style.setProperty('--_px', '0');
     own.current?.style.setProperty('--_py', '0');
+    own.current?.style.setProperty('--_hero-lean', '0deg');
   };
+
+  // Gallery: pictures fill the non-brand cards in order, repeating if there are fewer than 20.
+  let picture = 0;
+  const wall =
+    variant === 'gallery' ? (
+      <div className={styles.stage} aria-hidden="true" inert>
+        <div className={styles.wall}>
+          {Array.from({ length: CARDS }, (_, i) => {
+            const brand = BRAND_TILES.has(i) || images.length === 0;
+            const img = brand ? null : images[picture++ % images.length]!;
+            return (
+              <div key={i} className={styles.card} data-kind={brand ? 'brand' : 'image'} style={{ '--i': i } as CSSProperties}>
+                {img && <img src={img.src} alt="" loading="lazy" decoding="async" draggable={false} className={styles.image} />}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    ) : null;
 
   const setRef = (node: HTMLElement | null) => {
     own.current = node;
@@ -164,9 +212,16 @@ export function Hero({
             {titleSecondary != null && ' '}
             {titleSecondary != null && <span className={cx(styles.line, styles.secondary)}>{titleSecondary}</span>}
           </Heading>
-          {description != null && <p className={styles.description}>{description}</p>}
-          {variant !== 'orbit' && actions != null && <div className={styles.actions}>{actions}</div>}
+          {variant !== 'gallery' && description != null && <p className={styles.description}>{description}</p>}
+          {variant === 'aurora' && actions != null && <div className={styles.actions}>{actions}</div>}
         </div>
+        {wall}
+        {variant === 'gallery' && (description != null || actions != null) && (
+          <div className={styles.below}>
+            {description != null && <p className={styles.description}>{description}</p>}
+            {actions != null && <div className={styles.actions}>{actions}</div>}
+          </div>
+        )}
         {variant === 'orbit' && (
           <div className={styles.core}>
             <div className={styles.rings} aria-hidden="true">

@@ -1,7 +1,7 @@
 {
   "name": "hero",
   "title": "Hero",
-  "description": "The opening section of a website page: a big headline, a sentence and what to do next, over a moving decoration in the brand's colours. Dark by default. Styles: aurora, orbit.",
+  "description": "The opening section of a website page: a big headline, a sentence and what to do next, over a moving decoration in the brand's colours. Dark by default. Styles: aurora, orbit, gallery.",
   "category": "layout",
   "maturity": "alpha",
   "exports": [
@@ -20,13 +20,18 @@
   "examples": [
     {
       "name": "hero-demo",
-      "title": "Hero",
-      "description": "Eyebrow, a two-tone headline, a sentence and two buttons. Dark with glowing lights, even on a light page."
+      "title": "Aurora",
+      "description": "variant=\"aurora\" (the default): soft lights in the brand's colours drift behind centred text. Eyebrow, a two-tone headline, a sentence and two buttons."
     },
     {
       "name": "hero-orbit",
       "title": "Orbit",
       "description": "variant=\"orbit\": the copy on the start side; rings of the brand colour ripple out around the actions, which become a white pill."
+    },
+    {
+      "name": "hero-gallery",
+      "title": "Gallery",
+      "description": "variant=\"gallery\": your images on a slowly turning wall between the headline and the description. Two cards are brand-colour tiles."
     },
     {
       "name": "hero-search",
@@ -74,9 +79,15 @@
     {
       "component": "Hero",
       "name": "variant",
-      "type": "'aurora' | 'orbit'",
+      "type": "'aurora' | 'orbit' | 'gallery'",
       "default": "'aurora'",
       "description": "aurora: soft lights drift behind centred text. orbit: text on the start side, rings of the brand colour around the actions on the far side. gallery and cards follow (RFC-003)."
+    },
+    {
+      "component": "Hero",
+      "name": "images",
+      "type": "Array<{ src: string }>",
+      "description": "Pictures for variant=\"gallery\", used in order and repeated to fill 20 cards. Decorative: no alt text."
     },
     {
       "component": "Hero",
