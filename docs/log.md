@@ -6,6 +6,34 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 (Hero follow-up) — measuring the aurora's lights behind the text in dark
+
+Branch `fix/hero-dark-contrast`, cut from `origin/main` at 1a41bbf. Test only; the look is unchanged, waiting on Anuj.
+
+**Changed**
+- `packages/react/test/hero.test.tsx`: an "aurora contrast in dark" block. It reads the lights' numbers from
+  `hero.module.css`, models the blur's real peak (1 − exp(−R²/2σ²)), composites each light over `surface.canvas`
+  in 8-bit sRGB, and measures `text.default` and `text.subtle` for the six tenants (with Haat) and the 1,000 fuzz
+  brands. The failure is recorded with `it.fails`, so the suite stays green today and goes red once a fix lands.
+
+**Results** (`cd packages/react && npx vitest run test/hero.test.tsx --silent=false`; ratios floored, never rounded up)
+- 1200px, tenants, worst: pointer light → text.subtle 3.716 (Qamar), text.default 6.418. Light C → text.subtle
+  5.746 (Care). This reproduces the throwaway measurement.
+- 1200px, fuzz: pointer → text.subtle 2.973, text.default 5.132; light C → text.subtle 3.200.
+- New: pointer resting on light C (tenants, 1200px) → text.default 4.411, text.subtle 2.553 (Qamar).
+- New: wider is worse. The blur is fixed at 96px while the lights grow with the hero, so the pointer's strength
+  goes 0.378 at 1200px → 0.528 at 1920px. At 1920px the pointer alone takes text.default to 4.152 (Qamar).
+- Below 640px the lights double in size; strength at 639px is 0.403 (pointer), so large phones/tablets sit near 1200px's case.
+
+**Decided**
+- Nothing yet. Fix options are with Anuj (dark veil / softer, smaller pointer light / keep lights off the copy).
+- The light-mode `--_veil` is not on main: it is uncommitted in another session's worktree (`claude/hero-follows-scheme`).
+
+**Next**
+- Anuj picks a fix; then change the CSS, flip `it.fails` to `it`, and add a 1920px case to the proof.
+
+---
+
 ## 2026-10-04 (Footer follow-up) — the hover light takes the brand colour in light mode
 
 Branch `fix/footer-brand-light`, cut from `origin/main` at aa8222b.
