@@ -49,13 +49,6 @@
     "contentKeys": ["locale", "currency", "product", "activity"]
   },
   {
-    "name": "hero",
-    "title": "Hero",
-    "description": "Website hero: headline, two actions and a layered picture of the product over a brand-colour ribbon.",
-    "categories": ["marketing"],
-    "contentKeys": ["locale", "currency", "product", "nav", "overview", "hero"]
-  },
-  {
     "name": "hero-orbit",
     "title": "Hero: Orbit",
     "description": "Website hero: rings of the brand colour ripple out from the main action and lean toward the pointer.",

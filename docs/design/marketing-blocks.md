@@ -45,6 +45,9 @@ Sizes in px are the current token values; the CSS uses the tokens, never the num
 
 ## The hero, specifically
 
+> Superseded. This round-1 hero was deleted (Anuj, 2026-10-04); the shipped heroes are Orbit, Gallery, Card fan
+> and Aurora, built from Anuj's animated references. The rules below still hold for spacing, colour and motion.
+
 Round 1 (text over a boxed picture, faint glow) was approved in structure and rejected as "a plain page". Round 2
 adds: a menu bar, the brand ribbon, a two-tone headline, and a bigger picture (an app window with a side menu,
 fading into the page at the bottom, the floating card hanging over its edge).

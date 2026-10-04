@@ -26,6 +26,5 @@ export const BLOCK_COMPONENTS: Record<string, ComponentType<BlockProps>> = {
   'hero-cards': dynamic(() => import('@/blocks/hero-cards/hero-cards').then((m) => as(m.HeroCards))),
   'hero-gallery': dynamic(() => import('@/blocks/hero-gallery/hero-gallery').then((m) => as(m.HeroGallery))),
   'hero-orbit': dynamic(() => import('@/blocks/hero-orbit/hero-orbit').then((m) => as(m.HeroOrbit))),
-  hero: dynamic(() => import('@/blocks/hero/hero').then((m) => as(m.Hero))),
   'activity-table': dynamic(() => import('@/blocks/activity-table/activity-table').then((m) => as(m.ActivityTable))),
 };

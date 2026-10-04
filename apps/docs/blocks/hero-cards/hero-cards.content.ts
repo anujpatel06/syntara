@@ -3,8 +3,8 @@
  * `hero` is the section's own copy; `nav` and `overview` are the tenant's dashboard sample (the English default below
  * is copied from the dashboard-overview block), so a hero that pictures the product invents no numbers.
  *
- * Every hero block (hero, hero-orbit, hero-gallery, hero-cards, hero-aurora) carries an identical copy of this file,
- * so each installs from the registry on its own. Change this one, copy it over the others:
+ * Every hero block (hero-orbit, hero-gallery, hero-cards, hero-aurora) carries an identical copy of this file,
+ * so each installs from the registry on its own. hero-orbit's is the source: change it, copy it over the others:
  * `node scripts/check-hero-content.mjs` fails while they differ.
  */
 export interface HeroStat {

@@ -11,7 +11,7 @@ import qamar from '../../../tenants/qamar/content.json';
 import vela from '../../../tenants/vela/content.json';
 import type { ActivityTableContent } from './activity-table/activity-table.content';
 import { benefitsOverviewTenantCopy, type BenefitsOverviewContent } from './benefits-overview/benefits-overview.content';
-import type { HeroContent } from './hero/hero.content';
+import type { HeroContent } from './hero-orbit/hero-orbit.content';
 import type { DashboardOverviewContent } from './dashboard-overview/dashboard-overview.content';
 import type { RequestFlowContent } from './request-flow/request-flow.content';
 import type { SettingsContent } from './settings/settings.content';

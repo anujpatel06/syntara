@@ -17,10 +17,10 @@ the session's checkout was 4 commits behind main with another session's edits in
 - **Engine — display sizes (ADR-043):** `font-size 6xl/7xl` (60/72px) with their tracking, `space 20/24/32`
   (80/96/128px), in CSS, DTCG, Figma and the Kotlin/Swift token files. Additive only. The server-driven UI keeps
   `space-0…16` as gaps (no schema bump). Changeset `website-display-sizes` (minor: theme-engine, tokens).
-- **Five hero blocks** in `apps/docs/blocks/`, all from real components, all with tenant copy for the five brands,
+- **Four hero blocks** in `apps/docs/blocks/`, all from real components, all with tenant copy for the five brands,
   all with a pause button (WCAG 2.2.2) and stillness under reduced motion:
-  - `hero` — headline, two actions and a layered product picture over a brand-colour ribbon (round 1; Anuj called
-    it a plain page; kept, not deleted).
+  - (`hero`, round 1 — a layered product picture over a brand-colour ribbon — was built, called "a plain page" by
+    Anuj, and deleted at the end of the session: **Anuj**.)
   - `hero-orbit` — rings of the brand colour ripple out from the main action and lean toward the pointer.
   - `hero-gallery` — a turning 3D wall of 20 pictures (pure CSS: `sin()`/`cos()` on an animated `@property`) behind
     the headline, haze, floor reflections, a slim ask bar.
@@ -68,7 +68,7 @@ the session's checkout was 4 commits behind main with another session's edits in
   native review of the Arabic and Hindi hero copy.
 
 **Next**
-- Anuj: whether to keep or delete the round-1 `hero` block; review the Arabic and Hindi hero copy.
+- Anuj: review the Arabic and Hindi hero copy.
 - The other website sections (header, features, call-to-action band, footer) in a fresh session, to this standard.
 - A link-styled button: the heroes use `Button` for actions that should navigate.
 
