@@ -30,7 +30,7 @@ export function readExampleSource(name: string): { folder: string; source: strin
 export function stripCopy(source: string): string {
   return source
     .replace(/^import \{ useCopy \} from '\.\.\/_copy\/use-copy';\n/m, '')
-    .replace(/^[ \t]*const t = useCopy\(\);\n/m, '')
+    .replace(/^[ \t]*const t = useCopy\(\);\n/gm, '')
     .replace(/=\{t\((['"])(.*?)\1\)\}/g, '="$2"')
     .replace(/\{t\((['"])(.*?)\1\)\}/g, '$2')
     .replace(/\bt\((['"])(.*?)\1\)/g, '$1$2$1');

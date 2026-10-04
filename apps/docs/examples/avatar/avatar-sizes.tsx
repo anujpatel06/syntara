@@ -1,8 +1,10 @@
 'use client';
 
 import { Avatar } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   return (
     <div style={{ display: 'grid', gap: 'var(--syntara-space-4)', justifyItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--syntara-space-3)' }}>
@@ -16,7 +18,7 @@ export default function Example() {
         <Avatar name="نور الهدى" alt="" size="lg" />
         <div style={{ display: 'grid' }}>
           <span style={{ fontWeight: 'var(--syntara-font-weight-medium)' }}>نور الهدى</span>
-          <span style={{ color: 'var(--syntara-color-text-subtle)', fontSize: 'var(--syntara-font-size-sm)' }}>Policy holder</span>
+          <span style={{ color: 'var(--syntara-color-text-subtle)', fontSize: 'var(--syntara-font-size-sm)' }}>{t('Policy holder')}</span>
         </div>
       </div>
     </div>

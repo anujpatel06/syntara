@@ -1,6 +1,7 @@
 'use client';
 
 import { BarChart } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const data = [
   { team: 'Support', opened: 142, closed: 128 }, { team: 'Billing', opened: 86, closed: 91 },
@@ -9,15 +10,16 @@ const data = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <BarChart
-      aria-label="Tickets opened and closed by team this month"
+      aria-label={t('Tickets opened and closed by team this month')}
       data={data}
       x="team"
-      xLabel="Team"
+      xLabel={t('Team')}
       series={[
-        { key: 'opened', label: 'Opened' },
-        { key: 'closed', label: 'Closed' },
+        { key: 'opened', label: t('Opened') },
+        { key: 'closed', label: t('Closed') },
       ]}
     />
   );

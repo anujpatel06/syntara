@@ -1,6 +1,7 @@
 'use client';
 
 import { AreaChart, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const data = [
   { month: 'Jan', revenue: 18400 }, { month: 'Feb', revenue: 21200 }, { month: 'Mar', revenue: 19800 },
@@ -10,19 +11,20 @@ const data = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <Card style={{ inlineSize: '100%' }}>
       <CardHeader>
-        <CardDescription>Revenue this year</CardDescription>
+        <CardDescription>{t('Revenue this year')}</CardDescription>
         <CardTitle>$328,700</CardTitle>
       </CardHeader>
       <CardContent>
         <AreaChart
-          aria-label="Revenue by month"
+          aria-label={t('Revenue by month')}
           data={data}
           x="month"
-          xLabel="Month"
-          series={[{ key: 'revenue', label: 'Revenue' }]}
+          xLabel={t('Month')}
+          series={[{ key: 'revenue', label: t('Revenue') }]}
           format={{ value: { style: 'currency', currency: 'USD', maximumFractionDigits: 0 } }}
         />
       </CardContent>

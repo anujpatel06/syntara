@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { DataTable, useSortedRows, type DataTableColumn, type DataTableSortDescriptor } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 type Order = { id: string; customer: string; placed: Date; items: number; total: number };
 
@@ -27,9 +28,10 @@ const columns: DataTableColumn<Order>[] = [
 
 /** Sticky header: the table scrolls inside a 360px frame. */
 export default function Example() {
+  const t = useCopy();
   const [sort, setSort] = useState<DataTableSortDescriptor>({ column: 'total', direction: 'descending' });
   const sorted = useSortedRows(rows, sort, accessors);
   return (
-    <DataTable aria-label="Orders" columns={columns} rows={sorted} getRowId={(r) => r.id} sortDescriptor={sort} onSortChange={setSort} maxBlockSize={360} />
+    <DataTable aria-label={t('Orders')} columns={columns} rows={sorted} getRowId={(r) => r.id} sortDescriptor={sort} onSortChange={setSort} maxBlockSize={360} />
   );
 }

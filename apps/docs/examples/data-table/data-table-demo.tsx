@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Badge, DataTable, DataTablePagination, useSortedRows, type DataTableColumn, type DataTableSortDescriptor } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 type Payment = { id: string; date: Date; payee: string; method: string; status: 'Paid' | 'Pending' | 'Failed' | 'Refunded'; amount: number };
 
@@ -30,13 +31,14 @@ const columns: DataTableColumn<Payment>[] = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   const [sort, setSort] = useState<DataTableSortDescriptor>({ column: 'date', direction: 'descending' });
   const [page, setPage] = useState(1);
   const sorted = useSortedRows(rows, sort, accessors);
   return (
     <div style={{ display: 'grid', gap: 12, inlineSize: '100%' }}>
-      <DataTable aria-label="Payments" columns={columns} rows={sorted.slice((page - 1) * 10, page * 10)} getRowId={(r) => r.id} sortDescriptor={sort} onSortChange={setSort} />
-      <DataTablePagination label="Payments pages" page={page} pageSize={10} totalCount={rows.length} onPageChange={setPage} />
+      <DataTable aria-label={t('Payments')} columns={columns} rows={sorted.slice((page - 1) * 10, page * 10)} getRowId={(r) => r.id} sortDescriptor={sort} onSortChange={setSort} />
+      <DataTablePagination label={t('Payments pages')} page={page} pageSize={10} totalCount={rows.length} onPageChange={setPage} />
     </div>
   );
 }

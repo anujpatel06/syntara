@@ -1,8 +1,10 @@
 'use client';
 
 import { Spinner } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   return (
     <p
       style={{
@@ -15,8 +17,8 @@ export default function Example() {
       }}
     >
       {/* The spinner announces its label; the visible text repeats it for sighted users. */}
-      <Spinner size="sm" label="Checking eligibility" />
-      <span aria-hidden="true">Checking eligibility…</span>
+      <Spinner size="sm" label={t('Checking eligibility')} />
+      <span aria-hidden="true">{t('Checking eligibility…')}</span>
     </p>
   );
 }

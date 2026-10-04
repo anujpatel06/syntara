@@ -2,27 +2,29 @@
 
 import { Button, Menu, MenuItem, MenuSection, MenuSeparator, MenuTrigger } from '@syntara/react';
 import { IconChevronDown } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   return (
     <MenuTrigger>
       <Button variant="outline">
-        Document
+        {t('Document')}
         <IconChevronDown aria-hidden />
       </Button>
       <Menu>
-        <MenuSection title="File">
-          <MenuItem shortcut="⌘N">New document</MenuItem>
-          <MenuItem shortcut="⌘O">Open…</MenuItem>
-          <MenuItem shortcut="⌘S">Save</MenuItem>
+        <MenuSection title={t('File')}>
+          <MenuItem shortcut="⌘N">{t('New document')}</MenuItem>
+          <MenuItem shortcut="⌘O">{t('Open…')}</MenuItem>
+          <MenuItem shortcut="⌘S">{t('Save')}</MenuItem>
           <MenuItem shortcut="⇧⌘S" isDisabled>
-            Save as…
+            {t('Save as…')}
           </MenuItem>
         </MenuSection>
         <MenuSeparator />
-        <MenuSection title="Share">
-          <MenuItem description="Anyone with the link can view">Copy link</MenuItem>
-          <MenuItem shortcut="⌘P">Print</MenuItem>
+        <MenuSection title={t('Share')}>
+          <MenuItem description={t('Anyone with the link can view')}>{t('Copy link')}</MenuItem>
+          <MenuItem shortcut="⌘P">{t('Print')}</MenuItem>
         </MenuSection>
       </Menu>
     </MenuTrigger>

@@ -1,6 +1,7 @@
 'use client';
 
 import { Steps } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const steps = [
   { id: 'details', label: 'Incident details', description: 'Date, place and what happened' },
@@ -11,9 +12,10 @@ const steps = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <div style={{ inlineSize: '100%', maxInlineSize: 360 }}>
-      <Steps orientation="vertical" current="upload" steps={steps} aria-label="Claim progress" />
+      <Steps orientation="vertical" current="upload" steps={steps} aria-label={t('Claim progress')} />
     </div>
   );
 }
