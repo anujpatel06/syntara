@@ -210,3 +210,22 @@ describe('StatTile: delta marks meet contrast on the pill, every tenant and 1,00
     expect(Math.min(tenants.glyph, fuzz.glyph)).toBeGreaterThanOrEqual(4.5);
   }, 60_000);
 });
+
+describe('StatTile: an outline inside a card (style A, Anuj 2026-10-04)', () => {
+  it('default and outline tiles drop face, rim and shadow inside a card; ghost, editorial and surface="raised" opt out', () => {
+    const css = readUiCss('stat-tile.module.css');
+    expect(css).toContain(
+      "@container style(--syntara-surface-nest: card) {\n  .tile:not([data-variant='ghost'], [data-variant='editorial'], [data-surface='raised']) {\n    --_fill: transparent;",
+    );
+    // After .tile[data-variant='outline'] (same weight), so the nested edge wins by order.
+    expect(css.indexOf('--syntara-surface-nest: card')).toBeGreaterThan(css.indexOf(".tile[data-variant='outline'] {"));
+    // Text and the delta on the card's face: proven with Alert's (test/alert.test.tsx, "every plain card face").
+  });
+
+  it('sets data-surface only when the face is kept', () => {
+    const { container, rerender } = render(<StatTile label="Balance" value="₹1" />);
+    expect(container.firstElementChild).not.toHaveAttribute('data-surface');
+    rerender(<StatTile label="Balance" value="₹1" surface="raised" />);
+    expect(container.firstElementChild).toHaveAttribute('data-surface', 'raised');
+  });
+});

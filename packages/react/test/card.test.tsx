@@ -346,3 +346,35 @@ describe('showcase card contrast', () => {
     for (const v of Object.values(worst)) expect(v.ratio).toBeGreaterThanOrEqual(4.5);
   }, 60_000);
 });
+
+describe('Card: nested surfaces (style A, Anuj 2026-10-04)', () => {
+  const css = () => {
+    const node = (
+      globalThis as unknown as {
+        process: { cwd(): string; getBuiltinModule(id: 'node:fs'): { readFileSync(file: string, encoding: 'utf8'): string } };
+      }
+    ).process;
+    return node.getBuiltinModule('node:fs').readFileSync(`${node.cwd()}/src/ui/card.module.css`, 'utf8');
+  };
+
+  it('tells its children they are inside a card, except a feature card (its glow is not a plain surface)', () => {
+    expect(css()).toMatch(/\.card \{[^}]*--syntara-surface-nest: card;/);
+    expect(css()).toMatch(/\.card\[data-variant='feature'\] \{[^}]*--syntara-surface-nest: none;/);
+  });
+
+  it('a default or outline card inside a card is an outline only; ghost, feature, showcase, rim and surface="raised" opt out', () => {
+    const block = /@container style\(--syntara-surface-nest: card\) \{([\s\S]*?)\n\}/.exec(css())?.[1] ?? '';
+    expect(block).toContain(
+      ".card:not([data-variant='ghost'], [data-variant='feature'], [data-variant='showcase'], [data-surface='raised'], [data-rim])",
+    );
+    expect(block).toMatch(/--_fill: transparent;/);
+    expect(block).toMatch(/box-shadow: 0 0 0 var\(--syntara-hairline\) var\(--_edge\);/);
+  });
+
+  it('sets data-surface only when the face is kept', () => {
+    const { rerender } = render(<Card data-testid="c" />);
+    expect(screen.getByTestId('c')).not.toHaveAttribute('data-surface');
+    rerender(<Card data-testid="c" surface="raised" />);
+    expect(screen.getByTestId('c')).toHaveAttribute('data-surface', 'raised');
+  });
+});

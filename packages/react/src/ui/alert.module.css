@@ -16,7 +16,8 @@
   --_face: var(--syntara-color-surface-raised);
   --_rim: linear-gradient(transparent, transparent);
   --_tone: var(--syntara-color-text-subtle);
-  --_on-tone: var(--_face);
+  /* The neutral glyph's knockout. Not var(--_face): inside a card the face is transparent. */
+  --_on-tone: var(--syntara-color-surface-raised);
   /* Generous, like a card: the density's card inset, easing down on narrow alerts (% = of the alert's width). */
   --_inset: clamp(var(--syntara-space-4), 5%, var(--syntara-card-inset));
 
@@ -47,6 +48,19 @@
 @container not style(--syntara-sheen: none) {
   .alert {
     --_rim: linear-gradient(135deg, var(--syntara-rim), transparent 60%);
+  }
+}
+
+/*
+ * Inside a card (style A, Anuj 2026-10-04): an outline only. No face, no rim, no shadow, just the border.subtle
+ * hairline, so the card's own face shows through. Text and the status shape then sit on the card's face, a plain
+ * surface the engine already holds to 4.5:1 for text.default, text.subtle and feedback.<tone>.fg.
+ */
+@container style(--syntara-surface-nest: card) {
+  .alert:not([data-surface='raised']) {
+    --_face: transparent;
+    --_rim: linear-gradient(transparent, transparent);
+    box-shadow: 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
   }
 }
 

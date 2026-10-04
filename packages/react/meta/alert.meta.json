@@ -84,6 +84,13 @@
       "name": "live",
       "type": "boolean | 'assertive' | 'polite'",
       "description": "Announce the alert when it appears: `true`/'assertive' → role=\"alert\", 'polite' → role=\"status\". Leave unset for alerts present on page load."
+    },
+    {
+      "component": "Alert",
+      "name": "surface",
+      "type": "'auto' | 'raised'",
+      "default": "'auto'",
+      "description": "`auto`: inside a Card it is an outline only (no face, no shadow, a border.subtle hairline), so a card doesn't read as filled boxes in a filled box; anywhere else it has its raised face. `raised` keeps the face inside a card too."
     }
   ],
   "accessibility": {

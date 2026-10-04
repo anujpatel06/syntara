@@ -26,6 +26,12 @@
   --_sheen: none;
   --_rim: transparent;
   --_edge: var(--syntara-color-border-subtle);
+  /* Tells what sits inside that it is inside a card (ADR-045, Anuj 2026-10-04: style A). Alert and StatTile read
+     it with a style query and drop their own fill and shadow, keeping only a hairline edge, so a dashboard card isn't
+     filled boxes in a filled box. Custom properties inherit, so it reaches every descendant; overlays portal out. */
+  --syntara-surface-nest: card;
+  /* The colour that shows through an outlined child, for the few details that must match it (a sparkline dot's ring). */
+  --syntara-surface-nest-face: var(--_fill);
   /* The outer corner. A private alias so the showcase variant can enlarge it and CardMedia can follow it. */
   --_radius: var(--syntara-radius-container);
   /* The card's inset, captured here (custom properties inherit their computed value), so CardMedia bleeds and pads
@@ -92,6 +98,23 @@
   --_rim: var(--syntara-rim);
 }
 
+/* ---- nested ------------------------------------------------------------- */
+
+/*
+ * A card inside a card (style A, Anuj 2026-10-04): default and outline cards become an outline only, a border.subtle
+ * hairline with no face, rim or shadow, as Alert and StatTile do. The query reads the parent's inherited
+ * --syntara-surface-nest, never the card's own declaration, so an outer card is unaffected. `surface="raised"` and an
+ * explicit `rim` keep the face. Interactive cards still lift on hover (that rule is heavier).
+ */
+@container style(--syntara-surface-nest: card) {
+  .card:not([data-variant='ghost'], [data-variant='feature'], [data-variant='showcase'], [data-surface='raised'], [data-rim]) {
+    --_fill: transparent;
+    --_rim: transparent;
+    --_edge: var(--syntara-color-border-subtle);
+    box-shadow: 0 0 0 var(--syntara-hairline) var(--_edge);
+  }
+}
+
 /* ---- feature ------------------------------------------------------------- */
 
 /*
@@ -118,6 +141,8 @@
  *   pnpm --filter @syntara/react exec vitest run test/card.test.tsx   ("feature card contrast")
  */
 .card[data-variant='feature'] {
+  /* The glow tints the face, and the nested-outline proof covers plain surfaces only: inner pieces keep their face. */
+  --syntara-surface-nest: none;
   --_glow-at: 0% 0%;
   --_glow: light-dark(
     color-mix(in oklab, var(--syntara-color-action-primary-bg) 6%, var(--syntara-color-surface-raised)),

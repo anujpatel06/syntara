@@ -27,6 +27,11 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
    * Other buttons and links inside stay separately clickable above it.
    */
   interactive?: boolean;
+  /**
+   * `auto` (default): inside a Card it's an outline only (no face, no shadow, a hairline edge), for `default` and `outline` cards, so a
+   * card doesn't read as filled boxes in a filled box; anywhere else it has its raised face. `raised` keeps the face inside a card too.
+   */
+  surface?: 'auto' | 'raised';
   ref?: Ref<HTMLDivElement>;
 }
 
@@ -36,6 +41,7 @@ export function Card({
   interactive = false,
   rim = false,
   stars = false,
+  surface = 'auto',
   className,
   ...rest
 }: CardProps): JSX.Element {
@@ -46,6 +52,7 @@ export function Card({
       data-interactive={interactive || undefined}
       data-rim={rim || variant === 'feature' || undefined}
       data-stars={(stars && variant === 'feature') || undefined}
+      data-surface={surface === 'raised' ? 'raised' : undefined}
       className={cx(styles.card, className)}
     />
   );

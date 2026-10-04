@@ -19,9 +19,21 @@ import {
 import type { TenantOverview } from './home-data';
 import styles from './sections.module.css';
 
-export function TenantCard({ tenant, level = 3 }: { tenant: TenantOverview; level?: 2 | 3 | 4 }) {
+/**
+ * `flat`: the card has no face, edge or shadow of its own, so a framed scope around it is the only box (the brand
+ * rail; Anuj 2026-10-04: a filled card inside a filled frame read as a slab in a box).
+ */
+export function TenantCard({
+  tenant,
+  level = 3,
+  flat = false,
+}: {
+  tenant: TenantOverview;
+  level?: 2 | 3 | 4;
+  flat?: boolean;
+}) {
   return (
-    <Card className={styles.tenantCard}>
+    <Card variant={flat ? 'ghost' : undefined} className={styles.tenantCard}>
       <CardHeader>
         <CardTitle level={level}>{tenant.greeting}</CardTitle>
         <CardDescription>{tenant.subtitle}</CardDescription>

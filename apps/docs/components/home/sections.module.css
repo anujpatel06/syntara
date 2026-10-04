@@ -463,6 +463,12 @@
   }
 }
 
+.tenantScope.tenantScopeFlat {
+  /* The card inside is flat (ghost), so the frame is the card: its own padding does the inset, not both. The corner
+     follows: inset 0 makes the frame's radius the brand's card radius. */
+  --_inset: 0px;
+}
+
 .tenantCard.tenantCard {
   block-size: 100%;
 }

@@ -42,6 +42,11 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'
    * `'polite'` → role="status". Leave unset for alerts that are part of the page on load.
    */
   live?: boolean | 'assertive' | 'polite';
+  /**
+   * `auto` (default): inside a Card it's an outline only (no face, no shadow, a hairline edge), so a card doesn't read
+   * as filled boxes in a filled box; anywhere else it has its raised face. `raised` keeps the face inside a card too.
+   */
+  surface?: 'auto' | 'raised';
   ref?: Ref<HTMLDivElement>;
 }
 
@@ -54,6 +59,7 @@ export function Alert({
   onDismiss,
   dismissLabel = 'Dismiss',
   live,
+  surface = 'auto',
   className,
   children,
   ...rest
@@ -71,6 +77,7 @@ export function Alert({
       {...rest}
       data-tone={tone}
       data-dismissible={onDismiss ? '' : undefined}
+      data-surface={surface === 'raised' ? 'raised' : undefined}
       className={cx(styles.alert, className)}
     >
       <div className={styles.layout}>

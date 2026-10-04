@@ -4,7 +4,7 @@
   "title": "Syntara SDUI shared definitions",
   "description": "Actions, icons, links, images and layout tokens shared by every node schema.",
   "x-syntara": {
-    "schemaVersion": "1.1.0",
+    "schemaVersion": "1.2.0",
     "source": "sdui"
   },
   "$defs": {
