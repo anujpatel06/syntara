@@ -22,6 +22,7 @@ export * from './ui/dialog';
 export * from './ui/empty-state';
 export * from './ui/eyebrow';
 export * from './ui/file-upload';
+export * from './ui/hero';
 export * from './ui/icon-tile';
 export * from './ui/kbd';
 export * from './ui/link';
