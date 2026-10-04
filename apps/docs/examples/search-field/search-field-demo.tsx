@@ -1,7 +1,9 @@
 'use client';
 
 import { SearchField } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
-  return <SearchField aria-label="Search transactions" placeholder="Search transactions" style={{ inlineSize: '100%', maxInlineSize: 320 }} />;
+  const t = useCopy();
+  return <SearchField aria-label={t('Search transactions')} placeholder={t('Search transactions')} style={{ inlineSize: '100%', maxInlineSize: 320 }} />;
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { LineChart } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const data = [
   { day: 'Mon', web: 1240, ios: 860, android: 720 }, { day: 'Tue', web: 1380, ios: 910, android: 780 },
@@ -10,17 +11,18 @@ const data = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
     <LineChart
-      aria-label="Active users by platform, last 7 days"
+      aria-label={t('Active users by platform, last 7 days')}
       data={data}
       x="day"
-      xLabel="Day"
+      xLabel={t('Day')}
       height={260}
       showDots
       glow={false}
       series={[
-        { key: 'web', label: 'Web' },
+        { key: 'web', label: t('Web') },
         { key: 'ios', label: 'iOS' },
         { key: 'android', label: 'Android' },
       ]}

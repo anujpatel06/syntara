@@ -2,11 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Button, StreamingResponse, type StreamingStatus } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const ANSWER =
   'You can change the delivery address until the order is packed. Open the order, choose Edit address, and pick a saved address or add a new one. If the order has already shipped, ask the courier to hold it at a pickup point instead.';
 
 export default function Example() {
+  const t = useCopy();
   const [status, setStatus] = useState<StreamingStatus>('complete');
   const [text, setText] = useState('');
   const timer = useRef<ReturnType<typeof setInterval>>(undefined);
@@ -31,11 +33,11 @@ export default function Example() {
     <div style={{ display: 'grid', gap: 'var(--syntara-space-4)', maxInlineSize: '36rem' }}>
       <div style={{ display: 'flex', gap: 'var(--syntara-space-2)' }}>
         <Button onPress={ask} isDisabled={status === 'streaming'}>
-          Ask: can I change my delivery address?
+          {t('Ask: can I change my delivery address?')}
         </Button>
         {status === 'streaming' && (
           <Button variant="outline" onPress={() => stop('stopped')}>
-            Stop
+            {t('Stop')}
           </Button>
         )}
       </div>

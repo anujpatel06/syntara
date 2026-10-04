@@ -2,12 +2,14 @@
 
 import { useState } from 'react';
 import { Pagination } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   const [page, setPage] = useState(10);
   return (
     <Pagination
-      label="Search results pages"
+      label={t('Search results pages')}
       page={page}
       pageCount={20}
       siblingCount={2}

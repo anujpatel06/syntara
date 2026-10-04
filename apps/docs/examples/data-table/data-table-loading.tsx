@@ -1,6 +1,7 @@
 'use client';
 
 import { DataTable, type DataTableColumn } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 type Transfer = { id: string; recipient: string; date: string; status: string; amount: string };
 
@@ -13,5 +14,6 @@ const columns: DataTableColumn<Transfer>[] = [
 ];
 
 export default function Example() {
-  return <DataTable aria-label="Transfers" columns={columns} rows={[]} getRowId={(r) => r.id} selectionMode="multiple" isLoading loadingRowCount={5} />;
+  const t = useCopy();
+  return <DataTable aria-label={t('Transfers')} columns={columns} rows={[]} getRowId={(r) => r.id} selectionMode="multiple" isLoading loadingRowCount={5} />;
 }

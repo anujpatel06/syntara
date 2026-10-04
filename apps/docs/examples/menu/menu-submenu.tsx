@@ -2,30 +2,32 @@
 
 import { Button, Menu, MenuItem, MenuSeparator, MenuTrigger, SubmenuTrigger } from '@syntara/react';
 import { IconFolder, IconMail, IconLink, IconShare } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 export default function Example() {
+  const t = useCopy();
   return (
     <MenuTrigger>
-      <Button variant="outline">Options</Button>
+      <Button variant="outline">{t('Options')}</Button>
       <Menu>
-        <MenuItem>Rename</MenuItem>
+        <MenuItem>{t('Rename')}</MenuItem>
         <SubmenuTrigger>
-          <MenuItem icon={<IconFolder />}>Move to</MenuItem>
+          <MenuItem icon={<IconFolder />}>{t('Move to')}</MenuItem>
           <Menu>
-            <MenuItem>Receipts</MenuItem>
-            <MenuItem>Tax documents</MenuItem>
-            <MenuItem>Archive</MenuItem>
+            <MenuItem>{t('Receipts')}</MenuItem>
+            <MenuItem>{t('Tax documents')}</MenuItem>
+            <MenuItem>{t('Archive')}</MenuItem>
           </Menu>
         </SubmenuTrigger>
         <SubmenuTrigger>
-          <MenuItem icon={<IconShare />}>Share</MenuItem>
+          <MenuItem icon={<IconShare />}>{t('Share')}</MenuItem>
           <Menu>
-            <MenuItem icon={<IconMail />}>Email</MenuItem>
-            <MenuItem icon={<IconLink />}>Copy link</MenuItem>
+            <MenuItem icon={<IconMail />}>{t('Email')}</MenuItem>
+            <MenuItem icon={<IconLink />}>{t('Copy link')}</MenuItem>
           </Menu>
         </SubmenuTrigger>
         <MenuSeparator />
-        <MenuItem tone="danger">Delete</MenuItem>
+        <MenuItem tone="danger">{t('Delete')}</MenuItem>
       </Menu>
     </MenuTrigger>
   );

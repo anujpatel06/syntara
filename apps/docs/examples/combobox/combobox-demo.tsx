@@ -1,6 +1,7 @@
 'use client';
 
 import { Combobox, ComboboxItem } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 const countries = [
   { id: 'ar', name: 'Argentina' },
@@ -20,8 +21,9 @@ const countries = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
-    <Combobox label="Country" placeholder="Search countries…" defaultItems={countries} style={{ inlineSize: '100%', maxInlineSize: 320 }}>
+    <Combobox label={t('Country')} placeholder={t('Search countries…')} defaultItems={countries} style={{ inlineSize: '100%', maxInlineSize: 320 }}>
       {(item) => <ComboboxItem id={item.id}>{item.name}</ComboboxItem>}
     </Combobox>
   );

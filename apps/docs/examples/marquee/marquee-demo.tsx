@@ -2,6 +2,7 @@
 
 import { Marquee } from '@syntara/react';
 import { IconAnchor, IconBolt, IconCompass, IconLeaf, IconMountain, IconRoute, IconTree, IconWind } from '@syntara/icons';
+import { useCopy } from '../_copy/use-copy';
 
 // Made-up companies: a logo strip should never borrow real brands for a demo.
 const COMPANIES = [
@@ -16,8 +17,9 @@ const COMPANIES = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   return (
-    <Marquee label="Teams building with Syntara">
+    <Marquee label={t('Teams building with Syntara')}>
       {COMPANIES.map(({ name, Icon }) => (
         <span
           key={name}

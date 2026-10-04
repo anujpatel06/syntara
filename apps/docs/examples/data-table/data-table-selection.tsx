@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Badge, Button, DataTable, DataTableToolbar, SearchField, type DataTableColumn, type DataTableSelection } from '@syntara/react';
+import { useCopy } from '../_copy/use-copy';
 
 type Claim = { id: string; member: string; type: string; status: 'In review' | 'Approved' | 'Needs info'; amount: number };
 
@@ -27,6 +28,7 @@ const columns: DataTableColumn<Claim>[] = [
 ];
 
 export default function Example() {
+  const t = useCopy();
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<DataTableSelection>(new Set(['CLM-20481', 'CLM-20483']));
   const rows = claims.filter((c) => `${c.id} ${c.member}`.toLowerCase().includes(query.trim().toLowerCase()));
@@ -34,12 +36,12 @@ export default function Example() {
   return (
     <div style={{ display: 'grid', gap: 12, inlineSize: '100%' }}>
       <DataTableToolbar>
-        <SearchField aria-label="Search claims" placeholder="Search member or claim" value={query} onChange={setQuery} />
+        <SearchField aria-label={t('Search claims')} placeholder={t('Search member or claim')} value={query} onChange={setQuery} />
         <Button variant={count ? 'primary' : 'outline'} isDisabled={!count} onPress={() => setSelected(new Set())}>
-          {count ? `Approve ${count}` : 'Approve'}
+          {count ? `Approve ${count}` : t('Approve')}
         </Button>
       </DataTableToolbar>
-      <DataTable aria-label="Claims" columns={columns} rows={rows} getRowId={(r) => r.id} selectionMode="multiple" selectedKeys={selected} onSelectionChange={setSelected} maxBlockSize={400} />
+      <DataTable aria-label={t('Claims')} columns={columns} rows={rows} getRowId={(r) => r.id} selectionMode="multiple" selectedKeys={selected} onSelectionChange={setSelected} maxBlockSize={400} />
     </div>
   );
 }
