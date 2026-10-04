@@ -6,6 +6,66 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 — Footer, from Anuj's reference
+
+**Changed**
+- **New component `Footer`** (`packages/react/src/ui/footer.tsx`, alpha), with `FooterColumn`, `FooterLink`, `FooterSocialLink`
+  and `FooterStatus`. An oversized wordmark in the brand's heading font, sized to fill the width and cut off by a full-bleed
+  hairline; under it an aside (address, round icon links, a status pill) and columns of links. Lays out by its own width
+  (container queries): five columns from 960px, two on phones.
+- **The light follows the pointer.** Each letter has its own lit outline and soft glow, off until the pointer is over it;
+  it arrives in `duration-fast` and leaves in `duration-slow`, so it trails across the word. Touch screens keep the first
+  letter softly lit. Joining scripts (Arabic, Hebrew, Indic) light as one piece, so shaping isn't broken. Letters are
+  re-measured when fonts load, when the brand, scheme or density changes, and when the pointer enters.
+- **Previews speak the tenant's language (ADR-042's `useCopy`).** All four examples translate: Qamar shows the
+  footer in Arabic, right to left, with the wordmark سينتارا; Haat in Hindi, सिंटारा. 46 strings added to
+  `examples/_copy/ar.json` and `hi.json`; the Code tab still strips back to plain English (0 `t()` left in 4 of 4).
+- **The crop follows the script.** Latin is cut through the lower body of its capitals; Arabic, Hebrew and Indic words
+  are cut just under the baseline (a Latin cut left only Arabic dots and alefs showing).
+- **No seams in joined scripts.** The lit edge and glow are strokes drawn *behind* an opaque face (the tint mixed into
+  `surface.canvas`), so only light outside the letter shows and the overlaps between joined glyphs stay hidden. A
+  morphology-filter outline was tried first and dropped: it filled letters with blocks of light.
+- A pool of light under the horizon, dark schemes only (`@container not style(--syntara-sheen: none)`).
+- Four examples, `meta/footer.meta.json`, `test/footer.test.tsx` (8 tests), changeset `footer.md`.
+
+**Decided**
+- Footer is a component, not a block or the site footer: **Anuj**.
+- Light mode follows the theme: **Claude recommended, Anuj accepted**.
+- The glow shows only on the hovered letter: **Anuj**.
+- The footer examples follow the tenant's language (Qamar Arabic): **Anuj**. Anuj reviewed the Arabic and Hindi wording.
+- Long names: the wordmark's height stays between a floor and a ceiling, plus a "use a short name" guideline:
+  **Claude recommended, Anuj accepted**. Ceiling `space-16 × 3`; floor `clamp(space-6, 4cqi, space-12)`. Measured in
+  the browser (5 names, 4 to 30 characters): at 1440px all fit (192, 192, 103, 77, 52px); at 768px only the 30-character
+  name runs off (28px); at 390px names up to 14 characters fit and the 21- and 30-character ones run off at 24px.
+- Background is the brand's `surface.canvas` (near-black, brand-tinted: house dark `#0d0d0e`), not pure black as in the
+  reference, because the system has no pure-black role: **Claude recommended, Anuj accepted** ("do it").
+
+**Results** (`/verify` on the final branch, after merging `origin/main` at 062da1b; build served on :3231 with
+`SYNTARA_BASE_URL`; the same steps also passed on the first commit, build N-dEMDQBhsRVa2c8RFwVL)
+- `pnpm typecheck`: every package clean.
+- `pnpm test`: 2,206 passing, 0 failing (react 509, engine 310 with 1 skipped, icons 959, MCP 193, schema 150, auditor
+  77, codemods 8); `check-test-counts`: the README row matches. The MCP server's component-count tests and the README,
+  package README and CLAUDE.md counts moved from 56 to 57 (`ls packages/react/meta/*.meta.json | wc -l` → 57).
+- `pnpm test:themes`: 118,000 of 118,000 checks pass; chart palettes 2,000 of 2,000.
+- `pnpm check:meta`: footer `alpha`, meets `alpha`, 0 errors. `pnpm registry`: 81 items. `check-override-weight`: 0.
+  `pnpm drift` on both footer files: 0 findings.
+- `pnpm --filter @syntara/docs build`: 92 of 92 pages; `check-ssr-tabs`: 0 of 91 missing a panel;
+  `grep -rl -- --_ceiling apps/docs/out/_next/static`: 1 file, so the long-name change is in the measured build.
+- Build JkRdOoFqC_-6cmUrQvmvj: `check-hydration` 0 of 286; `check-theme-links` 0 of 5; `check-narrow-overflow` 0
+  sideways of 286; `check-csp` 0 of 143; `axe-sweep` 0 violation nodes over 143 routes × 2 schemes;
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus).
+- Merging main's word lists (#50): Arabic 638 + 39 footer-only = 677 entries, no clashes; Hindi the same, with two
+  words worded differently on each side, where main's was kept: "Scheduled maintenance" तय मेंटेनेंस, "Legal" क़ानूनी.
+- Screenshots looked at by Claude: vela light, harbor dark with hover, qamar light RTL, care compact, house 390px; Qamar
+  in Arabic and Haat in Hindi in the real docs preview; the footer on the home page (temporary swap, reverted); five
+  name lengths at 1440, 768 and 390px before and after the size limits.
+
+**Next**
+- The playground failure seen this session in a fresh worktree was fixed on main by #47; `/screenshots` can use it again.
+- A real social-icon set (X, GitHub, LinkedIn, YouTube) doesn't exist in `@syntara/icons`; examples use generic icons.
+
+---
+
 ## 2026-10-04 (website blocks) — display sizes, and five animated hero sections
 
 Branch `feat/marketing-blocks`, its own worktree (`../strata-marketing`) cut from `origin/main` at d3a538a, because

@@ -1,0 +1,140 @@
+{
+  "name": "footer",
+  "title": "Footer",
+  "description": "A site footer: an oversized wordmark cut off by a hairline horizon and lit from one corner, over an aside and columns of links.",
+  "category": "layout",
+  "maturity": "alpha",
+  "exports": [
+    "Footer",
+    "FooterColumn",
+    "FooterLink",
+    "FooterSocialLink",
+    "FooterStatus"
+  ],
+  "files": [
+    "footer.tsx",
+    "footer.module.css"
+  ],
+  "dependencies": [
+    "react-aria-components"
+  ],
+  "registryDependencies": [],
+  "reactAria": "https://react-spectrum.adobe.com/react-aria/Link.html",
+  "usage": "import { Footer, FooterColumn, FooterLink } from '@syntara/react';\n\nexport function SiteFooter() {\n  return (\n    <Footer wordmark=\"Acme\" aside={<address>14 Harbour Lane</address>}>\n      <FooterColumn title=\"Product\">\n        <FooterLink href=\"/pricing\">Pricing</FooterLink>\n        <FooterLink href=\"/changelog\">Changelog</FooterLink>\n      </FooterColumn>\n    </Footer>\n  );\n}",
+  "examples": [
+    {
+      "name": "footer-demo",
+      "title": "Footer",
+      "description": "Wordmark, an address, social links and a status line, then five columns of links."
+    },
+    {
+      "name": "footer-simple",
+      "title": "Without a wordmark",
+      "description": "Just the aside and the columns, for pages where the name is already in the header."
+    },
+    {
+      "name": "footer-wordmark",
+      "title": "Any name",
+      "description": "The wordmark is sized to fill the width, whatever its length and whatever the brand's heading font."
+    },
+    {
+      "name": "footer-status",
+      "title": "Status",
+      "description": "FooterStatus in each tone. The words carry the status; the dot repeats it."
+    }
+  ],
+  "props": [
+    {
+      "component": "Footer",
+      "name": "wordmark",
+      "type": "string",
+      "description": "The name drawn oversized across the top and cropped at the bottom. It fills the width, but its height stays between a floor and a ceiling: a short name stops growing and sits at the start, a long one stops shrinking and runs off the end. Use a short name. Decorative and hidden from screen readers. Leave it out for no wordmark."
+    },
+    {
+      "component": "Footer",
+      "name": "aside",
+      "type": "ReactNode",
+      "description": "The start column: an address, FooterSocialLinks, a FooterStatus."
+    },
+    {
+      "component": "Footer",
+      "name": "navLabel",
+      "type": "string",
+      "default": "'Footer'",
+      "description": "Names the link columns' navigation landmark for screen readers."
+    },
+    {
+      "component": "FooterColumn",
+      "name": "title",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The column's heading. It also names the column's list for screen readers."
+    },
+    {
+      "component": "FooterLink",
+      "name": "href",
+      "type": "string",
+      "description": "Where the link goes. All of React Aria's Link props are accepted."
+    },
+    {
+      "component": "FooterSocialLink",
+      "name": "aria-label",
+      "type": "string",
+      "required": true,
+      "description": "Names the destination. Required, because the link shows only an icon."
+    },
+    {
+      "component": "FooterStatus",
+      "name": "tone",
+      "type": "'success' | 'warning' | 'danger' | 'neutral'",
+      "default": "'success'",
+      "description": "The dot's colour. The words carry the meaning; the dot repeats it."
+    }
+  ],
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": "Tab",
+        "action": "Moves through the social links, then every link in column order."
+      },
+      {
+        "keys": "Enter",
+        "action": "Follows the focused link."
+      }
+    ],
+    "notes": [
+      "Renders a footer landmark (contentinfo when it is the page's footer) with a navigation landmark named by navLabel.",
+      "Each column's links are a list named by its title.",
+      "The wordmark is decorative and hidden from assistive tech.",
+      "Social links are icon-only and require aria-label; they are at least the control height, above the 24px target minimum."
+    ]
+  },
+  "guidelines": {
+    "do": [
+      "Pass a short name: 'Meridian', not 'Meridian Health Partners Group'. A long name reaches its smallest size first on narrow screens, and then its end runs off the footer's edge.",
+      "Write the status in words; the dot only repeats it."
+    ],
+    "dont": [
+      "Don't pass a full legal name or a tagline as the wordmark; put it in the aside instead.",
+      "Don't rely on the wordmark to name the brand for screen readers.",
+      "Don't put more than six columns in one footer."
+    ]
+  },
+  "tokens": [
+    "color.surface.default",
+    "color.surface.raised",
+    "color.text.default",
+    "color.text.subtle",
+    "color.border.default",
+    "color.border.subtle",
+    "color.feedback.*.fg",
+    "color.focus.ring",
+    "font.heading",
+    "font-size.*",
+    "shadow.raised",
+    "shadow.overlay",
+    "hairline",
+    "control-height",
+    "motion.*"
+  ]
+}
