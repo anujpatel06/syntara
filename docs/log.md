@@ -28,7 +28,7 @@ the session's checkout was 4 commits behind main with another session's edits in
   - `hero-aurora` — drifting brand-colour lights (one follows the pointer), a search bar and chips that fill it.
 - **20 pictures** (Unsplash License) in `apps/docs/public/hero-gallery/`, credited per file in `GALLERY_IMAGES`.
 - Tenant `content.json`: a `hero` object per brand (menu, headline + tail, body, prompt, search, cursors). Arabic and
-  Hindi copy is Claude's draft, not reviewed.
+  Hindi copy written by Claude, reviewed by Anuj (2026-10-04).
 - Each hero folder carries an identical `*.content.ts` so it installs from the registry alone;
   `scripts/check-hero-content.mjs` fails while the copies differ.
 - MCP `get_tokens space` budget 900 → 1,000 bytes (971 measured after the new spaces).
@@ -44,6 +44,7 @@ the session's checkout was 4 commits behind main with another session's edits in
   good"). Horizon: removed: **Anuj**. Gallery: free-licence images, all 20 picks approved: **Anuj**; depth (haze,
   reflections, floor shadow): **Anuj** asked for "shadow or something", the method is **Claude**. Card fan finish:
   **Anuj** ("so flat"). Aurora: approved: **Anuj**.
+- Arabic and Hindi hero copy: reviewed by **Anuj**.
 - No logo strips and no invented user counts in any hero, although two references had them: **Claude**, per the spec.
 
 **Results** (`/verify` steps 1–9 in the worktree, served build `Nbw9TvdiIjYaHH24jQB8w` on :3000)
@@ -64,11 +65,9 @@ the session's checkout was 4 commits behind main with another session's edits in
 - `/screenshots`: 5 heroes × (vela light, harbor dark, qamar light RTL, vela 390px) = 20 shots, looked at. One fault:
   the round-1 `hero` ribbon ran under the end of its body text at 1280px; ribbon narrowed to 40%. That one change
   came after the full run and is checked by screenshot only (vela, qamar, harbor).
-- Not done: contrast measured on moving visuals beyond axe's one frame under reduced motion; a VoiceOver/NVDA pass;
-  native review of the Arabic and Hindi hero copy.
+- Not done: contrast measured on moving visuals beyond axe's one frame under reduced motion; a VoiceOver/NVDA pass.
 
 **Next**
-- Anuj: review the Arabic and Hindi hero copy.
 - The other website sections (header, features, call-to-action band, footer) in a fresh session, to this standard.
 - A link-styled button: the heroes use `Button` for actions that should navigate.
 
