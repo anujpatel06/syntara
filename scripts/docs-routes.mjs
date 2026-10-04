@@ -3,7 +3,7 @@
 import { readdirSync } from 'node:fs';
 
 export const TENANTS = ['vela', 'harbor', 'qamar', 'care', 'haat', 'house'];
-export const BLOCKS = ['benefits-overview', 'portfolio', 'dashboard-overview', 'request-flow', 'settings', 'sign-in', 'activity-table'];
+export const BLOCKS = ['benefits-overview', 'portfolio', 'dashboard-overview', 'request-flow', 'settings', 'sign-in', 'activity-table', 'hero-orbit', 'hero-gallery', 'hero-cards', 'hero-aurora'];
 
 export function docsRoutes() {
   const comps = readdirSync('packages/react/meta')

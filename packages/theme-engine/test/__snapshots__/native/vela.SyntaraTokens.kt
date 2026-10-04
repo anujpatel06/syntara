@@ -212,6 +212,12 @@ data class SyntaraSpace(
     val x12: Dp,
     /** `--syntara-space-16` */
     val x16: Dp,
+    /** `--syntara-space-20` */
+    val x20: Dp,
+    /** `--syntara-space-24` */
+    val x24: Dp,
+    /** `--syntara-space-32` */
+    val x32: Dp,
 )
 
 /** Corner radii. Follows the brand's shape input. 9999 means "fully round". */
@@ -265,6 +271,10 @@ data class SyntaraFontSizes(
     val xl4: TextUnit,
     /** `--syntara-font-size-5xl` */
     val xl5: TextUnit,
+    /** `--syntara-font-size-6xl` */
+    val xl6: TextUnit,
+    /** `--syntara-font-size-7xl` */
+    val xl7: TextUnit,
 )
 
 /** Font weights. The bundled font must include each weight (or be a variable font). */
@@ -317,6 +327,10 @@ data class SyntaraTracking(
     val xl4: TextUnit,
     /** `--syntara-font-tracking-5xl` */
     val xl5: TextUnit,
+    /** `--syntara-font-tracking-6xl` */
+    val xl6: TextUnit,
+    /** `--syntara-font-tracking-7xl` */
+    val xl7: TextUnit,
     /** `--syntara-font-tracking-caps` */
     val caps: TextUnit,
 )
@@ -584,6 +598,9 @@ object SyntaraTokens {
         x10 = 40.dp,
         x12 = 48.dp,
         x16 = 64.dp,
+        x20 = 80.dp,
+        x24 = 96.dp,
+        x32 = 128.dp,
     )
 
     val Radius: SyntaraRadius = SyntaraRadius(
@@ -610,6 +627,8 @@ object SyntaraTokens {
         xl3 = 32.sp,
         xl4 = 40.sp,
         xl5 = 48.sp,
+        xl6 = 60.sp,
+        xl7 = 72.sp,
     )
 
     val FontWeights: SyntaraFontWeights = SyntaraFontWeights(
@@ -636,6 +655,8 @@ object SyntaraTokens {
         xl3 = (-0.022).em,
         xl4 = (-0.022).em,
         xl5 = (-0.022).em,
+        xl6 = (-0.022).em,
+        xl7 = (-0.022).em,
         caps = 0.08.em,
     )
 

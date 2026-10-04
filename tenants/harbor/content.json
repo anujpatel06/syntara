@@ -924,5 +924,49 @@
     "eyebrow": "Home policy",
     "headline": "Renews on *14 October*",
     "note": "Cover that’s there when you need it."
+  },
+  "hero": {
+    "menu": {
+      "label": "Main",
+      "links": [
+        "Car",
+        "Home",
+        "Travel"
+      ],
+      "signIn": "Log in",
+      "cta": "Get a quote"
+    },
+    "announcement": {
+      "badge": "New",
+      "text": "Follow every step of your claim"
+    },
+    "headline": "Cover you can actually follow.",
+    "headlineTail": "Policies and claims in plain English.",
+    "body": "Policies, claims and payments in one place, in plain English. Know what you're covered for before you need it.",
+    "primary": "Get a quote",
+    "secondary": "How claims work",
+    "trust": "Change your mind within 14 days and pay nothing.",
+    "pictureLabel": "The Harbor app: your policies, claims in progress and recent payments.",
+    "prompt": {
+      "label": "Ask Harbor",
+      "placeholder": "Ask about your cover, like “Am I covered for a cracked windscreen?”",
+      "send": "Ask"
+    },
+    "cursors": [
+      "Daniel",
+      "Grace"
+    ],
+    "search": {
+      "label": "Search Harbor",
+      "placeholder": "Search policies, claims and documents",
+      "button": "Search",
+      "chipsLabel": "Popular searches",
+      "chips": [
+        "Car cover",
+        "Home claims",
+        "Travel",
+        "Documents"
+      ]
+    }
   }
 }
