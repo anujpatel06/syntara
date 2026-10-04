@@ -7,8 +7,13 @@
 
 .root {
   --_gutter: var(--syntara-space-4);
-  /* How strong the lights are: bright, since the hero is dark by default (scheme="dark"). */
+  /* How strong the lights are: bright, tuned for dark. */
   --_glow: 0.8;
+  /* Light scheme only: a halo of the page colour at 90% behind the copy and the pause toggle, so the lights glow at
+     full strength around the text, not under it. Behind the copy it is blurred, so at the text it is at least 86%; that
+     keeps text.subtle at 4.5:1 with all four lights stacked at full strength underneath, for every tenant and 1,000
+     fuzz brands (hero.test.tsx). Dark has none. */
+  --_halo: light-dark(color-mix(in srgb, var(--syntara-color-surface-canvas) 90%, transparent), transparent);
   /* What the lights are washed toward: the page on a light scheme (pastel), the light text colour on a dark one, so
      they glow (mixing toward a dark page turned Harbor's orange brown). The theme sets color-scheme, so light-dark()
      follows the scope's scheme, not the browser's. */
@@ -121,6 +126,25 @@
   padding-inline: var(--_gutter);
 }
 
+/* The light-scheme halo (see --_halo): a rectangle reaching two blur radii past the copy's padding box (which holds all
+   of its text), blurred, so its edge is a long soft falloff with round corners rather than a box. At the padding box's
+   corner the blur keeps Φ(2)² = 95.5% of it. Aurora only: the other styles have no lights behind their copy. */
+.root[data-variant='aurora'] .copy {
+  position: relative;
+}
+
+.root[data-variant='aurora'] .copy::before {
+  --_feather: var(--syntara-space-8);
+
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: calc(var(--_feather) * -2);
+  background-color: var(--_halo);
+  filter: blur(var(--_feather));
+  pointer-events: none;
+}
+
 .eyebrow {
   display: flex;
   justify-content: center;
@@ -203,9 +227,18 @@
     outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
 }
 
+/* Aurora's toggle sits over the lights, outside the copy's halo, so it has its own (see --_halo). */
+.root[data-variant='aurora'] .pause {
+  background-color: var(--_halo);
+}
+
 .pause[data-hovered],
 .pause[data-selected] {
-  background: color-mix(in oklab, var(--syntara-color-text-default) 6%, transparent);
+  /* The tint goes over the halo, not in place of it. */
+  background-image: linear-gradient(
+    color-mix(in oklab, var(--syntara-color-text-default) 6%, transparent),
+    color-mix(in oklab, var(--syntara-color-text-default) 6%, transparent)
+  );
   color: var(--syntara-color-text-default);
 }
 

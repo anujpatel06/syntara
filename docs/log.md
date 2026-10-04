@@ -6,6 +6,54 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-04 (Hero follow-up) — Hero follows the page's light or dark scheme
+
+Branch `claude/hero-follows-scheme`, cut from `origin/main` at 1a41bbf, fast-forwarded to 44ca23a.
+
+**Changed**
+- `Hero` (alpha): `scheme` defaults to `"inherit"`, not `"dark"`; `scheme="dark"` keeps the old look. Changeset
+  `hero-follows-the-page.md` (minor) says the default changed; `hero.md` no longer says "dark by default".
+- Light scheme, aurora: the lights keep their full dark-scheme strength; a blurred halo of `surface.canvas` at 90% sits behind
+  the copy (round-cornered, at least 86% at the text) and under the pause toggle. One custom property, `--_halo`,
+  `transparent` in dark. Orbit and gallery only change by following the page.
+- Docs: the "Follow the page" example became "Always dark" (`hero-dark.tsx`, `scheme="dark"`); `hero.meta.json`
+  (description, `scheme` default, example, accessibility note) and RFC-003 updated; ADR-046 written.
+- `hero.test.tsx`: the default-scheme test flipped; a new light-scheme contrast proof reads the lights and the halo
+  from the CSS and checks every combination of the four lights, for the six tenants and 1,000 fuzz brands.
+
+**Decided**
+- Hero follows the page by default, always-dark as an option (option B of three) — **Anuj** (ADR-046). Reverses
+  RFC-003's "always dark and glowing", also Anuj's.
+- The light-mode look, after three drafts (lights at 15%: "where is background pattern"; 60% + halo 70%: "make it
+  more visible"; full strength + halo 85%: "done"; the halo's edge softened after the sweep showed a box: "ok") — **Anuj**.
+- Wait for the separate dark-gap fix to land on main before committing this branch (option A of three) — **Claude
+  recommended, Anuj accepted** ("ok").
+- The pause toggle gets its own halo, scoped to aurora — **Claude** (full-strength lights took its icon to 1.211:1).
+
+**Results**
+- `hero.test.tsx` light-scheme proof, worst of 1,000 fuzz brands: text.default 11.861, text.subtle 4.939, text.brand
+  4.005, pause 5.342 (tenants: 12.016 / 5.019 / 4.501 / 5.413) — `npx vitest run test/hero.test.tsx -t contrast
+  --reporter=verbose` in `packages/react`.
+- `pnpm typecheck` clean. `pnpm test` 2,231 passing (react 534), 0 failing; `check-test-counts --fix` updated the
+  README row. `pnpm test:themes` 118,000 of 118,000, adjustments median 4. `check:meta` 58 ok. `registry` 82 items.
+  `check-override-weight` 0.
+- Docs build 315 of 315 pages; `--_halo` found in 2 built CSS chunks (`grep -rl -- "--_halo" apps/docs/out/_next/static`).
+  `check-ssr-tabs` 0 of 314.
+- Build XSohxn8UvdOAm4FaFJb8Y on :3241: hydration 0 of 288; theme links 0 of 5; narrow overflow 0 of 288; CSP 0 of
+  144; overlay exit 0 (108 tooltips, 4 menus). **axe: 2 violation nodes, dark `/docs/components/hero`** — the
+  pre-existing dark gap, now visible to axe (ADR-046, Consequences). Measured before the halo's edge was softened;
+  the soft edge changes light-scheme CSS only and the tests above were re-run after it.
+- Not committed: waiting for the dark fix, then a re-run of `/verify` step 9.
+
+**Next**
+- When the dark-gap fix is on main: bring it in, re-run `/verify` (axe must be 0), then ask Anuj to commit and open
+  the PR (README "Tests" row: re-measure, never pick a side).
+- Dark gap, found here: the pointer light alone brings `text.subtle` to 3.716:1 for a tenant in the dark scheme
+  (throwaway measurement, not yet a test). A separate session is measuring and fixing it.
+- On phones the halo covers most of the hero; shrinking it to the copy's content box would show more colour (offered).
+
+---
+
 ## 2026-10-04 — Inside a card, inner surfaces are outlines (ADR-045)
 
 **Changed**
