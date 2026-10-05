@@ -2,7 +2,8 @@
 
 - **Status:** Accepted — decided by **Anuj** (2026-10-04: "can you add those as components as hero section"; chose
   one Hero with four styles over four components or keeping blocks; Aurora first; chose "always dark and glowing"
-  after seeing round 1; approved round 2 with "next").
+  after seeing round 1; approved round 2 with "next"). **Superseded in part by ADR-046** (Anuj, 2026-10-04): the hero
+  now follows the page's scheme by default, and `scheme="dark"` keeps it dark.
 - **Date:** 2026-10-04
 - **Kind:** New component
 - **Trust level:** Hard gate (GOVERNANCE.md §6). Claude drafted this RFC and built the first style; Anuj decided.
@@ -31,7 +32,8 @@
   `cards` follow one at a time, each from its block, each shown to Anuj before the next.
 - **Just the section.** The blocks' menu bar and built-in search stay in the blocks: a site has its own header, and
   a search can go in `actions`.
-- **`scheme="dark"` by default**: the hero copies the tenant id from the nearest themed ancestor (as overlays do,
+- **`scheme="dark"` by default** *(changed by ADR-046: the default is now `"inherit"`; in light the copy sits on a
+  halo of the page colour so the lights can glow around it)*: the hero copies the tenant id from the nearest themed ancestor (as overlays do,
   ADR-012) and sets `data-syntara-scheme="dark"` on itself, so its text, buttons and lights use the brand's own dark
   roles, whose contrast the engine already proves. `theme` renders it dark on the server with no flash;
   `scheme="inherit"` follows the page.

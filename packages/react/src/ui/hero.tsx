@@ -65,12 +65,13 @@ export interface HeroProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** Level of the headline. Default 1, for a page's hero; use 2 or lower for a hero inside a longer page. */
   headingLevel?: 1 | 2 | 3 | 4;
   /**
-   * `dark` (default): the hero always uses the brand's dark colours, so the lights glow, even on a light page.
-   * `inherit`: it follows the page's scheme. Dark is a scope of its own: the hero copies the brand name from the
-   * nearest themed ancestor (as overlays do, ADR-012), or takes `theme` to render dark on the server with no flash.
+   * `inherit` (default): the hero follows the page's light or dark scheme. In light the lights are a faint pastel, so
+   * text keeps its contrast. `dark`: the hero always uses the brand's dark colours, so the lights glow, even on a
+   * light page. Dark is a scope of its own: the hero copies the brand name from the nearest themed ancestor (as
+   * overlays do, ADR-012), or takes `theme` to render dark on the server with no flash.
    */
   scheme?: 'dark' | 'inherit';
-  /** The tenant id, when known, so a dark hero renders dark on the server. Otherwise it's read from the page. */
+  /** With `scheme="dark"`: the tenant id, when known, so the hero renders dark on the server. Otherwise it's read from the page. */
   theme?: string;
   /** Pictures for `variant="gallery"`, used in order and repeated to fill 20 cards. Ignored by other styles. */
   images?: HeroImage[];
@@ -100,7 +101,7 @@ export function Hero({
   variant = 'aurora',
   headingLevel = 1,
   pauseLabel = 'Pause animation',
-  scheme = 'dark',
+  scheme = 'inherit',
   theme,
   images = [],
   cards = [],

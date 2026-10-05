@@ -1,6 +1,23 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { generateTheme, toCssVariables, type BrandInput } from '@syntara/theme-engine';
+import {
+  contrastRatio,
+  hexToRgb8,
+  linearRgbToOklab,
+  linearToSrgb,
+  oklabToLinearRgb,
+  rgb8ToHex,
+  srgbToLinear,
+} from '../../theme-engine/src/color';
+import vela from '../../../tenants/vela/brand.json';
+import harbor from '../../../tenants/harbor/brand.json';
+import qamar from '../../../tenants/qamar/brand.json';
+import care from '../../../tenants/care/brand.json';
+import house from '../../../tenants/house/brand.json';
+import haat from '../../../tenants/haat/brand.json';
 import { Hero } from '../src/ui/hero';
+import { loadFuzzInputs, readUiCss } from './status-icon-contrast';
 
 describe('Hero', () => {
   it('is a section named by its headline, with the slots in reading order', () => {
@@ -49,30 +66,30 @@ describe('Hero', () => {
     expect(toggle).toHaveAttribute('aria-pressed', 'false');
   });
 
-  it('scopes itself dark with the inherited theme, unless told to follow the page', () => {
+  it('follows the page by default; scheme="dark" scopes it dark with the inherited theme', () => {
     const { rerender } = render(
       <div data-syntara-theme="vela" data-syntara-scheme="light" data-syntara-density="compact">
         <Hero title="Plans" />
       </div>,
     );
     const section = () => screen.getByRole('region', { name: 'Plans' });
+    expect(section()).not.toHaveAttribute('data-syntara-scheme');
+    expect(section()).not.toHaveAttribute('data-syntara-theme');
+
+    rerender(
+      <div data-syntara-theme="vela" data-syntara-scheme="light" data-syntara-density="compact">
+        <Hero title="Plans" scheme="dark" />
+      </div>,
+    );
     expect(section()).toHaveAttribute('data-syntara-theme', 'vela');
     expect(section()).toHaveAttribute('data-syntara-scheme', 'dark');
     expect(section()).toHaveAttribute('data-syntara-density', 'compact');
-
-    rerender(
-      <div data-syntara-theme="vela" data-syntara-scheme="light">
-        <Hero title="Plans" scheme="inherit" />
-      </div>,
-    );
-    expect(section()).not.toHaveAttribute('data-syntara-scheme');
-    expect(section()).not.toHaveAttribute('data-syntara-theme');
   });
 
   it('follows the page when it switches brand afterwards', async () => {
     const { container } = render(
       <div data-syntara-theme="vela">
-        <Hero title="Plans" />
+        <Hero title="Plans" scheme="dark" />
       </div>,
     );
     const section = screen.getByRole('region', { name: 'Plans' });
@@ -82,7 +99,7 @@ describe('Hero', () => {
   });
 
   it('renders dark on the server when given the theme', () => {
-    render(<Hero title="Plans" theme="qamar" />);
+    render(<Hero title="Plans" scheme="dark" theme="qamar" />);
     const section = screen.getByRole('region', { name: 'Plans' });
     expect(section).toHaveAttribute('data-syntara-theme', 'qamar');
     expect(section).toHaveAttribute('data-syntara-scheme', 'dark');
@@ -228,4 +245,230 @@ describe('Hero', () => {
     const { container } = render(<Hero title="Plans" />);
     expect(container.querySelector('section > [aria-hidden="true"]')).toBeInTheDocument();
   });
+});
+
+/*
+ * Aurora contrast in dark. Every number is read from hero.module.css, so changing one re-runs the proof.
+ *   lights   all four stacked at full strength (A, B, C, then the pointer, in paint order), whatever the width or
+ *            pointer position: the blur only ever lowers a light below its opacity, so this is the worst case.
+ *            A = color-mix(in oklab, action.primary.bg 70%, --_wash), B = accent.bg 75% + --_wash,
+ *            C = action.primary.bg + accent.bg evenly, pointer = action.primary.bg 60% + --_wash; --_wash is text.default.
+ *   veil     surface.canvas at V%, as a box around the copy blurred by σ = space-16. A blurred box keeps, at a point,
+ *            the product over both axes of Φ(a/σ) + Φ(b/σ) − 1 (a, b: distances to that axis's two edges). The
+ *            weakest text point is a corner of the copy's content box, for the smallest copy (one title line, a
+ *            phone's gutter); the veil there is V% × that product.
+ *   paint    composited in 8-bit sRGB, as browsers blend. text.default and text.subtle (the headline's second line
+ *            and the description) must reach 4.5:1 for the six tenants and the engine's 1,000 fuzz brands.
+ */
+describe('aurora contrast', () => {
+  const css = readUiCss('hero.module.css');
+  // A top-level rule (at the start of a line), not one nested in an @container.
+  const block = (selector: string) => {
+    const at = css.indexOf(`\n${selector} {`);
+    if (at < 0) throw new Error(`hero.module.css: ${selector} not found`);
+    return /\{([^}]*)\}/.exec(css.slice(at))![1]!;
+  };
+  const num = (src: string, re: RegExp): number => {
+    const m = re.exec(src);
+    if (!m) throw new Error(`hero.module.css: ${re} not found`);
+    return Number(m[1]);
+  };
+  const GLOW = num(css, /--_glow: ([\d.]+);/);
+  // --_veil: light-dark(<light %>, <dark %>), both surface.canvas.
+  const veilPct = /--_veil: light-dark\(\s*color-mix\(in srgb, var\(--syntara-color-surface-canvas\) (\d+)%, transparent\),\s*color-mix\(in srgb, var\(--syntara-color-surface-canvas\) (\d+)%, transparent\)\s*\);/.exec(css);
+  if (!veilPct) throw new Error('hero.module.css: --_veil not found');
+  const VEIL_LIGHT = Number(veilPct[1]);
+  const VEIL = Number(veilPct[2]);
+  const WASH_DARK = /--_wash: light-dark\([^,]+, var\(--syntara-color-([\w-]+)\)\);/.exec(css)?.[1];
+  const opacity = (sel: string) => {
+    const m = /opacity: calc\(var\(--_glow\) \* ([\d.]+)\)/.exec(block(sel));
+    return GLOW * (m ? Number(m[1]) : 1);
+  };
+  const share = (sel: string) => num(block(sel), /-bg\) (\d+)%, var\(--_wash\)/);
+  const LIGHTS = {
+    A: { opacity: opacity('.lightA'), primary: share('.lightA') },
+    B: { opacity: opacity('.lightB'), accent: share('.lightB') },
+    C: { opacity: opacity('.lightC'), even: /color-mix\(in oklab, var\(--syntara-color-action-primary-bg\), var\(--syntara-color-accent-bg\)\)/.test(block('.lightC')) },
+    P: { opacity: opacity('.lightPointer'), primary: share('.lightPointer') },
+  };
+  const veilBox = block(".root[data-variant='aurora'] .copy::before");
+  const BOX = {
+    block: num(veilBox, /inset-block: calc\(var\(--syntara-space-16\) \* -([\d.]+)\);/),
+    inline: num(veilBox, /inset-inline: calc\(var\(--syntara-space-16\) \* -([\d.]+)\);/),
+    blur: /filter: blur\(var\(--syntara-space-16\)\);/.test(veilBox),
+    paints: /background-color: var\(--_veil\);/.test(veilBox),
+  };
+
+  type Rgb = [number, number, number];
+  const toLab = (hex: string) => linearRgbToOklab(hexToRgb8(hex).map((v) => srgbToLinear(v / 255)) as Rgb);
+  const mix = (a: string, b: string, p: number): string => {
+    const A = toLab(a);
+    const B = toLab(b);
+    const t = p / 100;
+    const lab = { l: A.l * t + B.l * (1 - t), a: A.a * t + B.a * (1 - t), b: A.b * t + B.b * (1 - t) };
+    return rgb8ToHex(oklabToLinearRgb(lab).map((v) => Math.max(0, Math.min(1, linearToSrgb(v))) * 255) as Rgb);
+  };
+  const over = (fg: string, bg: string, alpha: number): string => {
+    const f = hexToRgb8(fg);
+    const b = hexToRgb8(bg);
+    return rgb8ToHex([0, 1, 2].map((i) => Math.round(f[i]! * alpha + b[i]! * (1 - alpha))) as Rgb);
+  };
+  const floor3 = (v: number) => (Math.floor(v * 1000) / 1000).toFixed(3);
+  // Standard normal CDF via erf (Abramowitz & Stegun 7.1.26, error < 1.5e-7; 1e-6 is taken off to stay below it).
+  const phi = (x: number) => {
+    const z = Math.abs(x) / Math.SQRT2;
+    const t = 1 / (1 + 0.3275911 * z);
+    const erf = 1 - ((((1.061405429 * t - 1.453152027) * t + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-z * z);
+    return (x >= 0 ? (1 + erf) / 2 : (1 - erf) / 2) - 1e-6;
+  };
+
+  /** px of a theme length (rem at 16px), from the engine's variables. */
+  const vars = toCssVariables(generateTheme(vela as unknown as BrandInput), 'dark');
+  const px = (name: string) => {
+    const m = /^([\d.]+)(px|rem)$/.exec(vars[name] ?? '');
+    if (!m) throw new Error(`${name} not in px or rem: ${vars[name]}`);
+    return Number(m[1]) * (m[2] === 'rem' ? 16 : 1);
+  };
+  const S16 = px('--syntara-space-16');
+  const copyBlock = block('.copy');
+  const PAD_TOP = /padding-block: var\(--syntara-space-(\d+)\) var\(--syntara-space-(\d+)\);/.exec(copyBlock);
+  const padTop = px(`--syntara-space-${PAD_TOP![1]}`);
+  const padBottom = px(`--syntara-space-${PAD_TOP![2]}`);
+  const phoneGutter = px(`--syntara-space-${/--_gutter: var\(--syntara-space-(\d+)\);/.exec(block('.root'))![1]}`);
+  // The smallest copy: a title of one line at the phone size, on a 320px-wide hero.
+  const titleLine = px('--syntara-font-size-4xl') * Number(vars['--syntara-line-height-tight']);
+  const contentWidth = 320 - 2 * phoneGutter;
+  const axis = (a: number, b: number) => phi(a / S16) + phi(b / S16) - 1;
+  const top = padTop + BOX.block * S16;
+  const bottom = padBottom + BOX.block * S16;
+  const side = phoneGutter + BOX.inline * S16;
+  const COVER = Math.min(axis(top, titleLine + bottom), axis(bottom, titleLine + top)) * axis(side, contentWidth + side);
+  const V = (VEIL / 100) * COVER;
+
+  const TENANTS = { vela, harbor, qamar, care, house, haat } as unknown as Record<string, BrandInput>;
+  const ROLES = ['text.default', 'text.subtle'] as const;
+
+  /** Worst ratio per role, with the veil at `veil` (0 = none), and with only the lights in `only` lit. */
+  const worstFor = (inputs: BrandInput[], names: string[], veil: number, only = 'ABCP') => {
+    const worst = Object.fromEntries(ROLES.map((r) => [r, { ratio: Infinity, at: '' }]));
+    inputs.forEach((input, i) => {
+      const r = generateTheme(input).schemes.dark.roles;
+      const [primary, accent, wash, canvas] = [r['action.primary.bg'].hex, r['accent.bg'].hex, r['text.default'].hex, r['surface.canvas'].hex];
+      let bg = canvas;
+      if (only.includes('A')) bg = over(mix(primary, wash, LIGHTS.A.primary), bg, LIGHTS.A.opacity);
+      if (only.includes('B')) bg = over(mix(accent, wash, LIGHTS.B.accent), bg, LIGHTS.B.opacity);
+      if (only.includes('C')) bg = over(mix(primary, accent, 50), bg, LIGHTS.C.opacity);
+      if (only.includes('P')) bg = over(mix(primary, wash, LIGHTS.P.primary), bg, LIGHTS.P.opacity);
+      bg = over(canvas, bg, veil);
+      for (const role of ROLES) {
+        const v = contrastRatio(r[role].hex, bg);
+        if (v < worst[role]!.ratio) worst[role] = { ratio: v, at: names[i] ?? `fuzz#${i}` };
+      }
+    });
+    return worst;
+  };
+  const report = (w: Record<string, { ratio: number; at: string }>) =>
+    Object.fromEntries(Object.entries(w).map(([k, v]) => [k, `${floor3(v.ratio)} (${v.at})`]));
+  const names = Object.keys(TENANTS);
+  const tenants = names.map((n) => TENANTS[n]!);
+
+  it('reads the numbers it proves from the CSS', () => {
+    expect({ GLOW, VEIL_LIGHT, VEIL, WASH_DARK, LIGHTS, BOX }).toEqual({
+      GLOW: 0.8,
+      VEIL_LIGHT: 90,
+      VEIL: 77,
+      WASH_DARK: 'text-default',
+      LIGHTS: {
+        A: { opacity: 0.8, primary: 70 },
+        B: { opacity: 0.8, accent: 75 },
+        C: { opacity: 0.48, even: true },
+        P: { opacity: 0.5599999999999999, primary: 60 },
+      },
+      BOX: { block: 1, inline: 2, blur: true, paints: true },
+    });
+    expect({ S16, padTop, padBottom, phoneGutter }).toEqual({ S16: 64, padTop: 64, padBottom: 80, phoneGutter: 16 });
+  });
+
+  it('keeps ≥ 96% of the veil behind the weakest text point, a corner of the smallest copy', () => {
+    console.log('hero aurora veil at the text', { cover: COVER.toFixed(4), veil: V.toFixed(4), titleLine });
+    expect(COVER).toBeGreaterThan(0.96);
+  });
+
+  it('without the veil, the pointer light alone takes text.subtle below 4.5:1 (why the veil exists)', () => {
+    const w = worstFor(tenants, names, 0, 'P');
+    console.log('hero aurora dark, no veil, pointer alone at full strength, tenants', report(w));
+    expect(w['text.subtle']!.ratio).toBeLessThan(4.5);
+  });
+
+  it('tenants: text.default and text.subtle ≥ 4.5:1 with all four lights at full strength under the veil', () => {
+    const w = worstFor(tenants, names, V);
+    console.log('hero aurora dark, veiled, tenants', report(w));
+    for (const role of ROLES) expect(w[role]!.ratio, role).toBeGreaterThanOrEqual(4.5);
+  });
+
+  it('1,000 fuzz brands: the same', async () => {
+    const w = worstFor(await loadFuzzInputs(), [], V);
+    console.log('hero aurora dark, veiled, fuzz', report(w));
+    for (const role of ROLES) expect(w[role]!.ratio, role).toBeGreaterThanOrEqual(4.5);
+  }, 60_000);
+
+  /*
+   * Light (ADR-046): the lights are washed toward surface.canvas instead, and every combination of the four (each at
+   * 0, half or full strength) is checked, since in light a weaker light is not always the kinder one. The same veil
+   * box at its light strength sits under the copy: text.default and text.subtle ≥ 4.5:1, text.brand (only the
+   * Eyebrow's mark, an icon) ≥ 3:1. The pause toggle has its own unblurred veil: its icon (text.subtle; text.default
+   * over a 6% tint when hovered) ≥ 3:1.
+   */
+  const VL = (VEIL_LIGHT / 100) * COVER;
+  const CHIP = num(block(".root[data-variant='aurora'] .pause"), /light-dark\(color-mix\(in srgb, var\(--syntara-color-surface-canvas\) (\d+)%, transparent\), transparent\)/) / 100;
+  const worstLight = (inputs: BrandInput[]) => {
+    const worst = { 'text.default': Infinity, 'text.subtle': Infinity, 'text.brand': Infinity, pause: Infinity, 'pause hovered': Infinity };
+    for (const input of inputs) {
+      const r = generateTheme(input).schemes.light.roles;
+      const [primary, accent, canvas] = [r['action.primary.bg'].hex, r['accent.bg'].hex, r['surface.canvas'].hex];
+      const lights: Array<[string, number]> = [
+        [mix(primary, canvas, LIGHTS.A.primary), LIGHTS.A.opacity],
+        [mix(accent, canvas, LIGHTS.B.accent), LIGHTS.B.opacity],
+        [mix(primary, accent, 50), LIGHTS.C.opacity],
+        [mix(primary, canvas, LIGHTS.P.primary), LIGHTS.P.opacity],
+      ];
+      const K = [0, 0.5, 1];
+      for (const a of K) for (const b of K) for (const c of K) for (const d of K) {
+        let bg = canvas;
+        [a, b, c, d].forEach((k, i) => {
+          if (k) bg = over(lights[i]![0], bg, lights[i]![1] * k);
+        });
+        const ground = over(canvas, bg, VL);
+        for (const role of ['text.default', 'text.subtle', 'text.brand'] as const) {
+          worst[role] = Math.min(worst[role], contrastRatio(r[role].hex, ground));
+        }
+        const chip = over(canvas, bg, CHIP);
+        worst.pause = Math.min(worst.pause, contrastRatio(r['text.subtle'].hex, chip));
+        worst['pause hovered'] = Math.min(worst['pause hovered'], contrastRatio(r['text.default'].hex, over(r['text.default'].hex, chip, 0.06)));
+      }
+    }
+    return worst;
+  };
+  const checkLight = (w: ReturnType<typeof worstLight>) => {
+    console.log(Object.fromEntries(Object.entries(w).map(([k, v]) => [k, floor3(v)])));
+    expect(w['text.default']).toBeGreaterThanOrEqual(4.5);
+    expect(w['text.subtle']).toBeGreaterThanOrEqual(4.5);
+    expect(w['text.brand']).toBeGreaterThanOrEqual(3);
+    expect(w.pause).toBeGreaterThanOrEqual(3);
+    expect(w['pause hovered']).toBeGreaterThanOrEqual(3);
+  };
+
+  it('light: reads the pause toggle\'s own veil from the CSS', () => {
+    expect(CHIP).toBe(0.9);
+  });
+
+  it('light, tenants: text on the veil and the pause icon keep their contrast over every mix of the lights', () => {
+    console.log('hero aurora light, tenants');
+    checkLight(worstLight(tenants));
+  });
+
+  it('light, 1,000 fuzz brands: the same', async () => {
+    console.log('hero aurora light, fuzz');
+    checkLight(worstLight(await loadFuzzInputs()));
+  }, 120_000);
 });

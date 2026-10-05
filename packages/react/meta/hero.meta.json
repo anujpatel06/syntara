@@ -1,7 +1,7 @@
 {
   "name": "hero",
   "title": "Hero",
-  "description": "The opening section of a website page: a big headline, a sentence and what to do next, over a moving decoration in the brand's colours. Dark by default. Styles: aurora, orbit, gallery, cards.",
+  "description": "The opening section of a website page: a big headline, a sentence and what to do next, over a moving decoration in the brand's colours. Follows the page's light or dark scheme, or stays dark with scheme=\"dark\". Styles: aurora, orbit, gallery, cards.",
   "category": "layout",
   "maturity": "alpha",
   "exports": [
@@ -44,9 +44,9 @@
       "description": "actions takes anything: here a search field and its button."
     },
     {
-      "name": "hero-inherit",
-      "title": "Follow the page",
-      "description": "scheme=\"inherit\" uses the page's light or dark scheme instead of always being dark."
+      "name": "hero-dark",
+      "title": "Always dark",
+      "description": "scheme=\"dark\" keeps the brand's dark colours, so the lights glow even on a light page."
     }
   ],
   "props": [
@@ -110,14 +110,14 @@
       "component": "Hero",
       "name": "scheme",
       "type": "'dark' | 'inherit'",
-      "default": "'dark'",
-      "description": "dark: always the brand's dark colours, so the lights glow, even on a light page. inherit: follow the page."
+      "default": "'inherit'",
+      "description": "inherit: follow the page's light or dark scheme; in light the lights glow around the copy, which sits on a halo of the page colour. dark: always the brand's dark colours, so the lights glow even on a light page."
     },
     {
       "component": "Hero",
       "name": "theme",
       "type": "string",
-      "description": "The tenant id, so a dark hero renders dark on the server. Otherwise it's copied from the nearest themed ancestor."
+      "description": "With scheme=\"dark\": the tenant id, so the hero renders dark on the server. Otherwise it's copied from the nearest themed ancestor."
     },
     {
       "component": "Hero",
@@ -144,7 +144,7 @@
     "notes": [
       "A section named by its headline (aria-labelledby).",
       "WCAG 2.2.2: the lights loop slowly, so a pause toggle with a fixed name and aria-pressed is always shown. With reduced motion, nothing moves and the toggle is removed.",
-      "The decoration is aria-hidden. In the default dark scheme, text and buttons use the brand's dark roles, whose contrast the engine proves.",
+      "The decoration is aria-hidden. In light, the copy and the pause toggle sit on a halo of the page colour (90%, blurred at the copy's edge so it never reads as a box), so text.default and text.subtle stay at 4.5:1 over all four lights at full strength, for every tenant and 1,000 fuzz brands (hero.test.tsx; ADR-046). With scheme=\"dark\", text and buttons use the brand's dark roles.",
       "Two headline lines are read with a space between them.",
       "orbit: the rings and stars are aria-hidden; the actions follow the copy in reading order. Buttons at the centre are a white pill: the scheme's lightest text-safe pair (16.8:1 measured on Vela)."
     ]
