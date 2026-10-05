@@ -133,7 +133,7 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
       <div ref={toolbarRef} className={styles.toolbar}>
         <SearchField
           aria-label="Search icons"
-          placeholder={`Search ${total} icons…`}
+          placeholder="Search icons…"
           value={query}
           onChange={setQuery}
           className={styles.search}

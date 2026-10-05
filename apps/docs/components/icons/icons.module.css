@@ -253,14 +253,16 @@
   }
 }
 .search.search {
-  flex: 1 1 calc(var(--syntara-space-16) * 4);
+  /* 160px to start from, so search, style, size and stroke share one row in the 808px docs column at 1440;
+     it grows into whatever the tools leave, and the row still wraps when the column is narrower */
+  flex: 1 1 calc(var(--syntara-space-16) * 2.5);
   min-inline-size: 0;
 }
 .tools {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: var(--syntara-space-3) var(--syntara-space-6);
+  gap: var(--syntara-space-3) var(--syntara-space-4);
 }
 .sizeToggle.sizeToggle {
   min-inline-size: calc(var(--syntara-space-8) + var(--syntara-space-1));
