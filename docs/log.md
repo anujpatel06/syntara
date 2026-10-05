@@ -67,6 +67,53 @@ checkout).
 
 ---
 
+## 2026-10-05 — Three docs fixes: language tabs, theme label, duotone filter
+
+Three branches from `main` at 66db243, one fix each: `fix/landing-language-tabs` (this entry),
+`fix/preview-theme-label` and `feat/icons-style-filter`.
+
+**Changed**
+- **Landing, "Every script" card** (`apps/docs/components/landing/`): switching language no longer makes the toggle's
+  pill rise from below. The English calendar has a week fewer, so swapping it changed the card's height, the centred
+  stack re-centred, and the toggle moved 26px — the pill's slide started from the old spot. All three calendars now
+  sit in one grid cell with only the chosen one visible (the others `inert`), so the card keeps the tallest height.
+- **Component preview bar** (`apps/docs/components/preview/`): a visible "Theme" label before the brand dots, which
+  now also name the group for screen readers (was `aria-label="Tenant"`).
+- **Icons page** (`apps/docs/components/icons/`): a Style filter (All · Outline · Filled · Duotone), and in the
+  gallery the duotone tint is the house theme's blue at 45% (`--syntara-icon-tint`), because the house accent is grey
+  and duotone read as plain black and white. The specimen above the gallery keeps the default tint.
+
+**Decided**
+- Stack the calendars rather than fix the card's height by hand. **Claude recommended, Anuj accepted.**
+- Label the dots "Theme" (the word visitors know), not "Brand" or "Tenant". **Claude recommended, Anuj accepted.**
+- Duotone tint in the gallery: info blue at 45%. Full-strength blue swallowed the outline in light mode.
+  **Claude recommended, Anuj accepted.**
+
+**Results**
+- Toggle position, before → after, dev server: moved 26px between English and Arabic → 0px across all three;
+  each card 343px (`getBoundingClientRect` in the browser pane).
+- Duotone filter shows 237 icons (the gallery's count line).
+- CI on #70 failed hydration on `/`: server-rendering the Hindi calendar wrote अक्टूबर where the browser writes
+  अक्तूबर (Node's and Chromium's locale data differ; my Mac's agree, so local runs passed). Now only the chosen
+  calendar is server-rendered and the other two join after hydration. Rebuilt: Hindi and Arabic month names in
+  `apps/docs/out/index.html` 0 (`grep -c`); `check-hydration` 0 of 288; toggle at the same position across
+  English → Arabic → Hindi → English (Playwright, served build UBf7a4ii6JerbnAEMa6qt).
+- Shipped: `grep -rl "scriptStack\|pickerLabel" apps/docs/out/_next/static` → 3 files; `grep -rl "Icon style"` → 1.
+- `/verify` (all three fixes in one tree): typecheck clean; `pnpm test` 2,249 tests across 8 packages, none failing
+  (`node scripts/check-test-counts.mjs --from <test output>`); `pnpm test:themes` 118,000/118,000, median adjustments
+  4; `pnpm check:meta` 58/58 (existing warning: `hero-styles.tsx`); `pnpm registry` 82 items;
+  `node scripts/check-override-weight.mjs` 0; docs build 316/316 pages; `node scripts/check-ssr-tabs.mjs` 0 of 315.
+  Served on :3000 (build RgjCYPCeYAW_AttXOUnn5): `check-hydration` 0 of 288; `check-theme-links` 0 of 5;
+  `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144; `axe-sweep` 0 violation nodes over 144 × 2;
+  `check-overlay-exit` 0 of 112.
+- Not run: the `/screenshots` sweep.
+
+**Next**
+- The house theme's dot in the preview bar is near-black and almost disappears in dark mode; it needs an outline.
+- The icons toolbar now wraps to two rows at desktop width.
+
+---
+
 ## 2026-10-05 — syntara.live, and a link-preview picture
 
 Branch `feat/og-preview-image`, from `main` at 8240ffc.
