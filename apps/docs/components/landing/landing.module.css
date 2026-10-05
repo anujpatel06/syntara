@@ -1,0 +1,1385 @@
+/*
+ * The landing page. Layout, type and motion follow the measured Fora spec (docs/design/landing.md): one column
+ * 1080px wide, a 7-px-dot pill at the head of every section, two-tone section headings, regular-weight
+ * headlines, cards whose 1px edge is lit from the pointer, and photographs carrying all the colour.
+ *
+ * The page always runs on the house theme in dark (Landing wraps it in ThemeScope scheme="dark"), so every colour
+ * below is a house token or a mix of one with transparent. The landscapes are pictures, not CSS colours.
+ *
+ * Sizes are token multiples. Where Fora measures a size the scale doesn't have, the calc says which: e.g. the
+ * 56px headline is 4xl (40) + space-4 (16).
+ */
+
+.landing {
+  --l-text: var(--syntara-color-text-default);
+  --l-80: color-mix(in oklab, var(--syntara-color-text-default) 82%, transparent);
+  --l-65: var(--syntara-color-text-subtle);
+  --l-10: color-mix(in oklab, var(--syntara-color-text-default) 10%, transparent);
+  --l-06: color-mix(in oklab, var(--syntara-color-text-default) 6%, transparent);
+  --l-card: color-mix(in oklab, var(--syntara-color-surface-canvas) 88%, transparent);
+  --l-ease: var(--syntara-motion-easing);
+  --l-slow: calc(var(--syntara-motion-duration-normal) * 2); /* Fora: 0.4s on every colour change */
+  /* 1080px column, 960px app window */
+  --l-col: calc(var(--syntara-space-20) * 13.5);
+  --l-app: calc(var(--syntara-space-24) * 10);
+
+  position: relative;
+  overflow-x: clip;
+  background: var(--syntara-color-surface-canvas);
+  color: var(--l-text);
+  font-family: var(--syntara-font-body);
+}
+
+.wrap {
+  max-inline-size: var(--l-col);
+  margin-inline: auto;
+}
+
+.section {
+  position: relative;
+  padding-inline: var(--syntara-space-6);
+  padding-block-end: calc(var(--syntara-space-20) + var(--syntara-space-16)); /* 144 */
+}
+
+/* ── type roles ───────────────────────────────────────────── */
+.h1 {
+  margin: 0;
+  font-family: var(--syntara-font-heading);
+  font-size: calc(var(--syntara-font-size-4xl) + var(--syntara-space-4)); /* 56 */
+  line-height: 1.3;
+  font-weight: var(--syntara-font-weight-regular);
+  letter-spacing: calc(var(--syntara-font-tracking-7xl) * 2);
+  text-wrap: balance;
+}
+.h2 {
+  margin: 0;
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-4xl);
+  line-height: var(--syntara-line-height-snug);
+  font-weight: var(--syntara-font-weight-medium);
+  letter-spacing: calc(var(--syntara-font-tracking-7xl) * 2);
+}
+/* the second line of every section heading, in the quieter tone */
+.h2Tail {
+  display: block;
+  color: var(--l-65);
+}
+.h3 {
+  margin: 0;
+  font-family: var(--syntara-font-heading);
+  font-size: calc(var(--syntara-font-size-3xl) - var(--syntara-space-1)); /* 28 */
+  line-height: var(--syntara-line-height-snug);
+  font-weight: var(--syntara-font-weight-regular);
+  letter-spacing: calc(var(--syntara-font-tracking-7xl) * 1.4);
+}
+.body {
+  margin: 0;
+  font-size: var(--syntara-font-size-lg);
+  line-height: var(--syntara-line-height-normal);
+  color: var(--l-80);
+}
+.small {
+  margin: 0;
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  color: var(--l-80);
+}
+.caption {
+  font-size: var(--syntara-font-size-xs);
+  line-height: var(--syntara-line-height-normal);
+  color: var(--l-65);
+}
+
+/* the pill at the head of every section */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  block-size: calc(var(--syntara-space-8) - var(--syntara-space-1) / 2);
+  padding-inline: calc(var(--syntara-space-3) + var(--syntara-space-1) / 2);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--l-10);
+  font-size: var(--syntara-font-size-md);
+  color: var(--l-80);
+  white-space: nowrap;
+}
+.tag::before {
+  content: '';
+  inline-size: calc(var(--syntara-space-2) - var(--syntara-hairline));
+  aspect-ratio: 1;
+  border-radius: var(--syntara-radius-pill);
+  background: var(--l-text);
+}
+.tagPlain::before {
+  display: none;
+}
+
+/* heading on the start side, a short paragraph on the end side */
+.head {
+  display: grid;
+  grid-template-columns: 1fr calc(var(--syntara-space-24) * 3.75);
+  gap: var(--syntara-space-12);
+  align-items: start;
+  margin-block-start: var(--syntara-space-5);
+}
+.head > p {
+  padding-block-start: var(--syntara-space-2);
+}
+
+/* ── pill buttons (links) ─────────────────────────────────── */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syntara-space-2);
+  block-size: var(--syntara-space-12);
+  padding-inline: calc(var(--syntara-space-8) + var(--syntara-space-1));
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, var(--syntara-color-text-default) 82%, transparent);
+  color: var(--syntara-color-text-inverse);
+  font-size: var(--syntara-font-size-md);
+  font-weight: var(--syntara-font-weight-medium);
+  text-decoration: none;
+  transition: background var(--l-slow) var(--l-ease);
+}
+.cta:hover {
+  background: var(--syntara-color-text-default);
+}
+.cta:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 3px;
+}
+.link {
+  color: var(--l-80);
+  text-decoration: none;
+  font-size: var(--syntara-font-size-lg);
+  transition: color var(--l-slow) var(--l-ease);
+}
+.link:hover {
+  color: var(--l-text);
+}
+
+/* ── lit-edge card: a 1px ring lit from the pointer, a near-black face ─ */
+.lit {
+  --r: calc(var(--syntara-space-4));
+  position: relative;
+  border-radius: var(--r);
+  padding: var(--syntara-hairline);
+  background:
+    radial-gradient(
+      calc(var(--syntara-space-24) * 7.6) circle at var(--lx, 0px) var(--ly, 0px),
+      color-mix(in oklab, var(--syntara-color-text-default) var(--lit-a, 26%), transparent),
+      transparent 100%
+    ),
+    var(--l-06);
+}
+.litFace {
+  position: relative;
+  block-size: 100%;
+  border-radius: calc(var(--r) - var(--syntara-hairline));
+  background: var(--l-card);
+  overflow: hidden;
+}
+
+/* ── scroll reveal (LandingEffects): 24px low and clear until on screen, then 0.8s to rest ── */
+.landing [data-reveal] {
+  transition:
+    opacity calc(var(--syntara-motion-duration-slow) * 2.5) var(--syntara-motion-easing-out),
+    translate calc(var(--syntara-motion-duration-slow) * 2.5) var(--syntara-motion-easing-out),
+    scale calc(var(--syntara-motion-duration-slow) * 3) var(--syntara-motion-easing-out);
+}
+:global(:root[data-landing-motion]) .landing [data-reveal]:not([data-shown]) {
+  opacity: 0;
+  translate: 0 var(--syntara-space-6);
+}
+:global(:root[data-landing-motion]) .landing [data-reveal='zoom']:not([data-shown]) {
+  translate: none;
+  scale: 1.1;
+}
+.landing [data-reveal='2'] {
+  transition-delay: var(--syntara-motion-duration-fast);
+}
+.landing [data-reveal='3'] {
+  transition-delay: calc(var(--syntara-motion-duration-fast) * 2);
+}
+.landing [data-reveal='4'] {
+  transition-delay: calc(var(--syntara-motion-duration-fast) * 3);
+}
+.landing [data-reveal='5'] {
+  transition-delay: calc(var(--syntara-motion-duration-fast) * 4);
+}
+
+/* ── 1 Hero ───────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  /* the height of the hill pictures at their 1920px width, so the front ridge always reaches the hero's foot */
+  block-size: calc(var(--syntara-space-24) * 12.5);
+  overflow: hidden;
+  padding-block-start: calc(var(--syntara-space-24) * 1.2);
+  padding-inline: var(--syntara-space-6);
+  text-align: center;
+}
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.layer img {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+  inline-size: max(100%, calc(var(--syntara-space-24) * 20));
+  max-inline-size: none;
+  translate: -50% 0;
+  will-change: transform;
+}
+[dir='rtl'] .layer img {
+  translate: 50% 0;
+}
+.sky {
+  z-index: 0;
+}
+.front {
+  z-index: 4;
+}
+.heroFade {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 5;
+  block-size: calc(var(--syntara-space-24) * 2);
+  background: linear-gradient(transparent, var(--syntara-color-surface-canvas));
+  pointer-events: none;
+}
+.heroCopy {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.heroCopy .h1 {
+  margin-block-start: var(--syntara-space-5);
+}
+.lede {
+  max-inline-size: calc(var(--syntara-space-24) * 5);
+  margin: var(--syntara-space-4) 0 0;
+  text-wrap: balance;
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+  color: var(--l-80);
+}
+/* the button and the install command share one row, so adding the command costs the hero no height */
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--syntara-space-3);
+  margin-block-start: var(--syntara-space-6);
+}
+/* the docs InstallCommand as a glass pill the height of the button beside it (doubled class: it restyles a
+   component with rules of the same weight) */
+.heroInstall.heroInstall {
+  min-block-size: var(--syntara-space-12);
+  padding-inline: var(--syntara-space-5) var(--syntara-space-2);
+  border: var(--syntara-hairline) solid color-mix(in oklab, var(--syntara-color-text-default) 14%, transparent);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-glass-bg);
+  -webkit-backdrop-filter: blur(var(--syntara-glass-blur));
+  backdrop-filter: blur(var(--syntara-glass-blur));
+  box-shadow: none;
+}
+
+/* the app window, behind the front hill */
+.app {
+  position: absolute;
+  z-index: 3;
+  /* high enough that a whole Hero slide (760px scaled to the window, about 450px) clears the front ridge, which
+     sits at 1012px in the 1200px picture */
+  inset-block-start: calc(var(--syntara-space-24) * 5.2);
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  inline-size: var(--l-app);
+  block-size: calc(var(--syntara-space-16) * 10.5);
+  display: grid;
+  grid-template-columns: calc(var(--syntara-space-20) * 2.75) 1fr;
+  gap: calc(var(--syntara-space-1) * 1.5);
+  padding: calc(var(--syntara-space-1) * 1.5);
+  border-radius: var(--syntara-space-6) var(--syntara-space-6) 0 0;
+  background: var(--syntara-glass-bg);
+  -webkit-backdrop-filter: blur(var(--syntara-glass-blur));
+  backdrop-filter: blur(var(--syntara-glass-blur));
+  box-shadow: var(--syntara-shadow-highlight);
+  text-align: start;
+}
+[dir='rtl'] .app {
+  translate: 50% 0;
+}
+.appSide {
+  padding: var(--syntara-space-4);
+}
+.appSearch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block-end: var(--syntara-space-5);
+  color: var(--l-65);
+}
+.appSearch i {
+  display: block;
+  inline-size: calc(var(--syntara-space-16) - var(--syntara-space-1));
+  block-size: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--l-80);
+}
+.appNav {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-3);
+  block-size: calc(var(--syntara-space-8) + var(--syntara-space-1) / 2);
+  padding-inline: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-badge);
+  font-size: var(--syntara-font-size-md);
+  color: var(--l-80);
+}
+.appNav {
+  white-space: nowrap;
+}
+.appNav[data-on] {
+  background: var(--l-06);
+  color: var(--l-text);
+}
+.appNav svg {
+  inline-size: var(--syntara-space-4);
+  block-size: var(--syntara-space-4);
+}
+.appGroup {
+  margin: var(--syntara-space-5) var(--syntara-space-2) var(--syntara-space-2);
+  font-size: var(--syntara-font-size-xs);
+  color: var(--l-65);
+}
+.dot {
+  flex: none;
+  inline-size: var(--syntara-space-2);
+  aspect-ratio: 1;
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-action-primary-bg);
+}
+
+.stage {
+  position: relative;
+  border-radius: calc(var(--syntara-space-4) + var(--syntara-space-1) / 2);
+  overflow: hidden;
+  background: var(--syntara-color-surface-sunken);
+}
+/* Slides switch through the dark: the outgoing one fades out quickly (360ms), then the incoming one fades in
+   (720ms, starting at 240ms) and settles from 103% to 100%; the outgoing one drifts back out to 103%. Two headlines never sit on top of each other. */
+.cover {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  scale: 1.03;
+  transition:
+    opacity calc(var(--syntara-motion-duration-fast) * 3) var(--syntara-motion-easing),
+    scale calc(var(--syntara-motion-duration-fast) * 3) var(--syntara-motion-easing);
+}
+.cover[data-on] {
+  z-index: 1;
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity calc(var(--syntara-motion-duration-fast) * 6) var(--syntara-motion-easing) calc(var(--syntara-motion-duration-fast) * 2),
+    scale calc(var(--syntara-motion-duration-slow) * 3.5) var(--syntara-motion-easing-out) calc(var(--syntara-motion-duration-fast) * 2);
+}
+/* off-screen slides hold still: one Hero animates at a time */
+.cover:not([data-on]) *,
+.cover:not([data-on]) *::before,
+.cover:not([data-on]) *::after {
+  animation-play-state: paused !important;
+}
+/* the brand's own colours, blurred into a soft cover picture (Fora's community covers) */
+.wash {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(60% 70% at 25% 30%, var(--syntara-color-action-primary-bg), transparent 70%),
+    radial-gradient(50% 60% at 80% 75%, var(--syntara-color-accent-bg), transparent 70%),
+    radial-gradient(70% 80% at 60% 15%, var(--syntara-color-surface-inverse), transparent 70%),
+    var(--syntara-color-surface-raised);
+  filter: blur(calc(var(--syntara-space-12) + var(--syntara-space-3)));
+}
+.coverBody {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syntara-space-2);
+  padding: var(--syntara-space-10);
+}
+.mark {
+  display: grid;
+  place-items: center;
+  inline-size: calc(var(--syntara-space-10) - var(--syntara-space-1) / 2);
+  aspect-ratio: 1;
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-inverse);
+  color: var(--syntara-color-text-inverse);
+  font-family: var(--syntara-font-heading);
+  font-weight: var(--syntara-font-weight-semibold);
+}
+/* the name and caption sit on a scrim so they hold contrast over any wash */
+.coverName {
+  padding: var(--syntara-space-1) var(--syntara-space-3);
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, var(--syntara-color-surface-canvas) 70%, transparent);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-medium);
+  color: var(--syntara-color-text-default);
+  text-align: center;
+}
+.coverName small {
+  display: block;
+  font-size: var(--syntara-font-size-xs);
+  font-weight: var(--syntara-font-weight-regular);
+  color: var(--syntara-color-text-subtle);
+}
+.coverCard {
+  inline-size: min(100%, calc(var(--syntara-space-24) * 4));
+  margin-block-start: var(--syntara-space-4);
+}
+.coverValue {
+  margin: var(--syntara-space-1) 0 0;
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-3xl);
+  line-height: var(--syntara-line-height-tight);
+  font-weight: var(--syntara-font-weight-medium);
+  letter-spacing: var(--syntara-font-tracking-3xl);
+}
+.coverActions {
+  display: flex;
+  gap: var(--syntara-space-2);
+  margin-block-start: var(--syntara-space-4);
+}
+.scaled {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.scaled > div {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  transform-origin: 0 0;
+  /* the slide is shorter than the window: fade its foot into the window rather than ending on a hard line */
+  -webkit-mask-image: linear-gradient(#000 78%, transparent);
+  mask-image: linear-gradient(#000 78%, transparent);
+}
+[dir='rtl'] .scaled > div {
+  transform-origin: 100% 0;
+}
+.appNavMeta {
+  margin-inline-start: auto;
+  font-size: var(--syntara-font-size-xs);
+  color: var(--l-65);
+}
+.appCode {
+  font-family: var(--syntara-font-mono);
+  font-size: var(--syntara-font-size-xs);
+  color: var(--l-80);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.dots {
+  position: absolute;
+  z-index: 2;
+  inset-block-end: var(--syntara-space-4);
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  display: flex;
+  gap: var(--syntara-space-2);
+  padding: var(--syntara-space-1) var(--syntara-space-2);
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, var(--syntara-color-surface-canvas) 60%, transparent);
+}
+.dots i {
+  inline-size: calc(var(--syntara-space-1) * 1.5);
+  block-size: calc(var(--syntara-space-1) * 1.5);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--l-65);
+  transition: inline-size var(--l-slow) var(--l-ease);
+}
+.dots i[data-on] {
+  inline-size: var(--syntara-space-5);
+  background: var(--l-text);
+}
+.pause {
+  position: absolute;
+  z-index: 6;
+  inset-block-end: var(--syntara-space-6);
+  inset-inline-end: var(--syntara-space-6);
+}
+
+/* ── 2 Intro, lit word by word ─────────────────────────────── */
+.intro {
+  padding-block: calc(var(--syntara-space-24) * 1.6) calc(var(--syntara-space-24) * 1.9);
+}
+.intro .wrap {
+  max-inline-size: calc(var(--syntara-space-24) * 6.5);
+}
+.reveal {
+  margin-block-start: var(--syntara-space-8);
+  font-family: var(--syntara-font-heading);
+  font-size: calc(var(--syntara-font-size-3xl) - var(--syntara-space-1)); /* 28 */
+  line-height: var(--syntara-line-height-snug);
+  letter-spacing: calc(var(--syntara-font-tracking-7xl) * 1.4);
+}
+.reveal p {
+  margin: 0;
+}
+.reveal p + p {
+  margin-block-start: var(--syntara-space-8);
+}
+.word {
+  color: color-mix(in oklab, var(--syntara-color-text-default) var(--o, 100%), transparent);
+  transition: color var(--syntara-motion-duration-normal) linear;
+}
+
+/* ── 3 Feature tabs ────────────────────────────────────────── */
+/* Fora's bar: four equal tabs across the full column on a lit, rounded track. The Syntara Tabs (pill) are
+   restyled here, so the overrides double their class to outweigh the component's own rules. */
+.barWrap {
+  --r: var(--syntara-radius-pill);
+  margin-block-start: var(--syntara-space-12);
+}
+.barFace {
+  padding: var(--syntara-space-2);
+  background: color-mix(in oklab, var(--syntara-color-surface-canvas) 92%, transparent);
+}
+.bar.bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-self: stretch;
+  inline-size: 100%;
+  max-inline-size: none;
+  padding: 0;
+  gap: var(--syntara-space-2);
+  background: transparent;
+  border-radius: var(--syntara-radius-pill);
+}
+.barTab.barTab {
+  min-block-size: var(--syntara-space-12);
+  border-radius: var(--syntara-radius-pill);
+  font-size: var(--syntara-font-size-xl);
+  font-weight: var(--syntara-font-weight-regular);
+  color: var(--l-80);
+}
+.barTab.barTab[data-selected] {
+  color: var(--l-text);
+}
+/* the moving pill (Syntara's SelectionIndicator, the selected tab's last child; an unselected tab's last child is
+   its label): glass with a lit hairline */
+.barTab.barTab[data-selected] > :last-child {
+  border-radius: var(--syntara-radius-pill);
+  background:
+    radial-gradient(calc(var(--syntara-space-24) * 2) circle at 0 0, color-mix(in oklab, var(--syntara-color-text-default) 30%, transparent), transparent) border-box,
+    var(--syntara-glass-bg) padding-box;
+  border: var(--syntara-hairline) solid transparent;
+  box-shadow: none;
+}
+
+/* the app window inside the frame: rises from the bottom, its foot behind the land */
+.window {
+  position: absolute;
+  inset-block-start: var(--syntara-space-12);
+  inset-inline: 12%;
+  inset-block-end: calc(var(--syntara-space-10) * -1);
+  display: grid;
+  grid-template-columns: calc(var(--syntara-space-24) * 1.75) 1fr;
+  border-radius: var(--syntara-space-4) var(--syntara-space-4) 0 0;
+  background: color-mix(in oklab, var(--syntara-color-surface-default) 92%, transparent);
+  -webkit-backdrop-filter: blur(var(--syntara-glass-blur));
+  backdrop-filter: blur(var(--syntara-glass-blur));
+  box-shadow: var(--syntara-shadow-overlay), var(--syntara-shadow-highlight);
+  overflow: hidden;
+  text-align: start;
+}
+.winSide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-1);
+  padding: var(--syntara-space-4) var(--syntara-space-3);
+  background: color-mix(in oklab, var(--syntara-color-surface-raised) 60%, transparent);
+  border-inline-end: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+.winBrand {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  padding: 0 var(--syntara-space-1) var(--syntara-space-4);
+  font-size: var(--syntara-font-size-md);
+}
+.winSearch {
+  margin-inline-start: auto;
+  color: var(--syntara-color-text-subtle);
+}
+.winMark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--syntara-space-6);
+  block-size: var(--syntara-space-6);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+  font-size: var(--syntara-font-size-xs);
+  font-weight: var(--syntara-font-weight-semibold);
+}
+.winNav {
+  display: grid;
+  gap: var(--syntara-space-1);
+}
+.winNavItem {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  min-block-size: var(--syntara-space-8);
+  padding-inline: var(--syntara-space-2);
+  border: 0;
+  border-radius: var(--syntara-radius-badge);
+  background: transparent;
+  color: var(--syntara-color-text-subtle);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: background var(--syntara-motion-duration-normal) var(--syntara-motion-easing), color var(--syntara-motion-duration-normal) var(--syntara-motion-easing);
+}
+.winNavItem:hover,
+.winNavItem[data-on] {
+  background: var(--syntara-color-surface-selected);
+  color: var(--syntara-color-text-default);
+}
+.winNavItem:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 1px;
+}
+.winGroup {
+  margin: var(--syntara-space-4) var(--syntara-space-2) var(--syntara-space-1);
+  font-size: var(--syntara-font-size-xs);
+  color: var(--syntara-color-text-subtle);
+}
+.winBrands {
+  align-items: stretch;
+}
+.winDot {
+  inline-size: var(--syntara-space-2);
+  aspect-ratio: 1;
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-action-primary-bg);
+}
+.winMain {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+.winTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--syntara-space-3) var(--syntara-space-5);
+  border-block-end: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
+  font-size: var(--syntara-font-size-md);
+}
+.winTopEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-3);
+  color: var(--syntara-color-text-subtle);
+}
+.winPage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-3);
+  padding: var(--syntara-space-5);
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .winPage {
+    animation: rise calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
+  }
+}
+.winCols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--syntara-space-3);
+}
+.frameFront {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: 46%;
+  background-size: cover;
+  background-position: center bottom;
+  pointer-events: none;
+}
+/* the agent thread */
+.thread {
+  justify-content: flex-start;
+}
+.msgRow {
+  display: flex;
+  gap: var(--syntara-space-3);
+  max-inline-size: 85%;
+}
+.msgRow p {
+  margin-block-start: var(--syntara-space-1);
+}
+.msgRow code {
+  font-family: var(--syntara-font-mono);
+  font-size: 0.9em;
+}
+.msgReply {
+  align-self: flex-end;
+  padding: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-field);
+  background: var(--syntara-color-surface-raised);
+}
+.composer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-block-start: auto;
+  padding: var(--syntara-space-3) var(--syntara-space-4);
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-color-surface-raised);
+  box-shadow: inset 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+}
+.composerEnd {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-3);
+  color: var(--syntara-color-text-subtle);
+}
+.send {
+  display: grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-action-primary-bg);
+  color: var(--syntara-color-action-primary-fg);
+}
+.frame {
+  --r: calc(var(--syntara-space-8));
+  margin-block-start: var(--syntara-space-4);
+  block-size: calc(var(--syntara-space-16) * 9.75);
+}
+.frameFace {
+  position: relative;
+  background-size: cover;
+  background-position: center 70%;
+}
+.panel {
+  inline-size: 100%;
+  block-size: 100%;
+  padding: var(--syntara-space-6);
+  border-radius: var(--syntara-space-5) var(--syntara-space-5) 0 0;
+  background: var(--syntara-glass-bg);
+  -webkit-backdrop-filter: blur(var(--syntara-glass-blur));
+  backdrop-filter: blur(var(--syntara-glass-blur));
+  box-shadow: var(--syntara-shadow-highlight);
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel {
+    animation: rise calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 var(--syntara-space-3);
+  }
+}
+.under {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--syntara-space-4);
+  margin-block-start: var(--syntara-space-5);
+}
+.under p {
+  text-align: center;
+}
+
+/* panel layouts */
+.cols3 {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr;
+  gap: var(--syntara-space-3);
+  block-size: 100%;
+}
+.cols2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--syntara-space-3);
+  block-size: 100%;
+}
+.cols5 {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--syntara-space-3);
+  block-size: 100%;
+}
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-3);
+  padding: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-color-surface-default);
+  color: var(--syntara-color-text-default);
+  box-shadow: inset 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+  min-inline-size: 0;
+}
+.boxTitle {
+  margin: 0;
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  color: var(--syntara-color-text-subtle);
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syntara-space-3);
+  font-size: var(--syntara-font-size-md);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--syntara-space-2);
+  margin-block-start: auto;
+}
+.brandTile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-2);
+  block-size: 100%;
+  padding: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-color-surface-default);
+  color: var(--syntara-color-text-default);
+  box-shadow: inset 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+}
+.brandTile .swatches {
+  display: flex;
+  gap: var(--syntara-space-1);
+}
+.brandTile .swatches i {
+  flex: 1;
+  block-size: var(--syntara-space-10);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-action-primary-bg);
+}
+.brandTile .swatches i + i {
+  background: var(--syntara-color-accent-bg);
+}
+.brandTile > :last-child {
+  margin-block-start: auto;
+}
+.pairs {
+  display: grid;
+  gap: var(--syntara-space-2);
+}
+.pair {
+  display: grid;
+  grid-template-columns: calc(var(--syntara-space-12) + var(--syntara-space-1)) 1fr auto auto;
+  align-items: center;
+  gap: var(--syntara-space-4);
+  padding: var(--syntara-space-2) var(--syntara-space-3);
+  border-radius: var(--syntara-radius-field);
+  background: var(--syntara-color-surface-default);
+  box-shadow: inset 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+}
+.sample {
+  display: grid;
+  place-items: center;
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-badge);
+  font-weight: var(--syntara-font-weight-medium);
+  font-size: var(--syntara-font-size-md);
+}
+.ratio {
+  font-family: var(--syntara-font-mono);
+  font-size: var(--syntara-font-size-sm);
+}
+.code {
+  margin: 0;
+  font-family: var(--syntara-font-mono);
+  font-size: var(--syntara-font-size-sm);
+  line-height: 1.7;
+  color: var(--syntara-color-text-subtle);
+  white-space: pre;
+  overflow: hidden;
+}
+.code b {
+  font-weight: var(--syntara-font-weight-regular);
+  color: var(--syntara-color-text-default);
+}
+
+/* ── 4 Feature cards, alternating ──────────────────────────── */
+.featSection {
+  padding-inline: var(--syntara-space-10);
+}
+.feat {
+  --r: var(--syntara-space-6);
+  position: sticky;
+  inset-block-start: calc(var(--syntara-space-24) + var(--syntara-space-2)); /* under the header */
+  margin-block-start: var(--syntara-space-12);
+  block-size: calc(var(--syntara-space-16) * 10);
+  transform-origin: 50% 0;
+  will-change: transform, opacity;
+}
+.feat + .feat {
+  margin-block-start: var(--syntara-space-8);
+}
+.featFace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: var(--syntara-space-2);
+}
+.featText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--syntara-space-10) var(--syntara-space-10) var(--syntara-space-8);
+}
+.featText .h3 {
+  margin-block-start: var(--syntara-space-12);
+  max-inline-size: calc(var(--syntara-space-24) * 3.75);
+}
+.featText .small {
+  margin-block-start: var(--syntara-space-4);
+  max-inline-size: calc(var(--syntara-space-24) * 4);
+}
+.featFoot {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  margin-block-start: auto;
+  font-size: var(--syntara-font-size-md);
+  color: var(--l-80);
+}
+.featPic {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--syntara-radius-badge) var(--syntara-space-1) var(--syntara-space-1) var(--syntara-radius-badge);
+  background-size: cover;
+  background-position: center 70%;
+}
+.flip .featText {
+  order: 2;
+}
+.flip .featPic {
+  border-radius: var(--syntara-space-1) var(--syntara-radius-badge) var(--syntara-radius-badge) var(--syntara-space-1);
+}
+.float {
+  position: relative;
+  inline-size: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-4);
+}
+.preview {
+  border-radius: var(--syntara-radius-container);
+}
+.chat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-3);
+  padding: var(--syntara-space-5);
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-glass-bg);
+  -webkit-backdrop-filter: blur(var(--syntara-glass-blur));
+  backdrop-filter: blur(var(--syntara-glass-blur));
+  box-shadow: var(--syntara-shadow-overlay);
+}
+.msg {
+  max-inline-size: 88%;
+  margin: 0;
+  padding: var(--syntara-space-2) var(--syntara-space-3);
+  border-radius: var(--syntara-radius-field);
+  background: var(--l-06);
+  font-size: var(--syntara-font-size-sm);
+  line-height: var(--syntara-line-height-normal);
+}
+.msgMe {
+  margin-inline-start: auto;
+  background: var(--syntara-color-surface-inverse);
+  color: var(--syntara-color-text-inverse);
+}
+.msg code {
+  font-family: var(--syntara-font-mono);
+  font-size: var(--syntara-font-size-xs);
+}
+
+/* ── 5 Install ─────────────────────────────────────────────── */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--syntara-space-5);
+  align-items: start;
+  margin-block-start: var(--syntara-space-16);
+}
+.plan {
+  --r: var(--syntara-space-6);
+}
+.planMid {
+  --r: var(--syntara-radius-field);
+  --lit-a: 40%;
+  margin-block-start: calc(var(--syntara-space-2) * -1);
+}
+.planFace {
+  padding: var(--syntara-space-2);
+}
+.planTop {
+  padding: var(--syntara-space-6) var(--syntara-space-5);
+  border-radius: var(--syntara-space-4);
+  background: var(--l-06);
+}
+.planMid .planTop {
+  background: var(--l-10);
+}
+.eyebrow {
+  font-size: var(--syntara-font-size-xs);
+  letter-spacing: var(--syntara-font-tracking-caps);
+  text-transform: uppercase;
+  color: var(--l-65);
+}
+.planName {
+  margin: var(--syntara-space-4) 0 0;
+  font-family: var(--syntara-font-heading);
+  font-size: calc(var(--syntara-font-size-3xl) - var(--syntara-space-1));
+  font-weight: var(--syntara-font-weight-regular);
+  letter-spacing: calc(var(--syntara-font-tracking-7xl) * 1.4);
+}
+.planDesc {
+  min-block-size: calc(var(--syntara-space-16) - var(--syntara-space-1));
+  margin-block-start: var(--syntara-space-2);
+}
+.cmd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syntara-space-2);
+  margin-block-start: var(--syntara-space-5);
+  padding-inline-start: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-sunken);
+  box-shadow: inset 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+  font-family: var(--syntara-font-mono);
+  font-size: var(--syntara-font-size-sm);
+}
+.ticks {
+  margin: 0;
+  padding: var(--syntara-space-4) var(--syntara-space-5) var(--syntara-space-5);
+  list-style: none;
+}
+.ticks li {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-3);
+  min-block-size: var(--syntara-space-12);
+  border-block-end: var(--syntara-hairline) solid var(--l-06);
+  font-size: var(--syntara-font-size-md);
+  color: var(--l-80);
+}
+.ticks li:last-child {
+  border-block-end: 0;
+}
+.ticks svg {
+  flex: none;
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+  padding: calc(var(--syntara-space-1) * 0.75);
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, var(--syntara-color-text-default) 25%, transparent);
+  color: var(--syntara-color-text-default);
+}
+
+/* ── 6 FAQ ─────────────────────────────────────────────────── */
+.faq {
+  display: grid;
+  grid-template-columns: calc(var(--syntara-space-24) * 3.75) 1fr;
+  gap: var(--syntara-space-5);
+  align-items: start;
+  margin-block-start: var(--syntara-space-16);
+}
+.cats {
+  --r: calc(var(--syntara-space-6) + var(--syntara-space-1));
+}
+.catsFace {
+  padding: var(--syntara-space-2);
+}
+.ask {
+  --r: var(--syntara-space-6);
+  margin-block-start: var(--syntara-space-5);
+}
+.askFace {
+  padding: var(--syntara-space-8);
+}
+.askTitle {
+  margin: 0 0 var(--syntara-space-2);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-xl);
+  font-weight: var(--syntara-font-weight-regular);
+}
+.askFace .link {
+  display: inline-block;
+  margin-block-start: var(--syntara-space-6);
+  font-size: var(--syntara-font-size-md);
+}
+.answers {
+  --r: var(--syntara-space-4);
+}
+.answersFace {
+  padding: var(--syntara-space-2) var(--syntara-space-5);
+}
+.answer {
+  margin: 0;
+  max-inline-size: calc(var(--syntara-space-24) * 6);
+  color: var(--l-80);
+  font-size: var(--syntara-font-size-md);
+  line-height: var(--syntara-line-height-normal);
+}
+.answer code {
+  font-family: var(--syntara-font-mono);
+  font-size: 0.92em;
+}
+
+/* ── 7 From the log ────────────────────────────────────────── */
+.logHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: var(--syntara-space-6);
+  margin-block-start: var(--syntara-space-5);
+}
+.posts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--syntara-space-5);
+  margin-block-start: var(--syntara-space-12);
+}
+.post {
+  --r: var(--syntara-space-4);
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.post:focus-visible {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 3px;
+}
+.postFace {
+  padding: calc(var(--syntara-space-2) - var(--syntara-hairline));
+}
+.postImg {
+  block-size: calc(var(--syntara-space-16) * 4);
+  border-radius: var(--syntara-radius-badge) var(--syntara-radius-badge) var(--syntara-space-1) var(--syntara-space-1);
+  background-size: cover;
+  background-position: center 75%;
+  transition: scale calc(var(--syntara-motion-duration-slow) * 2.5) var(--syntara-motion-easing-out);
+}
+.post:hover .postImg {
+  scale: 1.03;
+}
+.postTitle {
+  margin: 0;
+  padding: var(--syntara-space-5) var(--syntara-space-3) 0;
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-xl);
+  font-weight: var(--syntara-font-weight-regular);
+  line-height: 1.4;
+}
+.postMeta {
+  display: flex;
+  gap: var(--syntara-space-2);
+  padding: var(--syntara-space-3) var(--syntara-space-3) var(--syntara-space-4);
+}
+
+/* ── 8 Closing ─────────────────────────────────────────────── */
+.closing {
+  position: relative;
+  block-size: calc(var(--syntara-space-16) * 14);
+  overflow: hidden;
+  padding: var(--syntara-space-32) var(--syntara-space-6) 0;
+}
+.closingGrid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: calc(var(--syntara-space-24) * 4.4) 1fr;
+  gap: var(--syntara-space-12);
+  align-items: start;
+}
+.closingGrid .h2 {
+  font-size: var(--syntara-font-size-5xl);
+  line-height: 1.2;
+}
+.closingGrid .body {
+  margin-block-start: var(--syntara-space-5);
+}
+.closingGrid .cta {
+  margin-block-start: var(--syntara-space-8);
+}
+.app2 {
+  display: grid;
+  grid-template-columns: calc(var(--syntara-space-24) * 2) 1fr;
+  gap: var(--syntara-space-4);
+  block-size: calc(var(--syntara-space-16) * 8.75);
+  margin-inline-end: calc(var(--syntara-space-24) * -2);
+  padding: var(--syntara-space-6);
+  border-start-start-radius: var(--syntara-space-6);
+  background: var(--syntara-glass-bg);
+  -webkit-backdrop-filter: blur(var(--syntara-glass-blur));
+  backdrop-filter: blur(var(--syntara-glass-blur));
+  box-shadow: var(--syntara-shadow-highlight);
+}
+.dunes {
+  position: absolute;
+  z-index: 3;
+  inset-inline: 0;
+  inset-block-end: 0;
+  block-size: calc(var(--syntara-space-16) * 8);
+  background-size: cover;
+  background-position: center bottom;
+  pointer-events: none;
+}
+
+/* ── 9 Footer ──────────────────────────────────────────────── */
+.footer {
+  padding-inline: var(--syntara-space-6);
+}
+.footerTag {
+  margin: var(--syntara-space-4) 0 0;
+  max-inline-size: calc(var(--syntara-space-24) * 3);
+}
+
+@media (max-width: 1080px) {
+  .head,
+  .closingGrid,
+  .faq {
+    grid-template-columns: 1fr;
+  }
+  .plans,
+  .posts {
+    grid-template-columns: 1fr;
+  }
+  .featFace {
+    grid-template-columns: 1fr;
+  }
+  .feat {
+    position: relative;
+    inset-block-start: auto;
+    block-size: auto;
+  }
+  .featPic {
+    min-block-size: calc(var(--syntara-space-24) * 5);
+  }
+  .flip .featText {
+    order: 0;
+  }
+  .app,
+  .app2 {
+    display: none;
+  }
+  .hero {
+    block-size: auto;
+    padding-block-end: calc(var(--syntara-space-24) * 3);
+  }
+  .frame {
+    block-size: auto;
+  }
+  .frameFace {
+    padding: var(--syntara-space-6) var(--syntara-space-4) 0;
+  }
+  .cols3,
+  .cols2,
+  .cols5 {
+    grid-template-columns: 1fr;
+  }
+  .closing {
+    block-size: auto;
+    padding-block-end: calc(var(--syntara-space-24) * 4);
+  }
+}
+@media (max-width: 640px) {
+  .h1 {
+    font-size: var(--syntara-font-size-4xl);
+  }
+  .h2 {
+    font-size: var(--syntara-font-size-3xl);
+  }
+  .reveal {
+    font-size: var(--syntara-font-size-xl);
+  }
+  .featSection {
+    padding-inline: var(--syntara-space-4);
+  }
+  .featText {
+    padding: var(--syntara-space-6);
+  }
+}
+
+/* the Brands view: one short row per tenant, each in its own theme and language */
+.brandRows {
+  display: grid;
+  gap: var(--syntara-space-2);
+}
+.brandRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1.3fr) auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--syntara-space-4);
+  padding: var(--syntara-space-2) var(--syntara-space-3);
+  border-radius: var(--syntara-radius-field);
+  background: var(--syntara-color-surface-default);
+  box-shadow: inset 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+.brandWho,
+.brandFigure {
+  display: grid;
+  min-inline-size: 0;
+  line-height: var(--syntara-line-height-snug);
+}
+.brandWho > *,
+.brandFigure > * {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.brandRow .swatches {
+  display: flex;
+  gap: var(--syntara-space-1);
+}
+.brandRow .swatches i {
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-action-primary-bg);
+}
+.brandRow .swatches i + i {
+  background: var(--syntara-color-accent-bg);
+}

@@ -1,0 +1,63 @@
+{
+  "name": "syntara",
+  "version": "0.0.0",
+  "description": "Everything Syntara in one install: the React components, the icon set, the token CSS for every brand and the theme engine.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anujpatel06/strata.git",
+    "directory": "packages/syntara"
+  },
+  "homepage": "https://syntara.pages.dev",
+  "bugs": "https://github.com/anujpatel06/strata/issues",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./icons": {
+      "types": "./src/icons.d.ts",
+      "default": "./src/icons.js"
+    },
+    "./theme-engine": {
+      "types": "./src/theme-engine.d.ts",
+      "default": "./src/theme-engine.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "prepack": "pnpm run build",
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/"
+  },
+  "dependencies": {
+    "@syntara/icons": "workspace:^",
+    "@syntara/react": "workspace:^",
+    "@syntara/theme-engine": "workspace:^",
+    "@syntara/tokens": "workspace:^"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "keywords": [
+    "design-system",
+    "react",
+    "react-aria",
+    "theming",
+    "design-tokens",
+    "multi-brand",
+    "accessibility"
+  ]
+}

@@ -4,7 +4,8 @@ import { GITHUB_URL, githubTree } from '@/lib/site';
 import { LogoMark } from './logo';
 import styles from './site-footer.module.css';
 
-const COLUMNS: ReadonlyArray<{ title: string; links: ReadonlyArray<{ href: string; label: string; external?: boolean }> }> = [
+/** The site's link columns; the landing page's Footer component shows the same ones. */
+export const FOOTER_COLUMNS: ReadonlyArray<{ title: string; links: ReadonlyArray<{ href: string; label: string; external?: boolean }> }> = [
   {
     title: 'Start',
     links: [
@@ -68,7 +69,7 @@ export function SiteFooter() {
             </p>
           </div>
           <nav aria-label="Footer" className={styles.columns}>
-            {COLUMNS.map((col) => (
+            {FOOTER_COLUMNS.map((col) => (
               <div key={col.title} className={styles.column}>
                 <p className={styles.columnTitle}>{col.title}</p>
                 <ul className={styles.list}>

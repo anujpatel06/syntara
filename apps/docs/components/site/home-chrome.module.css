@@ -1,0 +1,29 @@
+/* The header on the homepage: fixed over the hero, no glass until the page has scrolled a little. */
+.overlay {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 40;
+  background: transparent;
+}
+.overlay > header {
+  background: transparent;
+  border-block-end-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+@supports (animation-timeline: scroll()) {
+  .overlay > header {
+    animation: home-glass linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 var(--syntara-space-24);
+  }
+}
+@keyframes home-glass {
+  to {
+    background: var(--syntara-glass-bg);
+    border-block-end-color: var(--syntara-color-border-subtle);
+    -webkit-backdrop-filter: blur(var(--syntara-glass-blur));
+    backdrop-filter: blur(var(--syntara-glass-blur));
+  }
+}

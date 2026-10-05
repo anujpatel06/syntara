@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { FontLoader } from '@/components/font-loader';
 import { Providers } from '@/components/providers';
 import { SiteFooter } from '@/components/site/site-footer';
+import { HeaderFrame, NotOnHome } from '@/components/site/home-chrome';
 import { SiteHeader } from '@/components/site/site-header';
 import skip from '@/components/site/skip-link.module.css';
 import { SCHEME_SCRIPT } from '@/lib/scheme';
@@ -32,9 +33,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href={theme.houseFontHref} />
-        {/* The homepage's one display face: the italic accent word in each heading. Site chrome, not a
-            tenant type pair, so it is loaded here rather than derived from a brand. */}
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" />
         <style id="syntara-themes" dangerouslySetInnerHTML={{ __html: theme.css }} />
       </head>
       <body>
@@ -42,11 +40,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           Skip to content
         </a>
         <Providers>
-          <SiteHeader />
+          <HeaderFrame>
+            <SiteHeader />
+          </HeaderFrame>
           <div className={layout.page}>
             {children}
           </div>
-          <SiteFooter />
+          <NotOnHome>
+            <SiteFooter />
+          </NotOnHome>
         </Providers>
         <FontLoader hrefs={theme.tenantFontHrefs} />
       </body>

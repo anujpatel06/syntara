@@ -11,8 +11,11 @@ export function InstallCommand({
   block = false,
   note,
   html,
+  className,
 }: {
   command: string;
+  /** Extra class on the command box, for a page that restyles it (the landing hero's pill). */
+  className?: string;
   label?: string;
   /** Fill the container's width instead of hugging the command. */
   block?: boolean;
@@ -30,7 +33,7 @@ export function InstallCommand({
   html?: string;
 }) {
   const box = (
-    <div className={styles.command} data-block={block || undefined}>
+    <div className={className ? `${styles.command} ${className}` : styles.command} data-block={block || undefined}>
       <code className={styles.code}>
         <span className={styles.prompt} aria-hidden>
           $
