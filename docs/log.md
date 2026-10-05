@@ -32,6 +32,11 @@ Three branches from `main` at 66db243, one fix each: `fix/landing-language-tabs`
 - Toggle position, before → after, dev server: moved 26px between English and Arabic → 0px across all three;
   each card 343px (`getBoundingClientRect` in the browser pane).
 - Duotone filter shows 237 icons (the gallery's count line).
+- CI on #70 failed hydration on `/`: server-rendering the Hindi calendar wrote अक्टूबर where the browser writes
+  अक्तूबर (Node's and Chromium's locale data differ; my Mac's agree, so local runs passed). Now only the chosen
+  calendar is server-rendered and the other two join after hydration. Rebuilt: Hindi and Arabic month names in
+  `apps/docs/out/index.html` 0 (`grep -c`); `check-hydration` 0 of 288; toggle at the same position across
+  English → Arabic → Hindi → English (Playwright, served build UBf7a4ii6JerbnAEMa6qt).
 - Shipped: `grep -rl "scriptStack\|pickerLabel" apps/docs/out/_next/static` → 3 files; `grep -rl "Icon style"` → 1.
 - `/verify` (all three fixes in one tree): typecheck clean; `pnpm test` 2,249 tests across 8 packages, none failing
   (`node scripts/check-test-counts.mjs --from <test output>`); `pnpm test:themes` 118,000/118,000, median adjustments
