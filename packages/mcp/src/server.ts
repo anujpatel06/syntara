@@ -29,6 +29,7 @@ export const SERVER_VERSION: string = (
 export const INSTRUCTIONS = [
   'Syntara is a multi-brand design system: React components from @syntara/react, styled only with var(--syntara-*) tokens.',
   'This server is read-only. It has no tool that writes files; you make the edits.',
+  'An app without Syntara yet: run `npx syntara init`. Without a terminal it asks nothing; pass the brand as flags (--primary, --accent, --grey, --corners, --fonts, --spacing, --name) or --look clear|warm|editorial|technical|bold. Never hand-write a theme.',
   'Before writing UI: list_components, then get_component or get_example for each component you use. Use get_pattern for a whole screen.',
   'get_component lists imports (other packages the component needs, with exact names) and typeNotes (types that are easy to get wrong). No imports means @syntara/react is all you need.',
   'Icons: look up every name with find_icon before you import it from @syntara/icons. Never guess a name; if nothing fits, use no icon.',

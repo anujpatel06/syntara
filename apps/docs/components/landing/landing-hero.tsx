@@ -14,6 +14,8 @@ import styles from './landing.module.css';
 const SLIDE_MS = 5200;
 /** The one-install package (packages/syntara): components, icons, every brand's tokens and the theme engine. */
 const HERO_INSTALL = 'npm install syntara';
+/** Then your own brand in a minute: questions with suggested answers, or a starting look (ADR-049). */
+const HERO_INIT = 'npx syntara init';
 /** Each Hero is laid out at this desktop width, then scaled to the window, so the slides show the real wide layout. */
 const DESKTOP = 1200;
 const PREVIEW_H = 760;
@@ -155,7 +157,10 @@ export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
           <Link href="/docs/installation" className={styles.cta}>
             Get started
           </Link>
-          <InstallCommand command={HERO_INSTALL} label="Copy the install command" className={styles.heroInstall} />
+          <div className={styles.heroCommands}>
+            <InstallCommand command={HERO_INSTALL} label="Copy the install command" className={styles.heroInstall} />
+            <InstallCommand command={HERO_INIT} label="Copy the brand setup command" className={styles.heroInstall} />
+          </div>
         </div>
       </div>
 

@@ -33,7 +33,8 @@ export const faqItems = (): readonly FaqItem[] => [
     a: (
       <>
         Yes. <code>npm install syntara</code> installs everything an app needs in one go: the components, the icon
-        set, the tokens for every brand and the theme engine. The eight <code>@syntara</code> packages it is built
+        set, the tokens for every brand and the theme engine. Then <code>npx syntara init</code> sets up your own brand:
+        a few questions, or one of five starting looks if you have no brand guidelines. The eight <code>@syntara</code> packages it is built
         from are published on their own too, along with the server-driven UI schema, the auditor, the MCP server and
         the codemods. Or copy a component’s <code>.tsx</code> and <code>.module.css</code> into your project and load
         the token CSS once at the app root.

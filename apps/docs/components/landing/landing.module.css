@@ -278,6 +278,16 @@
 }
 /* the docs InstallCommand as a glass pill the height of the button beside it (doubled class: it restyles a
    component with rules of the same weight) */
+/* install, then set up your brand: two pills, stacked to the same width */
+.heroCommands {
+  display: grid;
+  gap: var(--syntara-space-2);
+}
+/* same width for both, copy buttons lined up at the end */
+.heroCommands > .heroInstall.heroInstall {
+  inline-size: 100%;
+  justify-content: space-between;
+}
 .heroInstall.heroInstall {
   min-block-size: var(--syntara-space-12);
   padding-inline: var(--syntara-space-5) var(--syntara-space-2);
@@ -295,7 +305,8 @@
   z-index: 3;
   /* high enough that a whole Hero slide (760px scaled to the window, about 450px) shows above the hero's fade;
      the planet's edge (700px down the 1200px picture) then glows behind the window's shoulders */
-  inset-block-start: calc(var(--syntara-space-24) * 5.2);
+  /* 5.2 × 96px, plus room for the second hero command (npx syntara init, ADR-049) */
+  inset-block-start: calc(var(--syntara-space-24) * 5.2 + var(--syntara-space-8));
   inset-inline-start: 50%;
   translate: -50% 0;
   inline-size: var(--l-app);
@@ -1088,6 +1099,11 @@
   padding: var(--syntara-space-6) var(--syntara-space-5);
   border-radius: var(--syntara-space-4);
   background: var(--l-06);
+}
+/* install, then set up your brand */
+.planCommands {
+  display: grid;
+  gap: var(--syntara-space-2);
 }
 .planMid .planTop {
   background: var(--l-10);

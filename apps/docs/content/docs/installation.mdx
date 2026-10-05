@@ -12,33 +12,46 @@ You need React 19 and a bundler that handles CSS — Next.js and Vite both do ou
 
 One package brings it all: the components and `ThemeScope`, the icon set, the token CSS for every tenant and the theme engine. React and React DOM are peer dependencies.
 
+### Set up your brand
+
+<PackageCommand dlx="syntara init" />
+
+A few questions, each with a suggestion: press Enter to take it. No brand guidelines? Pick one of five starting looks. It writes `syntara-theme.css`, a light and dark theme that passes every WCAG 2.2 AA contrast check, and `syntara.brand.json`, the answers it was built from. Built a theme on the [Themes](/themes) page? Its **Use in your app** command gives the same answers, so only the name is asked.
+
+Skip this step to use one of the built-in brands, such as `vela`.
+
 ### Import the CSS once
 
-At your app root — `app/layout.tsx` in Next.js, `src/main.tsx` in Vite — import the one stylesheet: every tenant's tokens, then the component styles.
+At your app root — `app/layout.tsx` in Next.js, `src/main.tsx` in Vite — import the one stylesheet (every built-in brand’s tokens, then the component styles), then your brand’s.
 
-<CodeBlock title="app/layout.tsx">
+<CodeBlock title="src/main.tsx">
 
 ```tsx
 import 'syntara/styles.css';
+import './syntara-theme.css';
 ```
 
 </CodeBlock>
 
-The tokens are scoped to `[data-syntara-theme="<id>"]`, one block per tenant.
+The tokens are scoped to `[data-syntara-theme="<id>"]`, one block per brand.
 
 ### Wrap your app in a ThemeScope
+
+`theme` is your brand's id: the one `syntara init` printed, also in `syntara.brand.json`.
 
 ```tsx
 import { Button, ThemeScope } from 'syntara';
 
 export default function App() {
   return (
-    <ThemeScope theme="vela" scheme="dark">
+    <ThemeScope theme="my-brand" scheme="dark">
       <Button>Continue</Button>
     </ThemeScope>
   );
 }
 ```
+
+Changed `syntara.brand.json` by hand? Run `npx syntara build` to rebuild the theme.
 
 Icons come from `syntara/icons` and the theme engine from `syntara/theme-engine`.
 

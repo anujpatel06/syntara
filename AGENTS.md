@@ -4,6 +4,10 @@ For AI coding agents that write product UI with Syntara, or change Syntara itsel
 
 Syntara is a multi-brand design system. One codebase renders every brand, in light and dark, left to right and right to left. A brand is data: tokens and copy. If your code names a brand or a colour, it's wrong.
 
+## Setting up an app
+
+`npm install syntara`, then `npx syntara init`. Without a terminal (your shell, CI) it asks nothing: give the brand as flags, `--primary 2f5bea --fonts modern --name "Acme"`, or a starting look, `--look clear`. It writes `syntara-theme.css` and `syntara.brand.json` and prints the imports and the `ThemeScope` line. Never hand-write a theme or pick colours yourself; to change one, edit `syntara.brand.json` and run `npx syntara build`.
+
 ## Look it up, don't guess
 
 With the Syntara MCP server connected:
