@@ -151,7 +151,7 @@ export function SduiDemoClient({ examples, tenants }: { examples: DemoExample[];
   const effectiveScheme = scheme ?? siteScheme;
   const effectiveDensity = density ?? tenant?.density ?? 'comfortable';
   // The tenant's own locale when the direction is the tenant's own; the preview's defaults when it's flipped.
-  const locale = tenant && dir === tenant.dir ? tenant.locale : dir === 'rtl' ? 'ar-AE' : 'en-US';
+  const locale = tenant && dir === tenant.dir ? tenant.locale : dir === 'rtl' ? 'ar-AE-u-nu-arab' : 'en-US';
 
   const parsed = useMemo(() => parse(committed), [committed]);
   const validation = useMemo<ValidationResult | null>(() => (parsed.ok ? validateScreen(parsed.doc) : null), [parsed]);

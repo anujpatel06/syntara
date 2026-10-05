@@ -117,8 +117,9 @@ export function PreviewClient({ name, label, align, tenants, code }: PreviewClie
   const effectiveDir = dir ?? tenantDir;
   // The tenant's own locale while its direction is shown, so Qamar previews in Arabic (dates, numbers, calendar,
   // React Aria's keyboard direction) and Haat in Hindi. Flipped against the tenant, a stand-in locale for the
-  // other direction, so any tenant can still be checked both ways.
-  const locale = effectiveDir === tenantDir ? (tenant?.locale ?? 'en-US') : effectiveDir === 'rtl' ? 'ar-AE' : 'en-US';
+  // other direction, so any tenant can still be checked both ways. The stand-in writes Arabic digits, like Qamar and
+  // the Arabic example copy (ADR-048).
+  const locale = effectiveDir === tenantDir ? (tenant?.locale ?? 'en-US') : effectiveDir === 'rtl' ? 'ar-AE-u-nu-arab' : 'en-US';
 
   // One frame, one bar: Preview / Code on the start side, the stage controls on the end side (only while the
   // preview shows; they do nothing to the code). Tenants are colour dots named by tooltip, with the current

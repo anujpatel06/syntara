@@ -32,7 +32,7 @@ export interface ThemePreset {
   /** Card title, e.g. "Vela" or "House". */
   label: string;
   brand: BrandInput;
-  /** BCP 47, e.g. "ar-AE-u-nu-latn". The preview renders in it, so Qamar stays right-to-left. */
+  /** BCP 47, e.g. "ar-AE-u-nu-arab". The preview renders in it, so Qamar stays right-to-left. */
   locale: string;
   dir: 'ltr' | 'rtl';
   /** Industry in the tenant's own language, with its language tag. */
