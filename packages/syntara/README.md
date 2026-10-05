@@ -6,6 +6,29 @@ Everything Syntara in one install.
 npm install syntara
 ```
 
+## Your own brand in a minute
+
+```bash
+npx syntara init
+```
+
+A few questions, each with a suggestion: press Enter to take it. No brand guidelines? Pick one of five starting looks
+(Clear, Warm, Editorial, Technical, Bold). It writes `syntara.brand.json` and `syntara-theme.css`, a light and dark
+theme that passes every WCAG 2.2 AA contrast check, tells you in plain words what it adjusted, offers to install
+`syntara`, and prints the lines to add:
+
+```tsx
+import 'syntara/styles.css';
+import './syntara-theme.css';
+
+<ThemeScope theme="my-brand">…</ThemeScope>
+```
+
+Edit `syntara.brand.json` later and run `npx syntara build`. `npx syntara init --yes` asks nothing; `npx syntara help`
+lists the options.
+
+## What's in the package
+
 | Import | What you get |
 |---|---|
 | `syntara` | Every component and `ThemeScope` (same as `@syntara/react`) |
@@ -40,4 +63,4 @@ body { margin: 0; }
 ```
 
 React 19 is a peer dependency. The separate `@syntara/*` packages are still published and stay the way to install
-one piece on its own. Docs: https://syntara.pages.dev
+one piece on its own. Docs: https://syntara.live

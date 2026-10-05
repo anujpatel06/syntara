@@ -9,14 +9,18 @@
     "url": "git+https://github.com/anujpatel06/strata.git",
     "directory": "packages/syntara"
   },
-  "homepage": "https://syntara.pages.dev",
+  "homepage": "https://syntara.live",
   "bugs": "https://github.com/anujpatel06/strata/issues",
   "files": [
+    "bin",
     "dist",
     "src"
   ],
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
+  "bin": {
+    "syntara": "./bin/syntara.js"
+  },
   "exports": {
     ".": {
       "types": "./src/index.d.ts",
