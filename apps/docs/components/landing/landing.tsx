@@ -3,6 +3,7 @@ import { IconCheck } from '@syntara/icons';
 import Link from 'next/link';
 import { InstallCommand } from '@/components/home/install-command';
 import { FOOTER_COLUMNS } from '@/components/site/site-footer';
+import { getComponentGroups } from '@/lib/meta';
 import { GITHUB_URL, githubBlob } from '@/lib/site';
 import { FAQ_TOPICS, faqItems } from './faq-items';
 import { FeatureCards } from './feature-cards';
@@ -16,7 +17,7 @@ import styles from './landing.module.css';
 
 /**
  * The homepage, after fora.so (measured spec: docs/design/landing.md). Always the house theme in dark: the page
- * is lit by its landscapes, and a light canvas would put the photographs on white. The site header sits over the
+ * is lit by its night-sky pictures, and a light canvas would put them on white. The site header sits over the
  * hero (components/site/home-chrome.tsx) and the site footer gives way to the Footer component here.
  */
 export function Landing() {
@@ -66,7 +67,11 @@ export function Landing() {
                 they never drift apart.
               </p>
             </div>
-            <FeatureTabs tenants={tenants} />
+            {/* the first group of the components index, as the Components page shows it */}
+            <FeatureTabs
+              tenants={tenants}
+              components={(getComponentGroups()[0]?.items ?? []).slice(0, 6).map((m) => ({ ...m, group: getComponentGroups()[0]!.label }))}
+            />
           </div>
         </section>
 
@@ -178,9 +183,9 @@ export function Landing() {
             </div>
             <div className={styles.posts}>
               {[
-                { href: '/docs/components/hero', img: '/landing/hills.webp', pos: '30% 80%', title: 'The Hero component, and the four ways it opens a page', meta: ['RFC-003', 'Oct 4, 2026'] },
-                { href: githubBlob('docs/adr/045-inner-surfaces-are-outlines.md'), img: '/landing/dunes.webp', pos: 'center 75%', title: 'Inside a card, inner surfaces are outlines', meta: ['ADR-045', 'Oct 4, 2026'] },
-                { href: githubBlob('docs/adr/046-hero-follows-the-page.md'), img: '/landing/hills.webp', pos: '80% 85%', title: 'The Hero follows the page’s light or dark', meta: ['ADR-046', 'Oct 5, 2026'] },
+                { href: '/docs/components/hero', img: '/landing/galaxy-sky.webp', pos: '30% 80%', title: 'The Hero component, and the four ways it opens a page', meta: ['RFC-003', 'Oct 4, 2026'] },
+                { href: githubBlob('docs/adr/045-inner-surfaces-are-outlines.md'), img: '/landing/galaxy-spiral.webp', pos: 'center 75%', title: 'Inside a card, inner surfaces are outlines', meta: ['ADR-045', 'Oct 4, 2026'] },
+                { href: githubBlob('docs/adr/046-hero-follows-the-page.md'), img: '/landing/galaxy-sky.webp', pos: '80% 85%', title: 'The Hero follows the page’s light or dark', meta: ['ADR-046', 'Oct 5, 2026'] },
               ].map((p, i) => (
                 <a key={p.title} className={`${styles.lit} ${styles.post}`} data-lit="" data-reveal={String(i + 3)} href={p.href}>
                   <div className={`${styles.litFace} ${styles.postFace}`}>
@@ -225,7 +230,7 @@ export function Landing() {
               </div>
             )}
           </div>
-          <div className={styles.dunes} style={{ backgroundImage: 'url(/landing/dunes-front.webp)' }} aria-hidden="true" />
+          <div className={styles.planetRim} style={{ backgroundImage: 'url(/landing/planet-rim.webp)' }} aria-hidden="true" />
         </section>
       </main>
 

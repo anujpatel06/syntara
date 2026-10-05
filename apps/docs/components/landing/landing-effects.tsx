@@ -9,8 +9,8 @@ const RISE_OVER = 320;
  * The page's scroll and pointer effects, run once for the whole landing page. Each one is measured from fora.so
  * (docs/design/landing.md §6), sampling computed transforms at 20 scroll positions:
  *
- * 1. Parallax. `[data-speed]` elements move down by scroll × speed while the hero is on screen. The far hills
- *    at 0.31 and the front ridge not at all. Fora's app window moves at 0.2; ours at 0.1, so it sinks only a
+ * 1. Parallax. `[data-speed]` elements move down by scroll × speed while the hero is on screen. The sky
+ *    moves at 0.31. Fora's app window moves at 0.2; ours at 0.1, so it sinks only a
  *    little: at 0.2 too much of the Hero slide went behind the ridge (Anuj, 2026-10-05).
  * 2. Reveal. `[data-reveal]` elements start 24px low and transparent, and rise in over 0.8s once they enter the
  *    viewport. `data-reveal="2"` waits two steps of 0.12s, so a tag, its heading and its paragraph arrive in turn.
@@ -62,7 +62,7 @@ export function LandingEffects() {
       if (y < window.innerHeight * 1.6) {
         for (const l of layers) {
           /* data-rise: the element first climbs this many px over the first RISE_OVER px of scroll, then moves
-             at data-speed, so the app window comes up out of the hills before it settles */
+             at data-speed, so the app window comes up over the planet's edge before it settles */
           const rise = Number(l.dataset.rise ?? 0);
           const speed = Number(l.dataset.speed);
           const t = rise
