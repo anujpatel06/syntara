@@ -1,5 +1,19 @@
 # @syntara/react
 
+## 0.3.0
+
+### Minor Changes
+
+- 549f2fc: `ThemeScope` gains `numerals="native" | "latin"`. `native` writes dates and numbers in the language's own digits
+  (Arabic ١٢٣, Hindi १२३) for every component inside the scope; `latin` forces 1 2 3. Omitted, nothing changes: the
+  locale chooses, as before.
+
+### Patch Changes
+
+- 7864023: `Button`: the rule that trims a leading icon's padding now weighs no more than the button's own class, so a `className`
+  that sets padding wins again. It looks the same; it had been overriding padding set by consumers.
+- 8240ffc: Footer: a short wordmark now sits centred on the line instead of at its start. A long one still runs off the end.
+
 ## 0.2.0
 
 ### Minor Changes
