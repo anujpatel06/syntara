@@ -6,6 +6,31 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — The last links to the old repository name
+
+Branch `chore/repo-links-syntara`, from `main` at 9767dae. Replaces #40 (opened 2026-10-02, now conflicting).
+
+**Changed**
+- The repository was renamed `anujpatel06/strata` → `anujpatel06/syntara` on 2026-10-02 (#40's log entry, never
+  merged). Since then, other PRs moved the docs pages and `apps/docs/lib/site.ts`. Left on `main`: 28 links in 10
+  files, the README (the GIF and its release page) and the nine published `package.json`s (`repository`, `bugs`,
+  `homepage` where it still said GitHub). All now use the new name. The log, ADRs, research and changelogs keep the
+  old address: they record what was true then.
+- Patch changeset for all nine packages, so npm shows the new repository link on the next release.
+- #40 closed in favour of this PR. Its 21st.dev note is superseded by the 2026-10-05 entries.
+
+**Decided**
+- Redo #40 small rather than resolve its conflicts: most of it had landed another way. **Claude**, at Anuj's "check 40
+  and fix it".
+
+**Results**
+- `git grep -c "anujpatel06/strata"` outside the log, ADRs, research, changelogs and lockfile → nothing.
+- `curl -L` → 200 for the repo, its issues, the `readme-media` release and `readme.gif`.
+- Every `packages/*/package.json` still parses. `/verify` not run: links and package metadata only; CI runs the
+  required checks.
+
+---
+
 ## 2026-10-05 — The homepage's first screen, after 21st.dev's rejection
 
 21st.dev turned the template listing down with a stock line ("polish the design and resubmit"), no specifics.
