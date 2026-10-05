@@ -6,6 +6,38 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — Install check, machine cleanup, stranded edits saved
+
+**Changed**
+- **Block viewer frames hand the scroll back to the page** at their end (`overscroll-behavior: contain` removed), so
+  the wheel no longer dies at the bottom of each block on the blocks page. Stranded uncommitted since 2026-10-02.
+- **CLAUDE.md:** "show first, check once" verification rule (stranded since 2026-10-02); ADR count line 037 → 045.
+- Outside the repo: corepack's default pnpm pinned to 10.28.0 (`corepack install -g pnpm@10.28.0`); its 0.34.0
+  could not start pnpm 12.6.0 (`Cannot find module …/pnpm.cjs`). 13 merged worktrees and 27 merged branches removed;
+  two orphaned `next dev` servers (ports 3197, 3200) stopped.
+
+**Decided**
+- `docs/marketing/` stays out of the public repo: `launch-video.md` names target companies, the kind of framing
+  ADR-037's scrub removed. **Claude recommended, pending Anuj.**
+- `.claude/launch.json` local additions not committed: they hold absolute paths to this machine's worktrees. **Claude.**
+
+**Results**
+- Fresh install from npm in an empty folder, pnpm 10.28.0: `@syntara/react` 0.1.1 and `@syntara/tokens` 0.1.0, no
+  warnings, no `workspace:` leaks; `renderToString(<Button>)` rendered; 122 exports; both CSS files the README names
+  are present. Needs React 19 in the app, which the install page already states.
+- `node scripts/check-override-weight.mjs`: every override outweighs the component rule.
+- **Cold clone (ADR-037's unrun check):** `git clone` of the public repo at 44ca23a, `pnpm install --frozen-lockfile`
+  on an empty store (28.4s, exit 0), `pnpm typecheck` exit 0, `pnpm test` exit 0 (react 531, icons 959, theme-engine
+  309 + 1 skipped, mcp 193, sdui 150, audit 77, codemods 8), `pnpm --filter @syntara/docs build` exit 0, 315/315 pages.
+
+**Next**
+- Anuj: 6 kept worktrees (3 with unsaved edits, 3 unmerged) and 10 unmerged branches need a keep/drop call.
+- Anuj's review queue, now twelve questions on one page (https://claude.ai/artifact/2n9DviYEVn644NAja8bfBf): ADRs
+  024, 025, 026, 031 (Qamar line spacing), 032, 034, 035, 042, 044, 045, `wip/haat-hindi-copy`, `docs/marketing/`.
+  Already settled, records to tidy: ADR-020 (Anuj, 2026-09-28), Haat's Hindi copy (reviewed 2026-10-02).
+
+---
+
 ## 2026-10-04 (Hero follow-up) — Hero follows the page's light or dark scheme
 
 Branch `claude/hero-follows-scheme`, cut from `origin/main` at 1a41bbf, fast-forwarded to 44ca23a; then merged with the

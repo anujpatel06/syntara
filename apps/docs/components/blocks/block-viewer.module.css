@@ -317,13 +317,19 @@
   }
 }
 
-/* A ThemeScope: scrolls inside the frame, so sticky headers stick to the frame, not the page. */
+/*
+ * A ThemeScope: scrolls inside the frame, so sticky headers stick to the frame, not the page.
+ *
+ * Scroll chaining is left on. It was `overscroll-behavior: contain`, which does one thing — stop the scroll
+ * passing to the page when the frame reaches its end. On a page that is a column of these frames that means the
+ * wheel dies at the bottom of each one and the reader has to move the pointer off the block to carry on. The
+ * frame still takes the scroll first; it just hands it back when it has none left.
+ */
 .scope.scope {
   display: flex;
   flex-direction: column;
   block-size: 100%;
   overflow: auto;
-  overscroll-behavior: contain;
 }
 
 .scope.scope > * {
