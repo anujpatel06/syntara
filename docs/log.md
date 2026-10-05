@@ -6,6 +6,86 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — A brand's own font, accepted only if it passes six measured checks (ADR-050)
+
+Branch `feat/custom-fonts`, from `main` at 9767dae, in its own worktree; `main` (5c00355) fast-forwarded in before
+the PR. Another session works on tenants-from-folder.
+
+**Changed**
+- **Spec first:** `docs/design/custom-fonts.md`: six pass/fail checks with numbers (loads; real 400/500/600/700;
+  every test character in the font's own character map; 0 clipped ink at every size 12–72px, 400 and 700, DPR 1 and
+  2, four sub-pixel offsets; line heights within tight/snug ≤ 1.8 and normal ≤ 1.9, floor the shared scale; body
+  x-height ≥ 0.45 em), how a failure reads, and an anti-list.
+- **Engine** (`packages/theme-engine/src/custom-font.ts`, `types.ts`, `theme.ts`): optional `BrandInput.font`
+  (Google family or own files, optional heading font, script, the stored measurement). It becomes a type pair of its
+  own; the named pair still gives mono. Out-of-bounds line heights and unsafe family names are refused. `typePair` is
+  unchanged and still required (no breaking change, no RFC).
+- **Checker** (`packages/syntara/src/fonts/`): drives the Chrome or Edge already installed over the DevTools protocol
+  with Node's own WebSocket (no new dependency); reads cmap/OS-2/fvar from TTF, OTF, WOFF and WOFF2 itself; asks
+  Google's css2 for weights and its metadata for serif/sans; the clipping method is `check-script-clipping.mjs`'s,
+  same strings, sizes and ink rule. Plain-English report; `passed.json` lists the Google fonts that passed, per script.
+  Repo entry: `node scripts/check-font.mjs <name> [--script=…] [--out=… --brand=…] [--record …]`.
+- **`npx syntara init`:** "Your own font" is the last Fonts choice; flags `--font`, `--font-file`, `--heading-font`,
+  `--heading-font-file`, `--script latin|arabic|hindi`. A failing font: the reasons, the pass list, pick again;
+  nothing written (`--yes`: exit 1). Own files are linked relative to the theme CSS. `build` reuses the measurement.
+- **Tokens build:** a tenant with `font` also gets `fonts.css`, its own files copied beside it. No current tenant has
+  one, so `pnpm tokens` output is unchanged.
+- **Docs:** installation ("Your own font"), theming ("Your own font", tenants), `syntara` README, `npx syntara help`.
+- **Playground:** `/brand.html?brand=<file>` shows one brand file from `apps/playground/brands/`, light and dark.
+  `scripts/shoot.mjs --web-fonts` lets Google Fonts load (it blocked them, so a font screenshot showed the fallback).
+
+**Decided**
+- Any font that passes the checks, not an approved list. **Anuj** (2026-10-05).
+- Google name **and** own files; one font or two, the brand says which is for headings; on a failure say why, write
+  nothing, and list Google fonts that pass; measure in the person's own Chrome or Edge. **Anuj** (ADR-050).
+- ₹ is checked only for Hindi brands; other brands' test text shows dollars. **Anuj.**
+- The six checks and their numbers, approved with the first example. **Claude recommended, Anuj accepted.**
+- Mono stays the pair's; per-size line heights stay out (ADR-031's RFC). **Claude.**
+
+**Results**
+- First example, Manrope (`node scripts/check-font.mjs Manrope`): passes; at 1.2, 273 of 880 cases clipped.
+  Approved at 1.36 / 1.36 / 1.5 (first search: jump to the estimate). The search then changed (below); final:
+  1.31 / 1.35 / 1.5, 0 clipped in 7,040 cases, x-height 0.545. Screenshot `docs/screenshots/custom-fonts/manrope-light-dark.png`
+  (`node scripts/shoot.mjs "http://localhost:5181/brand.html?brand=manrope" … --full --web-fonts`).
+- Failures, in the words people see: Lobster (one weight), Sora for Hindi (no Devanagari, no ₹), "manrope" (did you
+  mean Manrope?).
+- **The search overshot for Hindi.** Jumping to the worst case's estimate gave Mukta 1.51; measured at exactly 1.44
+  it clips 0 of 1,144 cases per DPR with Google's .ttf and its .woff2 alike. Now: jump, then halve back. Mukta comes
+  out 1.44 / 1.44 / 1.5, ADR-024's values exactly, and 1.43 clips, as ADR-024 found. Inter and IBM Plex Sans stay at
+  the shared scale, as their pairs do.
+- `node scripts/check-font.mjs --record …` (17 fonts): English: DM Sans, Geist, IBM Plex Sans, Inter, Manrope, Plus
+  Jakarta Sans, Sora, Source Sans 3, Work Sans pass. Hindi: Mukta, Noto Sans Devanagari, Anek Devanagari pass; Hind
+  fails (clips at 1.8). Arabic: Cairo, IBM Plex Sans Arabic, Noto Sans Arabic, Readex Pro pass. 35–237 s per font.
+- Packed as npm would publish (`pnpm pack` engine + syntara), installed in an empty app outside the repo:
+  `npx syntara init --yes --name Kestrel --font Manrope --no-install` wrote a theme that imports Manrope with
+  `--syntara-line-height-tight: 1.36` (before the search change); `/usr/bin/time -p` real 109.23 s with the
+  measurement run competing for the machine.
+- `/verify` (build `WCwA6hRsz64_dEdLzvlH5`): `gen:index` 58 modules; `pnpm typecheck` exit 0; `pnpm test` 2,327
+  passing, 2 skipped, 0 failing (`node scripts/check-test-counts.mjs --from <output> --fix`: engine 310 → 323,
+  one-install 38 → 70); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand (unchanged; the
+  timing-only report diff reverted); `pnpm check:meta` exit 0 (the old `hero-styles.tsx` warning); `pnpm registry`
+  82 items; `check-override-weight` 0; docs build 316/316 pages; `check-ssr-tabs` 0 of 315. The docs change shipped:
+  `grep -rl "Your own font" apps/docs/out/docs/` → installation and theming. Served on :3077 (port 3000 held by
+  another process; `lsof` confirmed :3077 was this build's `serve`, PID 14767): `check-hydration` 0 of 288;
+  `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144; `axe-sweep` 0 violation nodes
+  over 144 × 2; `check-overlay-exit` 0 of 112.
+- `/screenshots` (changed pages only; no component changed): `/docs/installation` light 1280 and dark 390,
+  `/docs/theming#your-own-font` dark 1280 and light 390, the brand preview at 390 and 1440. Found and fixed: the
+  preview kept light and dark side by side at 390px (dark ran off screen); it now stacks. One wording fix in theming
+  ("the line spacing it needs"), after `/verify`: docs rebuilt, 316/316 pages, and
+  `grep -l "The line spacing it needs stays" apps/docs/out/docs/theming.html` matches. The browser checks above ran
+  on the build before that one-phrase change.
+
+**Next**
+- Release: `@syntara/theme-engine` and `syntara` minor (changesets). Not published; ask Anuj.
+- `/themes` can't show a custom font yet (the preview link names the pair and says so).
+- Known gaps: coverage reads the full font file; a character Google's browser subsets leave out would pass. The
+  CSS header says "theme-engine 0.1.0" (stale before this work). `type-pairs.ts` says Noto Sans Arabic has no Latin;
+  Google now serves it a latin subset. Hind, measured by ADR-024 as a candidate, fails here at 1.8; not re-checked
+  with the old script.
+
+---
+
 ## 2026-10-06 — The last links to the old repository name
 
 Branch `chore/repo-links-syntara`, from `main` at 9767dae. Replaces #40 (opened 2026-10-02, now conflicting).

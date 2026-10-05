@@ -20,14 +20,16 @@
  * Also exits 1 if a colour read back out of a written Kotlin or Swift file differs from the theme,
  * or if any contrast pair fails on the colours read back (ADR-019: re-checked, not assumed).
  */
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { fileURLToPath } from 'node:url';
 import {
   brandFidelity,
   buildNativeModel,
+  fontFacesCSS,
   generateTheme,
+  googleFontsHref,
   toCompose,
   toCSS,
   toDTCG,
@@ -94,6 +96,19 @@ function buildTenant(id: string): Built {
 
   const dtcg = toDTCG(theme);
   write(join(out, 'tokens.css'), toCSS(theme, { selector: ':root' }));
+  // A brand's own font (ADR-050): fonts.css loads it, and its own files are copied beside it so the links still work.
+  // Brands on a ready-made pair get no fonts.css, as before.
+  if (theme.input.font) {
+    const faces = fontFacesCSS(theme.typePair);
+    write(join(out, 'fonts.css'), `@import url("${googleFontsHref(theme.typePair)}");\n${faces ? `\n${faces}\n` : ''}`);
+    for (const face of theme.typePair.fontFaces ?? []) {
+      if (/^https?:\/\//.test(face.url)) continue;
+      const from = resolve(tenantsDir, id, face.url);
+      if (!from.startsWith(resolve(tenantsDir, id))) throw new Error(`${id}: font file ${face.url} is outside the tenant folder.`);
+      mkdirSync(dirname(join(out, face.url)), { recursive: true });
+      copyFileSync(from, join(out, face.url));
+    }
+  }
   write(join(out, `${id}.tokens.json`), json(dtcg));
   const figma = toFigmaFiles(theme);
   for (const [file, doc] of Object.entries(figma)) write(join(out, 'figma', file), json(doc));

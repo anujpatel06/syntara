@@ -22,6 +22,12 @@ Options for init (anything you give here is not asked):
   --fonts <pair>       precise, calm, friendly, technical, editorial, modern,
                        bilingual-round, bilingual-classic, bilingual-devanagari
   --spacing <density>  comfortable, compact
+  --font <name>        Your own font instead of a pair: its Google Fonts name, e.g. Manrope.
+                       It is checked first (about a minute, in your Chrome or Edge) and used only if it passes
+  --font-file <paths>  Or your own font files, comma-separated: .woff2, .woff, .ttf or .otf
+  --heading-font <name>, --heading-font-file <paths>
+                       A different font for headings (default: the same one)
+  --script <language>  latin (default), arabic or hindi: the letters your font is checked for
   --out <path>         Where to write the theme CSS (default: src/syntara-theme.css, or ./ without src/)
   --force              Replace existing files
   --no-install         Don't offer to add syntara to package.json

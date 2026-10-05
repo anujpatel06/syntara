@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
  * One-off screenshot helper for agents and humans.
- *   node scripts/shoot.mjs <url> <out.png> [--width=1280] [--height=900] [--full] [--dark]
+ *   node scripts/shoot.mjs <url> <out.png> [--width=1280] [--height=900] [--full] [--dark] [--web-fonts]
+ * --web-fonts lets Google Fonts load from the network. Without it (and without SYNTARA_LOCAL_FONTS) they are blocked,
+ * so text shows in the fallback stack: fine for layout, wrong for judging a font.
  * Env SYNTARA_LOCAL_FONTS=<node_modules dir with @fontsource/*> serves Google Fonts locally (offline sandboxes).
  * Prints console/page errors.
  */
@@ -32,7 +34,7 @@ if (FONTS) {
     const rel = new URL(route.request().url()).pathname.replace('/syntara-local/', '');
     try { await route.fulfill({ status: 200, contentType: 'font/woff2', body: await readFile(path.join(FONTS, '@fontsource', rel)) }); } catch { await route.fulfill({ status: 404, body: '' }); }
   });
-} else {
+} else if (!rest.includes('--web-fonts')) {
   await context.route('https://fonts.googleapis.com/**', (r) => r.fulfill({ status: 200, contentType: 'text/css', body: '' }));
 }
 const page = await context.newPage();

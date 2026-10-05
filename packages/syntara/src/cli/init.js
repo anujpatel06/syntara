@@ -3,8 +3,8 @@
 // do the asking and writing through an injected `io`, so tests never touch a terminal.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join, relative } from 'node:path';
-import { brandFidelity, generateTheme, googleFontsHref, isValidHex, TYPE_PAIRS, toCSS } from '@syntara/theme-engine';
+import { dirname, isAbsolute, join, relative } from 'node:path';
+import { brandFidelity, fontFacesCSS, fontFamilyOf, generateTheme, googleFontsHref, isValidHex, TYPE_PAIRS, toCSS } from '@syntara/theme-engine';
 import { findLook, LOOKS } from './looks.js';
 
 /** @typedef {import('@syntara/theme-engine').BrandInput} BrandInput */
@@ -35,8 +35,10 @@ export function themeId(name) {
 
 /** The stylesheet for one brand: its fonts, then its tokens under [data-syntara-theme="<id>"]. */
 export function themeCss(theme, id) {
-  const fonts = googleFontsHref(TYPE_PAIRS[theme.input.typePair]);
-  return `@import url("${fonts}");\n\n${toCSS(theme, { selector: `[data-syntara-theme="${id}"]` })}`;
+  const fonts = googleFontsHref(theme.typePair);
+  // A brand's own font files (ADR-050) come before the tokens; Google fonts load through the import.
+  const faces = fontFacesCSS(theme.typePair);
+  return `@import url("${fonts}");\n\n${faces ? `${faces}\n\n` : ''}${toCSS(theme, { selector: `[data-syntara-theme="${id}"]` })}`;
 }
 
 /** A link that opens this exact brand in the docs site's theme preview. */
@@ -90,6 +92,13 @@ export function reportLines(theme) {
   return lines;
 }
 
+/** One line about a brand's own font: what was measured and when (the measurement is stored, not repeated). */
+export function fontLine(font) {
+  const names = [...new Set([font.heading, font.body].filter(Boolean).map(fontFamilyOf))].join(' / ');
+  const lh = font.measured.lineHeight;
+  return `✓ Font ${names}: passed Syntara's font checks on ${font.measured.date}; line spacing ${lh.tight} / ${lh.snug} / ${lh.normal}.`;
+}
+
 /** Everything the command writes, as { path: content }. Paths are relative to the project folder. */
 export function buildFiles(brand, { id = themeId(brand.name), cssPath } = {}) {
   const theme = generateTheme(brand);
@@ -122,24 +131,45 @@ export const BRAND_FLAGS = /** @type {const} */ ({
 const CHOICES = { neutral: NEUTRALS, shape: SHAPES, typePair: TYPE_PAIR_IDS, density: DENSITIES };
 
 /** --flag value / --flag / -y. Unknown flags and bad values are reported with how to fix them, not ignored. */
+// A brand's own font (ADR-050). Files are comma-separated paths (from the project folder) or URLs.
+export const FONT_FLAGS = /** @type {const} */ ({
+  '--font': 'font',
+  '--font-file': 'fontFile',
+  '--heading-font': 'headingFont',
+  '--heading-font-file': 'headingFontFile',
+  '--script': 'script',
+});
+const SCRIPTS = { latin: 'latin', english: 'latin', arabic: 'arabic', devanagari: 'devanagari', hindi: 'devanagari' };
+
 export function parseArgs(argv) {
-  const opts = { yes: false, force: false, install: true, look: undefined, name: undefined, out: undefined, brand: {} };
+  const opts = { yes: false, force: false, install: true, look: undefined, name: undefined, out: undefined, brand: {}, font: {} };
   const takes = { '--look': 'look', '--name': 'name', '--out': 'out' };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--yes' || arg === '-y') opts.yes = true;
     else if (arg === '--force') opts.force = true;
     else if (arg === '--no-install') opts.install = false;
-    else if (arg in takes || arg in BRAND_FLAGS) {
+    else if (arg in takes || arg in BRAND_FLAGS || arg in FONT_FLAGS) {
       const value = argv[++i];
       if (value === undefined || value.startsWith('--')) throw new Error(`${arg} needs a value.`);
       if (arg in takes) opts[takes[arg]] = value;
+      else if (arg in FONT_FLAGS) opts.font[FONT_FLAGS[arg]] = value;
       else opts.brand[BRAND_FLAGS[arg]] = value;
     } else throw new Error(`Unknown option ${arg}. Run "npx syntara help" to see the options.`);
   }
   if (opts.look !== undefined && !findLook(opts.look)) {
     throw new Error(`There is no look called "${opts.look}". Pick one of: ${LOOKS.map((l) => l.id).join(', ')}.`);
   }
+  const f = opts.font;
+  if (f.script !== undefined && !(f.script.toLowerCase() in SCRIPTS)) {
+    throw new Error(`--script "${f.script}" is not an option. Pick one of: latin, arabic, hindi.`);
+  }
+  if (f.font && f.fontFile) throw new Error('Give --font (a Google font) or --font-file (your own files), not both.');
+  if (f.headingFont && f.headingFontFile) throw new Error('Give --heading-font or --heading-font-file, not both.');
+  if ((f.headingFont || f.headingFontFile || f.script) && !(f.font || f.fontFile)) {
+    throw new Error('--heading-font and --script go with --font or --font-file, which sets the body font.');
+  }
+  if ((f.font || f.fontFile) && opts.brand.typePair) throw new Error('Give --fonts (a ready-made pair) or --font (your own), not both.');
   for (const [flag, field] of Object.entries(BRAND_FLAGS)) {
     const value = opts.brand[field];
     if (value === undefined) continue;
@@ -189,6 +219,81 @@ async function choose(io, question, items, label) {
 
 const hexHint = 'Use a hex colour such as #2f5bea.';
 
+/* ------------------------------------------------------------------ a brand's own font (ADR-050) */
+
+const OWN_FONT = 'own';
+const SCRIPT_LABELS = { latin: 'English, or another language written in Latin letters', arabic: 'Arabic', devanagari: 'Hindi' };
+const fontsLabel = (id) => (id === OWN_FONT ? 'Your own font: a Google font, or your font files' : TYPE_PAIRS[id].label);
+
+/** "Manrope" → a Google font; "fonts/acme-400.woff2, fonts/acme-700.woff2" (or a URL) → files. */
+export function fontRequestFrom(text) {
+  const t = String(text).trim();
+  const isFile = /\.(woff2?|ttf|otf)(\?|$)/i.test(t) || /[\\/]/.test(t);
+  return isFile ? { files: t.split(',').map((x) => x.trim()).filter(Boolean) } : { google: t };
+}
+
+/** The font request the flags make, or undefined. */
+export function fontRequestFromFlags(f) {
+  if (!f.font && !f.fontFile) return undefined;
+  const heading = f.headingFont ?? f.headingFontFile;
+  return {
+    body: f.font ? { google: f.font } : fontRequestFrom(f.fontFile),
+    ...(heading ? { heading: f.headingFont ? { google: heading } : fontRequestFrom(heading) } : {}),
+    script: SCRIPTS[(f.script ?? 'latin').toLowerCase()],
+  };
+}
+
+/** The pair a custom font keeps for its mono font: the script's own pair, or the chosen Latin one. */
+export function basePairFor(script, typePair) {
+  if (script === 'devanagari') return 'bilingual-devanagari';
+  if (script === 'arabic') return 'bilingual-round';
+  return typePair && !typePair.startsWith('bilingual') ? typePair : 'modern';
+}
+
+async function askOwnFont(io) {
+  const body = await askValid(
+    io,
+    'Font for body text: its Google Fonts name, or paths to your font files separated by commas',
+    'Manrope',
+    (a) => a.length > 0,
+    'Type a font name, such as Manrope.',
+  );
+  const heading = (await io.ask('Font for headings, or Enter to use the same one: ')).trim();
+  const script = await choose(io, 'Which language is the brand written in?', Object.keys(SCRIPT_LABELS), (k) => SCRIPT_LABELS[k]);
+  return { body: fontRequestFrom(body), ...(heading ? { heading: fontRequestFrom(heading) } : {}), script };
+}
+
+const plain = (s) => s.replace(/\*\*/g, '');
+const SYNTARA_VERSION = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version;
+
+/**
+ * Runs the six font checks (docs/design/custom-fonts.md) and says the result in plain words. Returns the BrandFont
+ * on a pass, with local files linked relative to the theme CSS (bundlers resolve url() from the CSS file), else null.
+ */
+async function measureFont(io, request, cssPath) {
+  const local = (p) => !/^https?:\/\//.test(p);
+  const abs = (p) => (local(p) && !isAbsolute(p) ? join(io.cwd, p) : p);
+  const absolute = (r) => ('files' in r ? { ...r, files: r.files.map(abs) } : r);
+  const name = [request.body, request.heading].filter(Boolean).map((r) => ('google' in r ? r.google : 'your font files')).join(' / ');
+  io.say('');
+  io.say(`Checking ${name} in Chrome or Edge. This takes about a minute.`);
+  const checkFont = io.checkFont ?? (await import('../fonts/check.js')).checkFont;
+  const { fontReport } = await import('../fonts/report.js');
+  const result = await checkFont(
+    { body: absolute(request.body), ...(request.heading ? { heading: absolute(request.heading) } : {}), script: request.script },
+    { version: SYNTARA_VERSION },
+  );
+  const family = result.pass
+    ? [...new Set([result.font.body, result.font.heading].filter(Boolean).map(fontFamilyOf))].join(' / ')
+    : name;
+  io.say(plain(fontReport(result, { script: request.script, family })));
+  if (!result.pass) return null;
+  const cssDir = dirname(join(io.cwd, cssPath));
+  const link = (url) => (local(url) ? `./${relative(cssDir, url).split('\\').join('/')}`.replace(/^\.\/\.\./, '..') : url);
+  const relink = (s) => ('files' in s ? { ...s, files: s.files.map((f) => ({ ...f, url: link(f.url) })) } : s);
+  return { ...result.font, body: relink(result.font.body), ...(result.font.heading ? { heading: relink(result.font.heading) } : {}) };
+}
+
 /**
  * The questions. Returns a BrandInput. Anything given as a flag is not asked. Without a terminal or with --yes,
  * nothing is asked: missing inputs come from --look, or the first look.
@@ -197,12 +302,13 @@ async function askBrand(io, opts) {
   const given = opts.brand;
   const look = findLook(opts.look);
   const base = (look ?? LOOKS[0]).brand;
-  if (opts.yes || !io.interactive) return { name: opts.name ?? 'My Brand', ...base, ...given };
+  const fontRequest = fontRequestFromFlags(opts.font);
+  if (opts.yes || !io.interactive) return { brand: { name: opts.name ?? 'My Brand', ...base, ...given }, fontRequest };
 
   const askName = async () => opts.name ?? (await askValid(io, 'Brand name', 'My Brand', (a) => a.length > 0, 'Type a name.'));
   // A look, or any input beyond the main colour (e.g. a command copied from /themes), answers "guidelines?" already.
-  const settled = look !== undefined || Object.keys(given).some((field) => field !== 'primary');
-  if (settled && look) return { name: await askName(), ...base, ...given };
+  const settled = look !== undefined || fontRequest !== undefined || Object.keys(given).some((field) => field !== 'primary');
+  if (settled && look) return { brand: { name: await askName(), ...base, ...given }, fontRequest };
 
   const has = settled
     ? 'y'
@@ -213,16 +319,22 @@ async function askBrand(io, opts) {
     const picked = await choose(io, 'Pick a starting look. You can change any of it later.', LOOKS, (l) => `${l.label}: ${l.fits}`);
     const primary =
       given.primary ?? (await askValid(io, 'Main colour, or Enter to keep the look’s', picked.brand.primary, isValidHex, hexHint));
-    return { name, ...picked.brand, primary };
+    return { brand: { name, ...picked.brand, primary }, fontRequest };
   }
 
   const primary = given.primary ?? (await askValid(io, 'Main brand colour', base.primary, isValidHex, hexHint));
   const accent = given.accent ?? (await askValid(io, 'Accent colour, or Enter to use the main colour', primary, isValidHex, hexHint));
   const neutral = given.neutral ?? (await choose(io, 'Grey tone', NEUTRALS, (n) => n));
   const shape = given.shape ?? (await choose(io, 'Corners', SHAPES, (x) => x));
-  const typePair = given.typePair ?? (await choose(io, 'Fonts', TYPE_PAIR_IDS, (id) => TYPE_PAIRS[id].label));
+  let ownFont = fontRequest;
+  let typePair = given.typePair;
+  if (!typePair && !ownFont) {
+    const pick = await choose(io, 'Fonts', [...TYPE_PAIR_IDS, OWN_FONT], fontsLabel);
+    if (pick === OWN_FONT) ownFont = await askOwnFont(io);
+    else typePair = pick;
+  }
   const density = given.density ?? (await choose(io, 'Spacing', DENSITIES, (d) => d));
-  return { name, primary, accent, neutral, shape, typePair, density };
+  return { brand: { name, primary, accent, neutral, shape, typePair: typePair ?? 'modern', density }, fontRequest: ownFont };
 }
 
 /** Writes files, refusing to replace existing ones unless --force or the person says yes. */
@@ -259,6 +371,12 @@ function sayNextSteps(io, { id, cssPath, brand, installed }) {
   io.say(`       <ThemeScope theme="${id}" style={{ minHeight: '100vh' }}>…</ThemeScope>`);
   io.say('');
   io.say(`See it live:   ${previewUrl(brand)}`);
+  if (brand.font) {
+    io.say(`               (the preview shows a ready-made font; your theme uses ${fontFamilyOf(brand.font.body)})`);
+    if ('files' in brand.font.body || (brand.font.heading && 'files' in brand.font.heading)) {
+      io.say(`Your font files are linked from ${cssPath}; keep them where they are. Their licence is yours to check.`);
+    }
+  }
   io.say(`Change it:     edit ${CONFIG_FILE}, then run  npx syntara build`);
 }
 
@@ -267,13 +385,27 @@ export async function runInit(argv, io) {
   const opts = parseArgs(argv);
   io.say('Syntara: set up your brand. Press Enter to take the suggestion in brackets.');
   io.say('');
-  const brand = await askBrand(io, opts);
+  let { brand, fontRequest } = await askBrand(io, opts);
   const cssPath = opts.out ?? defaultCssPath(io.cwd);
+  // A brand's own font is accepted only if it passes (ADR-050). On a fail: the reasons, then pick again.
+  while (fontRequest) {
+    const font = await measureFont(io, fontRequest, cssPath);
+    if (font) {
+      brand = { ...brand, typePair: basePairFor(font.script, brand.typePair), font };
+      break;
+    }
+    if (opts.yes || !io.interactive) return 1;
+    io.say('');
+    const pick = await choose(io, 'Pick another font, or a ready-made pair', [OWN_FONT, ...TYPE_PAIR_IDS], fontsLabel);
+    if (pick === OWN_FONT) fontRequest = await askOwnFont(io);
+    else (brand = { ...brand, typePair: pick }), (fontRequest = undefined);
+  }
   const { theme, id, files } = buildFiles(brand, { cssPath });
 
   io.say('');
   for (const line of reportLines(theme)) io.say(line);
   if (theme.summary.failed > 0) return 1;
+  if (theme.input.font) io.say(fontLine(theme.input.font));
 
   if (!(await writeAll(io, files, opts))) return 1;
   io.say('');
@@ -306,6 +438,7 @@ export async function runBuild(argv, io) {
   const { theme, files } = buildFiles(config.brand, { id: config.theme, cssPath });
   for (const line of reportLines(theme)) io.say(line);
   if (theme.summary.failed > 0) return 1;
+  if (theme.input.font) io.say(fontLine(theme.input.font));
   writeFileSync(join(io.cwd, cssPath), files[cssPath]);
   io.say(`Rebuilt ${relative(io.cwd, join(io.cwd, cssPath))}.`);
   return 0;

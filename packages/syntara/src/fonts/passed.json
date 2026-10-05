@@ -1,0 +1,203 @@
+{
+  "note": "Google fonts that passed every check in docs/design/custom-fonts.md. Written by scripts/check-font.mjs --record.",
+  "fonts": {
+    "latin": [
+      {
+        "family": "DM Sans",
+        "lineHeight": {
+          "tight": 1.21,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.51,
+        "cases": 5280,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Geist",
+        "lineHeight": {
+          "tight": 1.2,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.535,
+        "cases": 2640,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "IBM Plex Sans",
+        "lineHeight": {
+          "tight": 1.2,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.52,
+        "cases": 2640,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Inter",
+        "lineHeight": {
+          "tight": 1.2,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.55,
+        "cases": 2640,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Manrope",
+        "lineHeight": {
+          "tight": 1.31,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.545,
+        "cases": 7040,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Plus Jakarta Sans",
+        "lineHeight": {
+          "tight": 1.31,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.54,
+        "cases": 6160,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Sora",
+        "lineHeight": {
+          "tight": 1.2,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.54,
+        "cases": 2640,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Source Sans 3",
+        "lineHeight": {
+          "tight": 1.2,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.49,
+        "cases": 2640,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Work Sans",
+        "lineHeight": {
+          "tight": 1.2,
+          "snug": 1.35,
+          "normal": 1.5
+        },
+        "xHeight": 0.505,
+        "cases": 2640,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      }
+    ],
+    "devanagari": [
+      {
+        "family": "Anek Devanagari",
+        "lineHeight": {
+          "tight": 1.72,
+          "snug": 1.72,
+          "normal": 1.72
+        },
+        "xHeight": 0.495,
+        "cases": 18304,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Mukta",
+        "lineHeight": {
+          "tight": 1.44,
+          "snug": 1.44,
+          "normal": 1.5
+        },
+        "xHeight": 0.475,
+        "cases": 18304,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Noto Sans Devanagari",
+        "lineHeight": {
+          "tight": 1.5,
+          "snug": 1.5,
+          "normal": 1.5
+        },
+        "xHeight": 0.54,
+        "cases": 16016,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      }
+    ],
+    "arabic": [
+      {
+        "family": "Cairo",
+        "lineHeight": {
+          "tight": 1.61,
+          "snug": 1.61,
+          "normal": 1.61
+        },
+        "xHeight": 0.505,
+        "cases": 11088,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "IBM Plex Sans Arabic",
+        "lineHeight": {
+          "tight": 1.68,
+          "snug": 1.68,
+          "normal": 1.68
+        },
+        "xHeight": 0.52,
+        "cases": 12672,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Noto Sans Arabic",
+        "lineHeight": {
+          "tight": 1.79,
+          "snug": 1.79,
+          "normal": 1.79
+        },
+        "xHeight": 0.54,
+        "cases": 12672,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      },
+      {
+        "family": "Readex Pro",
+        "lineHeight": {
+          "tight": 1.78,
+          "snug": 1.78,
+          "normal": 1.78
+        },
+        "xHeight": 0.53,
+        "cases": 12672,
+        "by": "syntara 0.2.0",
+        "date": "2026-10-06"
+      }
+    ]
+  }
+}

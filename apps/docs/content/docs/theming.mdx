@@ -46,6 +46,19 @@ const theme = generateTheme({
 const css = toCSS(theme, { selector: '[data-syntara-theme="acme"]' });
 ```
 
+## Your own font
+
+Instead of a type pair, a brand can name its own font: a Google font, or its own files, for body text and optionally a different one for headings. Syntara accepts it only if it passes six measured checks ([ADR-050](https://github.com/anujpatel06/syntara/blob/main/docs/adr/050-custom-brand-fonts.md)):
+
+1. It loads: Google has it under that name, or the file is a real font.
+2. Regular, Medium, Semibold and Bold are real weights, not faked by the browser.
+3. Every character in Syntara's test text for the brand's language is drawn by the font itself. Latin is always checked; ₹ only for Hindi brands.
+4. No letter's ink is cut off, at every size from 12 to 72px, Regular and Bold, on standard and high-density screens.
+5. The line spacing it needs stays within the limits Syntara already ships: 1.8 for headings and labels, 1.9 for paragraphs.
+6. Its lower-case letters are at least 0.45 of its size, so 12px text stays readable.
+
+`npx syntara init --font <name>` runs the checks in your Chrome or Edge and stores what they measured in `syntara.brand.json`, under `font`. The engine reads the measured line spacing from there; it never guesses it. The type pair stays in the file: it still sets the mono font.
+
 ## Semantic roles
 
 The 48 colour roles every theme resolves, with the CSS variable components read. Values are generated from each tenant’s brand when this page is built, and follow this page’s scheme — switch it in the header to see the dark values.
@@ -94,5 +107,7 @@ Dialogs, popovers and menus render in a portal at the end of `<body>`, outside a
 
 1. Create `tenants/<id>/brand.json` with the six inputs, and `content.json` with the tenant’s copy, locale and direction.
 2. Run `pnpm tokens`. It fails if any contrast check fails, so a broken theme can’t ship.
+
+For a tenant with its own font, measure it into the brand file: `node scripts/check-font.mjs <Google name> --script=<latin|arabic|devanagari> --out=tenants/<id>/brand.json --brand="$(cat tenants/<id>/brand.json)"`. It writes `font` only if every check passes. `pnpm tokens` then also writes `fonts.css`, with the tenant's own font files copied beside it.
 
 That’s all. No component changes. `pnpm tokens` writes the new tenant’s files to `@syntara/tokens`, and this site picks it up on its next build, in the preview toolbar and the tables above.

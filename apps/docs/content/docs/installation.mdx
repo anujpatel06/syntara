@@ -20,6 +20,12 @@ A few questions, each with a suggestion: press Enter to take it. No brand guidel
 
 Skip this step to use one of the built-in brands, such as `vela`.
 
+**Your own font.** Pick **Your own font** at the Fonts question, or pass it as a flag:
+
+<PackageCommand dlx="syntara init --font Manrope" />
+
+Any Google font works, or your own files (`--font-file fonts/acme.woff2`), if it passes six checks. It must have real Regular, Medium, Semibold and Bold. It must draw every letter itself. No letter may be cut off at any size Syntara uses, and line spacing must stay within limits. Its small letters must be tall enough to read at 12px. Checking takes about a minute in the Chrome or Edge on your computer. A font that fails is not used: you get the reason in a sentence, and a list of Google fonts that pass. See [Theming](/docs/theming#your-own-font).
+
 ### Import the CSS once
 
 At your app root — `app/layout.tsx` in Next.js, `src/main.tsx` in Vite — import the one stylesheet (every built-in brand’s tokens, then the component styles), then your brand’s.

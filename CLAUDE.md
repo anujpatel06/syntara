@@ -34,7 +34,11 @@ Anuj owns design decisions. You pair on engineering and push back when he's wron
   035, 042, 044, 045, the `wip/haat-hindi-copy` branch, and whether `docs/marketing/` stays local. Settled, records
   still to tidy: ADR-020 (Anuj, 2026-09-28) and Haat's Hindi copy (reviewed 2026-10-02).
 - **Known gaps:** listed at the end of the latest entry in `docs/log.md`.
-- **ADRs run to 045.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
+- **Brand fonts (ADR-050):** a brand can name its own font (Google or its own files) instead of a type pair; it is
+  used only if it passes six measured checks (`docs/design/custom-fonts.md`). `npx syntara init --font <name>`, or
+  `node scripts/check-font.mjs <name>` in the repo. The pass list shown after a failure is
+  `packages/syntara/src/fonts/passed.json`, written by `node scripts/check-font.mjs --record …`.
+- **ADRs run to 050.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
 
 ## Run it
 
@@ -45,6 +49,7 @@ pnpm install
 pnpm docs                  # docs site → http://localhost:3000 (use localhost, not 127.0.0.1: Next 16 dev blocks hydration there)
 pnpm dev                   # Phase 1 Brand Generator (Vite) → :5173
 pnpm --filter @syntara/playground dev   # component playground: /?c=button&tenant=qamar&scheme=dark&dir=rtl
+                                        # brand preview, light + dark: /brand.html?brand=manrope (apps/playground/brands/)
 pnpm typecheck && pnpm test            # all packages
 pnpm test:themes           # contrast fuzz, 1,000 brands → packages/theme-engine/reports
 pnpm check:meta            # every component's meta.json vs its files
@@ -83,7 +88,7 @@ pnpm --filter @syntara/react build      # npm build → packages/react/dist
 | `apps/generator` | Phase 1 Brand Generator (Vite; single-file build for hosted demos). |
 | `apps/playground` | Renders `apps/docs/examples/<c>/*` per tenant, scheme, dir and density for visual QA. |
 | `tenants/<id>` | `brand.json` (6 inputs) + `content.json` (copy). Vela (en-IN), Harbor (en-GB), Qamar (ar-AE, RTL), Care (en-IN, editorial, ADR-015), Haat (hi-IN, Devanagari, ADR-024), house (the site, Geist). |
-| `scripts/` | `screenshots.mjs`, `shoot.mjs` (one URL → PNG), `axe-sweep.mjs` (every docs route, light + dark), `check-override-weight.mjs`, `check-script-clipping.mjs` (glyph clipping per type pair). |
+| `scripts/` | `check-font.mjs` (a brand font against the six checks, ADR-050), `screenshots.mjs`, `shoot.mjs` (one URL → PNG), `axe-sweep.mjs` (every docs route, light + dark), `check-override-weight.mjs`, `check-script-clipping.mjs` (glyph clipping per type pair). |
 
 ## Conventions (non-negotiable)
 
@@ -116,6 +121,7 @@ When parallelising, give each agent exact file ownership and these rules: no dep
 - **Docs CSS that restyles a Syntara component doubles the class** (`.promo.promo`). A single class weighs the same as the component's own rule, so stylesheet order decides which wins, and that order changes when the import graph does. `node scripts/check-override-weight.mjs` checks it; `--fix` doubles them.
 - **Docs examples use fixed dates** (`parseDate('2026-10-05')`), so statically built pages hydrate the same on any day.
 - **`serve` may not take the port you asked for.** `serve out -l 3000` falls back to a random port when 3000 is taken, prints the one it actually took, and exits 0. So a `200` from `curl` proves something is answering, not that it is yours — and with several agents on one machine, "something" is usually another session's build. The six `/verify` step 9 scripts compare the served build against `apps/docs/.next/BUILD_ID` first and stop on a mismatch: believe that error rather than working around it, and confirm the port with `lsof -nP -iTCP:<port> -sTCP:LISTEN`. `shoot.mjs`, `screenshots.mjs` and `check-script-clipping.mjs` take whatever URL you give them and check nothing, so a screenshot of the wrong build looks exactly like a screenshot of yours.
+- **`shoot.mjs` blocks Google Fonts** unless you pass `--web-fonts` (or `SYNTARA_LOCAL_FONTS`): text then renders in the fallback stack. Fine for layout, wrong for judging a font.
 - **A matching build id proves whose build you measured, not that your change is in it.** Edit a file, forget to rebuild, and the id still matches while the numbers mean nothing. When a run is meant to prove a change works, prove the change shipped: `grep -rl '<something from your diff>' apps/docs/out/_next/static`.
 - **Stopping servers:** `pgrep -f "next start"` also matches your own shell command. Kill by the PID you started instead.
 - **Offline sandboxes** can't reach Google Fonts. Screenshot scripts accept `SYNTARA_LOCAL_FONTS=<node_modules with @fontsource/*>`. You don't need this on a normal Mac.
