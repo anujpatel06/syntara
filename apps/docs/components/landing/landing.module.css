@@ -322,14 +322,8 @@
   justify-content: space-between;
   align-items: center;
   margin-block-end: var(--syntara-space-5);
+  font-size: var(--syntara-font-size-sm);
   color: var(--l-65);
-}
-.appSearch i {
-  display: block;
-  inline-size: calc(var(--syntara-space-16) - var(--syntara-space-1));
-  block-size: var(--syntara-space-4);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--l-80);
 }
 .appNav {
   display: flex;
@@ -487,10 +481,10 @@
 .appCode {
   font-family: var(--syntara-font-mono);
   font-size: var(--syntara-font-size-xs);
+  line-height: var(--syntara-line-height-normal);
   color: var(--l-80);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* two lines, so the whole tag shows rather than an ellipsis */
+  white-space: pre;
 }
 .dots {
   position: absolute;
@@ -543,7 +537,9 @@
   margin-block-start: var(--syntara-space-8);
 }
 .word {
-  color: color-mix(in oklab, var(--syntara-color-text-default) var(--o, 100%), transparent);
+  /* rests at text.subtle, which the engine solves to pass AA on the canvas, and brightens to text.default; never
+     the 25% grey Fora uses, which would fail the contrast this very paragraph promises */
+  color: color-mix(in oklab, var(--syntara-color-text-default) var(--o, 100%), var(--syntara-color-text-subtle));
   transition: color var(--syntara-motion-duration-normal) linear;
 }
 
