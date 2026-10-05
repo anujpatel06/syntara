@@ -9,6 +9,7 @@ import { solveChart } from './chart';
 import { solveGlass } from './glass';
 import { checkScheme, resolveRoles } from './roles';
 import { TYPE_PAIRS } from './type-pairs';
+import { typePairForFont, validateBrandFont } from './custom-font';
 import {
   ROLES,
   type Adjustment,
@@ -67,6 +68,7 @@ export function normalizeBrandInput(input: BrandInput): ResolvedBrandInput {
     shape: oneOf('shape', input.shape, SHAPES),
     typePair: oneOf('typePair', input.typePair, Object.keys(TYPE_PAIRS) as TypePairId[]),
     density: oneOf('density', input.density, DENSITIES),
+    ...(input.font ? (validateBrandFont(input.font), { font: input.font }) : {}),
   };
 }
 
@@ -97,12 +99,14 @@ export function generateTheme(input: BrandInput): Theme {
     checks.push(...checkScheme(scheme, roles));
   }
 
-  const src = TYPE_PAIRS[resolved.typePair];
+  // A brand's own font (ADR-050) becomes a pair of its own; the named pair still gives the mono font.
+  const src = resolved.font ? typePairForFont(TYPE_PAIRS[resolved.typePair], resolved.font) : TYPE_PAIRS[resolved.typePair];
   // A pair's script tokens (ADR-020) replace line heights and raise small sizes, so every exporter reads them here.
   const foundations = foundationsForShape(resolved.shape, src);
   const typePair = {
     ...src,
     googleFamilies: [...src.googleFamilies],
+    ...(src.fontFaces ? { fontFaces: src.fontFaces.map((f) => ({ ...f })) } : {}),
     ...(src.script ? { script: { ...src.script, lineHeight: { ...src.script.lineHeight } } } : {}),
   };
   const passed = checks.filter((c) => c.pass).length;

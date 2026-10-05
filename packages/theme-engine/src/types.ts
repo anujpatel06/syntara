@@ -34,10 +34,50 @@ export interface BrandInput {
   shape: Shape;
   typePair: TypePairId;
   density: Density;
+  /**
+   * The brand's own font (ADR-050), with the measurement that accepted it. Replaces the type pair's heading and body;
+   * the pair still gives the mono font. Written by `npx syntara init` after the checks pass, not by hand.
+   */
+  font?: BrandFont;
 }
 
 /** BrandInput after normalisation: hex values are lowercase #rrggbb, accent is filled. */
-export interface ResolvedBrandInput extends Required<BrandInput> {}
+export interface ResolvedBrandInput extends Required<Omit<BrandInput, 'font'>> {
+  font?: BrandFont;
+}
+
+/** One file of a brand's own font. `weight` is "400", or "400 700" for a variable file. */
+export interface FontFile {
+  url: string;
+  weight: string;
+  style?: 'normal' | 'italic';
+}
+
+/**
+ * Where a brand's font comes from (ADR-050): a Google Fonts family, or the brand's own files (their licence, their
+ * hosting). `category` picks the fallback stack shown until the font loads.
+ */
+export type FontSource =
+  | { google: string; category: 'sans' | 'serif' }
+  | { family: string; files: FontFile[]; category: 'sans' | 'serif' };
+
+/** A brand's own font and what measuring it found (docs/design/custom-fonts.md). */
+export interface BrandFont {
+  body: FontSource;
+  /** Omit to use the body font for headings too. */
+  heading?: FontSource;
+  /** The script the brand writes in. Latin is always measured as well. */
+  script: 'latin' | 'arabic' | 'devanagari';
+  measured: {
+    /** The smallest line heights, from the shared scale up, at which no ink left its box (check 4). */
+    lineHeight: Foundations['lineHeight'];
+    /** Body x-height in em (check 6). */
+    xHeight: number;
+    /** The Syntara version and date that measured it. */
+    by: string;
+    date: string;
+  };
+}
 
 export type RampName = 'primary' | 'accent' | 'neutral' | 'success' | 'warning' | 'danger' | 'info';
 /** 12 lowercase #rrggbb values. Index 0 = step 1 (lightest in light scheme, darkest in dark scheme). */
@@ -204,6 +244,8 @@ export interface TypePair {
   supportsArabic: boolean;
   /** Google Fonts family names to load, e.g. ["Inter Tight", "Inter", "JetBrains Mono"]. */
   googleFamilies: string[];
+  /** @font-face rules for a brand's own font files (ADR-050). Google families load through googleFontsHref. */
+  fontFaces?: { family: string; url: string; weight: string; style: 'normal' | 'italic' }[];
   /** Families whose italics are loaded too (for editorial emphasis: an <em> in a heading is a real italic). */
   italicFamilies?: string[];
   /** Variable families loaded with their optical-size axis range, e.g. { Fraunces: '9..144' }: display sizes get the display cut. */

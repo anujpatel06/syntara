@@ -5,13 +5,13 @@
  */
 import type { TypePair, TypePairId } from './types';
 
-const SANS_FALLBACK = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
-const SERIF_FALLBACK = 'Georgia, Cambria, "Times New Roman", Times, serif';
+export const SANS_FALLBACK = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+export const SERIF_FALLBACK = 'Georgia, Cambria, "Times New Roman", Times, serif';
 const MONO_FALLBACK = 'ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace';
 /** Tahoma and Segoe UI ship Arabic glyphs on Windows; system-ui covers macOS/iOS/Android. */
-const ARABIC_FALLBACK = 'system-ui, -apple-system, "Segoe UI", Tahoma, "Geeza Pro", sans-serif';
+export const ARABIC_FALLBACK = 'system-ui, -apple-system, "Segoe UI", Tahoma, "Geeza Pro", sans-serif';
 /** Nirmala UI ships Devanagari on Windows, Kohinoor Devanagari on macOS/iOS; Android's system-ui is Noto. */
-const DEVANAGARI_FALLBACK = 'system-ui, -apple-system, "Segoe UI", "Nirmala UI", "Kohinoor Devanagari", sans-serif';
+export const DEVANAGARI_FALLBACK = 'system-ui, -apple-system, "Segoe UI", "Nirmala UI", "Kohinoor Devanagari", sans-serif';
 
 const q = (family: string) => `"${family}"`;
 
