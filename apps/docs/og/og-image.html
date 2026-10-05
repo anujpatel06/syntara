@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Syntara link preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&display=swap">
+<!--
+  Source of apps/docs/public/og.png: the link-preview image LinkedIn, Slack and WhatsApp show for syntara.live.
+  Without one, LinkedIn picked the first picture on the home page (the hero's floating cubes).
+
+  1200 × 627 is LinkedIn's preview size. After an edit, re-render from the repo root:
+    node scripts/shoot.mjs "file://$PWD/apps/docs/og/og-image.html" apps/docs/public/og.png --width=1200 --height=627
+  then ask LinkedIn to re-read the page at https://www.linkedin.com/post-inspector/ (it caches the old image).
+
+  This is a picture, not page CSS, so the colours are written out.
+-->
+<style>
+  /* House theme, dark scheme (packages/tokens/dist/house/tokens.css). */
+  :root {
+    --canvas: #0d0d0e;
+    --raised: #1c1c1d;
+    --border: #232324;
+    --text: #eeeef1;
+    --subtle: #b7b7ba;
+  }
+  html, body { margin: 0; }
+  body {
+    width: 1200px; height: 627px; overflow: hidden;
+    background: var(--canvas);
+    font-family: 'Geist', system-ui, sans-serif;
+    color: var(--text);
+    display: grid; place-items: center;
+    position: relative;
+  }
+  /* Faint grid, the same rhythm as the mark's 24px box. */
+  body::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: center;
+    mask-image: radial-gradient(ellipse at center, #000 20%, transparent 70%);
+    opacity: 0.6;
+  }
+  .lockup { position: relative; display: flex; flex-direction: column; align-items: center; gap: 36px; }
+  .brand { display: flex; align-items: center; gap: 28px; }
+  .brand svg { width: 112px; height: 112px; color: var(--text); }
+  .name { font-size: 112px; font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+  .line { font-size: 34px; font-weight: 400; color: var(--subtle); letter-spacing: -0.01em; }
+  .url {
+    position: absolute; bottom: 44px; left: 0; right: 0; text-align: center;
+    font-size: 24px; color: var(--subtle); letter-spacing: 0.01em;
+  }
+</style>
+</head>
+<body>
+  <div class="lockup">
+    <div class="brand">
+      <!-- LogoMark from apps/docs/components/site/logo.tsx -->
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2" y="2.5" width="14" height="5" rx="1.5" fill="currentColor" opacity="0.32" />
+        <rect x="5" y="9.5" width="14" height="5" rx="1.5" fill="currentColor" opacity="0.64" />
+        <rect x="8" y="16.5" width="14" height="5" rx="1.5" fill="currentColor" />
+      </svg>
+      <span class="name">Syntara</span>
+    </div>
+    <div class="line">One design system. Any brand, any language.</div>
+  </div>
+  <div class="url">syntara.live</div>
+</body>
+</html>
