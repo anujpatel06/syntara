@@ -1,5 +1,14 @@
 # @syntara/playground
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [7864023]
+- Updated dependencies [8240ffc]
+- Updated dependencies [549f2fc]
+  - @syntara/react@0.3.0
+
 ## 0.1.3
 
 ### Patch Changes
