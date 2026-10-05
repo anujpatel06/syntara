@@ -19,7 +19,7 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@syntara/react';
-import { Component, useEffect, useState, type ReactNode } from 'react';
+import { Component, useEffect, useId, useState, type ReactNode } from 'react';
 import type { Key } from 'react-aria-components';
 import { examples } from '@/lib/examples.generated';
 import styles from './preview.module.css';
@@ -101,6 +101,7 @@ export interface PreviewClientProps {
 
 export function PreviewClient({ name, label, align, tenants, code }: PreviewClientProps) {
   const Example = examples[name];
+  const id = useId();
   const siteScheme = useSiteScheme();
   const [tab, setTab] = useState<Key>('preview');
   const [tenantId, setTenantId] = useState(tenants[0]?.id ?? 'house');
@@ -137,8 +138,12 @@ export function PreviewClient({ name, label, align, tenants, code }: PreviewClie
           {tab === 'preview' && (
             <div className={styles.controls}>
               <div className={styles.tenantPicker}>
+                {/* Visitors didn't read the dots as themes, so they're named in words, not only by tooltip. */}
+                <span id={`${id}-theme`} className={styles.pickerLabel}>
+                  Theme
+                </span>
                 <ToggleButtonGroup
-                  aria-label="Tenant"
+                  aria-labelledby={`${id}-theme`}
                   size="sm"
                   disallowEmptySelection
                   selectedKeys={[tenantId]}
