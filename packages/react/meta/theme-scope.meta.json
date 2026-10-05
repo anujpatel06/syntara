@@ -47,13 +47,20 @@
       "name": "locale",
       "type": "string",
       "description": "BCP 47 locale, e.g. \"ar-AE\". Sets React Aria's locale (arrow-key direction, date formats, placement) and, unless given, lang and dir. Right-to-left regions need it."
+    },
+    {
+      "component": "ThemeScope",
+      "name": "numerals",
+      "type": "'native' | 'latin'",
+      "description": "Digits for dates and numbers in the scope. 'native' uses the language's own (Arabic ١٢٣, Hindi १२३); 'latin' forces 1 2 3. Omit to let the locale choose (ar-AE and hi-IN choose 1 2 3). Needs locale."
     }
   ],
   "accessibility": {
     "keyboard": [],
     "notes": [
       "Pass locale for other-language or right-to-left regions: React Aria reads direction from the locale, not the DOM dir attribute.",
-      "Overlays opened inside the scope copy its theme, scheme, density, dir and lang when they open."
+      "Overlays opened inside the scope copy its theme, scheme, density, dir and lang when they open.",
+      "numerals changes only how digits are written; screen readers read the number the same either way."
     ]
   },
   "guidelines": {
