@@ -109,26 +109,45 @@ export function defaultCssPath(cwd) {
   return existsSync(join(cwd, 'src')) ? 'src/syntara-theme.css' : 'syntara-theme.css';
 }
 
-/** --flag value / --flag / -y. Unknown flags are reported, not ignored. */
+// The brand flags, by the words people see in the questions and on /themes ("grey", "corners"), mapped to the
+// engine's field names. `/themes` builds a full command from these (apps/docs/components/themes/use-command.ts).
+export const BRAND_FLAGS = /** @type {const} */ ({
+  '--primary': 'primary',
+  '--accent': 'accent',
+  '--grey': 'neutral',
+  '--corners': 'shape',
+  '--fonts': 'typePair',
+  '--spacing': 'density',
+});
+const CHOICES = { neutral: NEUTRALS, shape: SHAPES, typePair: TYPE_PAIR_IDS, density: DENSITIES };
+
+/** --flag value / --flag / -y. Unknown flags and bad values are reported with how to fix them, not ignored. */
 export function parseArgs(argv) {
-  const opts = { yes: false, force: false, install: true, look: undefined, name: undefined, primary: undefined, out: undefined };
-  const takes = { '--look': 'look', '--name': 'name', '--primary': 'primary', '--out': 'out' };
+  const opts = { yes: false, force: false, install: true, look: undefined, name: undefined, out: undefined, brand: {} };
+  const takes = { '--look': 'look', '--name': 'name', '--out': 'out' };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--yes' || arg === '-y') opts.yes = true;
     else if (arg === '--force') opts.force = true;
     else if (arg === '--no-install') opts.install = false;
-    else if (arg in takes) {
+    else if (arg in takes || arg in BRAND_FLAGS) {
       const value = argv[++i];
       if (value === undefined || value.startsWith('--')) throw new Error(`${arg} needs a value.`);
-      opts[takes[arg]] = value;
+      if (arg in takes) opts[takes[arg]] = value;
+      else opts.brand[BRAND_FLAGS[arg]] = value;
     } else throw new Error(`Unknown option ${arg}. Run "npx syntara help" to see the options.`);
   }
   if (opts.look !== undefined && !findLook(opts.look)) {
     throw new Error(`There is no look called "${opts.look}". Pick one of: ${LOOKS.map((l) => l.id).join(', ')}.`);
   }
-  if (opts.primary !== undefined && !isValidHex(opts.primary)) {
-    throw new Error(`"${opts.primary}" is not a colour. Use a hex value such as #2f5bea.`);
+  for (const [flag, field] of Object.entries(BRAND_FLAGS)) {
+    const value = opts.brand[field];
+    if (value === undefined) continue;
+    if (field === 'primary' || field === 'accent') {
+      if (!isValidHex(value)) throw new Error(`${flag} "${value}" is not a colour. Use a hex value such as #2f5bea.`);
+    } else if (!CHOICES[field].includes(value)) {
+      throw new Error(`${flag} "${value}" is not an option. Pick one of: ${CHOICES[field].join(', ')}.`);
+    }
   }
   return opts;
 }
@@ -170,31 +189,39 @@ async function choose(io, question, items, label) {
 
 const hexHint = 'Use a hex colour such as #2f5bea.';
 
-/** The questions. Returns a BrandInput. */
+/**
+ * The questions. Returns a BrandInput. Anything given as a flag is not asked. Without a terminal or with --yes,
+ * nothing is asked: missing inputs come from --look, or the first look.
+ */
 async function askBrand(io, opts) {
-  const quick = opts.yes || !io.interactive;
-  const preset = findLook(opts.look);
-  if (quick || preset) {
-    const look = preset ?? LOOKS[0];
-    return { name: opts.name ?? 'My Brand', ...look.brand, ...(opts.primary ? { primary: opts.primary } : {}) };
-  }
+  const given = opts.brand;
+  const look = findLook(opts.look);
+  const base = (look ?? LOOKS[0]).brand;
+  if (opts.yes || !io.interactive) return { name: opts.name ?? 'My Brand', ...base, ...given };
 
-  const has = await askValid(io, 'Do you have brand guidelines? y or n', 'n', (a) => /^(y|yes|n|no)$/i.test(a), 'Type y or n.');
-  const name = opts.name ?? (await askValid(io, 'Brand name', 'My Brand', (a) => a.length > 0, 'Type a name.'));
+  const askName = async () => opts.name ?? (await askValid(io, 'Brand name', 'My Brand', (a) => a.length > 0, 'Type a name.'));
+  // A look, or any input beyond the main colour (e.g. a command copied from /themes), answers "guidelines?" already.
+  const settled = look !== undefined || Object.keys(given).some((field) => field !== 'primary');
+  if (settled && look) return { name: await askName(), ...base, ...given };
+
+  const has = settled
+    ? 'y'
+    : await askValid(io, 'Do you have brand guidelines? y or n', 'n', (a) => /^(y|yes|n|no)$/i.test(a), 'Type y or n.');
+  const name = await askName();
 
   if (/^n/i.test(has)) {
-    const look = await choose(io, 'Pick a starting look. You can change any of it later.', LOOKS, (l) => `${l.label}: ${l.fits}`);
+    const picked = await choose(io, 'Pick a starting look. You can change any of it later.', LOOKS, (l) => `${l.label}: ${l.fits}`);
     const primary =
-      opts.primary ?? (await askValid(io, 'Main colour, or Enter to keep the look’s', look.brand.primary, isValidHex, hexHint));
-    return { name, ...look.brand, primary };
+      given.primary ?? (await askValid(io, 'Main colour, or Enter to keep the look’s', picked.brand.primary, isValidHex, hexHint));
+    return { name, ...picked.brand, primary };
   }
 
-  const primary = opts.primary ?? (await askValid(io, 'Main brand colour', LOOKS[0].brand.primary, isValidHex, hexHint));
-  const accent = await askValid(io, 'Accent colour, or Enter to use the main colour', primary, isValidHex, hexHint);
-  const neutral = await choose(io, 'Grey tone', NEUTRALS, (n) => n);
-  const shape = await choose(io, 'Corners', SHAPES, (s) => s);
-  const typePair = await choose(io, 'Fonts', TYPE_PAIR_IDS, (id) => TYPE_PAIRS[id].label);
-  const density = await choose(io, 'Spacing', DENSITIES, (d) => d);
+  const primary = given.primary ?? (await askValid(io, 'Main brand colour', base.primary, isValidHex, hexHint));
+  const accent = given.accent ?? (await askValid(io, 'Accent colour, or Enter to use the main colour', primary, isValidHex, hexHint));
+  const neutral = given.neutral ?? (await choose(io, 'Grey tone', NEUTRALS, (n) => n));
+  const shape = given.shape ?? (await choose(io, 'Corners', SHAPES, (x) => x));
+  const typePair = given.typePair ?? (await choose(io, 'Fonts', TYPE_PAIR_IDS, (id) => TYPE_PAIRS[id].label));
+  const density = given.density ?? (await choose(io, 'Spacing', DENSITIES, (d) => d));
   return { name, primary, accent, neutral, shape, typePair, density };
 }
 

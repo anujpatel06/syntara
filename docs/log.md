@@ -41,9 +41,10 @@ checkout).
 - Packed as npm would publish it (`pnpm pack`), installed into an empty Vite app outside the repo:
   `time npm install <tarball>` 5.539 s total. A scripted real-terminal run of `npx syntara init` (no guidelines, Warm
   look): `/usr/bin/time -p expect run.exp` → real 1.06 s. That is the command's own time, not a person's.
+- Every answer can also be a flag (`--grey`, `--corners`, `--fonts`, …); given answers are not asked, so `/themes` can hand over a whole command (next PR).
 - Each look through the installed command: 118 of 118 contrast checks pass, main and accent kept exactly, in light and
   dark (`npx syntara init --look <id> …`, all five).
-- `/verify`: `gen:index` 58 modules; typecheck clean; `pnpm test` 2,274 passing across 8 packages, 1 skipped
+- `/verify`: `gen:index` 58 modules; typecheck clean; `pnpm test` 2,274 passing across 8 packages, 1 skipped (2,277 after the flag options; `syntara` 33)
   (`node scripts/check-test-counts.mjs --from <output> --fix` moved the README's one-install count 5 → 30);
   `pnpm test:themes` 118,000/118,000, median 4 adjustments per brand (unchanged; the report's timing-only diff was
   reverted); `pnpm check:meta` exit 0 (the existing `hero-styles.tsx` warning); `pnpm registry` 82 items;

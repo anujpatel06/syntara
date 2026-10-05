@@ -24,6 +24,7 @@ import './syntara-theme.css';
 <ThemeScope theme="my-brand">…</ThemeScope>
 ```
 
+Every answer can be a flag instead (`--primary '#c2410c' --fonts friendly …`), and anything you pass is not asked.
 Edit `syntara.brand.json` later and run `npx syntara build`. `npx syntara init --yes` asks nothing; `npx syntara help`
 lists the options.
 

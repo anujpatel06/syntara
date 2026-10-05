@@ -109,6 +109,37 @@ describe('init', () => {
     expect(existsSync(join(cwd, 'styles/theme.css'))).toBe(true);
   });
 
+  it('a full command from /themes asks only the name', async () => {
+    const args = ['--primary', '#c2410c', '--accent', '#0e7490', '--grey', 'warm', '--corners', 'round', '--fonts', 'friendly', '--spacing', 'compact'];
+    const { io, asked } = fakeIO(['Acme']);
+    expect(await runInit([...args, '--no-install'], io)).toBe(0);
+    expect(asked).toEqual(['Brand name (My Brand): ']);
+    expect(readConfig().brand).toEqual({
+      name: 'Acme',
+      primary: '#c2410c',
+      accent: '#0e7490',
+      neutral: 'warm',
+      shape: 'round',
+      typePair: 'friendly',
+      density: 'compact',
+    });
+  });
+
+  it('asks only what the flags leave out', async () => {
+    // --fonts settles "guidelines?"; then main colour, accent, grey, corners and spacing are asked; fonts is not.
+    const { io, asked } = fakeIO(['Zed', '', '', '', '', '']);
+    await runInit(['--fonts', 'editorial', '--no-install'], io);
+    expect(asked.some((q) => q.startsWith('Do you have brand guidelines'))).toBe(false);
+    expect(asked).toHaveLength(6);
+    expect(readConfig().brand.typePair).toBe('editorial');
+  });
+
+  it('rejects a flag value that is not an option, naming the options', () => {
+    expect(() => parseArgs(['--grey', 'blue'])).toThrow('--grey "blue" is not an option. Pick one of: cool, neutral, warm, paper.');
+    expect(() => parseArgs(['--fonts', 'comic'])).toThrow('--fonts "comic" is not an option.');
+    expect(() => parseArgs(['--accent', 'pink'])).toThrow('--accent "pink" is not a colour.');
+  });
+
   it('writes into src/ when the project has one', async () => {
     mkdirSync(join(cwd, 'src'));
     const { io } = fakeIO([]);

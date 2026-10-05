@@ -11,11 +11,17 @@ const HELP = `Syntara: brand in, accessible theme out.
   npx syntara init     Set up your brand: a few questions (Enter takes the suggestion), then a theme file
   npx syntara build    Rebuild the theme after editing syntara.brand.json
 
-Options for init:
+Options for init (anything you give here is not asked):
   --yes, -y            No questions: the Clear look, named "My Brand"
   --look <id>          Start from a look: clear, warm, editorial, technical, bold
   --name <name>        Brand name
   --primary <#hex>     Main brand colour
+  --accent <#hex>      Accent colour
+  --grey <tone>        cool, neutral, warm, paper
+  --corners <style>    sharp, soft, round
+  --fonts <pair>       precise, calm, friendly, technical, editorial, modern,
+                       bilingual-round, bilingual-classic, bilingual-devanagari
+  --spacing <density>  comfortable, compact
   --out <path>         Where to write the theme CSS (default: src/syntara-theme.css, or ./ without src/)
   --force              Replace existing files
   --no-install         Don't offer to add syntara to package.json

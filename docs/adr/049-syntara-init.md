@@ -31,7 +31,9 @@
      look's).
    - **Yes:** the six brand inputs: main colour, accent (Enter = the main colour), grey tone, corners, fonts, spacing.
 
-   Every question has a suggested answer in brackets; Enter takes it. `--yes` asks nothing. A run with no terminal
+   Every question has a suggested answer in brackets; Enter takes it. Every input can also be given as a flag in the
+   words the questions use (`--primary`, `--accent`, `--grey`, `--corners`, `--fonts`, `--spacing`), and a given input
+   is not asked, so a page such as `/themes` can hand over a complete command. `--yes` asks nothing. A run with no terminal
    (CI, a pipe) also asks nothing.
 2. **It writes two files:** `syntara.brand.json` (the inputs and theme id) and `syntara-theme.css` (in `src/` when the
    project has one): the brand's Google Fonts import, then its tokens under `[data-syntara-theme="<id>"]`, light, dark
