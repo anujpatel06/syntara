@@ -1,21 +1,21 @@
 # syntara
 
-Everything Syntara in one install.
-
-```bash
-npm install syntara
-```
-
-## Your own brand in a minute
+Everything Syntara in one install, set up by one command.
 
 ```bash
 npx syntara init
 ```
 
-A few questions, each with a suggestion: press Enter to take it. No brand guidelines? Pick one of five starting looks
-(Clear, Warm, Editorial, Technical, Bold). It writes `syntara.brand.json` and `syntara-theme.css`, a light and dark
-theme that passes every WCAG 2.2 AA contrast check, tells you in plain words what it adjusted, offers to install
-`syntara`, and prints the lines to add:
+Run it in your app's folder. It is the whole setup:
+
+1. **Asks about your brand.** A few questions, each with a suggestion: press Enter to take it. No brand guidelines?
+   Pick one of five starting looks (Clear, Warm, Editorial, Technical, Bold).
+2. **Writes your theme.** `syntara-theme.css` is a light and dark theme that passes every WCAG 2.2 AA contrast check.
+   `syntara.brand.json` keeps your answers. It tells you in plain words what it adjusted.
+3. **Installs Syntara.** It offers to run your project's own package manager. `--no-install` skips this.
+4. **Adds it to your app.** In your entry file (Vite `src/main.tsx`, Next `app/layout.tsx` or `pages/_app.tsx`) it
+   adds two style imports and a `ThemeScope` around your app. It shows you the change and asks first. `--no-edit`
+   skips this, and you add the lines yourself:
 
 ```tsx
 import 'syntara/styles.css';
@@ -23,6 +23,8 @@ import './syntara-theme.css';
 
 <ThemeScope theme="my-brand">…</ThemeScope>
 ```
+
+Just want the package? `npm install syntara`.
 
 Every answer can be a flag instead (`--primary '#c2410c' --fonts friendly …`), and anything you pass is not asked.
 Edit `syntara.brand.json` later and run `npx syntara build`. `npx syntara init --yes` asks nothing; `npx syntara help`
