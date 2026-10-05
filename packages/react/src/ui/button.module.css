@@ -258,8 +258,9 @@
   gap: calc(var(--syntara-space-2) + 2px);
 }
 
-/* A leading icon is optically heavier than a letter, so its side gets one step less padding. */
-.root:not([data-size='icon'], [data-variant='link']):has(> svg:first-child:not(.spinnerOverlay)) {
+/* A leading icon is optically heavier than a letter, so its side gets one step less padding. Inside :where(), so the
+   rule weighs no more than .root: a className that sets padding still wins (the docs' search trigger lost to it). */
+.root:where(:not([data-size='icon'], [data-variant='link']):has(> svg:first-child:not(.spinnerOverlay))) {
   padding-inline-start: calc(var(--_h) * 0.625 - var(--syntara-space-1));
 }
 

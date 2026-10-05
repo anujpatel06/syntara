@@ -6,6 +6,34 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 (follow-up) — Phone fixes: the search icon and the Components tab
+
+Branch `fix/landing-mobile`, from `main` at 549f2fc.
+
+**Changed**
+- **`Button`** (`@syntara/react`, patch changeset): the leading-icon padding rule is wrapped in `:where()`, so it weighs
+  no more than `.root`. It had out-weighed doubled-class overrides and pushed the docs' icon-only search trigger's icon
+  21px to the right of its 36px box below 960px. Buttons render the same.
+- **Landing Components tab**: the cards fill as many 192px-minimum columns as fit (3 in the desktop window, 1 on a
+  phone) instead of a fixed 3, which squeezed titles to "Ca", "Fo" at 390px.
+
+**Decided**
+- Fix the Button rule's weight at the source rather than out-weighing it in the docs, since installers hit it too.
+  **Claude**, Anuj asked for the fix ("ship it").
+
+**Results**
+- At 390px: search padding-inline-start 0px, icon centre 0px from the box's centre; cards grid one 244px column
+  (browser computed styles). Screenshots at 390 and 1440 (`shoot-mobilefix.mjs`, scratch).
+- `/verify`: typecheck 0; tests 2,249 (react 547), README row matches; fuzz 118,000/118,000; check:meta ok;
+  registry ok; override weight 0; docs build 316/316; ssr tabs 0 of 315. Served on :3459 (build
+  UWPZYbwPV3RY3xsFWyVrg; `:where(:not([data-size` and `winGrid` grepped in `out/_next/static`): hydration 0 of 288,
+  theme links 0 of 5, narrow overflow 0 of 288, CSP 0 of 144, axe 0 violation nodes, overlay exit 0 of 112.
+
+**Next**
+- Merge the PR; Cloudflare publishes `main`.
+
+---
+
 ## 2026-10-05 — The landing page in space, and Arabic and Hindi in their own digits
 
 Branch `feat/landing-galaxy`, cut from `feat/home-fora` at c08fd4b, merged with `feat/home-fora` at 1c1cdb4 (which
