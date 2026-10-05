@@ -1010,6 +1010,26 @@
 .preview.preview {
   border-radius: var(--syntara-radius-container);
 }
+/* the language card: every calendar in one cell, only the chosen one visible, so switching never changes the height */
+.scriptStack {
+  display: grid;
+}
+.scriptStack > * {
+  grid-area: 1 / 1;
+  display: grid;
+  visibility: hidden;
+}
+/* the theme scope inside each one stretches too, so the card (not the scope's own background) fills the cell */
+.scriptStack > * > * {
+  display: grid;
+}
+.scriptStack > [data-active] {
+  visibility: visible;
+}
+.scriptStack .preview.preview {
+  display: grid;
+  align-content: center;
+}
 /* the calendar keeps its own width, centred in the card in every direction */
 .centred.centred {
   display: grid;
