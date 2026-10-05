@@ -6,6 +6,68 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — `npx syntara init`: a brand in a minute (ADR-049)
+
+Branch `feat/syntara-init`, from `main` at 4c45708, in its own worktree (another session had edits in the main
+checkout).
+
+**Changed**
+- **Case-study research first** (no repo change): what lead-level reviewers want in a design-system case study, and
+  what this repo already has for one. The draft structure is a private artifact
+  (https://claude.ai/artifact/LuGE5RmfabqeqyfB3xWDPT). Anuj judged it below a lead designer's bar; the lead-level
+  outline (bet → framing → vision → strategy → big bets → how I led → results vs goals → scaling) is in this session's
+  chat, not yet written down. Anuj then asked whether Syntara scales to every client, which became this work.
+- **`npx syntara init`** in `packages/syntara` (`bin/syntara.js`, `src/cli/init.js`, `src/cli/looks.js`): questions
+  with suggested answers (Enter takes them), five starting looks for teams without guidelines, a plain-English
+  contrast report, `syntara.brand.json` + `syntara-theme.css`, an offer to install `syntara` with the project's own
+  package manager, the lines to paste, and a link to the brand in `/themes`. `npx syntara build` rebuilds after an
+  edit. 30 tests (`test/cli.test.ts`, `test/package.test.ts`).
+- `syntara`'s README gains a "Your own brand in a minute" section; its homepage is now `https://syntara.live` (the
+  last entry's Next item). Changeset: `syntara` minor.
+
+**Decided**
+- `init` is for anyone, through npx, not only this repo. **Anuj** (ADR-049).
+- No guidelines → pick a starting look. **Anuj**.
+- The five looks and the invite-form preview used to judge them. **Claude recommended, Anuj accepted** (approved the
+  third screenshot; he rejected the first one's toggle, spacing and layout).
+- Custom brand fonts (a later step): **any font that passes the checks**, not an approved list. **Anuj**. Needs its
+  own ADR when built.
+- Order after this PR: repo tenants read from `tenants/` everywhere, then custom fonts, each in a fresh session.
+  **Claude recommended, Anuj accepted**.
+- Technical's main colour is deep green `#047857`, so its button is not grey in dark mode. **Anuj**. Its blue accent
+  `#0369a1`, and Editorial's `#25533f` / Bold's `#df2866` (the values the engine kept them at): **Claude**.
+
+**Results**
+- Packed as npm would publish it (`pnpm pack`), installed into an empty Vite app outside the repo:
+  `time npm install <tarball>` 5.539 s total. A scripted real-terminal run of `npx syntara init` (no guidelines, Warm
+  look): `/usr/bin/time -p expect run.exp` → real 1.06 s. That is the command's own time, not a person's.
+- Every answer can also be a flag (`--grey`, `--corners`, `--fonts`, …); given answers are not asked, so `/themes` can hand over a whole command (next PR).
+- Each look through the installed command: 118 of 118 contrast checks pass, main and accent kept exactly, in light and
+  dark (`npx syntara init --look <id> …`, all five).
+- `/verify`: `gen:index` 58 modules; typecheck clean; `pnpm test` 2,274 passing across 8 packages, 1 skipped (2,277 after the flag options; `syntara` 33)
+  (`node scripts/check-test-counts.mjs --from <output> --fix` moved the README's one-install count 5 → 30);
+  `pnpm test:themes` 118,000/118,000, median 4 adjustments per brand (unchanged; the report's timing-only diff was
+  reverted); `pnpm check:meta` exit 0 (the existing `hero-styles.tsx` warning); `pnpm registry` 82 items;
+  `check-override-weight` 0; docs build 316/316 pages; `check-ssr-tabs` 0 of 315.
+  Served on :3077 (`SYNTARA_BASE_URL`, build id `hb3RZRonw7pDqVsi1T-vG` checked, port confirmed with `lsof`):
+  `check-hydration` 0 of 288; `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144;
+  `axe-sweep` 0 violation nodes over 144 × 2; `check-overlay-exit` 0 of 112.
+- Not run: `/screenshots`. No docs page or component changed.
+
+**Next**
+- **Repo tenants (next session):** about 19 non-test files name tenants by hand
+  (`grep -rlE "['\"](vela|harbor|qamar|haat)['\"]" apps packages scripts evals`, minus tests); find the ones that
+  would leave a new tenant out and read `tenants/` instead.
+- **Custom brand fonts (the session after):** a brand names its own font; Syntara accepts it only if it passes the
+  checks (`scripts/check-script-clipping.mjs` for clipping, plus whatever else the ADR settles).
+- **Later scaling steps, each a decision for Anuj:** locked brand colours, wider corner and spacing ranges, more
+  scripts, compiled native token files, the five looks in `/themes`.
+- `@syntara/theme-engine` stamps "0.1.0" in every generated CSS file's header comment while the package is 0.2.0.
+- Publish `syntara` (changeset) — ask Anuj first.
+- Write the lead-level case-study outline into `docs/marketing/` once the scaling story has its numbers.
+
+---
+
 ## 2026-10-05 — Three docs fixes: language tabs, theme label, duotone filter
 
 Three branches from `main` at 66db243, one fix each: `fix/landing-language-tabs` (this entry),
@@ -55,6 +117,8 @@ Three branches from `main` at 66db243, one fix each: `fix/landing-language-tabs`
 **Next**
 - The house theme's dot in the preview bar is near-black and almost disappears in dark mode; it needs an outline.
 - The icons toolbar now wraps to two rows at desktop width.
+
+---
 
 ## 2026-10-05 — syntara.live, and a link-preview picture
 
