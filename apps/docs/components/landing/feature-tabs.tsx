@@ -4,14 +4,15 @@ import {
   Avatar,
   Badge,
   Button,
-  Checkbox,
-  Slider,
-  Switch,
+  Card,
+  CardAction,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   Tab,
   TabList,
   TabPanel,
   Tabs,
-  TextField,
   ThemeScope,
   ToggleButton,
   ToggleButtonGroup,
@@ -23,35 +24,40 @@ import {
   IconArrowUp,
   IconBell,
   IconChartBar,
+  IconLayoutGrid,
   IconLayoutDashboard,
   IconMessage,
   IconPaperclip,
   IconSearch,
   IconSettings,
   IconUserPlus,
-  IconWallet,
 } from '@syntara/icons';
+import Link from 'next/link';
 import { useState } from 'react';
+import index from '@/app/docs/components/components-index.module.css';
+import { MaturityBadge } from '@/components/docs/maturity-badge';
+import { ExampleThumb } from '@/components/preview/example-thumb';
+import type { ComponentSummary } from '@/lib/meta-types';
 import type { LandingTenant } from './landing-data';
 import styles from './landing.module.css';
 
 const TABS = [
-  { id: 'components', label: 'Components', nav: 'Payouts', caption: 'Real components, not pictures of them. Flip a switch, drag the slider.' },
+  { id: 'components', label: 'Components', nav: 'Components', caption: 'The components index, in the brand picked in the sidebar. Every card is the real component, scaled down.' },
   { id: 'brands', label: 'Brands', nav: 'Brands', caption: 'Pick a brand in the sidebar: the whole window re-themes, in light and dark alike.' },
   { id: 'contrast', label: 'Contrast', nav: 'Contrast', caption: 'The theme engine’s own checks. Ratios are never rounded up: 4.49:1 fails.' },
   { id: 'agents', label: 'Agents', nav: 'Agent', caption: 'One meta.json per component, read by your coding agent.' },
 ] as const;
-const NAV_ICON = { components: IconWallet, brands: IconLayoutDashboard, contrast: IconChartBar, agents: IconMessage } as const;
+const NAV_ICON = { components: IconLayoutGrid, brands: IconLayoutDashboard, contrast: IconChartBar, agents: IconMessage } as const;
 
 /**
- * Fora's feature carousel: a full-width bar of four tabs, then a framed landscape with an app window rising
- * through it, the land in front of the window's foot, and arrows with a caption underneath.
+ * Fora's feature carousel: a full-width bar of four tabs, then a framed night sky with an app window rising
+ * over a planet's edge, and arrows with a caption underneath.
  *
  * The window is a real product screen built from Syntara components, in the brand picked in its sidebar. Its
  * sidebar is the tab list's mirror (the same four views) plus that brand picker; the top bar and the page change
  * with the tab.
  */
-export function FeatureTabs({ tenants }: { tenants: LandingTenant[] }) {
+export function FeatureTabs({ tenants, components }: { tenants: LandingTenant[]; components: (ComponentSummary & { group: string })[] }) {
   const [tab, setTab] = useState<Key>('components');
   const [brand, setBrand] = useState(tenants[0]?.id ?? '');
   const at = TABS.findIndex((t) => t.id === tab);
@@ -73,7 +79,7 @@ export function FeatureTabs({ tenants }: { tenants: LandingTenant[] }) {
       </div>
 
       <div className={`${styles.lit} ${styles.frame}`} data-lit="" data-reveal="2">
-        <div className={`${styles.litFace} ${styles.frameFace}`} style={{ backgroundImage: 'url(/landing/hills.webp)' }}>
+        <div className={`${styles.litFace} ${styles.frameFace}`} style={{ backgroundImage: 'url(/landing/galaxy-sky.webp)' }}>
           <ThemeScope theme={picked?.id} scheme="dark" locale="en-IN" className={styles.window}>
             {/* sidebar: product, the four views, and the brand the window wears */}
             <aside className={styles.winSide}>
@@ -128,49 +134,32 @@ export function FeatureTabs({ tenants }: { tenants: LandingTenant[] }) {
                 </span>
               </header>
 
+              {/* The components index (app/docs/components), in the brand picked in the sidebar: the same cards,
+                  stills and maturity badges, read from meta.json. */}
               <TabPanel id="components" className={styles.winPage}>
-                <div className={styles.winCols}>
-                  <section className={styles.box} aria-label="Payout settings">
-                    <p className={styles.boxTitle}>Payout settings</p>
-                    <Switch defaultSelected>Instant transfers</Switch>
-                    <Switch>Large payout alerts</Switch>
-                    <Slider
-                      label="Spend limit"
-                      defaultValue={160000}
-                      minValue={20000}
-                      maxValue={300000}
-                      step={5000}
-                      formatOptions={{ style: 'currency', currency: 'INR', maximumFractionDigits: 0 }}
-                    />
-                    <div className={styles.actions}>
-                      <Button size="sm">Save limit</Button>
-                      <Button size="sm" variant="outline">
-                        Cancel
-                      </Button>
-                    </div>
-                  </section>
-                  <section className={styles.box} aria-label="New invoice">
-                    <p className={styles.boxTitle}>New invoice</p>
-                    <TextField label="Customer" placeholder="Lumen Print Co." />
-                    <ToggleButtonGroup size="sm" aria-label="Due in" defaultSelectedKeys={['7']} selectionMode="single" disallowEmptySelection>
-                      <ToggleButton id="7">7 days</ToggleButton>
-                      <ToggleButton id="30">30 days</ToggleButton>
-                      <ToggleButton id="60">60 days</ToggleButton>
-                    </ToggleButtonGroup>
-                    <Checkbox defaultSelected>Send a reminder</Checkbox>
-                  </section>
-                </div>
-                <section className={styles.box} aria-label="Recent invoices">
-                  <div className={styles.row}>
-                    Lumen Print Co. <Badge tone="success" dot>Paid</Badge>
-                  </div>
-                  <div className={styles.row}>
-                    Harbor Café <Badge tone="warning" dot>Due Oct 12</Badge>
-                  </div>
-                  <div className={styles.row}>
-                    Qamar Studio <Badge tone="danger" dot>Overdue</Badge>
-                  </div>
-                </section>
+                <p className={styles.winHeading}>{components[0]?.group}</p>
+                <ul className={styles.winGrid}>
+                  {components.map((m) => (
+                    <li key={m.name}>
+                      <Card variant="outline" className={index.card}>
+                        <div className={index.media}>
+                          <ExampleThumb name={m.example} caption={m.opens} />
+                        </div>
+                        <CardHeader className={index.header}>
+                          <CardTitle level={3} className={index.title}>
+                            <Link href={`/docs/components/${m.name}`} className={index.link}>
+                              {m.title}
+                            </Link>
+                          </CardTitle>
+                          <CardAction className={index.action}>
+                            <MaturityBadge maturity={m.maturity} />
+                          </CardAction>
+                          <CardDescription className={index.description}>{m.description}</CardDescription>
+                        </CardHeader>
+                      </Card>
+                    </li>
+                  ))}
+                </ul>
               </TabPanel>
 
               <TabPanel id="brands" className={styles.winPage}>
@@ -259,8 +248,6 @@ export function FeatureTabs({ tenants }: { tenants: LandingTenant[] }) {
               </TabPanel>
             </div>
           </ThemeScope>
-          {/* the land in front of the window's foot */}
-          <div className={styles.frameFront} style={{ backgroundImage: 'url(/landing/hills-front.webp)' }} aria-hidden="true" />
         </div>
       </div>
 

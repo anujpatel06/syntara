@@ -16,6 +16,12 @@ export interface ThemeScopeProps extends HTMLAttributes<HTMLDivElement> {
    * not from the DOM, so right-to-left regions need this.
    */
   locale?: string;
+  /**
+   * Which digits dates and numbers use inside the scope. `'native'` switches to the language's own digits where it
+   * has them (Arabic ١٢٣, Hindi १२३); `'latin'` forces 1 2 3. Omit to let the locale choose, which for ar-AE and
+   * hi-IN is 1 2 3. Needs `locale`; it overrides any `-u-nu-` already in it.
+   */
+  numerals?: 'native' | 'latin';
 }
 
 /**
@@ -25,6 +31,24 @@ export interface ThemeScopeProps extends HTMLAttributes<HTMLDivElement> {
 export { useLocale } from 'react-aria-components';
 
 const RTL_LANGUAGES = new Set(['ar', 'he', 'fa', 'ur', 'ps', 'yi', 'dv', 'ku', 'sd', 'ug']);
+
+/** A language's own digits (CLDR numbering systems), for `numerals="native"`. Unlisted languages keep the locale's. */
+const NATIVE_DIGITS: Record<string, string> = {
+  ar: 'arab', fa: 'arabext', ur: 'arabext', ps: 'arabext',
+  hi: 'deva', mr: 'deva', ne: 'deva', bn: 'beng', gu: 'gujr', pa: 'guru', ta: 'tamldec', te: 'telu', kn: 'knda', ml: 'mlym',
+  th: 'thai', lo: 'laoo', my: 'mymr', km: 'khmr',
+};
+
+/** The locale with its numbering system set (BCP 47 `-u-nu-`), which every Intl and React Aria formatter reads. */
+function withNumerals(locale: string, language: string | undefined, numerals: 'native' | 'latin' | undefined): string {
+  const system = numerals === 'latin' ? 'latn' : numerals === 'native' && language ? NATIVE_DIGITS[language] : undefined;
+  if (!system) return locale;
+  try {
+    return new Intl.Locale(locale, { numberingSystem: system }).toString();
+  } catch {
+    return locale;
+  }
+}
 
 /**
  * Applies a Syntara theme to a subtree. Token CSS (from @syntara/tokens or the theme engine's toCSS) keys off
@@ -36,6 +60,7 @@ export function ThemeScope({
   scheme = 'light',
   density,
   locale,
+  numerals,
   lang,
   dir,
   className,
@@ -53,5 +78,5 @@ export function ThemeScope({
       {...rest}
     />
   );
-  return locale ? <I18nProvider locale={locale}>{scope}</I18nProvider> : scope;
+  return locale ? <I18nProvider locale={withNumerals(locale, language, numerals)}>{scope}</I18nProvider> : scope;
 }

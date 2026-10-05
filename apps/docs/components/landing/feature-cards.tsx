@@ -1,6 +1,7 @@
 'use client';
 
-import { Button, Card, CardContent, Switch, ThemeScope, ToggleButton, ToggleButtonGroup } from '@syntara/react';
+import { parseDate } from '@internationalized/date';
+import { Button, Calendar, Card, CardContent, Switch, ThemeScope, ToggleButton, ToggleButtonGroup } from '@syntara/react';
 import { IconSparkles } from '@syntara/icons';
 import { useState, type ReactNode } from 'react';
 import type { LandingTenant } from './landing-data';
@@ -23,6 +24,24 @@ function TenantPreview({ t, children }: { t: LandingTenant; children?: ReactNode
             {t.overview.secondaryAction}
           </Button>
         </div>
+        </CardContent>
+      </Card>
+    </ThemeScope>
+  );
+}
+
+/**
+ * A calendar in the tenant's theme and language: month names, weekday names and digits change script, and in Arabic
+ * the grid mirrors. A different component from the theme card above it, so the two features don't look the same.
+ * The date is fixed so the statically built page renders the same on any day.
+ */
+function ScriptPreview({ t }: { t: LandingTenant }) {
+  return (
+    // Qamar's and Haat's locales carry their own digits (ADR-048), so the calendar writes ٨ and ८.
+    <ThemeScope theme={t.id} scheme="dark" locale={t.locale}>
+      <Card className={styles.preview}>
+        <CardContent className={styles.centred}>
+          <Calendar aria-label={t.product.name} defaultValue={parseDate('2026-10-08')} />
         </CardContent>
       </Card>
     </ThemeScope>
@@ -91,7 +110,7 @@ export function FeatureCards({ tenants }: { tenants: LandingTenant[] }) {
         title="Six inputs. A whole theme."
         body="Pick a brand. Buttons, cards, focus rings and type all change together, in light and dark, and every colour pair is checked before it is used."
         foot="Try it: the card is live."
-        picture="/landing/hills.webp"
+        picture="/landing/galaxy-sky.webp"
       >
           <ToggleButtonGroup
             size="sm"
@@ -120,7 +139,7 @@ export function FeatureCards({ tenants }: { tenants: LandingTenant[] }) {
         title="Right to left, and Devanagari, by default."
         body="Layouts use logical properties, so a right-to-left brand mirrors without a single override, and each type pair carries the fonts its script needs."
         foot="Switch the language on the card."
-        picture="/landing/dunes.webp"
+        picture="/landing/galaxy-spiral.webp"
       >
           <ToggleButtonGroup
             size="sm"
@@ -136,7 +155,7 @@ export function FeatureCards({ tenants }: { tenants: LandingTenant[] }) {
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
-        {shown && <TenantPreview t={shown} />}
+        {shown && <ScriptPreview key={shown.id} t={shown} />}
       </Feature>
 
       <Feature
@@ -144,7 +163,7 @@ export function FeatureCards({ tenants }: { tenants: LandingTenant[] }) {
         title="Read by your agents, not guessed at."
         body="Every component is described once, in a meta.json file. The docs, the MCP server and the drift checker all read that file, so an agent builds with the rules you wrote."
         foot="@syntara/mcp, on npm."
-        picture="/landing/hills.webp"
+        picture="/landing/galaxy-sky.webp"
       >
         <div className={styles.chat}>
           <p className={`${styles.msg} ${styles.msgMe}`}>Add a payout settings form for Harbor.</p>

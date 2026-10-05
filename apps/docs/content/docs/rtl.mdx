@@ -7,12 +7,18 @@ Give the right-to-left region a locale. `ThemeScope`’s `locale` prop sets Reac
 ```tsx
 import { ThemeScope } from '@syntara/react';
 
-<ThemeScope theme="qamar" locale="ar-AE-u-nu-latn">
+<ThemeScope theme="qamar" locale="ar-AE" numerals="native">
   <OrderSummary />
 </ThemeScope>
 ```
 
-The `-u-nu-latn` extension keeps Latin digits in Arabic text, which is what Qamar’s copy uses; `locale="ar-AE"` alone lets the locale choose. Outside a `ThemeScope`, wrap the region in React Aria’s `I18nProvider` and set `dir` and `lang` yourself.
+## Digits
+
+`locale="ar-AE"` alone writes dates and numbers as 1 2 3, because that is the UAE's default. `numerals="native"` switches every date, number and calendar in the scope to the language's own digits: ١٢٣ in Arabic, १२३ in Hindi, and so on for Persian, Urdu, Bengali, Tamil, Thai and others. `numerals="latin"` forces 1 2 3 instead. Qamar and Haat use their own digits ([ADR-048](https://github.com/anujpatel06/syntara/blob/main/docs/adr/048-native-digits.md)).
+
+Formatting only covers numbers the components format. Digits typed into your own copy stay as you wrote them, so write them in the same digits; the docs' Arabic and Hindi copy is kept that way by `node scripts/native-digits.mjs`.
+
+Outside a `ThemeScope`, wrap the region in React Aria’s `I18nProvider` and set `dir` and `lang` yourself.
 
 ## Logical properties only
 

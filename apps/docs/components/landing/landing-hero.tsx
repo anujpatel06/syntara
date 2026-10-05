@@ -105,7 +105,8 @@ function Scaled({ children }: { children: (height: number) => ReactNode }) {
 }
 
 /**
- * The hero: a dusk sky, the headline, and an app window rising from behind the hills. The window shows the Hero
+ * The hero: the Milky Way, the headline, and an app window sitting on a planet's lit edge, which glows from
+ * behind it (scripts/landscapes/galaxy.py). The window shows the Hero
  * component itself, cycling through its four styles the way Fora's window cycles through communities, each style
  * in a different tenant's dark theme. The sidebar names the style on screen.
  *
@@ -137,7 +138,7 @@ export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
     <section className={styles.hero} aria-labelledby="landing-title">
       <div className={`${styles.layer} ${styles.sky}`} aria-hidden="true">
         {/* eslint-disable-next-line @next/next/no-img-element -- a static export; the picture is decoration */}
-        <img src="/landing/hills.webp" alt="" data-speed="0.31" fetchPriority="high" />
+        <img src="/landing/galaxy-sky.webp" alt="" data-speed="0.31" fetchPriority="high" />
       </div>
 
       <div className={styles.heroCopy}>
@@ -214,10 +215,6 @@ export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
         </div>
       </div>
 
-      <div className={`${styles.layer} ${styles.front}`} aria-hidden="true">
-        {/* eslint-disable-next-line @next/next/no-img-element -- see above */}
-        <img src="/landing/hills-front.webp" alt="" data-speed="0" />
-      </div>
       <div className={styles.heroFade} aria-hidden="true" />
 
       <ToggleButton

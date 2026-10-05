@@ -90,7 +90,7 @@ Full-width transparent PNGs of landscapes: grass hills (3 layers, 1,440 wide, 28
 
 | Fora | Syntara |
 |---|---|
-| Dusk hills, app window behind the front ridge | Our own landscapes, ray-marched in WebGL from `scripts/landscapes/terrain.html` (`node scripts/render-landscapes.mjs` → `apps/docs/public/landing`). No photographs, nothing to license. |
+| Dusk hills, app window behind the front ridge | Space instead of land ("tara" is star in Hindi and Sanskrit): the Milky Way over a planet's lit edge, and the app window sits on that edge, which glows behind it. Drawn in code by `scripts/landscapes/galaxy.py` (`python3 scripts/landscapes/galaxy.py` → `apps/docs/public/landing`; needs numpy and Pillow). Empty sky is exactly the page colour, so no picture shows an edge. No photographs, nothing to license. |
 | App window cycling community covers | Cycles the tenants. Each cover is the tenant's dark theme: its primary and accent blurred into a wash, its product name, and a Card of its real `content.json` copy built from Syntara components. Pause toggle; paused under reduced motion. |
 | Scroll-lit intro | `IntroReveal`: words go from 22% to 100% of text.default over 120px of scroll. Full strength without JS or with reduced motion. |
 | 4-tab carousel | Syntara `Tabs` (pill): Components, Brands, Contrast, Agents. Panels are live components in a tenant's dark theme. Contrast shows the engine's own `Theme.checks` ratios, never a second formula. |
@@ -98,7 +98,7 @@ Full-width transparent PNGs of landscapes: grass hills (3 layers, 1,440 wide, 28
 | Pricing | Install: tokens, React, MCP, each with the site's `InstallCommand`. |
 | FAQ with topics | Toggle group of topics + `Accordion`. Answers moved from the previous homepage. |
 | Blog | From the log: RFC-003, ADR-045, ADR-046. |
-| Closing over dunes | `tenants/vela/brand.json` in an app window, dunes in front. |
+| Closing over dunes | `tenants/vela/brand.json` in an app window, a planet's lit edge rising in front. |
 | Footer | The `Footer` component (wordmark), with the site footer's columns. |
 
 Every colour on the page is a house dark token or a mix of one with transparent; sizes are token multiples, with the
@@ -110,11 +110,12 @@ Fora measure noted beside each calc in `landing.module.css`.
 - Bold headlines. Headlines are weight 400–500.
 - Drop shadows, glows, gradients on buttons.
 - Any number not read from a file or the engine. Fake logos, "4,000+ companies", star ratings.
-- Text below AA. Fora's 65% white on black passes; over the landscapes it must be measured, not assumed.
+- Text below AA. Fora's 65% white on black passes; over the space pictures it must be measured, not assumed.
 - Motion that can't be paused or ignores reduced motion.
 
 ## 10. Decisions
 
-- Page always dark (house theme, scheme dark), whatever the site's scheme: the landscapes are the light source. Claude recommended, pending Anuj.
+- Page always dark (house theme, scheme dark), whatever the site's scheme: the space pictures are the light source. Claude recommended, pending Anuj.
 - Geist, not Inter: the house type pair. Claude recommended, pending Anuj.
-- Landscapes drawn in code, not photographs. Claude recommended, pending Anuj.
+- Pictures drawn in code, not photographs. Claude recommended, pending Anuj.
+- Space, not landscapes: the Milky Way, a spiral galaxy and a planet's lit edge replace the hills and dunes. The galleries inside the app windows stay as they are, because they show a customer's brand, not Syntara's. Anuj, 2026-10-05.

@@ -11,7 +11,7 @@ export interface TenantInfo {
   brand: BrandInput;
   /** From content.json; "ltr" when absent. */
   dir: 'ltr' | 'rtl';
-  /** BCP 47 locale from content.json, e.g. "ar-AE-u-nu-latn". */
+  /** BCP 47 locale from content.json, e.g. "ar-AE-u-nu-arab". */
   locale: string;
   /** Product name and industry in the tenant's own language (content.json). */
   product: { name: string; industry: string };
