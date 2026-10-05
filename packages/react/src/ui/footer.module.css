@@ -24,7 +24,7 @@
 }
 .svg {
   /* The word fills the width, but its height stays between a floor and a ceiling. A short name stops growing at the
-     ceiling and sits at the start of the line; a long one stops shrinking at the floor and runs off the end, cut by the
+     ceiling and sits centred on the line; a long one stops shrinking at the floor and runs off the end, cut by the
      footer's edge like the horizon cuts its foot. --_ratio (width over height) comes from the measured word. */
   /* The floor eases down on narrow footers, so an ordinary name still fits a phone; only long ones run off. */
   --_floor: clamp(var(--syntara-space-6), 4cqi, var(--syntara-space-12));
@@ -33,6 +33,8 @@
   inline-size: clamp(calc(var(--_floor) * var(--_ratio)), 100%, calc(var(--_ceiling) * var(--_ratio)));
   max-inline-size: none;
   block-size: auto;
+  /* Centres a short name. A long one is wider than the line, so the auto margins fall to 0 and it runs off the end. */
+  margin-inline: auto;
   /* The glow may spill above and beside the word; only the bottom is cut, by the clip path in the SVG. */
   overflow: visible;
 }

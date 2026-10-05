@@ -6,6 +6,35 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — The footer's wordmark, centred
+
+Branch `fix/footer-wordmark-centred`, cut from `main` at f14e33a.
+
+**Changed**
+- **`Footer` wordmark is centred** (`@syntara/react`, patch changeset): `margin-inline: auto` on the word's SVG. A short
+  name sits in the middle of the line instead of at its start; a long one is wider than the line, so the margins fall
+  to 0 and it still runs off the end. Every footer built with the component changes, not only the landing page.
+
+**Decided**
+- Centre it in the component, not just on the landing page. **Anuj** (asked for it centred; approved the screenshot).
+
+**Results**
+- Landing page footer, dev server: space each side of the word 63px / 63px at 1024px wide, 129px / 129px at 1440px
+  (`getBoundingClientRect` of the SVG against its wrapper, in the browser pane).
+- Shipped: the built CSS rule holding `--_ceiling` has `margin-inline:auto`
+  (`grep -rhoE "\{[^}]*--_ceiling[^}]*\}" apps/docs/out/_next/static | grep -o "margin-inline:auto"` → 1).
+- `/verify`: typecheck clean; `pnpm test` 2,249 tests across 8 packages, none failing (`node scripts/check-test-counts.mjs
+  --from <test output>`); `pnpm test:themes` 118,000/118,000 checks, report unchanged from `main` apart from timings;
+  `pnpm check:meta` exit 0 (one existing warning: `hero-styles.tsx` not listed in hero's meta.examples); `pnpm registry`
+  82 items ok; `node scripts/check-override-weight.mjs` 0; docs build 316/316 pages; `node scripts/check-ssr-tabs.mjs` 0
+  of 315; `check-hydration` 0 of 288; `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144;
+  `axe-sweep` 0 violation nodes over 144 × 2; `check-overlay-exit` 0 of 112.
+- Not run: the `/screenshots` sweep (every tenant × scheme × RTL × width).
+
+**Next**
+- The landing hero logs a React warning, ``NaN` is an invalid value for the `minBlockSize` css style property``, from
+  `apps/docs/components/landing/landing-hero.tsx:205`. Seen in dev, not fixed here.
+
 ## 2026-10-05 — The landing page in space, and Arabic and Hindi in their own digits
 
 Branch `feat/landing-galaxy`, cut from `feat/home-fora` at c08fd4b, merged with `feat/home-fora` at 1c1cdb4 (which
