@@ -6,6 +6,43 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — The homepage's first screen, after 21st.dev's rejection
+
+21st.dev turned the template listing down with a stock line ("polish the design and resubmit"), no specifics.
+Branch `fix/landing-first-screen` from `main` at ad665ab.
+
+**Changed**
+- **Hero app window** (`apps/docs/components/landing/landing-hero.tsx`, `landing.module.css`): the grey pill that
+  looked like a loading placeholder now reads "Search"; the component line shows `<Hero variant="…" />` whole, on
+  two lines, instead of ending in an ellipsis; the Gallery slide's eight pictures (about 10 KB each) are preloaded,
+  so the first screen opens on a full gallery rather than two pictures in a dark panel.
+- **Intro** (`intro-reveal.tsx`): paragraphs rest at `text.subtle` and brighten to `text.default`, instead of
+  resting at 25% white. 25% failed AA in a paragraph that promises every pair passes AA.
+- **Cover for the 21st listing**: `docs/marketing/21st-cover.png`, 1600 × 1000 (16:10, the gallery card's shape),
+  a plain shot of the fixed first screen at 1440 × 900. Local only, like the rest of `docs/marketing/`.
+
+**Decided**
+- Fix the first screen's two problems (window, intro) before resubmitting. **Anuj.**
+- Cover A (headline + most of the app window) over B (tighter, window cut off). **Claude recommended, Anuj accepted.**
+
+**Results** (`/verify`, build `b6iTYEyqO6O8MXAtBXcjU`)
+- `pnpm typecheck` exit 0; `pnpm test` 2,249 tests, 0 failing (`node scripts/check-test-counts.mjs`).
+- `pnpm test:themes`: 118,000 checks, 118,000 passed. `pnpm check:meta` and `pnpm registry` exit 0 (one old warning:
+  `hero-styles.tsx` not listed in hero's meta.examples). `check-override-weight.mjs`: 0.
+- `pnpm --filter @syntara/docs build`: 316/316 pages. `check-ssr-tabs.mjs`: 0 of 315 pages missing a panel.
+- Shipped: `grep -rlE '<Hero\\n  variant' apps/docs/out/_next/static/chunks` and the `text-subtle` mix in the CSS
+  chunks both match; `apps/docs/out/index.html` carries the gallery preloads.
+- `check-hydration` 0 of 288; `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144;
+  `axe-sweep` 0 violation nodes over 144 × 2; `check-overlay-exit` 0 of 112.
+
+**Next**
+- After this deploys to syntara.live, Anuj resubmits on 21st.dev with the new cover and `https://syntara.live` as the
+  preview link (never `pages.dev`).
+- Not touched: the Orbit slide's Arabic headline runs below the fold; that is the component's own layout.
+- Housekeeping: 32 local branches and 11 extra worktrees.
+
+---
+
 ## 2026-10-05 — `npx syntara init`: a brand in a minute (ADR-049)
 
 Branch `feat/syntara-init`, from `main` at 4c45708, in its own worktree (another session had edits in the main

@@ -5,8 +5,8 @@ import styles from './landing.module.css';
 
 /**
  * Fora's intro: one paragraph is lit at a time. The paragraph nearest the middle of the screen is at full strength;
- * the ones above and below it rest at 25%. Measured on fora.so: a paragraph is at 0.25, rises to 0.97 when it
- * reaches the centre, and falls back to 0.27 a screen-quarter later.
+ * the ones above and below it rest at text.subtle. Fora rests at 25% white, which fails AA; Syntara rests at the
+ * subtle role, which the engine solves to pass, and mixes up to text.default as a paragraph reaches the centre.
  *
  * The dimming is decoration. The text is in the DOM at every step for assistive tech, find-in-page and copy, and
  * with reduced motion, or before the script runs, every paragraph is at full strength.
@@ -27,7 +27,7 @@ export function IntroReveal({ paragraphs }: { paragraphs: string[] }) {
         const r = p.getBoundingClientRect();
         const d = Math.abs(r.top + r.height / 2 - mid);
         const k = Math.max(0, 1 - d / reach);
-        p.style.setProperty('--o', `${(25 + 75 * k).toFixed(1)}%`);
+        p.style.setProperty('--o', `${(100 * k).toFixed(1)}%`);
       }
     };
     const onScroll = () => {

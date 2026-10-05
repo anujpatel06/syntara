@@ -3,6 +3,7 @@
 import { Button, Hero, ThemeScope, ToggleButton, type HeroProps } from '@syntara/react';
 import { IconPlayerPause, IconPlayerPlay, IconSearch } from '@syntara/icons';
 import Link from 'next/link';
+import { preload } from 'react-dom';
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 
 /** Measure before paint in the browser, so a slide never shows at a guessed size first. */
@@ -116,6 +117,9 @@ function Scaled({ children }: { children: (height: number) => ReactNode }) {
  * slideshow has a pause toggle (WCAG 2.2.2), and starts paused under reduced motion.
  */
 export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
+  /* The Gallery slide shows first, and its pictures are lazy inside the Hero: fetch them up front so the first
+     screen opens on a full gallery rather than two pictures in a dark panel. About 10 KB each. */
+  for (const g of GALLERY) preload(g.src, { as: 'image' });
   const [index, setIndex] = useState(0);
   const current = useRef(0);
   const [paused, setPaused] = useState(false);
@@ -166,7 +170,7 @@ export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
       <div className={styles.app} aria-hidden="true" inert data-speed="0.1" data-rise="96">
         <div className={styles.appSide}>
           <div className={styles.appSearch}>
-            <i />
+            <span>Search</span>
             <IconSearch size={16} />
           </div>
           <div className={styles.appGroup}>Hero styles</div>
@@ -187,7 +191,7 @@ export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
           ))}
           <div className={styles.appGroup}>Component</div>
           <span className={styles.appNav}>
-            <code className={styles.appCode}>{`<Hero variant="${SLIDES[index]?.props.variant ?? 'aurora'}" />`}</code>
+            <code className={styles.appCode}>{`<Hero\n  variant="${SLIDES[index]?.props.variant ?? 'aurora'}" />`}</code>
           </span>
         </div>
 
