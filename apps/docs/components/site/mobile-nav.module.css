@@ -68,7 +68,9 @@
 }
 
 .link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
   padding-block: var(--syntara-space-1);
   font-size: var(--syntara-font-size-md);
   color: var(--syntara-color-text-subtle);
@@ -84,4 +86,11 @@
 .link:hover,
 .primaryLink:hover {
   color: var(--syntara-color-text-default);
+}
+
+/* Guide-page icons (components/docs/doc-icons.ts). */
+.icon {
+  flex: none;
+  inline-size: var(--syntara-font-size-md);
+  block-size: var(--syntara-font-size-md);
 }

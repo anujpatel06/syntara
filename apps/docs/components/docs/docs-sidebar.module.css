@@ -92,3 +92,15 @@
   font-weight: var(--syntara-font-weight-regular);
   line-height: var(--syntara-line-height-snug);
 }
+
+/* Guide-page icons (components/docs/doc-icons.ts). Quieter than the label until hover or current page. */
+.icon {
+  flex: none;
+  inline-size: var(--syntara-font-size-md);
+  block-size: var(--syntara-font-size-md);
+  color: var(--syntara-color-text-subtle);
+}
+.link:hover .icon,
+.link[aria-current='page'] .icon {
+  color: var(--syntara-color-text-default);
+}
