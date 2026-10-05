@@ -12,11 +12,16 @@ import { getSiteTheme } from '@/lib/theme-css';
 import './globals.css';
 import layout from './layout.module.css';
 
+// The link-preview picture (source: apps/docs/og/og-image.html). Resolved against metadataBase, so production
+// needs NEXT_PUBLIC_SITE_URL=https://syntara.live: LinkedIn flags *.pages.dev links as possibly malicious.
+const OG_IMAGE = { url: '/og.png', width: 1200, height: 627, alt: 'Syntara — one design system, any brand, any language' };
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: `${SITE_NAME} — multi-brand design system`, template: `%s — ${SITE_NAME}` },
   description: SITE_DESCRIPTION,
-  openGraph: { title: SITE_NAME, description: SITE_DESCRIPTION, type: 'website' },
+  openGraph: { title: SITE_NAME, description: SITE_DESCRIPTION, type: 'website', images: [OG_IMAGE] },
+  twitter: { card: 'summary_large_image', images: [OG_IMAGE] },
 };
 
 export const viewport: Viewport = {
