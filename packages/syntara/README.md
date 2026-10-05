@@ -1,21 +1,21 @@
 # syntara
 
-Everything Syntara in one install.
-
-```bash
-npm install syntara
-```
-
-## Your own brand in a minute
+Everything Syntara in one install, set up by one command.
 
 ```bash
 npx syntara init
 ```
 
-A few questions, each with a suggestion: press Enter to take it. No brand guidelines? Pick one of five starting looks
-(Clear, Warm, Editorial, Technical, Bold). It writes `syntara.brand.json` and `syntara-theme.css`, a light and dark
-theme that passes every WCAG 2.2 AA contrast check, tells you in plain words what it adjusted, offers to install
-`syntara`, and prints the lines to add:
+Run it in your app's folder. It is the whole setup:
+
+1. **Asks about your brand.** A few questions, each with a suggestion: press Enter to take it. No brand guidelines?
+   Pick one of five starting looks (Clear, Warm, Editorial, Technical, Bold).
+2. **Writes your theme.** `syntara-theme.css` is a light and dark theme that passes every WCAG 2.2 AA contrast check.
+   `syntara.brand.json` keeps your answers. It tells you in plain words what it adjusted.
+3. **Installs Syntara.** It offers to run your project's own package manager. `--no-install` skips this.
+4. **Adds it to your app.** In your entry file (Vite `src/main.tsx`, Next `app/layout.tsx` or `pages/_app.tsx`) it
+   adds two style imports and a `ThemeScope` around your app. It shows you the change and asks first. `--no-edit`
+   skips this, and you add the lines yourself:
 
 ```tsx
 import 'syntara/styles.css';
@@ -24,9 +24,11 @@ import './syntara-theme.css';
 <ThemeScope theme="my-brand">…</ThemeScope>
 ```
 
+Just want the package? `npm install syntara`.
+
 Your own font instead of a ready-made pair: `--font Manrope` (any Google font) or `--font-file fonts/acme.woff2`, plus
-`--heading-font` for headings and `--script hindi` or `arabic`. It is used only if it passes six checks, run in about
-a minute in your Chrome or Edge: real Regular to Bold, every letter drawn by the font, no letter cut off at any size,
+`--heading-font` for headings and `--script hindi` or `arabic`. It is used only if it passes six checks, run in a minute
+or two in your Chrome or Edge: real Regular to Bold, every letter drawn by the font, no letter cut off at any size,
 line spacing within limits, and lower-case letters tall enough to read at 12px. If it fails, you get the reason in a
 sentence and a list of Google fonts that pass.
 

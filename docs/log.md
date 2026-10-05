@@ -8,8 +8,8 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ## 2026-10-06 — A brand's own font, accepted only if it passes six measured checks (ADR-051)
 
-Branch `feat/custom-fonts`, from `main` at 9767dae, in its own worktree; `main` (5c00355) fast-forwarded in before
-the PR. Another session works on tenants-from-folder.
+Branch `feat/custom-fonts`, from `main` at 9767dae, in its own worktree; `main` fast-forwarded to 5c00355, then
+f07269d (#78) merged in before the PR. Another session works on tenants-from-folder.
 
 **Changed**
 - **Spec first:** `docs/design/custom-fonts.md`: six pass/fail checks with numbers (loads; real 400/500/600/700;
@@ -59,7 +59,7 @@ the PR. Another session works on tenants-from-folder.
 - Packed as npm would publish (`pnpm pack` engine + syntara), installed in an empty app outside the repo:
   `npx syntara init --yes --name Kestrel --font Manrope --no-install` wrote a theme that imports Manrope with
   `--syntara-line-height-tight: 1.36` (before the search change); `/usr/bin/time -p` real 109.23 s with the
-  measurement run competing for the machine.
+  measurement run competing for the machine (re-timed after the merge, below).
 - `/verify` (build `WCwA6hRsz64_dEdLzvlH5`): `gen:index` 58 modules; `pnpm typecheck` exit 0; `pnpm test` 2,327
   passing, 2 skipped, 0 failing (`node scripts/check-test-counts.mjs --from <output> --fix`: engine 310 → 323,
   one-install 38 → 70); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand (unchanged; the
@@ -75,6 +75,12 @@ the PR. Another session works on tenants-from-folder.
   ("the line spacing it needs"), after `/verify`: docs rebuilt, 316/316 pages, and
   `grep -l "The line spacing it needs stays" apps/docs/out/docs/theming.html` matches. The browser checks above ran
   on the build before that one-phrase change.
+- **After merging `main` (f07269d, #78, which took ADR-050; this is now ADR-051):** `pnpm typecheck` exit 0;
+  `pnpm test` 2,351 passing, 2 skipped, 0 failing (README counts `--fix`ed: one-install 94). Re-packed and installed
+  in an empty app: `npx syntara init --yes --name Kestrel --font Manrope --no-install` → passes, 7,040 cases,
+  `--syntara-line-height-tight: 1.31` in the written CSS, `/usr/bin/time -p` real 98.81 s on a quiet machine; the
+  same with `--font Lobster` → the weights sentence and the English pass list, real 1.25 s, nothing written.
+  "About a minute" became "a minute or two" everywhere it was promised.
 
 **Next**
 - Release: `@syntara/theme-engine` and `syntara` minor (changesets). Not published; ask Anuj.
@@ -83,6 +89,48 @@ the PR. Another session works on tenants-from-folder.
   CSS header says "theme-engine 0.1.0" (stale before this work). `type-pairs.ts` says Noto Sans Arabic has no Latin;
   Google now serves it a latin subset. Hind, measured by ADR-024 as a candidate, fails here at 1.8; not re-checked
   with the old script.
+
+---
+
+## 2026-10-06 — One command does the setup (ADR-050)
+
+Branch `feat/init-wires-app`, from `main` at 5c00355, in its own worktree (`../strata-init-wire`).
+
+**Changed**
+- The hero showed two commands, `npm install syntara` and `npx syntara init`, and Anuj asked how a visitor would know
+  which to run. It now shows one, `npx syntara init`, with "Just the package? `npm install syntara`" quietly under it.
+  The install section, FAQ, `installation.mdx` and both READMEs say the same (docs-builder subagent).
+- `npx syntara init` now finishes the setup in the app: after the theme and the install, it adds the two style imports
+  and a `ThemeScope` to the entry file (`src/main`, `src/index`, `app/layout`, `pages/_app`), showing the lines and
+  asking first. New `src/cli/wire.js`; `--no-edit` skips it. 24 new tests in `test/wire.test.ts`, with today's
+  create-vite, create-next-app, Pages Router and CRA entry files as fixtures.
+- Minor changeset for `syntara`. README test row: one-install 38 → 62 (`node scripts/check-test-counts.mjs --fix`).
+
+**Decided**
+- One command in the hero, and `init` edits the user's entry file: **Anuj** (option 3 of 3; Claude had recommended
+  option 1 first and 3 later). ADR-050.
+- The safety rules (known files only, the wrap target exactly once, already-wired files left alone, the file's own
+  quotes, semicolons and line endings, `--yes` does not ask): **Claude recommended, pending Anuj**.
+
+**Results**
+- `pnpm pack` of `packages/syntara` installed into a fresh `create-vite` react-ts app and a fresh `create-next-app`
+  app; `npx syntara init --name Acme --look …` (no terminal) edited `src/main.tsx` and `app/layout.tsx`, and
+  `npm run build` succeeded in both with a Syntara `Button` on the page.
+- `pnpm typecheck`: exit 0. `pnpm test`: exit 0 (547 components, 309 + 1 skipped engine, 959 icons, 193 MCP, 150
+  schema, 77 auditor, 8 codemods, 62 one-install).
+- `pnpm test:themes`: "Every generated theme passed every check"; adjustments per brand 0 / 4 / 7 (min / median / max).
+- `pnpm check:meta`: 58/58. `pnpm registry`: 82 items. `node scripts/check-override-weight.mjs`: clean.
+- `pnpm --filter @syntara/docs build`: 316/316 pages. `node scripts/check-ssr-tabs.mjs`: 0 of 315 pages missing a panel.
+- Served build `xsN0VBezquRXwHIB6wVh3`: `check-hydration` 0 failures of 288; `check-theme-links` 0 of 5;
+  `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144; `axe-sweep` 0 violation nodes over 144 routes × 2 schemes; `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
+- `grep -l "Just the package?" apps/docs/out/index.html`: found, so the build measured is this change.
+- Screenshots of the hero at 1440 and 375 (`node scripts/shoot.mjs`): one row on desktop, stacked on a phone.
+
+**Next**
+- Merge, then `pnpm changeset publish` from `main`, and deploy the site after `npm view syntara version` shows the new
+  version. Until then the site describes an `init` that npm does not have yet.
+- Anuj: confirm the safety rules in ADR-050, in particular that `--yes` edits without asking.
+- Not covered: Remix / React Router, Astro, Gatsby and custom entry names get the printed steps.
 
 ---
 

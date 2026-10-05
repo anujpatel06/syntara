@@ -1,30 +1,35 @@
-Syntara installs two ways: from npm, or by copying a component’s source files into your project (<AdrLink n="011" />). Both give you the same components and the same tokens. Every component page has the exact steps.
+Syntara installs two ways: with one npm command, or by copying a component’s source files into your project (<AdrLink n="011" />). Both give you the same components and the same tokens. Every component page has the exact steps.
 
 You need React 19 and a bundler that handles CSS — Next.js and Vite both do out of the box. Syntara doesn’t use Tailwind, so it works with or without it.
 
 ## With npm
 
-<Steps>
-
-### Install everything
-
-<PackageCommand add="syntara" />
-
-One package brings it all: the components and `ThemeScope`, the icon set, the token CSS for every tenant and the theme engine. React and React DOM are peer dependencies.
-
-### Set up your brand
+Run one command in your app's folder. It is the whole setup.
 
 <PackageCommand dlx="syntara init" />
 
-A few questions, each with a suggestion: press Enter to take it. No brand guidelines? Pick one of five starting looks. It writes `syntara-theme.css`, a light and dark theme that passes every WCAG 2.2 AA contrast check, and `syntara.brand.json`, the answers it was built from. Built a theme on the [Themes](/themes) page? Its **Use in your app** command gives the same answers, so only the name is asked.
+It does four things:
 
-Skip this step to use one of the built-in brands, such as `vela`.
+1. **Asks about your brand.** A few questions, each with a suggestion: press Enter to take it. No brand guidelines? Pick a starting look instead. Built a theme on the [Themes](/themes) page? Its **Use in your app** command gives the same answers, so only the name is asked.
+2. **Writes your theme.** `syntara-theme.css` is a light and dark theme that passes every WCAG 2.2 AA contrast check. `syntara.brand.json` keeps the answers it was built from.
+3. **Installs Syntara.** It offers to run your project's own package manager to add the `syntara` package. Add `--no-install` to skip this.
+4. **Adds it to your app.** It finds your entry file (`src/main.tsx` in Vite, `app/layout.tsx` or `pages/_app.tsx` in Next.js) and adds two style imports and a `ThemeScope` around your app. It shows you the change and asks before it saves. Add `--no-edit` to skip this and do it by hand.
+
+Changed `syntara.brand.json` by hand? Run `npx syntara build` to rebuild the theme.
+
+Icons come from `syntara/icons` and the theme engine from `syntara/theme-engine`.
+
+### What init added, or doing it by hand
+
+If you used `--no-edit`, or want to know what changed, these are the two steps `syntara init` does in your entry file.
+
+<Steps>
 
 **Your own font.** Pick **Your own font** at the Fonts question, or pass it as a flag:
 
 <PackageCommand dlx="syntara init --font Manrope" />
 
-Any Google font works, or your own files (`--font-file fonts/acme.woff2`), if it passes six checks. It must have real Regular, Medium, Semibold and Bold. It must draw every letter itself. No letter may be cut off at any size Syntara uses, and line spacing must stay within limits. Its small letters must be tall enough to read at 12px. Checking takes about a minute in the Chrome or Edge on your computer. A font that fails is not used: you get the reason in a sentence, and a list of Google fonts that pass. See [Theming](/docs/theming#your-own-font).
+Any Google font works, or your own files (`--font-file fonts/acme.woff2`), if it passes six checks. It must have real Regular, Medium, Semibold and Bold. It must draw every letter itself. No letter may be cut off at any size Syntara uses, and line spacing must stay within limits. Its small letters must be tall enough to read at 12px. Checking takes a minute or two (Hindi and Arabic fonts up to four) in the Chrome or Edge on your computer. A font that fails is not used: you get the reason in a sentence, and a list of Google fonts that pass. See [Theming](/docs/theming#your-own-font).
 
 ### Import the CSS once
 
@@ -39,7 +44,7 @@ import './syntara-theme.css';
 
 </CodeBlock>
 
-The tokens are scoped to `[data-syntara-theme="<id>"]`, one block per brand.
+The tokens are scoped to `[data-syntara-theme="<id>"]`, one block per brand. Skipped `init`? Leave out the second line and use a built-in brand, such as `vela`.
 
 ### Wrap your app in a ThemeScope
 
@@ -57,11 +62,11 @@ export default function App() {
 }
 ```
 
-Changed `syntara.brand.json` by hand? Run `npx syntara build` to rebuild the theme.
-
-Icons come from `syntara/icons` and the theme engine from `syntara/theme-engine`.
-
 </Steps>
+
+Just want the package, without the brand setup?
+
+<PackageCommand add="syntara" />
 
 ### One piece at a time
 

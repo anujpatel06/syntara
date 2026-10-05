@@ -48,8 +48,9 @@
 ## Consequences
 
 - A brand can be set in its own type and still keep Syntara's promise that no text is cut off.
-- Adding a font costs about a minute of measuring (one pair takes 50.58 s:
-  `/usr/bin/time -p node scripts/check-script-clipping.mjs --pairs=modern`).
+- Adding a font costs a minute or two of measuring: 35.3–107.0 s per Latin font, 110.7–236.5 s per Hindi or Arabic one
+  (`node scripts/check-font.mjs --record …`, 17 fonts, log 2026-10-06); `npx syntara init --font Manrope` from a packed
+  install: real 98.81 s (`/usr/bin/time -p`).
 - Own font files add hosting to the brand's job: the theme points at their file, Syntara does not copy it anywhere.
 - **Revisit when:** the first example is approved (the check numbers become **Anuj**'s or change); someone needs a
   custom mono font; per-size line heights get an RFC (ADR-031).

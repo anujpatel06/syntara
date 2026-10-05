@@ -8,7 +8,8 @@ import { runBuild, runInit } from '../src/cli/init.js';
 
 const HELP = `Syntara: brand in, accessible theme out.
 
-  npx syntara init     Set up your brand: a few questions (Enter takes the suggestion), then a theme file
+  npx syntara init     Everything in one go: a few questions about your brand (Enter takes the suggestion),
+                       then your theme file, the install, and Syntara added to your app's entry file
   npx syntara build    Rebuild the theme after editing syntara.brand.json
 
 Options for init (anything you give here is not asked):
@@ -23,7 +24,7 @@ Options for init (anything you give here is not asked):
                        bilingual-round, bilingual-classic, bilingual-devanagari
   --spacing <density>  comfortable, compact
   --font <name>        Your own font instead of a pair: its Google Fonts name, e.g. Manrope.
-                       It is checked first (about a minute, in your Chrome or Edge) and used only if it passes
+                       It is checked first (a minute or two, in your Chrome or Edge) and used only if it passes
   --font-file <paths>  Or your own font files, comma-separated: .woff2, .woff, .ttf or .otf
   --heading-font <name>, --heading-font-file <paths>
                        A different font for headings (default: the same one)
@@ -31,6 +32,7 @@ Options for init (anything you give here is not asked):
   --out <path>         Where to write the theme CSS (default: src/syntara-theme.css, or ./ without src/)
   --force              Replace existing files
   --no-install         Don't offer to add syntara to package.json
+  --no-edit            Don't change your app's entry file; print the lines to add instead
 
 Docs: https://syntara.live`;
 

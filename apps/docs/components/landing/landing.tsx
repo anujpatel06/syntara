@@ -117,16 +117,14 @@ export function Landing() {
                 <div className={`${styles.litFace} ${styles.planFace}`}>
                   <div className={styles.planTop}>
                     <span className={styles.eyebrow}>Everything</span>
-                    <h3 className={styles.planName}>One install</h3>
+                    <h3 className={styles.planName}>One command</h3>
                     <p className={`${styles.small} ${styles.planDesc}`}>
-                      Every component, the icon set, the tokens for every brand and the theme engine.
+                      Asks about your brand, or lets you pick a starting look. Writes your theme, installs Syntara and
+                      adds it to your app.
                     </p>
-                    <div className={styles.planCommands}>
-                      <InstallCommand command="npm install syntara" block />
-                      <InstallCommand command="npx syntara init" label="Copy the brand setup command" block />
-                    </div>
+                    <InstallCommand command="npx syntara init" label="Copy the setup command" block />
                   </div>
-                  {ticks(['Components built on React Aria', 'The Syntara icon set', 'Tokens for every brand, light and dark', 'Your own brand in a minute: syntara init', 'The theme engine', 'One stylesheet: syntara/styles.css'])}
+                  {ticks(['Components built on React Aria', 'The Syntara icon set', 'Tokens for every brand, light and dark', 'Your own brand, checked for contrast', 'The theme engine', 'One stylesheet: syntara/styles.css'])}
                 </div>
               </div>
               <div className={`${styles.lit} ${styles.plan}`} data-lit="" data-reveal="5">

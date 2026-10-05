@@ -230,7 +230,7 @@ describe('pieces', () => {
 
 describe('init with an own font', () => {
   const measured = { lineHeight: { tight: 1.36, snug: 1.36, normal: 1.5 }, xHeight: 0.545, by: 'syntara test', date: '2026-10-06' };
-  /** Stands in for the real checks (Chrome, about a minute): Lobster fails on weights, anything else passes. */
+  /** Stands in for the real checks (Chrome, a minute or two): Lobster fails on weights, anything else passes. */
   const checked: unknown[] = [];
   const fakeCheck = async (req: { body: { google?: string; files?: string[] }; heading?: { google?: string }; script: string }) => {
     checked.push(req);

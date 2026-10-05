@@ -6,6 +6,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative } from 'node:path';
 import { brandFidelity, fontFacesCSS, fontFamilyOf, generateTheme, googleFontsHref, isValidHex, TYPE_PAIRS, toCSS } from '@syntara/theme-engine';
 import { findLook, LOOKS } from './looks.js';
+import { findEntry, planWire } from './wire.js';
 
 /** @typedef {import('@syntara/theme-engine').BrandInput} BrandInput */
 /** @typedef {import('@syntara/theme-engine').Theme} Theme */
@@ -130,7 +131,6 @@ export const BRAND_FLAGS = /** @type {const} */ ({
 });
 const CHOICES = { neutral: NEUTRALS, shape: SHAPES, typePair: TYPE_PAIR_IDS, density: DENSITIES };
 
-/** --flag value / --flag / -y. Unknown flags and bad values are reported with how to fix them, not ignored. */
 // A brand's own font (ADR-051). Files are comma-separated paths (from the project folder) or URLs.
 export const FONT_FLAGS = /** @type {const} */ ({
   '--font': 'font',
@@ -141,14 +141,16 @@ export const FONT_FLAGS = /** @type {const} */ ({
 });
 const SCRIPTS = { latin: 'latin', english: 'latin', arabic: 'arabic', devanagari: 'devanagari', hindi: 'devanagari' };
 
+/** --flag value / --flag / -y. Unknown flags and bad values are reported with how to fix them, not ignored. */
 export function parseArgs(argv) {
-  const opts = { yes: false, force: false, install: true, look: undefined, name: undefined, out: undefined, brand: {}, font: {} };
+  const opts = { yes: false, force: false, install: true, edit: true, look: undefined, name: undefined, out: undefined, brand: {}, font: {} };
   const takes = { '--look': 'look', '--name': 'name', '--out': 'out' };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--yes' || arg === '-y') opts.yes = true;
     else if (arg === '--force') opts.force = true;
     else if (arg === '--no-install') opts.install = false;
+    else if (arg === '--no-edit') opts.edit = false;
     else if (arg in takes || arg in BRAND_FLAGS || arg in FONT_FLAGS) {
       const value = argv[++i];
       if (value === undefined || value.startsWith('--')) throw new Error(`${arg} needs a value.`);
@@ -276,7 +278,7 @@ async function measureFont(io, request, cssPath) {
   const absolute = (r) => ('files' in r ? { ...r, files: r.files.map(abs) } : r);
   const name = [request.body, request.heading].filter(Boolean).map((r) => ('google' in r ? r.google : 'your font files')).join(' / ');
   io.say('');
-  io.say(`Checking ${name} in Chrome or Edge. This takes about a minute.`);
+  io.say(`Checking ${name} in Chrome or Edge. Measuring can take a minute or two.`);
   const checkFont = io.checkFont ?? (await import('../fonts/check.js')).checkFont;
   const { fontReport } = await import('../fonts/report.js');
   const result = await checkFont(
@@ -357,18 +359,21 @@ async function writeAll(io, files, opts) {
   return true;
 }
 
-function sayNextSteps(io, { id, cssPath, brand, installed }) {
+function sayNextSteps(io, { id, cssPath, brand, installed, wired }) {
   io.say('');
   io.say('Next:');
   let step = 1;
   if (!installed) io.say(`  ${step++}. Install Syntara:  npm install syntara`);
-  // The entry file usually sits in src/ (main.tsx, app/layout.tsx), so the path is given from there when it can be.
-  const inSrc = cssPath.startsWith('src/');
-  io.say(`  ${step++}. In your app's entry file${inSrc ? ' (e.g. src/main.tsx)' : ''}, import the styles once:`);
-  io.say(`       import 'syntara/styles.css';`);
-  io.say(`       import './${inSrc ? cssPath.slice(4) : cssPath}';${inSrc ? '' : '   (path from your project folder)'}`);
-  io.say(`  ${step++}. Wrap your app:`);
-  io.say(`       <ThemeScope theme="${id}" style={{ minHeight: '100vh' }}>…</ThemeScope>`);
+  if (!wired) {
+    // The entry file usually sits in src/ (main.tsx, app/layout.tsx), so the path is given from there when it can be.
+    const inSrc = cssPath.startsWith('src/');
+    io.say(`  ${step++}. In your app's entry file${inSrc ? ' (e.g. src/main.tsx)' : ''}, import the styles once:`);
+    io.say(`       import 'syntara/styles.css';`);
+    io.say(`       import './${inSrc ? cssPath.slice(4) : cssPath}';${inSrc ? '' : '   (path from your project folder)'}`);
+    io.say(`  ${step++}. Wrap your app:`);
+    io.say(`       <ThemeScope theme="${id}" style={{ minHeight: '100vh' }}>…</ThemeScope>`);
+  }
+  io.say(`  ${step++}. Use a component:  import { Button } from 'syntara';`);
   io.say('');
   io.say(`See it live:   ${previewUrl(brand)}`);
   if (brand.font) {
@@ -378,6 +383,37 @@ function sayNextSteps(io, { id, cssPath, brand, installed }) {
     }
   }
   io.say(`Change it:     edit ${CONFIG_FILE}, then run  npx syntara build`);
+}
+
+/**
+ * Adds the imports and the ThemeScope to the app's entry file, after showing the change and asking (Enter = yes).
+ * Returns true when the app loads Syntara afterwards, whether this run added it or it was there already.
+ */
+async function wireApp(io, { id, cssPath }, opts) {
+  const entry = findEntry(io.cwd);
+  if (!entry) return false;
+  const file = join(io.cwd, entry.path);
+  const plan = planWire(readFileSync(file, 'utf8'), { kind: entry.kind, entryPath: entry.path, cssPath, id });
+  io.say('');
+  if (plan.status === 'already') {
+    io.say(`${entry.path} already loads Syntara, so it was left as it is.`);
+    return true;
+  }
+  if (plan.status === 'manual') {
+    io.say(`${entry.path} was not changed: ${plan.reason}. The steps below say what to add by hand.`);
+    return false;
+  }
+  io.say(`To finish, Syntara will add these to ${entry.path}:`);
+  for (const line of plan.added) io.say(`  + ${line}`);
+  io.say(`  ~ ${plan.wrapped}`);
+  const go =
+    opts.yes ||
+    !io.interactive ||
+    /^y/i.test(await askValid(io, `Change ${entry.path}? y or n`, 'y', (a) => /^(y|yes|n|no)$/i.test(a), 'Type y or n.'));
+  if (!go) return false;
+  writeFileSync(file, plan.source);
+  io.say(`Changed ${entry.path}: your app now loads your theme.`);
+  return true;
 }
 
 /** `npx syntara init`. Returns the exit code. */
@@ -421,7 +457,8 @@ export async function runInit(argv, io) {
     installed = go && io.run(install);
     if (go && !installed) io.say(`The install did not finish. Run "${install}" yourself.`);
   }
-  sayNextSteps(io, { id, cssPath, brand: theme.input, installed });
+  const wired = opts.edit ? await wireApp(io, { id, cssPath }, opts) : false;
+  sayNextSteps(io, { id, cssPath, brand: theme.input, installed, wired });
   return 0;
 }
 
