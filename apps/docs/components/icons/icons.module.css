@@ -253,14 +253,16 @@
   }
 }
 .search.search {
-  flex: 1 1 calc(var(--syntara-space-16) * 4);
+  /* 160px to start from, so search, style, size and stroke share one row in the 808px docs column at 1440;
+     it grows into whatever the tools leave, and the row still wraps when the column is narrower */
+  flex: 1 1 calc(var(--syntara-space-16) * 2.5);
   min-inline-size: 0;
 }
 .tools {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: var(--syntara-space-3) var(--syntara-space-6);
+  gap: var(--syntara-space-3) var(--syntara-space-4);
 }
 .sizeToggle.sizeToggle {
   min-inline-size: calc(var(--syntara-space-8) + var(--syntara-space-1));
@@ -428,4 +430,10 @@
 .toastCode {
   font-family: var(--syntara-font-mono);
   font-size: var(--syntara-font-size-xs);
+}
+
+/* The site theme is greyscale, so its accent is grey and a duotone tint read as plain black and white. The gallery
+   paints the second tone in the theme's blue so a duotone icon is recognisable at a glance. */
+.gallery {
+  --syntara-icon-tint: color-mix(in oklab, var(--syntara-color-feedback-info-solid) 45%, transparent);
 }

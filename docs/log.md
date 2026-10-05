@@ -120,6 +120,11 @@ Three branches from `main` at 66db243, one fix each: `fix/landing-language-tabs`
 - **Icons page** (`apps/docs/components/icons/`): a Style filter (All · Outline · Filled · Duotone), and in the
   gallery the duotone tint is the house theme's blue at 45% (`--syntara-icon-tint`), because the house accent is grey
   and duotone read as plain black and white. The specimen above the gallery keeps the default tint.
+- **Icons toolbar, follow-up** (`icons.module.css`, `icon-gallery.tsx`): one row again at 1440. The search starts
+  from 160px (was 256) and grows into what the tools leave, and the tools sit 16px apart (was 24); the toolbar measured
+  73px tall in the browser, was 125. The placeholder is "Search icons…", since the narrower box cut off "Search 480
+  icons…" and the count line below already says 480. Before merging, `/verify` on build `Q6gne_U6_HypRzJnqVDC`: 2,249
+  tests, 118,000 of 118,000 fuzz checks, 316/316 pages, 0 pages missing a tab panel. **Anuj approved the look.**
 
 **Decided**
 - Stack the calendars rather than fix the card's height by hand. **Claude recommended, Anuj accepted.**
