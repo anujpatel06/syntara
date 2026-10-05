@@ -1,6 +1,6 @@
 {
   "name": "syntara",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Everything Syntara in one install: the React components, the icon set, the token CSS for every brand and the theme engine.",
   "type": "module",
   "license": "MIT",
