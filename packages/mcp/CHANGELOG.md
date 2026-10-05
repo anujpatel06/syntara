@@ -1,5 +1,14 @@
 # @syntara/mcp
 
+## 0.1.2
+
+### Patch Changes
+
+- Updated dependencies [89d7afb]
+- Updated dependencies [29f9b23]
+  - @syntara/audit@0.2.0
+  - @syntara/theme-engine@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes

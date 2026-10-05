@@ -6,31 +6,30 @@ You need React 19 and a bundler that handles CSS — Next.js and Vite both do ou
 
 <Steps>
 
-### Install the packages
+### Install everything
 
-<PackageCommand add="@syntara/react @syntara/tokens" />
+<PackageCommand add="syntara" />
 
-`@syntara/react` has the components and `ThemeScope`. `@syntara/tokens` has the token CSS for every tenant. React and React DOM are peer dependencies; React Aria and the icons come with the package.
+One package brings it all: the components and `ThemeScope`, the icon set, the token CSS for every tenant and the theme engine. React and React DOM are peer dependencies.
 
 ### Import the CSS once
 
-At your app root — `app/layout.tsx` in Next.js, `src/main.tsx` in Vite — import the tokens and the component styles.
+At your app root — `app/layout.tsx` in Next.js, `src/main.tsx` in Vite — import the one stylesheet: every tenant's tokens, then the component styles.
 
 <CodeBlock title="app/layout.tsx">
 
 ```tsx
-import '@syntara/tokens/dist/syntara.css';
-import '@syntara/react/styles.css';
+import 'syntara/styles.css';
 ```
 
 </CodeBlock>
 
-`dist/syntara.css` holds every tenant, each scoped to `[data-syntara-theme="<id>"]`. If your app only ever shows one brand, import `@syntara/tokens/dist/<id>/tokens.css` instead; it puts that tenant on `:root`.
+The tokens are scoped to `[data-syntara-theme="<id>"]`, one block per tenant.
 
 ### Wrap your app in a ThemeScope
 
 ```tsx
-import { Button, ThemeScope } from '@syntara/react';
+import { Button, ThemeScope } from 'syntara';
 
 export default function App() {
   return (
@@ -41,9 +40,26 @@ export default function App() {
 }
 ```
 
-Each component also has its own entry point, e.g. `import { Button } from '@syntara/react/ui/button'`.
+Icons come from `syntara/icons` and the theme engine from `syntara/theme-engine`.
 
 </Steps>
+
+### One piece at a time
+
+`syntara` is a bundle of the separate packages, which are still published on their own: `@syntara/react` (components),
+`@syntara/tokens` (token CSS), `@syntara/icons` and `@syntara/theme-engine`. Install them separately when you only need
+one, for example the tokens in an app that isn't React:
+
+<PackageCommand add="@syntara/react @syntara/tokens" />
+
+```tsx
+import '@syntara/tokens/dist/syntara.css';
+import '@syntara/react/styles.css';
+```
+
+If your app only ever shows one brand, import `@syntara/tokens/dist/<id>/tokens.css` instead of `dist/syntara.css`; it
+puts that tenant on `:root`. Each component also has its own entry point, e.g.
+`import { Button } from '@syntara/react/ui/button'`.
 
 ## By hand
 

@@ -31,6 +31,62 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 **Next**
 - 21st.dev listing, and the open questions page, are unchanged from the entry below.
 
+---
+
+## 2026-10-05 — A landing homepage after fora.so, and `npm install syntara`
+
+Branch `feat/home-fora`, cut from `origin/main` at 29ade04, merged with `origin/main` at c133424 and 3995ba6.
+
+**Changed**
+- **New homepage** (`apps/docs/components/landing/`), built after measuring fora.so (`docs/design/landing.md`): hero with
+  an app window rising from dusk hills, scroll-lit intro, a four-tab feature carousel whose app window re-themes per
+  brand, three stacking feature cards (theme engine, every script, agents), install, FAQ with topics, "from the log",
+  a closing section over dunes and the `Footer` component. The hero's window cycles the real `Hero` component through
+  its four styles, each in a tenant's language: Gallery/Haat (Hindi), Orbit/Qamar (Arabic, RTL), Aurora/Care,
+  Card fan/Harbor. Scroll: parallax hills, the window rises ~96px on the first scroll, reveals, stacking cards and
+  smooth wheel scrolling, all off under reduced motion. Lit card edges follow the pointer.
+- **Landscapes drawn in code:** `scripts/landscapes/terrain.html` (a ray-marched WebGL height field) →
+  `node scripts/render-landscapes.mjs` → four WebP files in `apps/docs/public/landing` (125 + 22 + 99 + 61 KB).
+- On `/` only, the site header floats over the hero and the site footer gives way to `Footer`
+  (`components/site/home-chrome.tsx`). The previous homepage's components and `home-data.ts` are removed; its FAQ
+  answers moved to `components/landing/faq-items.tsx`, with "eight packages at 0.1.0" corrected.
+- **New package `syntara`** (`packages/syntara`, changeset `one-install.md`): `npm install syntara` brings
+  `@syntara/react`, `@syntara/tokens`, `@syntara/icons` and `@syntara/theme-engine`; `syntara/styles.css` is every
+  tenant's tokens then the component styles. The hero, the install section, the FAQ and `docs/installation` lead with
+  it. `InstallCommand` takes a `className`. README test row and repo map updated.
+
+**Decided** (ADR-047)
+- Homepage after fora.so, the hero window showing `Hero`, Gallery first, rising window, one-install package. **Anuj.**
+- Homepage always dark; Geist rather than Inter; code-drawn landscapes. **Claude recommended, pending Anuj.**
+
+**Results**
+- `pnpm typecheck`: exit 0. `pnpm test`: exit 0, 2,245 tests (543 components, 310 engine, 959 icons, 193 MCP server,
+  150 schema, 77 auditor, 8 codemods, 5 one-install); `node scripts/check-test-counts.mjs --from <output>` matches.
+- `pnpm test:themes`: 118,000/118,000 checks pass, median 4 adjustments per brand (unchanged); report not committed
+  (only the timing moved, 0.62 → 0.86 ms median, with other sessions loading the machine).
+- `pnpm check:meta`: 58/58 pass (1 warning already on main: `hero-styles.tsx` not in `meta.examples`).
+  `pnpm registry`: 82 items. `node scripts/check-override-weight.mjs --fix`: 28 landing selectors doubled, 0 left.
+- `pnpm --filter @syntara/docs build`: 316/316 pages; `node scripts/check-ssr-tabs.mjs`: 0 of 315 pages missing a panel.
+  `grep -l "npm install syntara" apps/docs/out/index.html`: present.
+- Served on :3412 (3000 held by another session), `SYNTARA_BASE_URL=http://localhost:3412`: `check-hydration` 0
+  failures (288 loads), `check-theme-links` 0, `check-narrow-overflow` 0 pages scrolling at 320/768,
+  `check-csp` 0 failures, `axe-sweep` 0 violation nodes (144 routes × 2 schemes), `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers). After the phone-layout fix (feature window collapsed to a strip at 390px; tab bar cut off), rebuilt and re-run on `/` and `/docs/installation`: 0 sideways scrolling, 0 hydration failures, `axe-sweep` 0 violation nodes over all 144 routes.
+- `syntara` packed (`pnpm pack`) with the four packages it depends on and installed from the tarballs into an empty
+  npm project: `generateTheme` 118/118 checks, 480 icons, `styles.css` 612 KB with Vela's tokens, an app using `Hero`,
+  `Button`, `ThemeScope` and an icon type-checks, and `vite build` bundles it.
+
+- **Released** (Anuj, `pnpm changeset publish`, after `pnpm changeset version` on this branch): `npm view` reports
+  `syntara` 0.1.0, `@syntara/react` 0.2.0, `@syntara/tokens` 0.2.0, `@syntara/theme-engine` 0.2.0, `@syntara/audit` 0.2.0,
+  `@syntara/sdui` 0.2.0, `@syntara/mcp` 0.1.2. npm's 0.1.1 had no Hero or Footer, so all 16 queued changesets shipped
+  with `syntara`. `syntara/styles.css` now `@import`s the installed packages' CSS instead of copying this machine's build.
+
+**Next**
+- Merge #62 only now that the packages are on npm (done).
+- Anuj: ADR-047's three pending details; the phone layout of the homepage has had only a basic pass.
+- Fora's trees: our landscapes have round canopies, not its shrub clusters.
+
+---
+
 ## 2026-10-05 — Install check, machine cleanup, stranded edits saved
 
 **Changed**
@@ -202,7 +258,7 @@ blur is fixed while the lights grow (pointer strength 0.378 at 1200px → 0.528 
   `grep -rl syntara-surface-nest apps/docs/out/_next/static` 3 files, so the change is in the measured build.
 - Build D0kYAuDj844HQsGjI0Udl: `check-hydration` 0 of 286; `check-theme-links` 0 of 5; `check-narrow-overflow` 0
   sideways of 286; `check-csp` 0 of 143; `axe-sweep` 0 violation nodes over 143 routes × 2 schemes;
-  `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers). After the phone-layout fix (feature window collapsed to a strip at 390px; tab bar cut off), rebuilt and re-run on `/` and `/docs/installation`: 0 sideways scrolling, 0 hydration failures, `axe-sweep` 0 violation nodes over all 144 routes.
 - After merging `origin/main` at 983fd22 (Hero, #51): `pnpm test` all passing (react 527 = main's 519 + 8 here), README
   row fixed by `check-test-counts --fix`; `pnpm typecheck` and `pnpm check:meta` exit 0. Re-running
   `pnpm --filter @syntara/sdui generate` found the committed `validator.generated.js` stale (0 mentions of `surface`,
