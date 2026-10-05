@@ -64,6 +64,18 @@ checkout).
 - `InstallCommand` keeps `--flag value` on one line when a command wraps.
 - The hero's app window moved down 32px to make room for the second command. **Anuj** ("add the space").
 
+**Released**
+- #73 merged (`fdfb2f2`); release PR #76 (`pnpm changeset version`, `638d0fe`) merged by Anuj. Anuj chose to release
+  `@syntara/react` too ("Both"). `pnpm changeset publish` from `main` needed npm's web approval, which Anuj gave in the
+  Terminal panel. `npm view syntara version` → 0.2.0, `npm view @syntara/react version` → 0.3.0; `syntara`'s `bin` and
+  `@syntara/react ^0.3.0` dependency confirmed with `npm view`. Tags `syntara@0.2.0` and `@syntara/react@0.3.0` pushed.
+- From npm, in an empty folder: `npx -y syntara@0.2.0 init --yes --name "Fresh Test" --no-install` → 118 of 118
+  contrast checks, `src/syntara-theme.css` written.
+- `main`'s branch protection no longer requires pull requests to be up to date (Anuj changed it in GitHub settings;
+  Claude Code's guard blocked Claude from doing it). Both required checks stay. Merge queue is not available: the repo
+  is owned by a personal account (`owner.type` "User"), and GitHub offers it only to organizations.
+- #72 and #74 (other sessions) were behind `main` after #73; updated on GitHub (`gh pr update-branch`), no conflicts.
+
 **Decided (second PR)**
 - Show both lines on the homepage; the four places above plus agents. **Claude recommended, Anuj accepted.**
 - The site PR merges only after `syntara` with `init` is on npm (`npm view syntara version`), so the site never shows
