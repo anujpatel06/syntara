@@ -50,6 +50,7 @@ const LABELS = {
   'packages/react': 'components',
   'packages/theme-engine': 'engine',
   'packages/icons': 'icons',
+  'packages/syntara': 'one-install',
   'packages/mcp': 'MCP server',
   'packages/sdui': 'schema',
   'packages/audit': 'auditor',
