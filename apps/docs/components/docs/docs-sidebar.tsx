@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import type { NavGroup } from '@/lib/nav';
+import { DOC_ICONS } from './doc-icons';
 import styles from './docs-sidebar.module.css';
 
 export function DocsSidebar({ groups }: { groups: NavGroup[] }) {
@@ -30,18 +31,22 @@ export function DocsSidebar({ groups }: { groups: NavGroup[] }) {
             <div key={section.label ?? i} className={styles.section}>
               {section.label && <p className={styles.sectionLabel}>{section.label}</p>}
               <ul className={styles.list}>
-                {section.items.map((item) => (
+                {section.items.map((item) => {
+                  const Icon = DOC_ICONS[item.href];
+                  return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       className={styles.link}
                       aria-current={pathname === item.href ? 'page' : undefined}
                     >
+                      {Icon && <Icon aria-hidden="true" className={styles.icon} />}
                       <span className={styles.linkText}>{item.title}</span>
                       {item.badge && <span className={styles.badge}>{item.badge}</span>}
                     </Link>
                   </li>
-                ))}
+                  );
+                })}
               </ul>
             </div>
           ))}

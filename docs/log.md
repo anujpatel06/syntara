@@ -6,9 +6,36 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — Icons on the docs sidebar's guide pages
+
+**Changed**
+- The 15 guide pages in the docs sidebar (Introduction … Changelog) carry an `@syntara/icons` glyph, desktop
+  sidebar and mobile sheet both. Map in `apps/docs/components/docs/doc-icons.ts`, keyed by href. Icons sit at the
+  label's size in the subtle text colour and lift to the default colour on hover and on the current page.
+
+**Decided**
+- Guide pages only; the 58 component names stay text (Claude recommended, Anuj accepted). Many components have no
+  honest icon match, and a glyph on every row of a long list adds noise instead of making it easier to scan.
+
+**Results**
+- Steps 1–6a passed: `pnpm typecheck`; `pnpm test` plus `node scripts/check-test-counts.mjs` → 2,240 tests across
+  7 packages, none failing, matching the README; `pnpm test:themes` → 118,000/118,000 checks, median adjustments 4;
+  `pnpm check:meta` → 58/58 (one warning, already on main: `hero-styles.tsx` isn't listed in `meta.examples`);
+  `pnpm registry` → 82 items ok; `node scripts/check-override-weight.mjs` → clean.
+- Steps 7–8: `pnpm --filter @syntara/docs build` → 316/316 pages; `node scripts/check-ssr-tabs.mjs` → 0 missing panels.
+- Proof the change is in the build: `apps/docs/out/docs/installation.html` contains `href="/docs/rtl"><svg`.
+- Step 9 (build H6GJCQE8a3NKM2FA5ynLF): `check-hydration` → 0 failures out of 288 loads; `check-theme-links` → 0 out of 5;
+  `check-narrow-overflow` → 0 pages scrolling sideways out of 288; `check-csp` → 0 failures out of 144.
+  `axe-sweep` → 0 violation nodes (144 routes × 2 schemes); `check-overlay-exit` → 0 failures (108 tooltips, 4 menus/popovers).
+
+**Next**
+- 21st.dev listing, and the open questions page, are unchanged from the entry below.
+
+---
+
 ## 2026-10-05 — A landing homepage after fora.so, and `npm install syntara`
 
-Branch `feat/home-fora`, cut from `origin/main` at 29ade04, merged with `origin/main` at c133424.
+Branch `feat/home-fora`, cut from `origin/main` at 29ade04, merged with `origin/main` at c133424 and 3995ba6.
 
 **Changed**
 - **New homepage** (`apps/docs/components/landing/`), built after measuring fora.so (`docs/design/landing.md`): hero with
@@ -48,8 +75,13 @@ Branch `feat/home-fora`, cut from `origin/main` at 29ade04, merged with `origin/
   npm project: `generateTheme` 118/118 checks, 480 icons, `styles.css` 612 KB with Vela's tokens, an app using `Hero`,
   `Button`, `ThemeScope` and an icon type-checks, and `vite build` bundles it.
 
+- **Released** (Anuj, `pnpm changeset publish`, after `pnpm changeset version` on this branch): `npm view` reports
+  `syntara` 0.1.0, `@syntara/react` 0.2.0, `@syntara/tokens` 0.2.0, `@syntara/theme-engine` 0.2.0, `@syntara/audit` 0.2.0,
+  `@syntara/sdui` 0.2.0, `@syntara/mcp` 0.1.2. npm's 0.1.1 had no Hero or Footer, so all 16 queued changesets shipped
+  with `syntara`. `syntara/styles.css` now `@import`s the installed packages' CSS instead of copying this machine's build.
+
 **Next**
-- Publish `syntara` (and the pending `@syntara/react` changesets) before the site deploys, or the hero's command fails.
+- Merge #62 only now that the packages are on npm (done).
 - Anuj: ADR-047's three pending details; the phone layout of the homepage has had only a basic pass.
 - Fora's trees: our landscapes have round canopies, not its shrub clusters.
 
