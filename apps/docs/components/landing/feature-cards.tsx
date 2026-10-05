@@ -101,7 +101,6 @@ export function FeatureCards({ tenants }: { tenants: LandingTenant[] }) {
     { key: 'hi', label: 'हिन्दी', t: tenants.find((t) => t.locale.startsWith('hi')) },
   ].filter((s): s is { key: string; label: string; t: LandingTenant } => Boolean(s.t));
   const [script, setScript] = useState(scripts[0]?.key ?? 'en');
-  const shown = scripts.find((s) => s.key === script)?.t;
 
   return (
     <>
@@ -155,7 +154,16 @@ export function FeatureCards({ tenants }: { tenants: LandingTenant[] }) {
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
-        {shown && <ScriptPreview key={shown.id} t={shown} />}
+        {/* All three calendars sit in one grid cell and only the chosen one shows, so the card keeps the tallest
+            one's height. Swapping one in alone changed the card's height (English has a week fewer), the centred
+            stack re-centred, and the buttons jumped 26px — so the pill slid in from below. */}
+        <div className={styles.scriptStack}>
+          {scripts.map((s) => (
+            <div key={s.key} inert={s.key !== script} data-active={s.key === script || undefined}>
+              <ScriptPreview t={s.t} />
+            </div>
+          ))}
+        </div>
       </Feature>
 
       <Feature
