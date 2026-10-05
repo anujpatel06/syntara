@@ -6,6 +6,57 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — The landing page in space, and Arabic and Hindi in their own digits
+
+Branch `feat/landing-galaxy`, cut from `feat/home-fora` at c08fd4b, merged with `feat/home-fora` at 1c1cdb4 (which
+had taken `main` with the 0.2.0 release). Not pushed.
+
+**Changed**
+- **Landing page in space** ("tara" is star in Hindi and Sanskrit). The hills and dunes are now the Milky Way over a
+  planet's lit edge (hero, feature frames, log cards), a spiral galaxy (cards) and a planet's edge above the footer,
+  drawn by `scripts/landscapes/galaxy.py` (numpy + Pillow). It replaces `scripts/render-landscapes.mjs` and
+  `terrain.html`. Empty sky is exactly the page colour, so no picture shows an edge. The hero's app window sits on
+  the planet's edge; the two "front hill" layers are gone. A dark pool behind the hero text, a dimmer closing line
+  sitting just above the wordmark.
+- **Components tab** of the feature carousel shows the components index (first group, cards, stills, maturity
+  badges from meta.json) in the brand picked in the window, instead of the Payouts dashboard.
+- **"Every script"** shows a centred `Calendar` instead of a second greeting card.
+- **`ThemeScope numerals="native" | "latin"`** (`@syntara/react`, minor changeset): the language's own digits for every
+  date, number and calendar in the scope. Opt-in; omitted, nothing changes. 4 tests.
+- **Qamar and Haat write their own digits** (ADR-048): locales `ar-AE-u-nu-arab`, `hi-IN-u-nu-deva`; 178 copy strings (the script's own counts over three runs: 169, 7, 2)
+  in their content.json and the examples' `_copy/ar.json`, `hi.json` converted by `scripts/native-digits.mjs`
+  (`--check` to guard); codes, stored dates and ids untouched. The preview's RTL stand-in, the SDUI demo and the
+  playground use `ar-AE-u-nu-arab`. RTL guide has a Digits section.
+
+**Decided**
+- Space, not landscapes; the app windows' own galleries stay as they are (they show a customer's brand). **Anuj.**
+- Native digits: opt-in prop for installers, and Qamar and Haat use them everywhere including copy. **Anuj** (ADR-048).
+- Hero text kept at AA by darkening the picture, not by a CSS veil. **Claude.**
+
+**Results**
+- Hero text over the sky, worst pixel in each box at 1920px wide: tag 8.48:1, headline 11.64:1, sentence 8.52:1
+  (was 1.74, 1.33, 1.17). Command: `python3 <scratch>/hero-contrast.py apps/docs/public/landing/galaxy-sky.webp`;
+  the script is not in the repo.
+- `/verify`, after the merge: `pnpm typecheck` exit 0; `pnpm test` exit 0 (react 547, icons 959, theme-engine 309 + 1
+  skipped, mcp 193, sdui 150, audit 77, codemods 8, syntara 5); `pnpm test:themes` 118,000/118,000 checks; `pnpm
+  check:meta` ok (2 earlier warnings: hero's unlisted example, theme-scope below the alpha bar);
+  `pnpm registry` 82 items ok; `check-override-weight` 0; docs build 316/316 pages; `check-ssr-tabs` 0 of 315.
+  Served on :3458 (build Pwk1q4kFHd416yNAvH529, `galaxy-sky` grepped in `out/`): hydration 0 failures of 288,
+  theme links 0 of 5, narrow overflow 0 of 288, CSP 0 of 144, axe 0 violation nodes over 144 × 2, overlay exit 0.
+  `pnpm test` re-run after the copy fix below: exit 0, same counts.
+- Screenshot sweep (`node scripts/shoot.mjs`, dashboard-overview: vela light, harbor dark, qamar light RTL, haat dark,
+  qamar 390px; request-flow haat; landing 390px) found 2 strings still in 0–9; fixed in 711f842.
+
+**Next**
+- Push `feat/landing-galaxy` for a Cloudflare preview link, then a PR into `feat/home-fora` (or main after it).
+- Not run: `check-script-clipping.mjs` (its strings have no native digits, so it can't prove anything about them);
+  no compact-density shot (nothing changed density).
+- `feat/home-fora`, not this branch: dev warning "`NaN` is an invalid value for minBlockSize" on the landing page at
+  390px (seen on :3311 too).
+- Hand-written Arabic/Hindi in examples is outside `native-digits.mjs --check`.
+
+---
+
 ## 2026-10-05 — Icons on the docs sidebar's guide pages
 
 **Changed**
