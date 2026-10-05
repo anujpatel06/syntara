@@ -1,4 +1,4 @@
-// A brand's own font (ADR-050): reading font files, asking Google, the checks that run before any browser, and the
+// A brand's own font (ADR-051): reading font files, asking Google, the checks that run before any browser, and the
 // plain-English report. Fonts here are built in the test (a few tables, no outlines) and Google is a stubbed fetch,
 // so these run offline. The browser measurement runs only with SYNTARA_FONT_E2E=1 (Chrome or Edge and the network).
 import { brotliCompressSync, deflateSync } from 'node:zlib';
@@ -168,7 +168,7 @@ describe('checks before the browser', () => {
     );
   });
 
-  it('₹ is checked only for Hindi brands (Anuj, ADR-050)', () => {
+  it('₹ is checked only for Hindi brands (Anuj, ADR-051)', () => {
     const chars = (s: 'latin' | 'arabic' | 'devanagari') => stringsFor(s).map((x) => x.text).join('');
     expect(chars('latin')).not.toContain('₹');
     expect(chars('arabic')).not.toContain('₹');

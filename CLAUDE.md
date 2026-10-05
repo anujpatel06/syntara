@@ -34,11 +34,11 @@ Anuj owns design decisions. You pair on engineering and push back when he's wron
   035, 042, 044, 045, the `wip/haat-hindi-copy` branch, and whether `docs/marketing/` stays local. Settled, records
   still to tidy: ADR-020 (Anuj, 2026-09-28) and Haat's Hindi copy (reviewed 2026-10-02).
 - **Known gaps:** listed at the end of the latest entry in `docs/log.md`.
-- **Brand fonts (ADR-050):** a brand can name its own font (Google or its own files) instead of a type pair; it is
+- **Brand fonts (ADR-051):** a brand can name its own font (Google or its own files) instead of a type pair; it is
   used only if it passes six measured checks (`docs/design/custom-fonts.md`). `npx syntara init --font <name>`, or
   `node scripts/check-font.mjs <name>` in the repo. The pass list shown after a failure is
   `packages/syntara/src/fonts/passed.json`, written by `node scripts/check-font.mjs --record …`.
-- **ADRs run to 050.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
+- **ADRs run to 051.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
 
 ## Run it
 
@@ -88,7 +88,7 @@ pnpm --filter @syntara/react build      # npm build → packages/react/dist
 | `apps/generator` | Phase 1 Brand Generator (Vite; single-file build for hosted demos). |
 | `apps/playground` | Renders `apps/docs/examples/<c>/*` per tenant, scheme, dir and density for visual QA. |
 | `tenants/<id>` | `brand.json` (6 inputs) + `content.json` (copy). Vela (en-IN), Harbor (en-GB), Qamar (ar-AE, RTL), Care (en-IN, editorial, ADR-015), Haat (hi-IN, Devanagari, ADR-024), house (the site, Geist). |
-| `scripts/` | `check-font.mjs` (a brand font against the six checks, ADR-050), `screenshots.mjs`, `shoot.mjs` (one URL → PNG), `axe-sweep.mjs` (every docs route, light + dark), `check-override-weight.mjs`, `check-script-clipping.mjs` (glyph clipping per type pair). |
+| `scripts/` | `check-font.mjs` (a brand font against the six checks, ADR-051), `screenshots.mjs`, `shoot.mjs` (one URL → PNG), `axe-sweep.mjs` (every docs route, light + dark), `check-override-weight.mjs`, `check-script-clipping.mjs` (glyph clipping per type pair). |
 
 ## Conventions (non-negotiable)
 

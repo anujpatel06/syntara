@@ -1,6 +1,6 @@
 // A font check's result in plain words (docs/design/custom-fonts.md, "How a failure reads"): one sentence per failed
 // check, what it means for the people using the product, and what to do. A failure ends with Google fonts that have
-// passed the same checks (ADR-050: Anuj asked for a list to choose from), read from passed.json, never guessed.
+// passed the same checks (ADR-051: Anuj asked for a list to choose from), read from passed.json, never guessed.
 
 import { readFileSync } from 'node:fs';
 

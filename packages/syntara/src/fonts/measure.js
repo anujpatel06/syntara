@@ -27,7 +27,7 @@ export const STRINGS = {
 
 /** The strings a brand in `script` is measured with: its own, then Latin (every brand shows Latin codes and digits). */
 export function stringsFor(script) {
-  // ₹ is checked only for Hindi brands (Anuj, 2026-10-06, ADR-050): elsewhere the amount is written in dollars, so a
+  // ₹ is checked only for Hindi brands (Anuj, 2026-10-06, ADR-051): elsewhere the amount is written in dollars, so a
   // font without ₹ is not failed for a currency the brand never shows.
   const latin = STRINGS.latin.map((text) => ({ script: 'latin', text: script === 'devanagari' ? text : text.replace('₹1,84,250', '$184,250') }));
   return script === 'latin' ? latin : [...STRINGS[script].map((text) => ({ script, text })), ...latin];

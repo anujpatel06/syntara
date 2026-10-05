@@ -1,4 +1,4 @@
-// The six checks in docs/design/custom-fonts.md (ADR-050), in order, cheapest first: Google's answer and the files
+// The six checks in docs/design/custom-fonts.md (ADR-051), in order, cheapest first: Google's answer and the files
 // themselves (checks 1–3) before any browser starts, then Chrome or Edge for loading, clipping and x-height (1, 4–6).
 // Returns failures as data; report.js turns them into sentences. A pass returns the BrandFont the engine takes.
 

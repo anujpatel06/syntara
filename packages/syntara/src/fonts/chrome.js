@@ -1,4 +1,4 @@
-// Drives the Chrome or Edge already on the computer (ADR-050: no browser download), over the DevTools protocol with
+// Drives the Chrome or Edge already on the computer (ADR-051: no browser download), over the DevTools protocol with
 // Node's own WebSocket. No dependency: `syntara` stays one install. Only what the font checks need: open a page at a
 // device pixel ratio, set its HTML, run a function in it, take a full-page PNG.
 

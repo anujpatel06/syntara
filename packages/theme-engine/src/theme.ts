@@ -99,7 +99,7 @@ export function generateTheme(input: BrandInput): Theme {
     checks.push(...checkScheme(scheme, roles));
   }
 
-  // A brand's own font (ADR-050) becomes a pair of its own; the named pair still gives the mono font.
+  // A brand's own font (ADR-051) becomes a pair of its own; the named pair still gives the mono font.
   const src = resolved.font ? typePairForFont(TYPE_PAIRS[resolved.typePair], resolved.font) : TYPE_PAIRS[resolved.typePair];
   // A pair's script tokens (ADR-020) replace line heights and raise small sizes, so every exporter reads them here.
   const foundations = foundationsForShape(resolved.shape, src);

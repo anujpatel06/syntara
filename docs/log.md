@@ -6,7 +6,7 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
-## 2026-10-06 — A brand's own font, accepted only if it passes six measured checks (ADR-050)
+## 2026-10-06 — A brand's own font, accepted only if it passes six measured checks (ADR-051)
 
 Branch `feat/custom-fonts`, from `main` at 9767dae, in its own worktree; `main` (5c00355) fast-forwarded in before
 the PR. Another session works on tenants-from-folder.
@@ -37,7 +37,7 @@ the PR. Another session works on tenants-from-folder.
 **Decided**
 - Any font that passes the checks, not an approved list. **Anuj** (2026-10-05).
 - Google name **and** own files; one font or two, the brand says which is for headings; on a failure say why, write
-  nothing, and list Google fonts that pass; measure in the person's own Chrome or Edge. **Anuj** (ADR-050).
+  nothing, and list Google fonts that pass; measure in the person's own Chrome or Edge. **Anuj** (ADR-051).
 - ₹ is checked only for Hindi brands; other brands' test text shows dollars. **Anuj.**
 - The six checks and their numbers, approved with the first example. **Claude recommended, Anuj accepted.**
 - Mono stays the pair's; per-size line heights stay out (ADR-031's RFC). **Claude.**

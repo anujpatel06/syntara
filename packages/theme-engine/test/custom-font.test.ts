@@ -1,5 +1,5 @@
 /**
- * A brand's own font (ADR-050): the engine takes the measurement `npx syntara init` made and turns it into the same
+ * A brand's own font (ADR-051): the engine takes the measurement `npx syntara init` made and turns it into the same
  * type tokens a curated pair gives, so components and exporters need nothing new. It never measures, and it refuses
  * line heights outside docs/design/custom-fonts.md's bounds, so a hand-edited brand file can't loosen them.
  */

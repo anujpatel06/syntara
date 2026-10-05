@@ -96,7 +96,7 @@ function buildTenant(id: string): Built {
 
   const dtcg = toDTCG(theme);
   write(join(out, 'tokens.css'), toCSS(theme, { selector: ':root' }));
-  // A brand's own font (ADR-050): fonts.css loads it, and its own files are copied beside it so the links still work.
+  // A brand's own font (ADR-051): fonts.css loads it, and its own files are copied beside it so the links still work.
   // Brands on a ready-made pair get no fonts.css, as before.
   if (theme.input.font) {
     const faces = fontFacesCSS(theme.typePair);

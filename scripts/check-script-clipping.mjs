@@ -75,7 +75,7 @@ const CANDIDATES = (option('candidates') ?? '').split(',').filter(Boolean).map((
 }));
 
 /* ------------------------------------------------------------------ test strings */
-// Shared with the brand-font checker (packages/syntara/src/fonts/measure.js, ADR-050), which differs on one point: its
+// Shared with the brand-font checker (packages/syntara/src/fonts/measure.js, ADR-051), which differs on one point: its
 // non-Hindi brands get the Latin amount in dollars, not ₹. Change one, change the other.
 
 const STRINGS = {

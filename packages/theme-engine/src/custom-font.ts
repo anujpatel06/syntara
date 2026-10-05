@@ -1,5 +1,5 @@
 /**
- * A brand's own font (ADR-050) → the same TypePair shape the nine curated pairs have, so every exporter and component
+ * A brand's own font (ADR-051) → the same TypePair shape the nine curated pairs have, so every exporter and component
  * reads it unchanged. The engine never measures: it takes the line heights `npx syntara init` measured, and only
  * refuses values outside the bounds in docs/design/custom-fonts.md (a hand-edited brand file can't loosen them).
  */

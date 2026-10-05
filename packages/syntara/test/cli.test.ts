@@ -226,7 +226,7 @@ describe('pieces', () => {
   });
 });
 
-/* ------------------------------------------------------------------ a brand's own font (ADR-050) */
+/* ------------------------------------------------------------------ a brand's own font (ADR-051) */
 
 describe('init with an own font', () => {
   const measured = { lineHeight: { tight: 1.36, snug: 1.36, normal: 1.5 }, xHeight: 0.545, by: 'syntara test', date: '2026-10-06' };

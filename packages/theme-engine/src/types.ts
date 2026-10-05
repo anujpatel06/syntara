@@ -35,7 +35,7 @@ export interface BrandInput {
   typePair: TypePairId;
   density: Density;
   /**
-   * The brand's own font (ADR-050), with the measurement that accepted it. Replaces the type pair's heading and body;
+   * The brand's own font (ADR-051), with the measurement that accepted it. Replaces the type pair's heading and body;
    * the pair still gives the mono font. Written by `npx syntara init` after the checks pass, not by hand.
    */
   font?: BrandFont;
@@ -54,7 +54,7 @@ export interface FontFile {
 }
 
 /**
- * Where a brand's font comes from (ADR-050): a Google Fonts family, or the brand's own files (their licence, their
+ * Where a brand's font comes from (ADR-051): a Google Fonts family, or the brand's own files (their licence, their
  * hosting). `category` picks the fallback stack shown until the font loads.
  */
 export type FontSource =
@@ -244,7 +244,7 @@ export interface TypePair {
   supportsArabic: boolean;
   /** Google Fonts family names to load, e.g. ["Inter Tight", "Inter", "JetBrains Mono"]. */
   googleFamilies: string[];
-  /** @font-face rules for a brand's own font files (ADR-050). Google families load through googleFontsHref. */
+  /** @font-face rules for a brand's own font files (ADR-051). Google families load through googleFontsHref. */
   fontFaces?: { family: string; url: string; weight: string; style: 'normal' | 'italic' }[];
   /** Families whose italics are loaded too (for editorial emphasis: an <em> in a heading is a real italic). */
   italicFamilies?: string[];

@@ -1,4 +1,4 @@
-# ADR-050: A brand can use its own font, if the font passes six measured checks
+# ADR-051: A brand can use its own font, if the font passes six measured checks
 
 - **Status:** Accepted — **Anuj** (2026-10-05: any font that passes the checks, not an approved list; 2026-10-06: the
   four trade-offs below, the ₹ question, and the first example: Manrope, light and dark, and the failure messages).

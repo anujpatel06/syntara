@@ -1,6 +1,6 @@
 # Custom brand fonts — what "passes" means
 
-**Status:** approved by Anuj with the first example (2026-10-06). Decisions: ADR-050 (**Anuj**: any font that passes; Google name or
+**Status:** approved by Anuj with the first example (2026-10-06). Decisions: ADR-051 (**Anuj**: any font that passes; Google name or
 own file; one or two fonts; on failure, say why and list Google fonts that pass; measure in their Chrome or Edge).
 
 A brand can name its own font instead of picking one of the nine type pairs. Syntara accepts it only if every check
@@ -14,7 +14,7 @@ any machine and a failure can be explained in one plain sentence.
   one file per weight, or one variable file). For an own file, the licence is the brand's responsibility.
 - The **script** the brand writes in: `latin` (default), `arabic` or `devanagari`. Latin is always checked as well,
   because every brand shows Latin digits, SKUs and codes. The rupee sign ₹ is checked only for Hindi brands; other
-  brands' test text shows dollars (**Anuj**, 2026-10-06, ADR-050).
+  brands' test text shows dollars (**Anuj**, 2026-10-06, ADR-051).
 - Mono (code, numbers in tables) is not part of this. It stays JetBrains Mono, or IBM Plex Mono for Arabic.
 
 ## The checks
@@ -74,7 +74,7 @@ No error codes, no numbers without their meaning. Nothing is written to disk whe
 - A custom mono font.
 - Per-size line heights (ADR-031 left that to an RFC).
 
-## Trade-offs put to Anuj (answers in ADR-050)
+## Trade-offs put to Anuj (answers in ADR-051)
 
 1. **How a brand gives its font.**
    (a) Google Fonts name only — Syntara can fetch it, see its weights and scripts, and every Google font is free to

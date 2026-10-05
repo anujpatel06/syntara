@@ -6,7 +6,7 @@ import { ThemeScope } from '@syntara/react';
 /**
  * Brand preview: one brand file from apps/playground/brands/, light and dark side by side, in real component examples.
  *   /brand.html?brand=manrope
- * Made for judging a brand's own font (ADR-050): the brand files are written by `node scripts/check-font.mjs --out`.
+ * Made for judging a brand's own font (ADR-051): the brand files are written by `node scripts/check-font.mjs --out`.
  */
 const brands = import.meta.glob<{ default: BrandInput }>('../brands/*.json', { eager: true });
 const modules = import.meta.glob<{ default: ComponentType }>('../../docs/examples/*/*.tsx', { eager: true });

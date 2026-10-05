@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Checks a brand font against docs/design/custom-fonts.md (ADR-050) and prints the result in plain words.
+ * Checks a brand font against docs/design/custom-fonts.md (ADR-051) and prints the result in plain words.
  * Prototype entry for the first example; `npx syntara init --font` will call the same checkFont after Anuj approves.
  *
  *   node scripts/check-font.mjs Manrope                       a Google font, English

@@ -36,7 +36,7 @@ export function themeId(name) {
 /** The stylesheet for one brand: its fonts, then its tokens under [data-syntara-theme="<id>"]. */
 export function themeCss(theme, id) {
   const fonts = googleFontsHref(theme.typePair);
-  // A brand's own font files (ADR-050) come before the tokens; Google fonts load through the import.
+  // A brand's own font files (ADR-051) come before the tokens; Google fonts load through the import.
   const faces = fontFacesCSS(theme.typePair);
   return `@import url("${fonts}");\n\n${faces ? `${faces}\n\n` : ''}${toCSS(theme, { selector: `[data-syntara-theme="${id}"]` })}`;
 }
@@ -131,7 +131,7 @@ export const BRAND_FLAGS = /** @type {const} */ ({
 const CHOICES = { neutral: NEUTRALS, shape: SHAPES, typePair: TYPE_PAIR_IDS, density: DENSITIES };
 
 /** --flag value / --flag / -y. Unknown flags and bad values are reported with how to fix them, not ignored. */
-// A brand's own font (ADR-050). Files are comma-separated paths (from the project folder) or URLs.
+// A brand's own font (ADR-051). Files are comma-separated paths (from the project folder) or URLs.
 export const FONT_FLAGS = /** @type {const} */ ({
   '--font': 'font',
   '--font-file': 'fontFile',
@@ -219,7 +219,7 @@ async function choose(io, question, items, label) {
 
 const hexHint = 'Use a hex colour such as #2f5bea.';
 
-/* ------------------------------------------------------------------ a brand's own font (ADR-050) */
+/* ------------------------------------------------------------------ a brand's own font (ADR-051) */
 
 const OWN_FONT = 'own';
 const SCRIPT_LABELS = { latin: 'English, or another language written in Latin letters', arabic: 'Arabic', devanagari: 'Hindi' };
@@ -387,7 +387,7 @@ export async function runInit(argv, io) {
   io.say('');
   let { brand, fontRequest } = await askBrand(io, opts);
   const cssPath = opts.out ?? defaultCssPath(io.cwd);
-  // A brand's own font is accepted only if it passes (ADR-050). On a fail: the reasons, then pick again.
+  // A brand's own font is accepted only if it passes (ADR-051). On a fail: the reasons, then pick again.
   while (fontRequest) {
     const font = await measureFont(io, fontRequest, cssPath);
     if (font) {
