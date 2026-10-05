@@ -1312,13 +1312,22 @@
   .flip .featText {
     order: 0;
   }
-  .app,
   .app2 {
     display: none;
   }
+  /* narrow: the hero's window joins the flow under the copy and shrinks, whole, to the screen's width.
+     tan(atan2(a, b)) is a / b as a plain number, which zoom needs; zoom (unlike scale) shrinks the layout box too */
+  .app {
+    position: relative;
+    inset: auto;
+    translate: none;
+    /* the negative foot tucks the window's square bottom edge behind the hero's fade, as on desktop */
+    margin: var(--syntara-space-16) auto calc(var(--syntara-space-24) * -2);
+    zoom: tan(atan2(calc(100vw - var(--syntara-space-6) * 2), var(--l-app)));
+  }
   .hero {
     block-size: auto;
-    padding-block-end: calc(var(--syntara-space-24) * 3);
+    padding-block-end: 0;
   }
   .frame {
     block-size: auto;
