@@ -755,3 +755,260 @@
     --_hero-turn: -360deg;
   }
 }
+
+/* ------------------------------------------------------------------ *
+ * variant="cards" — ported from apps/docs/blocks/hero-cards (minus its menu bar and the in-card button). Centred
+ * copy over a fan of up to five cards rising from the bottom edge, each a different solved brand pair; two
+ * name-tagged cursors drift beside the headline. The fan opens wider under the pointer, the hovered card lifts, and
+ * the whole fan tilts toward the pointer.
+ * ------------------------------------------------------------------ */
+
+@property --_hero-tilt {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.root[data-variant='cards'] {
+  --_dir: 1;
+
+  justify-content: flex-start;
+  min-block-size: 0;
+  background:
+    radial-gradient(70% 45% at 50% 100%, color-mix(in oklab, var(--syntara-color-action-primary-bg) 22%, transparent), transparent),
+    var(--syntara-color-surface-canvas);
+  transition: --_hero-tilt calc(var(--syntara-motion-duration-slow) * 3) var(--syntara-motion-easing-out);
+}
+
+.root[data-variant='cards']:dir(rtl) {
+  --_dir: -1;
+}
+
+.root[data-variant='cards'] .copy {
+  position: relative;
+  z-index: 2;
+  max-inline-size: calc(var(--syntara-space-16) * 15); /* 960px: each half of the headline fits on one line */
+  padding-block: var(--syntara-space-12) var(--syntara-space-10);
+}
+
+/* Cursors: two name tags drifting in the margins beside the copy. Wide screens only: there is no room beside it
+   on narrow ones. */
+.cursor {
+  position: absolute;
+  z-index: 3;
+  display: none;
+  align-items: flex-start;
+  pointer-events: none;
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .cursor {
+    display: inline-flex;
+  }
+}
+
+.cursor[data-n='0'] {
+  --_bg: var(--syntara-color-action-primary-bg);
+  --_fg: var(--syntara-color-action-primary-fg);
+
+  inset-block-start: 22%;
+  inset-inline-start: 7%;
+}
+
+.cursor[data-n='1'] {
+  --_bg: var(--syntara-color-surface-inverse);
+  --_fg: var(--syntara-color-text-inverse);
+
+  inset-block-start: 32%;
+  inset-inline-end: 7%;
+  flex-direction: row-reverse;
+}
+
+.cursorArrow {
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+  fill: var(--_bg);
+  filter: drop-shadow(0 1px 1px color-mix(in oklab, var(--syntara-color-text-default) 25%, transparent));
+}
+
+/* The arrow points into the page from either side, whatever the reading direction. */
+.cursor[data-n='1'] .cursorArrow {
+  scale: -1 1;
+}
+
+/* Text on a solved pair (primary fg on primary bg; inverse text on inverse surface). */
+.cursorName {
+  margin-block-start: var(--syntara-space-4);
+  padding-block: var(--syntara-space-1);
+  padding-inline: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-pill);
+  background-color: var(--_bg);
+  color: var(--_fg);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  box-shadow: var(--syntara-shadow-raised);
+  white-space: nowrap;
+}
+
+/* The fan: cards turned about a point below them. --k is -2…2 from the middle; the middle card sits highest and in
+   front. Opens wider when the pointer is over it. */
+.fan {
+  --_cardW: 46cqi;
+  --_spread: 20cqi;
+  --_angle: 7deg;
+
+  position: relative;
+  inline-size: 100%;
+  block-size: calc(var(--_cardW) * 4 / 3 * 0.9);
+  margin-block-start: var(--syntara-space-4);
+}
+
+@container syntara-hero (min-width: 640px) {
+  .fan {
+    --_cardW: 30cqi;
+    --_spread: 15cqi;
+  }
+}
+
+@container syntara-hero (min-width: 1024px) {
+  .fan {
+    --_cardW: 21cqi;
+    --_spread: 13cqi;
+  }
+}
+
+.fan:hover {
+  --_spread: calc(var(--_cardW) * 0.78);
+  --_angle: 9deg;
+}
+
+.fanCard {
+  position: absolute;
+  inset-block-start: var(--syntara-space-8);
+  inset-inline-start: calc(50% - var(--_cardW) / 2);
+  z-index: calc(10 - var(--k) * var(--k));
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  inline-size: var(--_cardW);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: calc(var(--syntara-radius-container) * 1.6);
+  background-color: var(--_bg);
+  color: var(--_fg);
+  text-align: start;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--_fg) 14%, transparent),
+    var(--syntara-shadow-overlay),
+    0 var(--syntara-space-8) var(--syntara-space-16) calc(var(--syntara-space-4) * -1) color-mix(in oklab, var(--_bg) 70%, transparent);
+  transform-origin: 50% 140%;
+  transform:
+    translateX(calc(var(--k) * var(--_spread) * var(--_dir)))
+    translateY(calc(var(--k) * var(--k) * var(--syntara-space-4)))
+    rotate(calc(var(--k) * var(--_angle) * var(--_dir) + var(--_hero-tilt)));
+}
+
+/* Five colour pairs the engine has already solved for readable text, so the title sits straight on the card in any
+   brand: accent, the dark inverse, primary (the middle card), and two lighter tints. */
+.fanCard[data-n='0'] { --_bg: var(--syntara-color-accent-bg); --_fg: var(--syntara-color-accent-fg); }
+.fanCard[data-n='1'] { --_bg: var(--syntara-color-surface-inverse); --_fg: var(--syntara-color-text-inverse); }
+.fanCard[data-n='2'] { --_bg: var(--syntara-color-action-primary-bg); --_fg: var(--syntara-color-action-primary-fg); }
+.fanCard[data-n='3'] { --_bg: var(--syntara-color-accent-subtle); --_fg: var(--syntara-color-accent-text); }
+.fanCard[data-n='4'] { --_bg: var(--syntara-color-action-secondary-bg); --_fg: var(--syntara-color-action-secondary-fg); }
+
+.fanCard:hover {
+  z-index: 20;
+  transform:
+    translateX(calc(var(--k) * var(--_spread) * var(--_dir)))
+    translateY(calc(var(--k) * var(--k) * var(--syntara-space-4) - var(--syntara-space-10)))
+    rotate(calc(var(--k) * var(--_angle) * var(--_dir) * 0.6 + var(--_hero-tilt)))
+    scale(1.04);
+}
+
+.fanLabel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--syntara-space-1);
+  padding: var(--syntara-space-5) var(--syntara-space-5) 0;
+}
+
+.fanTitle {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-2xl);
+  font-weight: var(--syntara-font-weight-bold);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-tracking-2xl);
+}
+
+.fanMeta {
+  font-size: var(--syntara-font-size-sm);
+}
+
+/* The picture runs edge to edge and fades up into the card's colour. The mask reads alpha alone. */
+.fanImage {
+  display: block;
+  inline-size: 100%;
+  block-size: calc(100% + var(--syntara-space-6));
+  margin-block-start: calc(var(--syntara-space-6) * -1);
+  object-fit: cover;
+  mask-image: linear-gradient(to bottom, transparent, var(--syntara-color-text-default) 30%);
+  user-select: none;
+}
+
+/* The pause toggle sits above the fan, on a frosted chip so it reads over a card. */
+.root[data-variant='cards'] .pause {
+  z-index: 30;
+  background-color: color-mix(in oklab, var(--syntara-color-surface-default) 70%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .fanCard {
+    transition: transform calc(var(--syntara-motion-duration-slow) * 1.5) var(--syntara-motion-easing-out);
+  }
+
+  .fanImage {
+    transition: scale calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
+  }
+
+  .fanCard:hover .fanImage {
+    scale: 1.06;
+  }
+
+  .cursor[data-n='0'] {
+    animation: syntara-hero-drift-a calc(var(--syntara-motion-duration-slow) * 22) ease-in-out infinite alternate;
+  }
+
+  .cursor[data-n='1'] {
+    animation: syntara-hero-drift-b calc(var(--syntara-motion-duration-slow) * 28) ease-in-out infinite alternate;
+  }
+
+  .root[data-paused] .cursor {
+    animation-play-state: paused;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root[data-variant='cards'] {
+    transition: none;
+  }
+}
+
+@keyframes syntara-hero-drift-a {
+  50% {
+    translate: var(--syntara-space-10) calc(var(--syntara-space-6) * -1);
+  }
+
+  to {
+    translate: var(--syntara-space-4) var(--syntara-space-8);
+  }
+}
+
+@keyframes syntara-hero-drift-b {
+  50% {
+    translate: calc(var(--syntara-space-8) * -1) var(--syntara-space-6);
+  }
+
+  to {
+    translate: calc(var(--syntara-space-3) * -1) calc(var(--syntara-space-8) * -1);
+  }
+}

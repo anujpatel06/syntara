@@ -68,4 +68,4 @@ doesn't help consumers, who can't install blocks (ADR-011 revision: the registry
 - [x] Changeset
 - [x] `orbit` (Anuj approved 2026-10-04, after asking for a white button at the centre)
 - [x] `gallery` (Anuj approved 2026-10-04; the Hero page now opens with every style side by side, each linking to its own page)
-- [ ] `cards`
+- [x] `cards` (Card fan; Anuj approved 2026-10-05). All four styles shipped.
