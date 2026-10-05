@@ -91,6 +91,44 @@ checkout).
   `axe-sweep` 0 violation nodes over 144 × 2; `check-overlay-exit` 0 of 112.
 - Not run: `/screenshots`. No docs page or component changed.
 
+**Changed — second PR, `feat/syntara-init-docs` (people can find the command)**
+- Anuj: "how will people know to put init command". It now shows on the homepage hero and the "One install" card
+  (`npm install syntara`, then `npx syntara init`), in the FAQ, as step 2 on `/docs/installation`, and on `/themes`
+  Export as **Use in your app**: the full command for the theme on screen (`components/themes/use-command.ts`), so only
+  the name is asked. Colours go without "#" (a shell comment otherwise).
+- `AGENTS.md` and the MCP server's instructions tell agents to run `npx syntara init` instead of writing a theme
+  (changeset `@syntara/mcp` patch). The eval's "MCP + AGENTS.md" arm (64% vs 88%) measured the earlier text.
+- `InstallCommand` keeps `--flag value` on one line when a command wraps.
+- The hero's app window moved down 32px to make room for the second command. **Anuj** ("add the space").
+
+**Released**
+- #73 merged (`fdfb2f2`); release PR #76 (`pnpm changeset version`, `638d0fe`) merged by Anuj. Anuj chose to release
+  `@syntara/react` too ("Both"). `pnpm changeset publish` from `main` needed npm's web approval, which Anuj gave in the
+  Terminal panel. `npm view syntara version` → 0.2.0, `npm view @syntara/react version` → 0.3.0; `syntara`'s `bin` and
+  `@syntara/react ^0.3.0` dependency confirmed with `npm view`. Tags `syntara@0.2.0` and `@syntara/react@0.3.0` pushed.
+- From npm, in an empty folder: `npx -y syntara@0.2.0 init --yes --name "Fresh Test" --no-install` → 118 of 118
+  contrast checks, `src/syntara-theme.css` written.
+- `main`'s branch protection no longer requires pull requests to be up to date (Anuj changed it in GitHub settings;
+  Claude Code's guard blocked Claude from doing it). Both required checks stay. Merge queue is not available: the repo
+  is owned by a personal account (`owner.type` "User"), and GitHub offers it only to organizations.
+- #72 and #74 (other sessions) were behind `main` after #73; updated on GitHub (`gh pr update-branch`), no conflicts.
+
+**Decided (second PR)**
+- Show both lines on the homepage; the four places above plus agents. **Claude recommended, Anuj accepted.**
+- The site PR merges only after `syntara` with `init` is on npm (`npm view syntara version`), so the site never shows
+  a command that fails (ADR-047's rule). **Claude**.
+
+**Results (second PR)**
+- `packages/syntara/test/use-command.test.ts`: the `/themes` command for each of the five looks parses and rebuilds the
+  same theme, and no word starts with "#". `syntara` 38/38, `@syntara/mcp` 193/193.
+- `/verify` on `feat/syntara-init-docs`: typecheck clean; `pnpm test` all 8 packages pass (README one-install count
+  → 38 via `check-test-counts --fix`); fuzz 118,000/118,000; check:meta exit 0 (existing hero warning); registry 82;
+  override weight 0; docs build 316/316; `check-ssr-tabs` 0 of 315. Shipped: the window rule
+  `calc(var(--syntara-space-24) * 5.2 + var(--syntara-space-8))` found in the built CSS; "brand’s tokens" in
+  `out/docs/installation.html`. Served on :3079 (build id `5y2NOynW2Q3-Ys2iYbIpw` checked, port confirmed with `lsof`): `check-hydration` 0 of 288; `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144; `axe-sweep` 0 violation nodes over 144 × 2; `check-overlay-exit` 0 of 112.
+- `/screenshots` (temp folder): home 1440 and 390, `/themes` Export for Vela light, Harbor dark, Qamar, Care at 390,
+  `/docs/installation` light and dark 390. Found and fixed: a flag split from its value at 1280px.
+
 **Next**
 - **Repo tenants (next session):** about 19 non-test files name tenants by hand
   (`grep -rlE "['\"](vela|harbor|qamar|haat)['\"]" apps packages scripts evals`, minus tests); find the ones that

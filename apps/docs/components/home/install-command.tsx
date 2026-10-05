@@ -4,6 +4,17 @@ import type { ReactNode } from 'react';
 import { CopyButton } from '@/components/mdx/code-frame';
 import styles from './install-command.module.css';
 
+/** Splits a command into unbreakable pieces: each word, except that `--flag value` stays one piece. */
+function words(command: string): string[] {
+  const out: string[] = [];
+  for (const word of command.split(' ')) {
+    const last = out[out.length - 1];
+    if (last !== undefined && /^--\S+$/.test(last) && !word.startsWith('-')) out[out.length - 1] = `${last} ${word}`;
+    else out.push(word);
+  }
+  return out;
+}
+
 /** A one-line shell command with a copy button. The command reads left to right on any page. */
 export function InstallCommand({
   command,
@@ -44,9 +55,9 @@ export function InstallCommand({
              benefit on one line of text. */
           <span className={styles.highlighted} dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
-          /* Breaks only between words, never inside a package name. */
+          /* Breaks only between words, never inside a package name, and never between a flag and its value. */
           <span className={styles.words}>
-            {command.split(' ').map((word, i) => (
+            {words(command).map((word, i) => (
               <span key={i} className={styles.word}>
                 {word}
               </span>

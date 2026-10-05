@@ -121,9 +121,12 @@ export function Landing() {
                     <p className={`${styles.small} ${styles.planDesc}`}>
                       Every component, the icon set, the tokens for every brand and the theme engine.
                     </p>
-                    <InstallCommand command="npm install syntara" block />
+                    <div className={styles.planCommands}>
+                      <InstallCommand command="npm install syntara" block />
+                      <InstallCommand command="npx syntara init" label="Copy the brand setup command" block />
+                    </div>
                   </div>
-                  {ticks(['Components built on React Aria', 'The Syntara icon set', 'Tokens for every brand, light and dark', 'The theme engine', 'One stylesheet: syntara/styles.css'])}
+                  {ticks(['Components built on React Aria', 'The Syntara icon set', 'Tokens for every brand, light and dark', 'Your own brand in a minute: syntara init', 'The theme engine', 'One stylesheet: syntara/styles.css'])}
                 </div>
               </div>
               <div className={`${styles.lit} ${styles.plan}`} data-lit="" data-reveal="5">

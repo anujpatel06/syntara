@@ -3,11 +3,13 @@
 import { IconFileCode } from '@syntara/icons';
 import { Radio, RadioGroup, Tab, TabList, TabPanel, Tabs, ToggleButton, ToggleButtonGroup } from '@syntara/react';
 import { toCSS, toDTCG, toFigmaFiles, type FigmaModes, type Theme } from '@syntara/theme-engine';
-import { useDeferredValue, useMemo, useState, type ReactNode } from 'react';
+import { useDeferredValue, useId, useMemo, useState, type ReactNode } from 'react';
 import type { Key, Selection } from 'react-aria-components';
+import { InstallCommand } from '@/components/home/install-command';
 import { CodeViewer, type ExportFile } from './code-viewer';
 import { FIGMA_MODES, FORMATS, oneOf, type ExportFormat } from './state';
 import { useThemes } from './themes-provider';
+import { initCommand } from './use-command';
 import styles from './panels.module.css';
 
 const FORMAT_LABEL: Record<ExportFormat, string> = {
@@ -111,49 +113,71 @@ export function ExportPanel() {
   const format = state.format;
   const figmaModes = state.figmaModes;
   const files = useMemo(() => buildFiles(theme, format, slug, figmaModes), [theme, format, slug, figmaModes]);
+  const command = initCommand(theme.input);
+  const appId = useId();
+  const filesId = useId();
 
   return (
-    <Tabs
-      variant="pill"
-      selectedKey={format}
-      onSelectionChange={(key: Key) => {
-        const next = oneOf(String(key), FORMATS);
-        if (next) dispatch({ type: 'setFormat', format: next });
-      }}
-      className={styles.exportTabs}
-    >
-      <TabList aria-label="Export format">
-        {FORMATS.map((f) => (
-          <Tab key={f} id={f}>
-            {FORMAT_LABEL[f]}
-          </Tab>
-        ))}
-      </TabList>
-      {FORMATS.map((f) => (
-        <TabPanel key={f} id={f} className={styles.exportPanel}>
-          <p className={styles.sub}>{NOTES[f]}</p>
-          {f === 'figma' && (
-            <RadioGroup
-              label="Figma plan"
-              description={FIGMA_PLAN_NOTE[figmaModes]}
-              orientation="horizontal"
-              value={figmaModes}
-              onChange={(value) => {
-                const next = oneOf(value, FIGMA_MODES);
-                if (next) dispatch({ type: 'setFigmaModes', figmaModes: next });
-              }}
-              className={styles.figmaPlan}
-            >
-              {FIGMA_PLAN_ORDER.map((m) => (
-                <Radio key={m} value={m}>
-                  {FIGMA_PLAN_LABEL[m]}
-                </Radio>
-              ))}
-            </RadioGroup>
-          )}
-          <Files files={files} />
-        </TabPanel>
-      ))}
-    </Tabs>
+    <div className={styles.stack}>
+      <section className={styles.section} aria-labelledby={appId}>
+        <div className={styles.sectionHead}>
+          <h2 id={appId} className={styles.h2}>
+            Use in your app
+          </h2>
+          <p className={styles.sub}>
+            Run this in your React project. It asks only your brand’s name, writes this theme with every contrast check
+            passing, and tells you the two lines to add.
+          </p>
+        </div>
+        <InstallCommand command={command} label="Copy the setup command" block />
+      </section>
+      <section className={styles.section} aria-labelledby={filesId}>
+        <h2 id={filesId} className={styles.h2}>
+          Or take the token files
+        </h2>
+        <Tabs
+          variant="pill"
+          selectedKey={format}
+          onSelectionChange={(key: Key) => {
+            const next = oneOf(String(key), FORMATS);
+            if (next) dispatch({ type: 'setFormat', format: next });
+          }}
+          className={styles.exportTabs}
+        >
+          <TabList aria-label="Export format">
+            {FORMATS.map((f) => (
+              <Tab key={f} id={f}>
+                {FORMAT_LABEL[f]}
+              </Tab>
+            ))}
+          </TabList>
+          {FORMATS.map((f) => (
+            <TabPanel key={f} id={f} className={styles.exportPanel}>
+              <p className={styles.sub}>{NOTES[f]}</p>
+              {f === 'figma' && (
+                <RadioGroup
+                  label="Figma plan"
+                  description={FIGMA_PLAN_NOTE[figmaModes]}
+                  orientation="horizontal"
+                  value={figmaModes}
+                  onChange={(value) => {
+                    const next = oneOf(value, FIGMA_MODES);
+                    if (next) dispatch({ type: 'setFigmaModes', figmaModes: next });
+                  }}
+                  className={styles.figmaPlan}
+                >
+                  {FIGMA_PLAN_ORDER.map((m) => (
+                    <Radio key={m} value={m}>
+                      {FIGMA_PLAN_LABEL[m]}
+                    </Radio>
+                  ))}
+                </RadioGroup>
+              )}
+              <Files files={files} />
+            </TabPanel>
+          ))}
+        </Tabs>
+      </section>
+    </div>
   );
 }
