@@ -712,7 +712,8 @@
     animation: rise calc(var(--syntara-motion-duration-slow) * 2) var(--syntara-motion-easing-out);
   }
 }
-/* the components index inside the window: its group heading and a 3-column grid of its cards */
+/* the components index inside the window: its group heading and as many columns of cards as fit, at least 192px
+   wide each, so a card's title and badge share a line (3 on a desktop window, 1 on a phone) */
 .winHeading {
   margin: 0;
   font-size: var(--syntara-font-size-lg);
@@ -721,7 +722,7 @@
 }
 .winGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--syntara-space-16) * 3)), 1fr));
   gap: var(--syntara-space-3);
   margin: 0;
   padding: 0;
