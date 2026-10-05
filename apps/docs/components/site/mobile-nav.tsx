@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MAIN_NAV, activeMainNav } from '@/lib/site';
 import type { NavGroup } from '@/lib/nav';
+import { DOC_ICONS } from '../docs/doc-icons';
 import styles from './mobile-nav.module.css';
 
 /** Below 768px the header nav and the docs sidebar move into a sheet from the start edge. */
@@ -44,7 +45,9 @@ export function MobileNav({ groups }: { groups: NavGroup[] }) {
                     <div key={section.label ?? i} className={styles.section}>
                       {section.label && <p className={styles.sectionLabel}>{section.label}</p>}
                       <ul className={styles.list}>
-                        {section.items.map((item) => (
+                        {section.items.map((item) => {
+                          const Icon = DOC_ICONS[item.href];
+                          return (
                           <li key={item.href}>
                             <Link
                               href={item.href}
@@ -52,10 +55,12 @@ export function MobileNav({ groups }: { groups: NavGroup[] }) {
                               className={styles.link}
                               aria-current={pathname === item.href ? 'page' : undefined}
                             >
+                              {Icon && <Icon aria-hidden="true" className={styles.icon} />}
                               {item.title}
                             </Link>
                           </li>
-                        ))}
+                          );
+                        })}
                       </ul>
                     </div>
                   ))}

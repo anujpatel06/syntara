@@ -6,6 +6,31 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-05 — Icons on the docs sidebar's guide pages
+
+**Changed**
+- The 15 guide pages in the docs sidebar (Introduction … Changelog) carry an `@syntara/icons` glyph, desktop
+  sidebar and mobile sheet both. Map in `apps/docs/components/docs/doc-icons.ts`, keyed by href. Icons sit at the
+  label's size in the subtle text colour and lift to the default colour on hover and on the current page.
+
+**Decided**
+- Guide pages only; the 58 component names stay text (Claude recommended, Anuj accepted). Many components have no
+  honest icon match, and a glyph on every row of a long list adds noise instead of making it easier to scan.
+
+**Results**
+- Steps 1–6a passed: `pnpm typecheck`; `pnpm test` plus `node scripts/check-test-counts.mjs` → 2,240 tests across
+  7 packages, none failing, matching the README; `pnpm test:themes` → 118,000/118,000 checks, median adjustments 4;
+  `pnpm check:meta` → 58/58 (one warning, already on main: `hero-styles.tsx` isn't listed in `meta.examples`);
+  `pnpm registry` → 82 items ok; `node scripts/check-override-weight.mjs` → clean.
+- Steps 7–8: `pnpm --filter @syntara/docs build` → 316/316 pages; `node scripts/check-ssr-tabs.mjs` → 0 missing panels.
+- Proof the change is in the build: `apps/docs/out/docs/installation.html` contains `href="/docs/rtl"><svg`.
+- Step 9 (build H6GJCQE8a3NKM2FA5ynLF): `check-hydration` → 0 failures out of 288 loads; `check-theme-links` → 0 out of 5;
+  `check-narrow-overflow` → 0 pages scrolling sideways out of 288; `check-csp` → 0 failures out of 144.
+  `axe-sweep` → 0 violation nodes (144 routes × 2 schemes); `check-overlay-exit` → 0 failures (108 tooltips, 4 menus/popovers).
+
+**Next**
+- 21st.dev listing, and the open questions page, are unchanged from the entry below.
+
 ## 2026-10-05 — Install check, machine cleanup, stranded edits saved
 
 **Changed**
