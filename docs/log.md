@@ -43,6 +43,38 @@ Branch `feat/og-preview-image`, from `main` at 8240ffc.
   the next release, with a changeset.
 - After deploy, re-read `https://syntara.live` in LinkedIn's Post Inspector so it drops the cube picture.
 
+## 2026-10-05 — The hero's app window on phones
+
+Branch `fix/landing-phone-banner`, from `main` at 8240ffc.
+
+**Changed**
+- **The landing hero's app window shows below 1080px** (`apps/docs/components/landing/landing.module.css`). It was
+  `display: none` there. Now it joins the flow under the install command and is shrunk whole to the screen's width
+  with `zoom` (the number comes from `tan(atan2(100vw − gutters, --l-app))`, so no script). A negative bottom margin
+  tucks its square foot behind the hero's fade, as on desktop. The closing section's window (`.app2`) stays hidden.
+
+**Decided**
+- Shrink the whole window rather than show only the slideshow or keep it hidden. **Claude recommended, Anuj accepted**
+  (approved the 390px screenshot).
+
+**Results**
+- 375px viewport, dev server: window 24px → 351px wide, `zoom` 0.340625, page width 375px (no sideways scroll)
+  (`getBoundingClientRect` / `getComputedStyle` in the browser pane).
+- Shipped: `grep -rl atan2 apps/docs/out/_next/static` → the landing CSS chunk.
+- `/verify`: typecheck clean; `pnpm test` 2,249 tests across 8 packages, none failing (`node scripts/check-test-counts.mjs
+  --from <test output>`); `pnpm test:themes` 118,000/118,000, median adjustments 4, report unchanged apart from timings;
+  `pnpm check:meta` 58/58 (existing warning: `hero-styles.tsx` not in hero's meta.examples); `pnpm registry` 82 items;
+  `node scripts/check-override-weight.mjs` 0; docs build 316/316 pages; `node scripts/check-ssr-tabs.mjs` 0 of 315.
+  Served on :3413 (`SYNTARA_BASE_URL`, build zy8e7bOmxEnYheV3-_kQU): `check-hydration` 0 of 288; `check-theme-links`
+  0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144; `axe-sweep` 0 violation nodes over 144 × 2;
+  `check-overlay-exit` 0 of 112.
+- Not run: the `/screenshots` sweep.
+
+**Next**
+- On phones the slideshow's pause button now sits over the window's bottom-right corner.
+- A faint line shows where the hero meets the next section at phone width; not investigated.
+- At 375px the window is about a third of desktop size; its sidebar text is decorative, not readable.
+
 ## 2026-10-05 — The footer's wordmark, centred
 
 Branch `fix/footer-wordmark-centred`, cut from `main` at f14e33a.
