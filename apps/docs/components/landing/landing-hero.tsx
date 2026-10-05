@@ -13,10 +13,13 @@ import type { LandingTenant } from './landing-data';
 import styles from './landing.module.css';
 
 const SLIDE_MS = 5200;
-/** The one-install package (packages/syntara): components, icons, every brand's tokens and the theme engine. */
-const HERO_INSTALL = 'npm install syntara';
-/** Then your own brand in a minute: questions with suggested answers, or a starting look (ADR-049). */
+/**
+ * The one command to run (Anuj, 2026-10-06: one command, not two side by side). It asks about your brand or
+ * offers a starting look (ADR-049), writes the theme, installs the `syntara` package and adds it to your app.
+ */
 const HERO_INIT = 'npx syntara init';
+/** For someone who only wants the package: shown as quiet, selectable text under the command. */
+const HERO_INSTALL = 'npm install syntara';
 /** Each Hero is laid out at this desktop width, then scaled to the window, so the slides show the real wide layout. */
 const DESKTOP = 1200;
 const PREVIEW_H = 760;
@@ -161,11 +164,11 @@ export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
           <Link href="/docs/installation" className={styles.cta}>
             Get started
           </Link>
-          <div className={styles.heroCommands}>
-            <InstallCommand command={HERO_INSTALL} label="Copy the install command" className={styles.heroInstall} />
-            <InstallCommand command={HERO_INIT} label="Copy the brand setup command" className={styles.heroInstall} />
-          </div>
+          <InstallCommand command={HERO_INIT} label="Copy the setup command" className={styles.heroInstall} />
         </div>
+        <p className={styles.heroAlt}>
+          Just the package? <code className={styles.heroAltCode}>{HERO_INSTALL}</code>
+        </p>
       </div>
 
       <p className="visually-hidden">

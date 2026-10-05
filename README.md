@@ -43,7 +43,7 @@ Every number comes from a script. Run the command to reproduce it.
 | Solver adjustments per brand | median 4, max 7 | `pnpm test:themes` |
 | Components / blocks | 53 / 7 | `pnpm check:meta`; blocks listed in `apps/docs/blocks/blocks.json` |
 | Component maturity | 18 alpha · 35 beta · 0 stable | `pnpm check:meta` |
-| Tests | 547 components · 310 engine · 959 icons · 193 MCP server · 150 schema · 77 auditor · 8 codemods · 38 one-install | `pnpm test` |
+| Tests | 547 components · 310 engine · 959 icons · 193 MCP server · 150 schema · 77 auditor · 8 codemods · 62 one-install | `pnpm test` |
 | Docs routes swept with axe (light + dark) | 113 × 2, 0 violations, 0 page errors | `node scripts/axe-sweep.mjs` (with the built docs site running) |
 | Tenants rendering from one codebase | 6: Latin, Arabic (right to left) and Hindi | `pnpm tokens` |
 | Contrast re-checked on exported native tokens | 236 / 236 per tenant | `pnpm tokens` |
@@ -57,7 +57,18 @@ Every number comes from a script. Run the command to reproduce it.
 Measured 2026-09-30. The agent eval's first attempt was invalid and is kept on record; its numbers aren't quoted here.
 <!-- numbers:end -->
 
-## Quick start
+## Use it in your app
+
+```sh
+npx syntara init
+```
+
+One command does the whole setup. It asks about your brand (or lets you pick a starting look), writes a checked light
+and dark theme, installs the `syntara` package, and adds it to your app's entry file. It shows each change and asks
+first; `--no-edit` leaves your files alone. Just the package: `npm install syntara`. Full steps:
+[syntara.live/docs/installation](https://syntara.live/docs/installation).
+
+## Quick start (this repo)
 
 Node 22 and pnpm 10 (`corepack enable`).
 
@@ -80,7 +91,7 @@ packages/icons/          Syntara's own icon set
 packages/tokens/         built tokens for every tenant: CSS, DTCG, Figma
 packages/codemods/       one codemod per breaking change
 packages/audit/          drift auditor: finds off-system code and suggests the fix
-packages/syntara/        `npm install syntara`: components, icons, tokens and theme engine in one install
+packages/syntara/        `npx syntara init`: components, icons, tokens and theme engine in one package, set up by one command
 packages/mcp/            MCP server for AI coding agents, read-only
 packages/sdui/           server-driven UI: schema per component, validator, web renderer
 evals/                   agent eval: prompts, harness, runs and results
