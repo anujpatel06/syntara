@@ -24,6 +24,16 @@ const iconOf = (name: string): Icon | undefined => (ICONS[name]?.iconName ? ICON
 
 const SIZES = ['16', '20', '24', '32'] as const;
 
+/** The style filter. Filled and duotone are their own source groups; every other group is outline. */
+const STYLES = [
+  { id: 'all', label: 'All' },
+  { id: 'outline', label: 'Outline' },
+  { id: 'filled', label: 'Filled' },
+  { id: 'duotone', label: 'Duotone' },
+] as const;
+type Style = (typeof STYLES)[number]['id'];
+const styleOf = (groupId: string): Style => (groupId === 'filled' || groupId === 'duotone' ? groupId : 'outline');
+
 const normalise = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 /**
@@ -89,6 +99,7 @@ export interface IconGalleryProps {
 export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
   const [query, setQuery] = useState('');
   const [size, setSize] = useState<string>('24');
+  const [style, setStyle] = useState<Style>('all');
   const [stroke, setStroke] = useState(defaultStroke);
   const galleryRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
@@ -97,11 +108,12 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
   const total = groups.reduce((n, g) => n + g.names.length, 0);
   const filtered = useMemo(() => {
     const q = normalise(query);
-    if (!q) return groups;
-    return groups
+    const inStyle = style === 'all' ? groups : groups.filter((g) => styleOf(g.id) === style);
+    if (!q) return inStyle;
+    return inStyle
       .map((g) => ({ ...g, names: g.names.filter((n) => normalise(n.replace(/^Icon/, '')).includes(q)) }))
       .filter((g) => g.names.length > 0);
-  }, [groups, query]);
+  }, [groups, query, style]);
   const shown = filtered.reduce((n, g) => n + g.names.length, 0);
 
   const copy = async (name: string) => {
@@ -127,6 +139,22 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
           className={styles.search}
         />
         <div className={styles.tools}>
+          <ToggleButtonGroup
+            aria-label="Icon style"
+            size="sm"
+            disallowEmptySelection
+            selectedKeys={[style]}
+            onSelectionChange={(keys) => {
+              const [k] = keys;
+              if (k != null) setStyle(k as Style);
+            }}
+          >
+            {STYLES.map((s) => (
+              <ToggleButton key={s.id} id={s.id}>
+                {s.label}
+              </ToggleButton>
+            ))}
+          </ToggleButtonGroup>
           <ToggleButtonGroup
             aria-label="Preview size in pixels"
             size="sm"
@@ -159,6 +187,11 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
         {query ? (
           <>
             <strong>{shown}</strong> of {total} icons match “{query}”
+          </>
+        ) : style !== 'all' ? (
+          <>
+            <strong>{shown}</strong> {style} icons, shown at {size}px with a {stroke.toFixed(2)} stroke. Click one to
+            copy its import.
           </>
         ) : (
           <>

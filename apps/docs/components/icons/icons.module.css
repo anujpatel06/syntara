@@ -429,3 +429,9 @@
   font-family: var(--syntara-font-mono);
   font-size: var(--syntara-font-size-xs);
 }
+
+/* The site theme is greyscale, so its accent is grey and a duotone tint read as plain black and white. The gallery
+   paints the second tone in the theme's blue so a duotone icon is recognisable at a glance. */
+.gallery {
+  --syntara-icon-tint: color-mix(in oklab, var(--syntara-color-feedback-info-solid) 45%, transparent);
+}
