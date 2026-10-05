@@ -4,9 +4,55 @@
     {
       "name": "docs",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd apps/docs && exec ./node_modules/.bin/next dev --port 3000"],
+      "runtimeArgs": [
+        "-c",
+        "cd apps/docs && exec ./node_modules/.bin/next dev --port 3000"
+      ],
       "port": 3000,
       "url": "http://localhost:3000"
+    },
+    {
+      "name": "docs-3142",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/docs && NEXT_DIST_DIR=.next-showcase exec ./node_modules/.bin/next dev --port 3142"
+      ],
+      "port": 3142,
+      "url": "http://localhost:3142"
+    },
+    {
+      "name": "docs-announcer",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/anujpatel/projects/strata/.claude/worktrees/ai-announcer/apps/docs && NEXT_DIST_DIR=.next-announcer exec ./node_modules/.bin/next dev --port 3191"
+      ],
+      "port": 3191,
+      "url": "http://localhost:3191"
+    },
+    {
+      "name": "docs-marketing",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/anujpatel/projects/strata-marketing/apps/docs && NEXT_DIST_DIR=.next-marketing exec ./node_modules/.bin/next dev --port 3207"
+      ],
+      "port": 3207,
+      "url": "http://localhost:3207"
+    },
+    {
+      "name": "hero-explore",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4710",
+        "-d",
+        "/private/tmp/claude-501/-Users-anujpatel-projects-strata/117bc2f7-723f-4b82-90be-4817328fcf4b/scratchpad"
+      ],
+      "port": 4710,
+      "url": "http://localhost:4710"
     }
   ]
 }
