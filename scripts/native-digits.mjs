@@ -47,7 +47,8 @@ for (const f of FILES) {
   const file = `${root}${f.path}`;
   const data = JSON.parse(readFileSync(file, 'utf8'));
   const walk = (o, key) => {
-    if (SKIP_KEYS.has(key)) return o;
+    // a skipped key protects a value, not a whole section: `details.date` is an object whose `description` is copy
+    if (SKIP_KEYS.has(key) && (typeof o === 'string' || key === 'copyReview')) return o;
     if (typeof o === 'string') {
       const n = nativeDigits(o, f.system);
       if (n !== o) changed++;
