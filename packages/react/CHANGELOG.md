@@ -1,5 +1,119 @@
 # @syntara/react
 
+## 0.2.0
+
+### Minor Changes
+
+- 2557e70: Remove the top-edge highlight from every solid fill (ADR-039).
+
+  `--syntara-shadow-highlight` drew a 1px white line along the top edge of solid fills — the "pressable key" look from
+  the v0.3 tactile pass. It is gone from all 19 components that used it: Button, Badge, Chip, Checkbox, Switch, Radio,
+  Slider, Progress, Steps, Kbd, Tooltip, Avatar, Chart, FileUpload, IconTile, Pagination, Sidebar, Tabs, ToggleGroup.
+
+  **This changes light mode as well as dark** — the highlight was present in both, and strongest in light (20% vs 12%).
+  Depth on a solid fill is now the raised shadow alone. Secondary, outline and ghost variants never carried it and are
+  unchanged.
+
+  Text contrast is unaffected: the highlight sat on the fill's top edge, never behind a label.
+
+  The engine still emits `--syntara-shadow-highlight` unchanged, so the published theme contract does not move, but
+  nothing in the library uses it any more.
+
+- aa8222b: Add `Footer`, `FooterColumn`, `FooterLink`, `FooterSocialLink` and `FooterStatus`: a site footer with an oversized wordmark cut off by a hairline horizon, each letter lighting up under the pointer, over an aside and columns of links.
+- 8cf9136: `Hero` gains `variant="cards"` (Card fan), the fourth and last style from RFC-003: centred copy over a fan of up to
+  five `cards` rising from the bottom edge, each a title and a small label straight on a different solved brand pair
+  (accent, inverse, primary in the middle, two tints), over an optional picture. Two optional `cursors` drift beside the
+  headline on wide screens. The fan spreads under the pointer, the hovered card lifts and the fan tilts toward the
+  pointer; reduced motion keeps the hover lift but drops the drift and tilt. Cards and cursors are decoration
+  (`aria-hidden`).
+- 16f45a5: `Hero` (alpha): **the default `scheme` changed from `"dark"` to `"inherit"`**, so the hero follows the page's light or
+  dark scheme (ADR-046, decided by Anuj). Pass `scheme="dark"` to keep the always-dark look. In light, aurora's lights
+  glow at full strength around the copy, which sits on a soft, blurred veil of the page colour (90% in light, 77% in dark: the dark veil also fixes
+  text.subtle falling to 2.2:1 under the pointer light in dark); text.default and text.subtle
+  stay at 4.5:1 or more over every combination of the lights, for every tenant and the engine's 1,000 fuzz brands
+  (`hero.test.tsx`). Alpha components may change their API in any release (GOVERNANCE.md §5), so there is no codemod.
+- 1a41bbf: `Hero` gains `variant="gallery"`: your `images` on a curved wall that turns slowly between the headline and the
+  description, small and hazy straight ahead, tall at the sides, with two brand-colour tiles. It leans toward the pointer
+  and turns the other way in right-to-left; the pause toggle and reduced motion stop it. The wall is decoration
+  (`aria-hidden`, `inert`, no alt text).
+
+  Also fixes a dark Hero staying in the brand it first saw: it now follows the page when the brand or density changes.
+
+- 983fd22: `Hero` gains `variant="orbit"`: the copy on the start side, and rings of the brand colour rippling out around the
+  `actions` on the far side, over a faint star field. The rings lean toward the pointer; everything stops with the pause
+  toggle or reduced motion. Buttons at the centre become a white pill (the scheme's lightest text-safe pair).
+- 983fd22: Add `Hero` (alpha): the opening section of a website page (RFC-003).
+
+  Slots for an `eyebrow`, a `title` with an optional muted `titleSecondary`, a `description` and `actions`, over slow
+  lights in the brand's primary and accent (`variant="aurora"`, the first of four styles; more follow). Follows the
+  page's light or dark scheme by default; `scheme="dark"` keeps it dark on any page (it copies the tenant id from the
+  nearest themed ancestor and scopes itself to the brand's dark roles; pass `theme` to render dark on the server). A pause toggle meets WCAG 2.2.2; with reduced motion,
+  nothing moves.
+
+- 44ca23a: Inside a card, inner surfaces are outlines (ADR-045).
+
+  An Alert, a StatTile (`default` or `outline`), a Card inside a Card and FileUpload's file rows used to paint their own
+  face, hairline and shadow, so a dashboard card read as filled boxes in a filled box. Inside a Card they now drop the
+  face and shadow and keep only a faint `border.subtle` hairline; on the bare page they look exactly as before. Toast and
+  anything inside a `feature` card keep their faces.
+
+  New optional prop `surface?: 'auto' | 'raised'` on Alert, StatTile and Card: `raised` keeps the filled face inside a
+  card. Box sizes don't change, and the status shapes and text are re-proven on every plain card face (shape ≥ 5.41:1,
+  `text.subtle` ≥ 5.96:1, for the tenants and 1,000 fuzz brands). Browsers without container style queries keep the
+  filled look.
+
+  `@syntara/sdui`: schema 1.2.0 adds the `surface` prop to Alert, Card and StatTile.
+
+- 2c37d6e: Add `Marquee` (alpha): a strip of logos, quotes or badges that scrolls by itself in a seamless loop.
+
+  It meets WCAG 2.2.2 (Pause, Stop, Hide): a visible pause toggle, a pause on hover (`pauseOnHover`, default on)
+  and whenever anything inside has keyboard focus. Under `prefers-reduced-motion` nothing moves and the items wrap.
+  Screen readers get one copy of the items as a list in a labelled region; the copies that make the loop seamless are
+  `aria-hidden` and `inert`. The pace comes from the strip's width (`speed`: `slow`, `md`, `fast`), so a long strip
+  moves no faster than a short one, and it travels towards the start of the line, so rightwards in right-to-left pages.
+
+- 2557e70: Remove the painted sheen from every surface (ADR-038).
+
+  The Surface recipe lit raised surfaces with `--syntara-sheen`, a 115° band of light in dark schemes. On large cards
+  it read as brushed metal, so no component paints it any more: Card, StatTile, Alert, Toast, Dialog, Sheet, Popover,
+  Select, Combobox, Command, DatePicker, DataTable and EmptyState.
+
+  The engine token is unchanged, so the **rim light** on card edges is untouched and nothing about the published theme
+  contract moves. Light schemes never painted the sheen, so they look identical. In dark schemes the face is now
+  slightly darker, which only raises text contrast — every ratio previously proven under the band is now a floor.
+
+- d3a538a: Add `PromptComposer` (alpha), with `ComposerButton` and `ComposerSelect`: the box where people write to an AI.
+
+  A growing text area, a toolbar of pill controls and a send button that becomes stop while `isPending`. Enter sends
+  and Shift+Enter breaks the line; Enter while an input method is composing (Hindi, Japanese, Chinese keyboards) only
+  confirms the composition. `glow` draws a two-colour edge and halo — `brand` (primary and accent) or `spectrum`
+  (warning to info, warm to cool) — and `surface="glass"` gives a frosted face whose text keeps 4.5:1 over any
+  backdrop, the same recipe as Popover. Colours swap sides and the send arrow mirrors in right-to-left pages. On narrow
+  composers, pills with an icon show only the icon and keep their label as visually hidden text.
+
+- 9cc5d80: Add `StreamingResponse` (alpha), with `ResponseText`, `ResponseSources` and `ResponseSource`: a model's answer as it
+  is written, that screen readers can follow (RFC-002, ADR-041).
+
+  The visible text is never a live region. A separate polite one speaks "Writing response", then each finished
+  sentence once (split with `Intl.Segmenter`, so the Hindi danda and the Arabic question mark end sentences), then
+  "Response complete", "Stopped" or "Couldn't finish". `announce="status"` speaks only the start and the end. Every
+  spoken and shown word is a prop.
+
+  The visual layer: `ResponseText` lets each new word arrive in the brand's text colour and settle into the body
+  colour (colour and opacity only, so it stays on with reduced motion), with a glowing caret while streaming; the
+  "Writing…" label carries a sweeping shimmer; `ResponseSources` pops citation chips in one after another.
+
+### Patch Changes
+
+- a5feb6f: Footer: in light schemes the wordmark's hover light takes the brand's text colour instead of a tint of the text colour, which read as a black outline. Dark schemes are unchanged.
+- bd08eb7: State outlines now reach 3:1 against the page in every brand (WCAG 1.4.11).
+
+  The selected radio card, a file-upload zone with a file dragged over it, and a slider thumb while dragging drew their
+  outline in `action.primary.bg`, which the engine only proves against its own label. Against the page it fell below 3:1
+  in six tenant × scheme pairs — a selected Qamar card in light mode measured 1.93:1, Vela's in dark 2.80:1. They now use
+  `text.brand`, which the engine proves at 4.5:1 or more on every surface: the same cards measure 5.24:1 and 9.59:1.
+  Light-mode outlines barely move (Vela 6.53 → 6.42:1); dark-mode ones become clearly visible.
+
 ## 0.1.1
 
 ### Patch Changes
