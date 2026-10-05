@@ -9,6 +9,7 @@ const routes = docsRoutes();
 await assertServedBuild(base);
 const browser = await launchBrowser();
 const summary = {};
+const details = [];
 let total = 0;
 for (const scheme of ['light', 'dark']) {
   const ctx = await browser.newContext({ colorScheme: scheme, viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
@@ -29,6 +30,11 @@ for (const scheme of ['light', 'dark']) {
         const k = `${v.id} (${v.impact})`;
         (summary[k] ??= []).push(`${scheme} ${route} ×${v.nodes.length}`);
         total += v.nodes.length;
+        // Which element and why, so a failure seen only in CI can be fixed without reproducing it locally.
+        for (const n of v.nodes) {
+          const why = [...n.any, ...n.all].map((c) => c.message).join(' | ');
+          details.push(`${scheme} ${route} ${v.id}: ${n.target.join(' ')}\n    ${n.html.slice(0, 200)}\n    ${why.slice(0, 300)}`);
+        }
       }
       if (errs.length) (summary['pageerror'] ??= []).push(`${scheme} ${route}: ${errs[0].slice(0, 120)}`);
     } catch (e) {
@@ -41,6 +47,7 @@ for (const scheme of ['light', 'dark']) {
 await browser.close();
 console.log(`routes: ${routes.length} × 2 schemes; violation nodes: ${total}`);
 console.log(JSON.stringify(summary, null, 1));
+if (details.length) console.log(details.join('\n'));
 
 // The sweep used to stop at those two lines, so it printed a number and exited 0 whatever the number was.
 // Run in CI like that it would have been green with every route failing — the fault it exists to catch (2026-09-29).
