@@ -142,15 +142,14 @@ export function LandingHero({ tenants }: { tenants: LandingTenant[] }) {
       </div>
 
       <div className={styles.heroCopy}>
-        <span className={`${styles.tag} ${styles.tagPlain}`}>A design system for every brand</span>
+        <span className={`${styles.tag} ${styles.tagPlain}`}>A multi-brand design system</span>
         <h1 id="landing-title" className={styles.h1}>
           One design system.
           <br />
           Every brand.
         </h1>
         <p className={styles.lede}>
-          Six brand inputs become a light and dark theme that passes WCAG 2.2 AA. The same React components render
-          all of them.
+          One set of components, tokens and rules that adapts to any brand, language and direction.
         </p>
         <div className={styles.heroActions}>
           <Link href="/docs/installation" className={styles.cta}>
