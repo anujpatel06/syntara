@@ -28,5 +28,16 @@ export default function App() {
 }
 ```
 
+`ThemeScope` paints the brand's background (`--syntara-color-surface-canvas`), but only as far as its own box. For a
+whole page, so dark mode reaches the edges of the window, let the scope fill it and drop the browser's default margin:
+
+```tsx
+<ThemeScope theme="vela" scheme="dark" style={{ minHeight: '100vh' }}>
+```
+
+```css
+body { margin: 0; }
+```
+
 React 19 is a peer dependency. The separate `@syntara/*` packages are still published and stay the way to install
 one piece on its own. Docs: https://syntara.pages.dev

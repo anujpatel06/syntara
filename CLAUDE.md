@@ -16,11 +16,11 @@ Anuj owns design decisions. You pair on engineering and push back when he's wron
   - Governance (Phase 4): `GOVERNANCE.md`, RFCs in `docs/rfcs/`, deprecation records in `meta.json`, `packages/codemods`. First deprecation: `Button variant="danger"` → `tone="danger"` (RFC-001, ADR-021).
   - Agents (Phase 5): `packages/audit` (`pnpm drift`), `packages/mcp`, `AGENTS.md`, `evals/` (results in `evals/results.md`; iteration 1 is invalid and kept on record).
   - Mobile reach (Phase 5a): `packages/sdui`, native token files from `pnpm tokens`, tenant Haat (hi-IN). No native components.
-- **Next:** Phase 7 — nothing is scheduled. Phase 6 is **done** (BRIEF §13): eight packages on npm, docs live on
+- **Next:** Phase 7 — nothing is scheduled. Phase 6 is **done** (BRIEF §13): nine packages on npm, docs live on
   **Cloudflare Pages** (https://syntara.pages.dev; previews per branch, configured in the Cloudflare dashboard,
   not in this repo), the differentiation research re-run (`docs/research/2026-10-01-differentiation.md`), the
-  README GIF and `/story`. Versions: `@syntara/react`, `@syntara/sdui` and `@syntara/mcp` at **0.1.1**, the other
-  five at 0.1.0. Release with `pnpm changeset publish` from `main`; publish with pnpm, never npm, or
+  README GIF and `/story`. Versions (`npm view <pkg> version`, 2026-10-05): `@syntara/react`, `sdui`, `tokens`,
+  `theme-engine` and `audit` at **0.2.0**, `@syntara/mcp` at 0.1.2, `syntara`, `icons` and `codemods` at 0.1.0. Release with `pnpm changeset publish` from `main`; publish with pnpm, never npm, or
   `workspace:*` ships literally, and `+ pkg@version` means npm staged it — check `npm view` before believing it.
 - **The repo is public** (ADR-037). Done: the pre-publication audit, the scrub of job-search framing, the
   Syntara screenshots, and `private: false` — which also unblocked branch protection and GitHub auto-merge, both
