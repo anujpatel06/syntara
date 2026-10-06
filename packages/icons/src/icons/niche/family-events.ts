@@ -41,11 +41,6 @@ export const IconBabyTeddyBear = createIcon('baby-teddy-bear', [
   ['circle', { cx: 14.5, cy: 11, r: 0.9, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 12, cy: 14.5, r: 0.8, fill: 'currentColor', stroke: 'none' }],
 ]);
-export const IconBabyToyBlocks = createIcon('baby-toy-blocks', [
-  ['rect', { x: 3.5, y: 12.5, width: 8, height: 8, rx: 2 }],
-  ['rect', { x: 12.5, y: 12.5, width: 8, height: 8, rx: 2 }],
-  ['rect', { x: 8, y: 3.5, width: 8, height: 8, rx: 2, transform: 'rotate(8 12 7.5)' }],
-]);
 export const IconBalloonBunch = createIcon('balloon-bunch', [
   ['ellipse', { cx: 8.5, cy: 7.5, rx: 4, ry: 4.75 }],
   ['ellipse', { cx: 15.5, cy: 9.5, rx: 4, ry: 4.75 }],
@@ -82,12 +77,6 @@ export const IconCouple = createIcon('couple', [
   ['circle', { cx: 16.5, cy: 11, r: 2.75 }],
   ['path', { d: 'M3 20.75v-.75a4.5 4.5 0 0 1 9 0 4.5 4.5 0 0 1 9 0v.75' }],
   ['path', { d: 'M12 7.34l-2.16-2.115a1.53 1.53 0 0 1 2.16-2.16 1.53 1.53 0 0 1 2.16 2.16Z' }],
-]);
-export const IconDiploma = createIcon('diploma', [
-  ['rect', { x: 2.75, y: 4, width: 18.5, height: 11.5, rx: 2 }],
-  ['path', { d: 'M6.5 8h11' }],
-  ['circle', { cx: 15.75, cy: 12, r: 2.25 }],
-  ['path', { d: 'M14.5 14 13.75 20l2-1.25 2 1.25-.75-6' }],
 ]);
 export const IconEngagementRing = createIcon('engagement-ring', [
   ['circle', { cx: 12, cy: 15, r: 5.75 }],
@@ -189,9 +178,10 @@ export const IconSaveTheDate = createIcon('save-the-date', [
   ['path', { d: 'M12 13.73l-2.52-2.4675000000000002a1.785 1.785 0 0 1 2.52-2.52 1.785 1.785 0 0 1 2.52 2.52Z' }],
 ]);
 export const IconSchoolBackpack = createIcon('school-backpack', [
-  ['rect', { x: 5.5, y: 6.5, width: 13, height: 14.5, rx: 3.5 }],
-  ['path', { d: 'M9 6.5V5.25a3 3 0 0 1 6 0V6.5' }],
-  ['rect', { x: 8.5, y: 13.5, width: 7, height: 4.5, rx: 1.5 }],
+  ['path', { d: 'M5.5 20V10a6 6 0 0 1 6-6h1a6 6 0 0 1 6 6v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1Z' }],
+  ['path', { d: 'M5.5 10.5c2 1.5 4.25 2 6.5 2s4.5-.5 6.5-2' }],
+  ['path', { d: 'M8.5 21v-3.5a1.5 1.5 0 0 1 1.5-1.5h4a1.5 1.5 0 0 1 1.5 1.5V21' }],
+  ['path', { d: 'M5.5 11c-1.75.5-2.75 2-2.75 4v3.5M18.5 11c1.75.5 2.75 2 2.75 4v3.5' }],
 ]);
 export const IconWeddingArch = createIcon('wedding-arch', [
   ['path', { d: 'M5.5 21V10a6.5 6.5 0 0 1 13 0v11' }],

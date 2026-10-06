@@ -59,12 +59,6 @@ export const IconEmployeeHandbook = createIcon('employee-handbook', [
   ['circle', { cx: 13.75, cy: 9.5, r: 1.75 }],
   ['path', { d: 'M11.25 15.25a2.5 2.5 0 0 1 5 0' }],
 ]);
-export const IconEmployeeId = createIcon('employee-id', [
-  ['rect', { x: 3, y: 5, width: 18, height: 14, rx: 2.5 }],
-  ['circle', { cx: 8.5, cy: 10.75, r: 2 }],
-  ['path', { d: 'M5.5 16a3 3 0 0 1 6 0' }],
-  ['path', { d: 'M14 10h4M14 13.5h4' }],
-]);
 export const IconFeedback = createIcon('feedback', [
   ['path', { d: 'M5.5 3.5h13a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4V16.5h-1A2.5 2.5 0 0 1 3 14V6a2.5 2.5 0 0 1 2.5-2.5Z' }],
   ['path', { d: 'M12 7.21l0.9025 1.9 2.09 0.285-1.52 1.4249999999999998 0.39899999999999997 2.09L12 11.9125l-1.8715 0.9974999999999999 0.39899999999999997-2.09-1.52-1.4249999999999998 2.09-0.285Z' }],
@@ -119,10 +113,13 @@ export const IconOfferLetter = createIcon('offer-letter', [
   ['path', { d: 'M9 14.25l2 2 4-4' }],
 ]);
 export const IconOfficeChair = createIcon('office-chair', [
-  ['rect', { x: 7, y: 2.75, width: 10, height: 9, rx: 3 }],
-  ['path', { d: 'M5 13.75h14' }],
-  ['path', { d: 'M12 13.75v4.5' }],
-  ['path', { d: 'M7 20.75l5-2.5 5 2.5' }],
+  ['rect', { x: 5.5, y: 2.75, width: 3.5, height: 9.5, rx: 1.75 }],
+  ['path', { d: 'M7.25 12.25v.5a1.5 1.5 0 0 0 1.5 1.5h9.5' }],
+  ['path', { d: 'M13 14.25v4.25' }],
+  ['path', { d: 'M7.5 18.5h11' }],
+  ['circle', { cx: 7.75, cy: 20.75, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 13, cy: 20.75, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 18.25, cy: 20.75, r: 1.1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconOfficeDesk = createIcon('office-desk', [
   ['path', { d: 'M2.75 9h18.5' }],
@@ -249,9 +246,14 @@ export const IconSuggestionBox = createIcon('suggestion-box', [
   ['circle', { cx: 19, cy: 8.5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconTaskBoard = createIcon('task-board', [
-  ['rect', { x: 3, y: 3.5, width: 5, height: 17, rx: 1.75 }],
-  ['rect', { x: 9.5, y: 3.5, width: 5, height: 11, rx: 1.75 }],
-  ['rect', { x: 16, y: 3.5, width: 5, height: 7.5, rx: 1.75 }],
+  ['rect', { x: 2.75, y: 3, width: 5, height: 1.75, rx: 0.875, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 9.5, y: 3, width: 5, height: 1.75, rx: 0.875, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 16.25, y: 3, width: 5, height: 1.75, rx: 0.875, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 2.75, y: 7.25, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 2.75, y: 12.75, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 9.5, y: 7.25, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 16.25, y: 7.25, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 16.25, y: 12.75, width: 5, height: 3.5, rx: 1 }],
 ]);
 export const IconTeamLead = createIcon('team-lead', [
   ['circle', { cx: 12, cy: 10.25, r: 3 }],

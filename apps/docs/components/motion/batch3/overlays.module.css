@@ -86,70 +86,9 @@
 /* ---- Tile drawings (match .ct* in motion-lab.module.css) ---- */
 
 /* Trigger at the top, panel under it, from the inline start. */
-.tStart.tStart,
-.tFieldColumn.tFieldColumn {
-  align-content: start;
-  justify-items: start;
-  padding-block-start: var(--syntara-space-2);
-  padding-inline: var(--syntara-space-3);
-}
-.tFieldColumn.tFieldColumn {
-  justify-items: stretch;
-}
 
-.tButton {
-  display: block;
-  inline-size: 44%;
-  block-size: var(--syntara-space-3);
-  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-default);
-}
-.tPanel.tPanel {
-  inline-size: 80%;
-}
-.tInput {
-  display: block;
-  block-size: var(--syntara-space-2);
-  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
-  border-radius: var(--syntara-radius-badge);
-}
-.tPrimary {
-  display: block;
-  inline-size: 40%;
-  block-size: var(--syntara-space-2);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-action-primary-bg);
-}
-
-.tField {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--syntara-space-1);
-  block-size: var(--syntara-space-4);
-  padding-inline: var(--syntara-space-1);
-  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-default);
-}
-.tField > span:first-child:not(.tCaret) {
-  inline-size: 45%;
-}
 /* An open field's edge turns to the focus colour, as Select's and the date picker's do. */
-.tFieldOpen,
-.tFieldFocus {
-  border-color: var(--syntara-color-focus-ring);
-}
-.tFieldFocus {
-  box-shadow: 0 0 0 calc(var(--syntara-space-1) / 2) color-mix(in oklab, var(--syntara-color-focus-ring) 18%, transparent);
-}
-.tField > .tCaret {
-  display: block;
-  inline-size: calc(var(--syntara-hairline) * 1.5);
-  block-size: var(--syntara-space-2);
-  background: var(--syntara-color-action-primary-bg);
-}
+
 .tChevron {
   flex: none;
   inline-size: var(--syntara-space-2);
@@ -162,17 +101,6 @@
   opacity: 0.6;
 }
 
-.tList {
-  display: grid;
-  gap: calc(var(--syntara-space-1) / 2);
-  padding: calc(var(--syntara-space-1) / 2);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-raised);
-  box-shadow: var(--syntara-shadow-overlay);
-}
-.tMenu.tMenu {
-  inline-size: 64%;
-}
 .tRow {
   position: relative;
   display: flex;
@@ -204,124 +132,6 @@
   stroke-linejoin: round;
 }
 
-.tIconButton {
-  display: grid;
-  place-items: center;
-  inline-size: var(--syntara-space-4);
-  block-size: var(--syntara-space-4);
-  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-default);
-}
-.tDots {
-  inline-size: var(--syntara-space-3);
-  block-size: var(--syntara-space-3);
-  fill: currentColor;
-  opacity: 0.6;
-}
-.tGlyph {
-  display: block;
-  flex: none;
-  inline-size: var(--syntara-space-2);
-  block-size: var(--syntara-space-2);
-  border-radius: var(--syntara-radius-badge);
-  background: currentColor;
-  opacity: 0.35;
-}
-.tGlyphDanger {
-  background: var(--syntara-color-feedback-danger-fg);
-  opacity: 1;
-}
-.tRule {
-  display: block;
-  block-size: var(--syntara-hairline);
-  background: var(--syntara-color-border-subtle);
-}
-
-.tCalendar.tCalendar {
-  grid-template-columns: repeat(7, 1fr);
-  padding: var(--syntara-space-1);
-}
-.tDay {
-  display: block;
-  aspect-ratio: 1;
-  border-radius: var(--syntara-radius-pill);
-  background: currentColor;
-  opacity: 0.25;
-}
-.tDayOn {
-  background: var(--syntara-color-action-primary-bg);
-  opacity: 1;
-}
-
 /* Command: the palette sits high over a dimmed page; the active row has the focus bar at its start. */
-.tTop.tTop {
-  align-content: start;
-  padding-block-start: var(--syntara-space-3);
-}
-.tPalette.tPalette {
-  inline-size: 78%;
-  gap: calc(var(--syntara-space-1) / 2);
-  padding: calc(var(--syntara-space-1) / 2);
-}
-.tSearch {
-  display: flex;
-  align-items: center;
-  gap: var(--syntara-space-1);
-  block-size: var(--syntara-space-4);
-  padding-inline: var(--syntara-space-1);
-  box-shadow: inset 0 calc(var(--syntara-hairline) * -1) 0 var(--syntara-color-border-subtle);
-}
-.tLens {
-  display: block;
-  flex: none;
-  inline-size: var(--syntara-space-2);
-  block-size: var(--syntara-space-2);
-  border: calc(var(--syntara-hairline) * 1.5) solid currentColor;
-  border-radius: var(--syntara-radius-pill);
-  opacity: 0.5;
-}
-.tSearch > span:last-child {
-  inline-size: 50%;
-}
-.tRowBar {
-  padding-inline-start: calc(var(--syntara-space-1) * 1.5);
-  background: var(--syntara-color-surface-selected);
-}
-.tRowBar::before {
-  content: '';
-  position: absolute;
-  inset-block: calc(var(--syntara-space-1) / 2);
-  inset-inline-start: calc(var(--syntara-space-1) / 2);
-  inline-size: calc(var(--syntara-hairline) * 2);
-  border-radius: var(--syntara-radius-pill);
-  background: var(--syntara-color-action-primary-bg);
-}
 
 /* Toast: one card at the bottom inline-end corner. */
-.tCorner.tCorner {
-  place-items: end;
-}
-.tToast {
-  display: flex;
-  align-items: center;
-  gap: var(--syntara-space-1);
-  inline-size: 74%;
-  padding: var(--syntara-space-1);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-raised);
-  box-shadow: var(--syntara-shadow-overlay);
-}
-.tToastIcon {
-  display: block;
-  flex: none;
-  inline-size: var(--syntara-space-3);
-  block-size: var(--syntara-space-3);
-  border-radius: var(--syntara-radius-pill);
-  background: var(--syntara-color-feedback-success-fg);
-}
-.tToastText {
-  display: grid;
-  flex: 1;
-  gap: var(--syntara-space-1);
-}

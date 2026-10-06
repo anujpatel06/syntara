@@ -16,11 +16,13 @@ export const IconAgvRobot = createIcon('agv-robot', [
   ['circle', { cx: 17.5, cy: 20, r: 1.5, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconAirCompressor = createIcon('air-compressor', [
-  ['rect', { x: 2.5, y: 10, width: 19, height: 8, rx: 4 }],
-  ['circle', { cx: 12, cy: 6, r: 2.5 }],
-  ['path', { d: 'M12 8.5V10' }],
-  ['circle', { cx: 6, cy: 20, r: 0.95, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 18, cy: 20, r: 0.95, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 2.5, y: 9.5, width: 19, height: 8.5, rx: 4.25 }],
+  ['circle', { cx: 8, cy: 13.75, r: 2.25 }],
+  ['path', { d: 'M8 13.75l1.5-1.5' }],
+  ['path', { d: 'M7 9.5V6.5h10v3' }],
+  ['path', { d: 'M13 13.75h4.5' }],
+  ['circle', { cx: 6.5, cy: 20, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 17.5, cy: 20, r: 1.1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconAnvil = createIcon('anvil', [
   ['path', { d: 'M3 6.5h12.5c0 3 2 4.5 5.5 4.5-1 2-3 3-5.5 3H15v3l2.5 3.5h-11L9 17v-3H8c-3 0-5-3-5-7.5Z' }],
@@ -56,10 +58,9 @@ export const IconCentrifugalPump = createIcon('centrifugal-pump', [
   ['path', { d: 'M5.5 21h12' }],
 ]);
 export const IconCncMachine = createIcon('cnc-machine', [
-  ['rect', { x: 3, y: 3, width: 18, height: 18, rx: 3.25 }],
-  ['path', { d: 'M12 3v6.5' }],
-  ['path', { d: 'M10.5 9.5h3L12 12.5Z' }],
-  ['path', { d: 'M6.5 16.5h11' }],
+  ['path', { d: 'M2.5 5h19M5 5v16M19 5v16' }],
+  ['path', { d: 'M10 5v3.5h1V11l1 2 1-2V8.5h1V5' }],
+  ['rect', { x: 8.5, y: 16.5, width: 7, height: 4.5, rx: 0.75 }],
 ]);
 export const IconCompressionSpring = createIcon('compression-spring', [
   ['path', { d: 'M7 3.5h10M7 20.5h10' }],
@@ -111,8 +112,12 @@ export const IconFactory = createIcon('factory', [
   ['path', { d: 'M3 20.5V11l4.5 3v-3l4.5 3v-3l4.5 3V4.5h4v16Z' }],
 ]);
 export const IconFeedHopper = createIcon('feed-hopper', [
-  ['path', { d: 'M4 4h16l-5.5 8v5h-5v-5Z' }],
-  ['path', { d: 'M10.5 20.5h3' }],
+  ['path', { d: 'M3 3.5h10V6L9.5 9.5h-3L3 6Z' }],
+  ['rect', { x: 2.5, y: 16, width: 19, height: 4.5, rx: 2.25 }],
+  ['circle', { cx: 8, cy: 11.5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 7, cy: 13.5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 8.5, cy: 14.75, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M14 13h5.5M17.5 11l2 2-2 2' }],
 ]);
 export const IconFurnace = createIcon('furnace', [
   ['path', { d: 'M5 20.5V9a7 7 0 0 1 14 0v11.5Z' }],
@@ -146,10 +151,11 @@ export const IconHorseshoeMagnet = createIcon('horseshoe-magnet', [
   ['path', { d: 'M6 8h3.5M14.5 8H18' }],
 ]);
 export const IconHydraulicPress = createIcon('hydraulic-press', [
-  ['path', { d: 'M4.5 20.5V3.5h15v17M2.5 20.5h19' }],
-  ['path', { d: 'M12 3.5V8' }],
-  ['rect', { x: 7, y: 8, width: 10, height: 3.5, rx: 1.25 }],
-  ['rect', { x: 8.5, y: 16.5, width: 7, height: 4, rx: 1 }],
+  ['path', { d: 'M16 3.5H6a1.5 1.5 0 0 0-1.5 1.5v14A1.5 1.5 0 0 0 6 20.5h10' }],
+  ['rect', { x: 9.5, y: 3.5, width: 5, height: 4, rx: 0.75 }],
+  ['path', { d: 'M12 7.5v5H8.5h7' }],
+  ['rect', { x: 9.5, y: 16, width: 5, height: 4.5, rx: 0.75 }],
+  ['path', { d: 'M19.5 6v6.5l-1.75-1.75 1.75 1.75 1.75-1.75' }],
 ]);
 export const IconIndustrialValve = createIcon('industrial-valve', [
   ['path', { d: 'M3.5 11v8l8.5-4 8.5 4v-8l-8.5 4Z' }],
@@ -239,9 +245,10 @@ export const IconSafetyGoggles = createIcon('safety-goggles', [
   ['path', { d: 'M3 10.5C3 9 4 8 5.5 8h13C20 8 21 9 21 10.5V13c0 2-1.5 3.5-3.5 3.5-1.5 0-2.5-.75-3.5-2-.5-.75-1-1-2-1s-1.5.25-2 1c-1 1.25-2 2-3.5 2C4.5 16.5 3 15 3 13Z' }],
 ]);
 export const IconSafetyHelmet = createIcon('safety-helmet', [
-  ['path', { d: 'M3.5 17.5h17' }],
-  ['path', { d: 'M5.5 17.5V15a6.5 6.5 0 0 1 13 0v2.5' }],
-  ['path', { d: 'M10.5 8.75V7h3v1.75' }],
+  ['rect', { x: 2.5, y: 15.5, width: 19, height: 3.5, rx: 1.75 }],
+  ['path', { d: 'M5 15.5V13a6.5 6.5 0 0 1 4.5-6.2' }],
+  ['path', { d: 'M14.5 6.8A6.5 6.5 0 0 1 19 13v2.5' }],
+  ['path', { d: 'M9.5 11V5.5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1V11' }],
 ]);
 export const IconSafetyVest = createIcon('safety-vest', [
   ['path', { d: 'M8.5 3.5 5 6v14.5h5.5v-8L12 9.5l1.5 3v8H19V6l-3.5-2.5L12 9.5Z' }],
@@ -292,8 +299,9 @@ export const IconVernierCaliper = createIcon('vernier-caliper', [
   ['path', { d: 'M5.5 9v10L8 15.5V9M14 9v10l2.5-3.5V9' }],
 ]);
 export const IconWeldingHelmet = createIcon('welding-helmet', [
-  ['path', { d: 'M5 11a7 7 0 0 1 14 0v4.5a5 5 0 0 1-5 5h-4a5 5 0 0 1-5-5Z' }],
-  ['rect', { x: 8, y: 10.5, width: 8, height: 3.5, rx: 1.25 }],
+  ['path', { d: 'M6 9a6 6 0 0 1 12 0v6.5l-3.5 5h-5l-3.5-5Z' }],
+  ['rect', { x: 8.5, y: 10, width: 7, height: 3.5, rx: 1 }],
+  ['path', { d: 'M6 11H3.5M18 11h2.5' }],
 ]);
 export const IconWorkGlove = createIcon('work-glove', [
   ['path', { d: 'M7.5 17.5 5 10.5a1.5 1.5 0 0 1 2.8-1L9 12V5a1.5 1.5 0 0 1 3 0v6V4.5a1.5 1.5 0 0 1 3 0V11V6a1.5 1.5 0 0 1 3 0v8.5c0 1.5-.5 2.25-1 3' }],

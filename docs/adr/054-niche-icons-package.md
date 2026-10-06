@@ -35,3 +35,7 @@
 - `@syntara/icons` now carries the pack in its published files (about 2 MB of unminified ESM and source maps in `dist`).
 - Two caps in a spec file, not in the shipped 243, which has icons above both.
 - Every icon needs a human look before the package is published (not done yet).
+
+## Amendment, 2026-10-06 (independent review)
+
+- Eight reviewers who had not drawn the icons rated all 2,000: 1,469 read clearly, 450 weak, 81 bad. The 81 bad were redrawn, and 41 same-object duplicates were removed (e.g. seven `astronomy-*` icons that repeated space icons), so the pack was 1,959. After a second redraw round, five that still read as the wrong thing (`vascular`, `dental-canine`, `anatomy-shoulder`, `earth-core`, `embroidery-hoop`) were dropped, so the pack is **1,954** icons. Nothing had been released, so removing names is not a breaking change. **Anuj** ("Redraw the 81 bad ones and remove duplicates").

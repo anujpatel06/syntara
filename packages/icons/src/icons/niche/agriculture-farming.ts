@@ -11,10 +11,12 @@ export const IconBeehive = createIcon('beehive', [
   ['path', { d: 'M10.5 20.5v-2a1.5 1.5 0 0 1 3 0v2' }],
 ]);
 export const IconCattleEarTag = createIcon('cattle-ear-tag', [
-  ['path', { d: 'M2.5 10c2-4.5 9-6 14.5-4.5-3 4-10.5 6.5-14.5 4.5Z' }],
-  ['path', { d: 'M13.5 8.5v2.5' }],
-  ['rect', { x: 10, y: 11, width: 7, height: 9.5, rx: 2.5 }],
-  ['circle', { cx: 13.5, cy: 14, r: 1, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M8.5 8 3 8.5c.5 1.75 2.5 3 5.5 3L9 17a3 3 0 0 0 6 0l.5-5.5c3 0 5-1.25 5.5-3L15.5 8Z' }],
+  ['path', { d: 'M9 8c-1.5-.75-2-2.5-1.5-4.5M15 8c1.5-.75 2-2.5 1.5-4.5' }],
+  ['rect', { x: 16.5, y: 12.5, width: 4.5, height: 5.5, rx: 1.25 }],
+  ['path', { d: 'M18.75 14.25v2' }],
+  ['circle', { cx: 10.75, cy: 17, r: 0.85, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 13.25, cy: 17, r: 0.85, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconCompostBin = createIcon('compost-bin', [
   ['path', { d: 'M5 8h14l-1.5 12.5h-11Z' }],
@@ -55,12 +57,13 @@ export const IconDripIrrigation = createIcon('drip-irrigation', [
   ['path', { d: 'M17 9.5c1.2249999999999999 1.4 2.0999999999999996 2.38 2.0999999999999996 3.5a2.0999999999999996 2.0999999999999996 0 0 1-4.199999999999999 0c0-1.1199999999999999 0.875-2.0999999999999996 2.0999999999999996-3.5Z' }],
 ]);
 export const IconEggIncubator = createIcon('egg-incubator', [
-  ['rect', { x: 2.5, y: 4, width: 19, height: 16, rx: 3 }],
-  ['rect', { x: 5, y: 7, width: 11, height: 10, rx: 2 }],
-  ['ellipse', { cx: 8.5, cy: 12, rx: 1.75, ry: 2.5 }],
-  ['ellipse', { cx: 12.5, cy: 12, rx: 1.75, ry: 2.5 }],
-  ['circle', { cx: 18.75, cy: 8.5, r: 0.95, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 18.75, cy: 12, r: 0.95, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 2.5, y: 16, width: 19, height: 4.5, rx: 1.5 }],
+  ['path', { d: 'M4 16v-2.5a8 8 0 0 1 16 0V16' }],
+  ['ellipse', { cx: 7.75, cy: 13.75, rx: 1.75, ry: 2.25 }],
+  ['ellipse', { cx: 12, cy: 13.75, rx: 1.75, ry: 2.25 }],
+  ['ellipse', { cx: 16.25, cy: 13.75, rx: 1.75, ry: 2.25 }],
+  ['circle', { cx: 12, cy: 4.25, r: 1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 18.25, cy: 18.25, r: 0.85, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconEggNest = createIcon('egg-nest', [
   ['path', { d: 'M3 13h18c-1 4.5-4.5 7.5-9 7.5S4 17.5 3 13Z' }],
@@ -120,10 +123,10 @@ export const IconFarmWheelbarrow = createIcon('farm-wheelbarrow', [
   ['path', { d: 'M16 9l4.5-2M7 15.5l-1 5' }],
 ]);
 export const IconFarmWindmill = createIcon('farm-windmill', [
-  ['circle', { cx: 10, cy: 7.5, r: 4.5 }],
-  ['path', { d: 'M10 3v9M5.5 7.5h9' }],
-  ['path', { d: 'M14.5 7.5h5.5l1-2v4l-1-2' }],
-  ['path', { d: 'M7 21l3-9.5 3 9.5' }],
+  ['circle', { cx: 9, cy: 7.5, r: 4.5 }],
+  ['path', { d: 'M9 3V12A4.5 4.5 0 0 1 5.82 10.68L12.18 4.32A4.5 4.5 0 0 1 13.5 7.5H4.5A4.5 4.5 0 0 1 5.82 4.32L12.18 10.68' }],
+  ['path', { d: 'M13.5 7.5H17.5V5L21 6V9L17.5 10V7.5' }],
+  ['path', { d: 'M5.5 21 9 12l3.5 9M7 17h4' }],
 ]);
 export const IconFeedBucket = createIcon('feed-bucket', [
   ['path', { d: 'M5 9h14l-1.5 11.5h-11Z' }],
@@ -237,9 +240,10 @@ export const IconRicePlant = createIcon('rice-plant', [
   ['circle', { cx: 17.75, cy: 15, r: 1.1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconRoundHayBale = createIcon('round-hay-bale', [
-  ['circle', { cx: 8, cy: 13, r: 6 }],
-  ['path', { d: 'M8 7h7a6 6 0 0 1 0 12H8' }],
-  ['path', { d: 'M8 13a1.5 1.5 0 1 1 1.5-1.5c0 2-1.5 3.5-3.5 3.5' }],
+  ['path', { d: 'M16.25 15.5a1.25 1.25 0 0 0-2.5 0a2.5 2.5 0 0 0 5 0a3.75 3.75 0 0 0-7.5 0a5 5 0 0 0 10 0' }],
+  ['path', { d: 'M16.25 10.5H7.5a5 5 0 0 0 0 10h8.75' }],
+  ['path', { d: 'M2 20.5h19.5' }],
+  ['path', { d: 'M5.5 13.5h5M4.5 17.5h6' }],
 ]);
 export const IconScarecrow = createIcon('scarecrow', [
   ['circle', { cx: 12, cy: 8, r: 2.5 }],
