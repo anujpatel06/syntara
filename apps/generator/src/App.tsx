@@ -50,7 +50,7 @@ export function App() {
   // Inputs only ever hold valid values (drafts live in the fields), but if generation still fails,
   // keep showing the last good theme rather than a broken preview.
   const generated = useMemo(() => safeGenerate(state.brand), [state.brand]);
-  const lastGood = useRef<Theme>(generated ?? presetThemes[state.tenant]);
+  const lastGood = useRef<Theme>(generated ?? presetThemes[state.tenant]!);
   useEffect(() => {
     if (generated) lastGood.current = generated;
   }, [generated]);
@@ -67,7 +67,7 @@ export function App() {
       out[t.id] = {
         primary,
         accent: t.brand.accent ? normalizeHex(t.brand.accent) : primary,
-        canvas: presetThemes[t.id].schemes[state.scheme].roles['surface.canvas'].hex,
+        canvas: presetThemes[t.id]!.schemes[state.scheme].roles['surface.canvas'].hex,
       };
     }
     return out;

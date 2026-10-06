@@ -25,7 +25,7 @@ import {
   type Shape,
   type TypePairId,
 } from '@syntara/theme-engine';
-import { getTenant, isTenantId, type TenantId } from './tenants';
+import { DEFAULT_TENANT, getTenant, isTenantId, type TenantId } from './tenants';
 
 export const TABS = ['preview', 'accessibility', 'tokens'] as const;
 export type Tab = (typeof TABS)[number];
@@ -109,7 +109,7 @@ const OWN_KEYS = ['tenant', 'scheme', 'tab', 'format', 'figmaPlan', 'primary', '
 
 export function readState(search: string): AppState {
   const q = new URLSearchParams(search);
-  const tenant = isTenantId(q.get('tenant')) ? (q.get('tenant') as TenantId) : 'vela';
+  const tenant = isTenantId(q.get('tenant')) ? (q.get('tenant') as TenantId) : DEFAULT_TENANT;
   const brand = presetBrand(tenant);
 
   const primary = parseHex(q.get('primary'));

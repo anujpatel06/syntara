@@ -2,23 +2,24 @@ import { StrictMode, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import { generateTheme, toCSS, googleFontsHref, type BrandInput } from '@syntara/theme-engine';
 import { ThemeScope } from '@syntara/react';
-import vela from '../../../tenants/vela/brand.json';
-import harbor from '../../../tenants/harbor/brand.json';
-import qamar from '../../../tenants/qamar/brand.json';
-import care from '../../../tenants/care/brand.json';
-import haat from '../../../tenants/haat/brand.json';
 
 /**
  * Playground: renders every example in apps/docs/examples/<c>/ for one tenant × scheme × dir × density.
  *   /?c=button&tenant=qamar&scheme=dark&dir=rtl&density=compact
  * No `c` → index of components that have examples.
  */
-const TENANTS: Record<string, BrandInput> = { vela, harbor, qamar, care, haat } as Record<string, BrandInput>;
+// Every tenants/<id>/brand.json except the site's own (house): adding a folder adds a tenant here.
+const brandFiles = import.meta.glob<BrandInput>('../../../tenants/*/brand.json', { eager: true, import: 'default' });
+const TENANTS: Record<string, BrandInput> = Object.fromEntries(
+  Object.entries(brandFiles)
+    .map(([file, brand]) => [/tenants\/([^/]+)\/brand\.json$/.exec(file)?.[1] ?? '', brand] as const)
+    .filter(([id]) => id && id !== 'house'),
+);
 const modules = import.meta.glob<{ default: ComponentType }>('../../docs/examples/*/*.tsx', { eager: true });
 
 const q = new URLSearchParams(location.search);
 const c = q.get('c');
-const tenant = TENANTS[q.get('tenant') ?? ''] ? (q.get('tenant') as string) : 'vela';
+const tenant = TENANTS[q.get('tenant') ?? ''] ? (q.get('tenant') as string) : TENANTS.vela ? 'vela' : (Object.keys(TENANTS)[0] ?? '');
 const scheme = q.get('scheme') === 'dark' ? 'dark' : 'light';
 const dir = q.get('dir') === 'rtl' ? 'rtl' : 'ltr';
 const density = q.get('density') === 'compact' ? 'compact' : q.get('density') === 'comfortable' ? 'comfortable' : undefined;

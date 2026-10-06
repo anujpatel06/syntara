@@ -20,6 +20,15 @@
       ],
       "port": 5181,
       "url": "http://localhost:5181"
+    },
+    {
+      "name": "generator",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/generator && exec ./node_modules/.bin/vite --port 5282 --strictPort"
+      ],
+      "port": 5282
     }
   ]
 }

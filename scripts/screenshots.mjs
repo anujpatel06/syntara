@@ -11,6 +11,7 @@
  * Env: PLAYWRIGHT_CHROMIUM_PATH — use this Chromium binary instead of Playwright's.
  */
 import { spawn, spawnSync } from 'node:child_process';
+import { existsSync, readdirSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import net from 'node:net';
 import path from 'node:path';
@@ -20,7 +21,12 @@ import { launchBrowser } from './launch-browser.mjs';
 import { AxeBuilder } from '@axe-core/playwright';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
-const TENANTS = ['vela', 'harbor', 'qamar'];
+// The generator's presets: every tenants/<id>/ with brand.json and content.json, except the site's own (house).
+const TENANTS = readdirSync(path.join(ROOT, 'tenants'), { withFileTypes: true })
+  .filter((d) => d.isDirectory() && d.name !== 'house')
+  .filter((d) => ['brand.json', 'content.json'].every((f) => existsSync(path.join(ROOT, 'tenants', d.name, f))))
+  .map((d) => d.name)
+  .sort();
 const SCHEMES = ['light', 'dark'];
 const DESKTOP = { width: 1440, height: 960 };
 const MOBILE = { width: 390, height: 844 };

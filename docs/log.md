@@ -6,6 +6,83 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — A brand folder is enough: tenants read from `tenants/` everywhere
+
+Branch `claude/tenants-from-folder`, its own worktree, started from `main` at 9767dae and brought up to `main` at
+fa8c03f before committing (15 commits behind by then; only `.claude/launch.json` clashed).
+
+**Changed**
+- **Playground** (`apps/playground/src/main.tsx`): reads every `tenants/*/brand.json` (house excluded) instead of
+  five imports.
+- **Brand Generator** (`apps/generator/src/tenants.ts`, `url-state.ts`, `App.tsx`, `PresetPicker.tsx`): presets are
+  every tenant with `brand.json` + `content.json`, in the docs' order (Vela, Harbor, Qamar, then A–Z). It showed
+  three; it now shows five (Care and Haat were missing). The card line comes from `content.json`: the industry and
+  the language name, both in the tenant's own language. Visible change: Harbor "Insurer" → "Insurance", Qamar
+  "Grocery & loyalty" → "بقالة ومكافآت". `preview/tenant-content-check.ts` type-checks Care and Haat too.
+- **Scripts**: `scripts/screenshots.mjs` (Generator shots) and `scripts/docs-routes.mjs` (the pages the six sweep
+  scripts visit) list tenants from the folder; `scripts/native-digits.mjs` finds Arabic and Hindi tenants from the
+  locale's `-u-nu-arab` / `-u-nu-deva` instead of by name.
+- Comments only: `apps/docs/blocks/tenant-content.check.ts` and `evals/score.mjs` say why they keep a fixed list.
+- `.claude/launch.json`: a `generator` entry (port 5282). Screenshot of the approved picker:
+  `docs/screenshots/tenants-from-folder/generator-presets.png`.
+
+**Every file the search found** (`grep -rlE "['\"](vela|harbor|qamar|haat)['\"]" … | grep -vE "node_modules|/dist/|…|/test/|\.test\."`, plus two it missed)
+
+| File | Decision | Why |
+|---|---|---|
+| `apps/playground/src/main.tsx` | Fixed | Five tenants hard-wired |
+| `apps/generator/src/tenants.ts`, `url-state.ts` (+ `App.tsx`, `PresetPicker.tsx`) | Fixed | Three tenants hard-wired |
+| `apps/generator/src/preview/tenant-content-check.ts` (missed by the search) | Care, Haat added | The Generator shows them now |
+| `scripts/screenshots.mjs` | Fixed | Three tenants; its three one-off shots (Qamar RTL, Vela tokens, Qamar mobile) stay fixed |
+| `scripts/docs-routes.mjs` | Fixed | Decides which block views the sweeps visit |
+| `scripts/native-digits.mjs` (missed by the search) | Fixed | A new Arabic or Hindi tenant would have skipped the digit check |
+| `apps/docs/blocks/tenant-content.check.ts` | Left, comment | A type check can't list a folder; the site shows a new tenant regardless |
+| `evals/score.mjs` | Left, comment | A frozen scorer: changing the list would rescore earlier iterations |
+| `landing-hero.tsx`, `lib/story.ts`, `examples/theme-scope/theme-scope-demo.tsx` | Left | Curated on purpose: homepage slides, BRIEF §11's three, a fixed example |
+| `scripts/check-theme-links.mjs` | Left | Fixed URL test cases |
+| `app/docs/components/[name]/page.tsx`, `evals/template/src/main.tsx`, `evals/lib/common.mjs`, `app/motion/page.tsx` (new on `main`) | Left | Vela or Harbor is only the fallback or starting choice; the lists come from the folder |
+| `showcase-grid.tsx`, `themes/state.ts`, `theme-engine/src/export/css.ts`, `mcp/src/server.ts`, `lib/tenants.ts` | Left | Names in comments, a tool description, or the display order |
+
+Already folder-driven, no change: docs `lib/tenants.ts` (Themes presets, blocks, colours, motion lab), `packages/tokens`
+build, MCP `tenantIds()`.
+
+**Decided**
+- The Brand Generator lists every tenant, not the brief's three. **Claude recommended, Anuj accepted.**
+- Its card line in the tenant's own language, from `content.json`. **Claude recommended, Anuj accepted** (approved
+  the screenshot).
+- `evals/score.mjs` keeps a fixed list so iterations stay comparable. **Claude.**
+
+**Results**
+- Proof with a throwaway tenant `tenants/zest/` (copy of Vela, primary `#0F766E`; deleted, never committed):
+  - playground `/?c=button&tenant=zest`: scope `zest`, `--syntara-color-…` primary `#0f766e` (browser pane).
+  - Generator: six cards, Zest selected from `?tenant=zest`, no console errors.
+  - docs `/themes?tenant=zest`: presets `vela, harbor, qamar, care, haat, zest, house`; all 11
+    `/blocks/<b>/view?tenant=zest` answered 200 with a `zest` scope; benefits-overview rendered with the block's own
+    sample copy, no console errors.
+  - `pnpm --filter @syntara/tokens exec tsx scripts/build.ts --out <scratch>`: "7 tenant(s)", zest 118/118.
+  - MCP over stdio, `get_tokens {tenant:"nope"}` → tenants `care, haat, harbor, house, qamar, vela, zest`;
+    `get_tokens {tenant:"zest"}` returned tokens.
+  - `node scripts/screenshots.mjs --url=http://localhost:5282 --out=<scratch>`: 12 tenant shots incl. zest-light/dark,
+    "axe: 0 violations". `docsRoutes()`: 144 routes → 155 with Zest (11 zest block views).
+- Existing brands: token generation untouched (no change to the engine or tokens build); `pnpm test:themes`
+  118,000 checks, 118,000 passed, median 4 adjustments per brand (as before).
+- `/verify` (build `rIFpxP9P_GXFLPYAuodcn`, served on port 3417 because another session's build held 3000):
+  `pnpm typecheck` exit 0; `pnpm test` 2,363 tests, 0 failing (`node scripts/check-test-counts.mjs`: README row
+  matches); `pnpm check:meta` and `pnpm registry` exit 0 (the old `hero-styles.tsx` warning); `check-override-weight`
+  0; `pnpm --filter @syntara/docs build` 318/318 pages; `check-ssr-tabs` 0 of 317; with
+  `SYNTARA_BASE_URL=http://localhost:3417`: `check-hydration` 0 of 294, `check-theme-links` 0 of 5,
+  `check-narrow-overflow` 0 of 294, `check-csp` 0 of 147, `axe-sweep` 0 violation nodes over 147 × 2,
+  `check-overlay-exit` 0 (108 tooltips, 4 menus/popovers). `node scripts/native-digits.mjs --check`: 0 strings.
+- Shipped: `vite build` of the Generator and the playground into a scratch folder; each bundle contains all five
+  tenants' primaries (`grep -il '#B5179E'` etc., 1 file each). The Generator's had three before.
+
+**Next**
+- A runtime check that every `tenants/<id>/content.json` has the keys the blocks and Generator read, so a new
+  tenant's copy is checked without being added to the two type-check files by hand.
+- Housekeeping: 33 local branches and 12 extra worktrees.
+
+---
+
 ## 2026-10-06 — Make `npx syntara init` readable to AI assistants
 
 Branch `feat/agent-friendly-install`, from `main` at ea2ca1c, rebased onto fa8c03f, in its own worktree
