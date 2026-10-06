@@ -1,10 +1,10 @@
 /**
- * Motion styles for the lab (docs/design/motion-lab.md §4, ADR-053). A style is the seven motion tokens and nothing
+ * Motion styles for the lab (docs/design/motion-lab.md §4, ADR-054). A style is the seven motion tokens and nothing
  * else: time and curve, never colour, size or how far anything scales. Tactile is the engine's own values, so it
  * reads them from FOUNDATIONS rather than repeating them.
  *
  * springEasing is not in the engine's public exports. The lab imports it from the source file so that measuring a
- * spring here uses exactly the function that made the engine's own, without adding to a published API (ADR-053:
+ * spring here uses exactly the function that made the engine's own, without adding to a published API (ADR-054:
  * the lab is a docs demo, not an engine option).
  */
 import { FOUNDATIONS } from '@syntara/theme-engine';

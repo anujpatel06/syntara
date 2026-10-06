@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * docs/design/motion-lab.md, ADR-053. An editor, not a page with a header (spec §11), so it renders its own <main>
+ * docs/design/motion-lab.md, ADR-054. An editor, not a page with a header (spec §11), so it renders its own <main>
  * (the skip link's target) instead of PageShell. v1 is Dialog only, in the five product brands (house is the site).
  */
 export default function Motion() {

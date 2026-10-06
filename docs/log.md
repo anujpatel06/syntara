@@ -6,10 +6,10 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
-## 2026-10-06 — Motion lab: spec and first build (ADR-053)
+## 2026-10-06 — Motion lab: spec and first build (ADR-054)
 
 Branch `docs/motion-lab-spec`, from `main` at 9fcc9a5, in its own worktree. Written first on `feat/icons-style-filter`
-(11 commits behind `main`) and moved here before committing. ADR renumbered 050 → 053: `main` had taken 050–052.
+(11 commits behind `main`) and moved here before committing. ADR renumbered 050 → 053 → 054: `main` had taken 050–053 by the time this merged.
 
 **Changed**
 - Read https://animos.app (landing page only, editor not opened) at Anuj's request.
@@ -20,7 +20,7 @@ Branch `docs/motion-lab-spec`, from `main` at 9fcc9a5, in its own worktree. Writ
   (0.0%, 446 ms). Command in the spec, §4. Also: seven motion tokens, not six; scale amounts are not tokens (11
   values in component CSS), so styles change time and curve only; Dialog enters from 0.94, not 0.96; the code panel
   prints `[data-syntara-theme="<id>"]`, because a `:root` override loses to what `npx syntara init` writes.
-- `docs/adr/053-motion-lab.md`.
+- `docs/adr/054-motion-lab.md`.
 - **Built `/motion`** (`apps/docs/app/motion/page.tsx`, `apps/docs/components/motion/`): an editor laid out after
   the Animos editor (spec §11): top bar with Export, style cards with live thumbnails on the left, a dotted canvas
   with the stage and a play bar in the centre, brand / timing / preview on the right. Export opens a real Dialog with
@@ -34,9 +34,9 @@ Branch `docs/motion-lab-spec`, from `main` at 9fcc9a5, in its own worktree. Writ
 
 **Decided**
 - All six spec decisions (three styles; a docs demo, not an engine option; home-page link only; share clip last;
-  "Gentle" instead of "Calm"; no scale tokens in v1). **Claude recommended, Anuj accepted** (ADR-053).
+  "Gentle" instead of "Calm"; no scale tokens in v1). **Claude recommended, Anuj accepted** (ADR-054).
 - The stage loops a stand-in with Dialog's own stylesheet, plus a button for the real Dialog. **Claude recommended,
-  Anuj chose** (ADR-053, option 7a).
+  Anuj chose** (ADR-054, option 7a).
 - The editor layout after Animos, and the build overall: **Anuj** approved, 2026-10-06.
 
 **Results**
@@ -60,6 +60,36 @@ Branch `docs/motion-lab-spec`, from `main` at 9fcc9a5, in its own worktree. Writ
 - Tune Gentle and Snappy by eye with Anuj; re-measure any spring that changes.
 - Video export is not built (spec §11): needs the Dialog drawn again in a canvas, or a server capture step, plus an
   MP4 encoder. A separate decision.
+
+---
+
+## 2026-10-06 — Cloudflare Web Analytics was blocked by our own CSP
+
+**Changed**
+- `apps/docs/public/_headers`: the CSP now allows `https://static.cloudflareinsights.com` in `script-src` and
+  `https://cloudflareinsights.com` in `connect-src`, so the analytics script Cloudflare injects on syntara.live can run
+  and report (ADR-053).
+
+**Decided**
+- Keep Cloudflare Web Analytics and allow it, rather than turn it off — **Claude recommended, Anuj accepted** (ADR-053).
+  Anuj had not known it was on.
+
+**Results**
+- `SYNTARA_BASE_URL=http://localhost:3417 node scripts/check-csp.mjs`: 144 routes, 0 failures (build
+  `FS3a_myytfOxyaR-Pj697`; `grep -c static.cloudflareinsights.com apps/docs/out/_headers` → 1).
+- That check only covers the repo's headers, not Cloudflare's injection. A one-off Playwright load of live syntara.live
+  with the CSP swapped: old policy blocks the beacon; new policy loads it (`200`) and its report returns `204`, no
+  violations.
+- `/verify` before committing: typecheck clean; `pnpm test` 2,351 tests, none failing (`check-test-counts.mjs` matches
+  the README); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand; `pnpm check:meta` 58/58 (one
+  existing warning: `hero-styles.tsx` not in `meta.examples`); `pnpm registry` 82 items; `check-override-weight.mjs`
+  clean; docs build 316/316 pages; `check-ssr-tabs.mjs` 0 of 315; against build `9wvFO0M0IWsv4c6_v5tlA`:
+  `check-hydration.mjs` 0 of 288, `check-theme-links.mjs` 0 of 5, `check-narrow-overflow.mjs` 0 of 288,
+  `check-csp.mjs` 0 of 144, `axe-sweep.mjs` 0 violation nodes, `check-overlay-exit.mjs` 0 of 112.
+
+**Next**
+- After this deploys, open syntara.live and confirm the console is clean, then check the Cloudflare Web Analytics
+  dashboard shows visits within a day.
 
 ---
 

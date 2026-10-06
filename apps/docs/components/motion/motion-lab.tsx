@@ -25,7 +25,7 @@ import type { ThemePreset } from '@/components/themes/state';
 import { useCopy } from '../../examples/_copy/use-copy';
 /*
  * The stand-in wears the real Dialog's stylesheet, not a copy, so its look and its motion can't drift from the
- * component's (ADR-053). Same file, same module, same class names.
+ * component's (ADR-054). Same file, same module, same class names.
  */
 import dialogCss from '../../../../packages/react/src/ui/dialog.module.css';
 import {
