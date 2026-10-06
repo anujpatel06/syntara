@@ -42,7 +42,7 @@ import {
   type MotionStyle,
   type MotionStyleId,
 } from './motion-math';
-import { COMPONENT_THUMBS } from './component-thumbs';
+import { ExampleThumb } from '@/components/preview/example-thumb';
 import { SPECIMEN_GROUPS } from './specimen-list';
 import { SPECIMENS, type Phase, type Specimen } from './specimens';
 import styles from './motion-lab.module.css';
@@ -440,18 +440,23 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
                   {group}
                 </span>
                 {SPECIMENS.filter((s) => s.group === group).map((s) => (
-                  <ToggleButton key={s.id} id={s.id} className={styles.componentItem}>
-                    {/* The brand's tokens, so the drawing changes with the brand like the stage does. */}
-                    <span
+                  <div key={s.id} className={styles.componentTile} role="presentation">
+                    <ToggleButton id={s.id} className={styles.componentItem}>
+                      {/* Holds the still's place: the still itself is a sibling, because it renders the real
+                          example, and a button may not contain a <div> or another button. */}
+                      <span className={styles.componentThumbSlot} aria-hidden />
+                      <span className={styles.cardLabel}>{s.label}</span>
+                    </ToggleButton>
+                    {/* The same still as the component's card on /docs/components (meta's `<name>-demo`), in the
+                        stage's brand and scheme so it changes with the brand like the stage does. */}
+                    <div
                       data-syntara-theme={STAGE_THEME_ID}
                       data-syntara-scheme={dark ? 'dark' : 'light'}
                       className={styles.componentThumb}
-                      aria-hidden
                     >
-                      {COMPONENT_THUMBS[s.id]?.()}
-                    </span>
-                    <span className={styles.cardLabel}>{s.label}</span>
-                  </ToggleButton>
+                      <ExampleThumb name={`${s.id}-demo`} zoom={0.5} />
+                    </div>
+                  </div>
                 ))}
               </div>
             ))}

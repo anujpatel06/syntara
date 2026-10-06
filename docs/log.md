@@ -6,6 +6,32 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Motion lab: component tiles show the real component
+
+Branch `feat/motion-lab-previews`, from `main` at 15a81d3.
+
+**Changed**
+- `apps/docs/components/motion/motion-lab.tsx`: each component tile shows the same still as its card on
+  `/docs/components` (`ExampleThumb`, the `<name>-demo` example), in the stage's brand and scheme. The still is a
+  sibling of the toggle button, laid over an empty slot in it, because a button may not contain a `<div>` or another
+  button; it takes no pointer events, so a click on it selects the tile.
+- `apps/docs/components/preview/example-thumb.tsx`: optional `zoom` (default 0.8, unchanged on `/docs/components`).
+  The motion tiles use 0.5; at 0.8 Tabs, Accordion and Stat tile were cropped to a few words.
+- `component-thumbs.tsx` and its sketch CSS are deleted.
+
+**Decided**
+- Real stills over drawings, to match the components gallery (Anuj asked; approved from a screenshot). No caption on
+  Dialog and Tooltip, which show only their trigger: the tile is too small for it, and the hint under the list says
+  what moves.
+
+**Results**
+- Checked by hand in a dev server on :3011 (light, 1280 wide): all six stills render; clicking the Tabs still selected
+  Tabs ("Tabs · Harbor · Tactile").
+- Not run, at Anuj's call: typecheck, `/verify` and `/screenshots`. Dark, RTL and phone width are unchecked here.
+
+**Next**
+- Nothing for this change, unless CI or the unchecked views turn something up.
+
 ## 2026-10-06 — Themes: "Start from" is a dropdown, not six cards
 
 Branch `feat/themes-preset-dropdown`, from `main` at 5c72f7b.

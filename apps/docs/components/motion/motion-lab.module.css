@@ -293,196 +293,28 @@
   box-shadow: 0 0 0 var(--syntara-hairline) var(--syntara-color-text-default);
 }
 
-/* ---- Component drawings (component-thumbs.tsx). Brand tokens from the stage theme; sizes in space tokens. ---- */
-
+/* ---- Component stills: the real example, the same still as /docs/components (preview/example-thumb.tsx). ----
+   The tile stacks the button and the still in one grid cell. The button is the whole tile and the only target;
+   the still sits over the button's empty slot, inset by the button's padding and border, and takes no pointer
+   events (ExampleThumb's stage is inert), so a click on the picture lands on the button under it. */
+.componentTile {
+  display: grid;
+  position: relative;
+}
+.componentThumbSlot {
+  display: block;
+  inline-size: 100%;
+  /* ExampleThumb's stage ratio, so the slot and the still are the same height. */
+  aspect-ratio: 16 / 10;
+}
 .componentThumb {
-  display: block;
-  inline-size: 100%;
-  aspect-ratio: 4 / 3;
-  border-radius: calc(var(--syntara-radius-container) - var(--syntara-space-1));
-  background: var(--syntara-color-surface-sunken);
-  overflow: clip;
-}
-.ct {
-  display: grid;
-  place-items: center;
-  inline-size: 100%;
-  block-size: 100%;
-  padding: var(--syntara-space-2);
-  color: var(--syntara-color-text-default);
-}
-.ctDim {
-  background: color-mix(in oklab, var(--syntara-color-text-default) 38%, var(--syntara-color-surface-default));
-}
-.ctColumn {
-  align-content: center;
-  gap: var(--syntara-space-1);
-}
-.ctStack {
-  align-content: center;
-  justify-items: stretch;
-  gap: var(--syntara-space-1);
-  padding-inline: var(--syntara-space-3);
-}
-.ctRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--syntara-space-1);
-}
-
-.ctLine,
-.ctLineShort {
-  display: block;
-  inline-size: 100%;
-  block-size: var(--syntara-space-1);
-  border-radius: var(--syntara-radius-badge);
-  background: currentColor;
-  opacity: 0.55;
-}
-.ctLineShort {
-  inline-size: 60%;
-  opacity: 0.3;
-}
-
-.ctPanel {
-  display: grid;
-  gap: var(--syntara-space-1);
-  inline-size: 70%;
-  padding: calc(var(--syntara-space-1) * 1.5);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-raised);
-  box-shadow: var(--syntara-shadow-overlay);
-}
-.ctActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: calc(var(--syntara-space-1) / 2);
-  margin-block-start: calc(var(--syntara-space-1) / 2);
-}
-.ctGhost,
-.ctPrimary {
-  display: block;
-  inline-size: 26%;
-  block-size: var(--syntara-space-2);
-  border-radius: var(--syntara-radius-badge);
-}
-.ctGhost {
-  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
-}
-.ctPrimary {
-  background: var(--syntara-color-action-primary-bg);
-}
-
-.ctTip {
-  position: relative;
-  display: block;
-  inline-size: 64%;
-  block-size: var(--syntara-space-3);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-inverse);
-}
-.ctTip::after {
-  content: '';
   position: absolute;
-  inset-block-start: 100%;
-  inset-inline-start: 50%;
-  translate: -50% 0;
-  border: calc(var(--syntara-space-1) * 0.75) solid transparent;
-  border-block-start-color: var(--syntara-color-surface-inverse);
-}
-.ctOutlineButton {
-  display: block;
-  inline-size: 40%;
-  block-size: var(--syntara-space-4);
-  margin-block-start: var(--syntara-space-1);
-  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-default);
-}
-
-.ctTrack {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  flex: none;
-  inline-size: calc(var(--syntara-space-8) + var(--syntara-space-1));
-  block-size: var(--syntara-space-5);
-  padding: calc(var(--syntara-space-1) / 2);
-  border-radius: var(--syntara-radius-pill);
-  background: var(--syntara-color-action-primary-bg);
-}
-.ctKnob {
-  display: block;
-  inline-size: var(--syntara-space-4);
-  block-size: var(--syntara-space-4);
-  border-radius: var(--syntara-radius-pill);
-  background: var(--syntara-color-surface-raised);
-}
-.ctRow > .ctLineShort {
-  inline-size: 34%;
-}
-
-.ctTabs {
-  display: flex;
-  gap: var(--syntara-space-1);
-  padding-block-end: var(--syntara-space-1);
-  border-block-end: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
-  margin-block-end: var(--syntara-space-1);
-}
-.ctTab {
-  position: relative;
-  display: block;
-  flex: 1;
-  block-size: var(--syntara-space-1);
-  border-radius: var(--syntara-radius-badge);
-  background: currentColor;
-  opacity: 0.3;
-}
-.ctTabOn {
-  opacity: 0.8;
-}
-.ctTabOn::after {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
   inset-block-start: calc(var(--syntara-space-2) + var(--syntara-hairline));
-  block-size: calc(var(--syntara-hairline) * 2);
-  background: var(--syntara-color-action-primary-bg);
-}
-
-.ctAccRow {
-  display: grid;
-  gap: var(--syntara-space-1);
-  padding-block: var(--syntara-space-1);
-  border-block-end: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
-}
-/* Each row's title: a darker line with the chevron's place kept at the end. */
-.ctAccTitle {
-  display: block;
-  inline-size: 70%;
-  block-size: var(--syntara-space-1);
-  border-radius: var(--syntara-radius-badge);
-  background: currentColor;
-  opacity: 0.6;
-}
-
-.ctStat {
-  display: grid;
-  gap: var(--syntara-space-1);
-  flex: 1;
-  padding: var(--syntara-space-1);
-  border: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
-  border-radius: var(--syntara-radius-badge);
-  background: var(--syntara-color-surface-default);
-}
-.ctFigure {
-  display: block;
-  inline-size: 50%;
-  block-size: var(--syntara-space-3);
-  border-radius: var(--syntara-radius-badge);
-  background: currentColor;
-  opacity: 0.8;
+  inset-inline: calc(var(--syntara-space-2) + var(--syntara-hairline));
+  pointer-events: none;
+  /* Outside a ThemeScope, so the brand's text colour and font are set here, as ThemeScope would. */
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
 }
 
 /* Segmented rows (Frame, Slow motion, Hold open) fill the panel's width, options equal. */
