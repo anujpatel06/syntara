@@ -6,6 +6,40 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — 2,000 niche icons as `@syntara/icons-niche` (ADR-052)
+
+Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
+
+**Changed**
+- **Spec first:** `docs/design/icon-domains.md`: 40 domains with target counts summing to 2,000, and the bar for every
+  icon (measurable: names, caps, live area).
+- **Drawn** by nine parallel drawing agents plus three top-up agents (the first batch lost 63 icons to duplicate names,
+  which were removed, not renamed), then a second pass for icons over the stroke cap and the weak list, and a third for
+  the dot cap. Drawers cut and replaced about 200 drawings that read as the wrong object (a plough that read as a banana).
+- **New package** `packages/icons-niche`: `src/icons/<domain>.ts` (40 files), `src/domains.ts` (domain → names),
+  tests, `check:drawing` (live-area geometry in a real browser), README, changeset, ADR-052.
+
+**Decided**
+- Outline only, duotone later per domain: **Anuj**.
+- Cap of 5 stroked subpaths and cap of 4 filled dots: **Anuj** (2026-10-06).
+- Separate package, not inside `@syntara/icons`: **Claude recommended, pending Anuj**.
+
+**Results** (commands run from the worktree)
+- `pnpm --filter @syntara/icons-niche test` — 6 passed (2,000 icons; unique names; caps; every icon in one domain; renders).
+- `pnpm --filter @syntara/icons-niche check:drawing` — `{"icons":2000,"problems":0}`.
+- `pnpm --filter @syntara/icons-niche typecheck` — clean. `build` — dist with one module per domain, `anatomy-skull` found in `dist/icons/healthcare-anatomy.js`.
+- `/verify` on this branch: `pnpm typecheck` clean (all packages); `pnpm test` 2,357 passed, 0 failed, and `node scripts/check-test-counts.mjs --from <output>` says the README row matches (it needed a `niche icons` part, added); `pnpm test:themes` 118,000/118,000; `pnpm check:meta` 58/58; `pnpm registry` 82 ok; `check-override-weight` clean; `pnpm --filter @syntara/docs build` 316/316 pages; `check-ssr-tabs` 0 of 592 tab lists missing a panel; hydration 0/288; theme links 0 failures; narrow overflow 0/288; CSP 0/144; axe 0 violation nodes (144 routes × 2 schemes); overlay exit 0 failures (108 tooltips, 4 menus). None of these exercise `icons-niche`: the docs site does not use it yet.
+- Strokes per icon: 0–2: 432, 3: 628, 4: 594, 5: 346 (940 above the aim of 3). The shipped set bends the aim too.
+
+**Next / known gaps**
+- **No human has reviewed the icons yet.** The tests prove the rules, not that an icon reads as its name. Drawers named
+  about 30 that still read weakly, among them pin-cushion, camera-lens, artboard, eyeshadow-palette, geothermal,
+  car-lift, cattle-ear-tag, silicon-wafer, breadboard, dog-tags, access-keypad, centrifuge, garland, fireworks.
+- Docs site page for the pack (search by domain) is not built. Duotone twins not started. Not published to npm.
+- Hand-drawn at this scale: expect a redraw round after Anuj's review of the per-domain sheets.
+
+---
+
 ## 2026-10-06 — A brand's own font, accepted only if it passes six measured checks (ADR-051)
 
 Branch `feat/custom-fonts`, from `main` at 9767dae, in its own worktree; `main` fast-forwarded to 5c00355, then
