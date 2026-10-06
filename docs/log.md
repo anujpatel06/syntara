@@ -82,8 +82,16 @@ f07269d (#78) merged in before the PR. Another session works on tenants-from-fol
   same with `--font Lobster` → the weights sentence and the English pass list, real 1.25 s, nothing written.
   "About a minute" became "a minute or two" everywhere it was promised.
 
+**Released**
+- #79 merged by Anuj (`37b9578`); release PR #80 (`pnpm changeset version`) auto-merged after its checks (`f8257b9`).
+  `pnpm changeset publish` from `main` in the Terminal panel, after Anuj's `npm login` and web approval.
+  `npm view`: `syntara` 0.3.0, `@syntara/theme-engine` 0.3.0, `@syntara/react` 0.3.1, `tokens`/`sdui`/`audit` 0.2.1,
+  `mcp` 0.1.3, `icons`/`codemods` 0.1.1 (the engine and icons appeared about 90 s after the others). Nine tags pushed.
+- From npm, in an empty folder: `npx -y syntara@0.3.0 init --yes --name Kestrel --font Manrope --no-install --no-edit`
+  → passes, 118 of 118 contrast checks, `--syntara-line-height-tight: 1.31` written, real 117.46 s including the
+  download; `--font Lobster` → the weights sentence and the English pass list.
+
 **Next**
-- Release: `@syntara/theme-engine` and `syntara` minor (changesets). Not published; ask Anuj.
 - `/themes` can't show a custom font yet (the preview link names the pair and says so).
 - Known gaps: coverage reads the full font file; a character Google's browser subsets leave out would pass. The
   CSS header says "theme-engine 0.1.0" (stale before this work). `type-pairs.ts` says Noto Sans Arabic has no Latin;
