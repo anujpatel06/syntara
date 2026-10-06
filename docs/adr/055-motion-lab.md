@@ -56,3 +56,14 @@ Anuj accepted all six recommendations ("fix everything", 2026-10-06).
   re-measured before the spec is updated.
 - If the lab is used, promoting styles to a brand input is a separate decision under GOVERNANCE.md §4 (an addition)
   and §5 (versioning).
+
+## Revision, 2026-10-06: a top-menu entry
+
+**Anuj** decided, after #87 merged: "give me entry point on top bar". This replaces decision 3 (footer only, no
+main-nav entry). "Motion" now sits in the site header between Themes and Colors, and the footer link stays.
+
+The header row had no room for it as it was: measured on the home page, the 70px item put the row 22px over at 768
+and 32px over at 1024 and 1120 (the search's growth steps). Following the header's own rule (keep 18px spare at
+every step), "Motion" shows from 810px, and the search grows at 1074 and 1170 instead of 1024 and 1120. Below
+810 it is in the mobile menu and the footer.
+
