@@ -60,7 +60,7 @@ export default defineConfig({
     minify: false,
     sourcemap: true,
     copyPublicDir: false,
-    lib: { entry: { index: path.join(src, 'index.ts') }, formats: ['es'] },
+    lib: { entry: { index: path.join(src, 'index.ts'), niche: path.join(src, 'niche.ts') }, formats: ['es'] },
     rollupOptions: {
       external: isExternal,
       output: { preserveModules: true, preserveModulesRoot: src, entryFileNames: '[name].js' },

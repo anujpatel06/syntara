@@ -19,3 +19,6 @@ packages/react/registry/
 # The README demo GIF is hosted on the readme-media release, not committed: 4.6 MB per copy, and a
 # re-record adds another. `pnpm gif` writes here; upload with `gh release upload readme-media … --clobber`.
 docs/media/
+
+# Scratch for the niche icons' drawing round (sheets, before/after PNGs, one-off scripts). src/ is the source of truth.
+packages/icons/draft/
