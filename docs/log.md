@@ -6,6 +6,47 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — @syntara/mcp carries its own data, so `npx` works
+
+Branch `feat/mcp-bundle-data`, on top of `docs/mcp-needs-checkout` (PR #89), in `../strata-mcp-docs`.
+
+**Changed**
+- `packages/mcp/scripts/bundle-data.mjs`, run on `prepack`: copies the files the server reads (meta, examples,
+  blocks, icon sources, tenant brands, `AGENTS.md`, `GOVERNANCE.md`) into `packages/mcp/data/` at their repo paths.
+  `postpack` deletes the copy again, so repo scripts never see it. `data/` is git-ignored.
+- `src/root.ts`: `findRoot()` is `SYNTARA_ROOT`, else the checkout, else the bundled `data/`.
+- `src/main.ts`: sets `SYNTARA_TENANTS_DIR` for `@syntara/audit` (unless already set), because the auditor looks for
+  tenants next to its own source and found none outside the repo.
+- `test/packed.test.ts`: packs the package, unpacks it outside the repo, calls all eight tools and both resources.
+- Docs page and README: the warning box from PR #89 is gone; setup snippets use `npx -y @syntara/mcp`.
+- `.changeset/mcp-bundle-data.md`: patch for `@syntara/mcp`.
+
+**Decided**
+- Ship the data in the package rather than fetch it at run time (Claude recommended, Anuj accepted, option A earlier
+  today). The copy is as new as the package; `SYNTARA_ROOT` still reads a checkout.
+
+**Results**
+- `pnpm --filter @syntara/mcp test`: 6 files, 204 tests passed. `pnpm --filter @syntara/mcp typecheck`: clean.
+- `test/packed.test.ts` with `data` removed from `files`: 11 of 11 failed; with it: 11 of 11 passed.
+- `pnpm pack`: 256,881 bytes, 330 files, 315 of them data (0.1.3 on npm: 15 files, 71,373 bytes unpacked).
+- By hand, `npx --package <tarball> syntara-mcp` in an empty folder, deps from npm: all eight tools and both
+  resources answered without error. Before the `main.ts` change, `audit_snippet` failed: `Unknown tenant "house"`.
+  The packed test can't see that one (its linked auditor is the workspace copy); the test file says so.
+- `/verify`, all green: `pnpm typecheck` clean; `pnpm test` 2,374 passing (README count row corrected with
+  `node scripts/check-test-counts.mjs --fix`: MCP 193 → 204); `pnpm test:themes` 118,000 / 118,000 checks, median
+  adjustments 4; `pnpm check:meta` ok (1 old warning: `hero-styles.tsx` not in `meta.examples`); `pnpm registry` 82
+  items; `check-override-weight` 0; docs build 317 / 317 pages; `check-ssr-tabs` 0. Served build
+  XJy9pfOEYLgyoYVCU4-t3 on :3099 (matches `.next/BUILD_ID`): hydration 0 failures of 290, theme links 0 of 5,
+  sideways scroll 0 of 290, CSP 0 of 145, axe 0 violation nodes over 145 routes × 2 schemes, overlays 0 of 112.
+  The built `docs/mcp.html` contains "nothing to clone" and no `/path/to/syntara`.
+
+**Next**
+- Merge #89, then this; release with `pnpm changeset publish` from `main` (asks Anuj first). Until 0.1.4 is on npm
+  the docs page's `npx` snippets point at 0.1.3, which doesn't work: publish straight after merging.
+- After publishing, rerun the `npx -y @syntara/mcp@latest` check from an empty folder.
+
+---
+
 ## 2026-10-06 — "Motion" in the site header (ADR-055 revision)
 
 Branch `feat/motion-nav`, from `main` at 50bbb7a (after #87 merged).
