@@ -6,6 +6,32 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Motion lab spec (ADR-053)
+
+Branch `docs/motion-lab-spec`, from `main` at 9fcc9a5, in its own worktree. Written first on `feat/icons-style-filter`
+(11 commits behind `main`) and moved here before committing. ADR renumbered 050 → 053: `main` had taken 050–052.
+
+**Changed**
+- Read https://animos.app (landing page only, editor not opened) at Anuj's request.
+- `docs/design/motion-lab.md`: spec for a `/motion` docs page. Pick a brand and a component, pick a motion style,
+  watch it loop, copy the code. Not a video tool.
+- Cross-checked the spec against the repo and fixed it: Snappy's first spring (600/30) measured 8.5% overshoot and
+  Calm's (220/30) took 536 ms, both breaking the spec's own rules; replaced with 700/38 (3.7%, 311 ms) and 300/34
+  (0.0%, 446 ms). Command in the spec, §4. Also: seven motion tokens, not six; scale amounts are not tokens (11
+  values in component CSS), so styles change time and curve only; Dialog enters from 0.94, not 0.96; the code panel
+  prints `[data-syntara-theme="<id>"]`, because a `:root` override loses to what `npx syntara init` writes.
+- `docs/adr/053-motion-lab.md`.
+
+**Decided**
+- All six spec decisions (three styles; a docs demo, not an engine option; home-page link only; share clip last;
+  "Gentle" instead of "Calm"; no scale tokens in v1). **Claude recommended, Anuj accepted** (ADR-053).
+
+**Next**
+- Build `/motion` with Dialog only, tune Gentle and Snappy by eye, show Anuj a recording or two frames per style.
+  Re-measure any spring that changes.
+
+---
+
 ## 2026-10-06 — The homepage's app window fits iPhones
 
 Branch `fix/home-showcase-mobile`, from `main` at 37b9578, in its own worktree.
