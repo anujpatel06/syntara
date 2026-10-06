@@ -33,6 +33,7 @@ Options for init (anything you give here is not asked):
   --force              Replace existing files
   --no-install         Don't offer to add syntara to package.json
   --no-edit            Don't change your app's entry file; print the lines to add instead
+  --no-welcome         Don't add the welcome card that shows your brand in your app
 
 Docs: https://syntara.live`;
 
