@@ -6,6 +6,36 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Cloudflare Web Analytics was blocked by our own CSP
+
+**Changed**
+- `apps/docs/public/_headers`: the CSP now allows `https://static.cloudflareinsights.com` in `script-src` and
+  `https://cloudflareinsights.com` in `connect-src`, so the analytics script Cloudflare injects on syntara.live can run
+  and report (ADR-053).
+
+**Decided**
+- Keep Cloudflare Web Analytics and allow it, rather than turn it off — **Claude recommended, Anuj accepted** (ADR-053).
+  Anuj had not known it was on.
+
+**Results**
+- `SYNTARA_BASE_URL=http://localhost:3417 node scripts/check-csp.mjs`: 144 routes, 0 failures (build
+  `FS3a_myytfOxyaR-Pj697`; `grep -c static.cloudflareinsights.com apps/docs/out/_headers` → 1).
+- That check only covers the repo's headers, not Cloudflare's injection. A one-off Playwright load of live syntara.live
+  with the CSP swapped: old policy blocks the beacon; new policy loads it (`200`) and its report returns `204`, no
+  violations.
+- `/verify` before committing: typecheck clean; `pnpm test` 2,351 tests, none failing (`check-test-counts.mjs` matches
+  the README); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand; `pnpm check:meta` 58/58 (one
+  existing warning: `hero-styles.tsx` not in `meta.examples`); `pnpm registry` 82 items; `check-override-weight.mjs`
+  clean; docs build 316/316 pages; `check-ssr-tabs.mjs` 0 of 315; against build `9wvFO0M0IWsv4c6_v5tlA`:
+  `check-hydration.mjs` 0 of 288, `check-theme-links.mjs` 0 of 5, `check-narrow-overflow.mjs` 0 of 288,
+  `check-csp.mjs` 0 of 144, `axe-sweep.mjs` 0 violation nodes, `check-overlay-exit.mjs` 0 of 112.
+
+**Next**
+- After this deploys, open syntara.live and confirm the console is clean, then check the Cloudflare Web Analytics
+  dashboard shows visits within a day.
+
+---
+
 ## 2026-10-06 — Header nav never wraps; search grows only where the row fits
 
 Reported by Anuj: "Get started" in the site header broke onto two lines around 1080px, on syntara.live and on `main` (d3ca2e5).
