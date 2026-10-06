@@ -104,7 +104,7 @@ const schemeInput = z.enum(['light', 'dark']).optional().describe('Colour scheme
 const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false } as const;
 
 export interface ServerOptions {
-  /** The Syntara repo. Default: SYNTARA_ROOT, or the repo this package sits in. */
+  /** The Syntara repo. Default: `findRoot()` (SYNTARA_ROOT, the checkout, or the bundled data). */
   root?: string;
 }
 
