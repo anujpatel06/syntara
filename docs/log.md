@@ -6,6 +6,37 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Themes: Export is a button and a dialog, not a tab
+
+Branch `feat/themes-export-dialog`, from `main` at cde820f.
+
+**Changed**
+- `/themes`: Export is no longer the fourth tab. An Export button (download icon, like the Motion lab's) sits at the end
+  of the Preview / Accessibility / Tokens row, after Light/Dark, and opens a Syntara `Dialog` (size `lg`, title
+  "Export", one-line description). Inside, unchanged: the `npx syntara init` command first, then the CSS / DTCG 2025.10
+  / Figma files with the Figma plan, file list, Copy and Download (`export-panel.tsx` now exports `ExportDialog`).
+- Address: an open dialog writes `export=open`; old `tab=export` links open the dialog over Preview and are rewritten
+  (`state.ts`). The Figma docs link now uses `export=open`.
+- Inside the dialog the two section headings are `h3` (the dialog title is the `h2`) and one size smaller; the gap
+  between the sections is `space-8` instead of the page's `space-12`.
+- `.claude/launch.json`: `docs-themes-export` (port 3517, `NEXT_DIST_DIR=.next-themes-export`).
+
+**Decided**
+- Button beside Light/Dark, as the brief suggested (Claude recommended, Anuj accepted from screenshots).
+- Skip `/verify` and `/screenshots` for this change: **Anuj**.
+
+**Results**
+- `npx tsc --noEmit -p apps/docs`: exit 0.
+- By hand in the dev server: `/themes?tab=export&format=figma` opened the dialog on Figma and the address became
+  `?tenant=vela&export=open&format=figma`; Escape closed it and removed `export=open`. Screenshots with
+  `scripts/shoot.mjs` (page light, dialog dark, 1440 wide) approved by Anuj.
+- Not run: `/verify`, `/screenshots`, axe. RTL, phone width and the dialog in light mode are unchecked.
+
+**Next**
+- Nothing for this change, unless the unchecked views turn something up.
+
+---
+
 ## 2026-10-06 — Motion lab: component tiles show the real component
 
 Branch `feat/motion-lab-previews`, from `main` at 15a81d3.

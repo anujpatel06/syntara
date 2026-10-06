@@ -1,4 +1,4 @@
-/* /themes — Accessibility, Tokens and Export tabs. Tokens only; swatch colours come from theme data. */
+/* /themes — Accessibility and Tokens tabs, and the Export dialog. Tokens only; swatch colours come from theme data. */
 
 .stack {
   display: flex;
@@ -382,6 +382,23 @@
 }
 
 /* ------------------------------------------------------------------ export */
+
+/* Inside the Export dialog: closer than the page panels' .stack, which spaces whole sections of a page. */
+.exportStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-8);
+  min-inline-size: 0;
+}
+
+/* Section headings under the dialog's own title (an h2), so one step smaller than .h2. */
+.h3 {
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-md);
+  font-weight: var(--syntara-font-weight-semibold);
+  line-height: var(--syntara-line-height-tight);
+  letter-spacing: var(--syntara-font-heading-tracking);
+}
 
 .exportTabs.exportTabs {
   gap: var(--syntara-space-4);

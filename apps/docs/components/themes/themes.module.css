@@ -133,14 +133,18 @@
     gap: var(--syntara-space-3);
     box-shadow: none;
   }
-  .schemeToggle.schemeToggle {
+  .tabActions {
     align-self: flex-start;
     order: 1;
   }
 }
 
-.schemeToggle.schemeToggle {
+/* Light/Dark, then Export: the actions on the whole theme, at the end of the tab row. */
+.tabActions {
+  display: flex;
   flex: none;
+  align-items: center;
+  gap: var(--syntara-space-2);
   margin-block-end: var(--syntara-space-1);
 }
 
