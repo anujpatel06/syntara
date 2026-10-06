@@ -6,6 +6,27 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Themes: "Start from" is a dropdown, not six cards
+
+Branch `feat/themes-preset-dropdown`, from `main` at 5c72f7b.
+
+**Changed**
+- `apps/docs/components/themes/controls-panel.tsx`: the six preset cards are now one `Select`, like "Type pair". Each
+  option keeps its three swatches (as the item icon, also shown in the trigger) and its industry in the tenant's own
+  words. The old card-grid CSS is gone; the swatches sit side by side with a hairline instead of overlapping on a
+  surface-coloured ring, because the list is glass.
+
+**Decided**
+- Dropdown over cards to save height (Anuj asked; approved from a screenshot).
+
+**Results**
+- `npx tsc --noEmit -p apps/docs`: exit 0. Checked by hand in the dev server (dark, wide): the list opens, picking
+  Harbor applies its inputs and preview.
+- Not run, at Anuj's call: `/verify` and `/screenshots`. Light mode, RTL and phone width are unchecked.
+
+**Next**
+- Nothing for this change, unless the unchecked views turn something up.
+
 ## 2026-10-06 — Release: react 0.4.0, icons 0.2.0, syntara 0.4.0, mcp 0.1.4
 
 Branch `release/2026-10-06-mcp-icons-init`, from `main` at bf99e00.

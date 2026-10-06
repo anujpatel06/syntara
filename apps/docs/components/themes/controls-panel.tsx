@@ -4,8 +4,6 @@ import { IconRotate } from '@syntara/icons';
 import {
   Badge,
   Button,
-  Radio,
-  RadioGroup,
   Select,
   SelectItem,
   Switch,
@@ -125,33 +123,39 @@ export function ControlsPanel() {
         </Button>
       </div>
 
-      <RadioGroup
-        label="Start from"
-        variant="card"
-        value={state.tenant}
-        onChange={(id) => dispatch({ type: 'selectPreset', preset: findPreset(presets, id) })}
-        className={styles.presets}
-      >
-        {presets.map((p) => {
-          const ramps = presetThemes[p.id]?.schemes.light.ramps;
-          const swatches = ramps ? [ramps.primary[8], ramps.accent[8], ramps.neutral[8]] : [];
-          return (
-            <Radio
-              key={p.id}
-              value={p.id}
-              className={styles.preset}
-              description={<span lang={p.industryLang}>{p.industry}</span>}
-            >
-              <span className={styles.presetName}>{p.label}</span>
-              <span className={styles.presetSwatches} aria-hidden="true">
-                {swatches.map((hex, i) => (
-                  <span key={i} className={styles.dot} style={{ backgroundColor: hex }} />
-                ))}
-              </span>
-            </Radio>
-          );
-        })}
-      </RadioGroup>
+      {/* One row, not a card grid: the six presets used to take more height than every other control together.
+          Each option keeps its three swatches (primary, accent, neutral) and its industry in the tenant's own words. */}
+      <div className={styles.field}>
+        <Select
+          label="Start from"
+          selectedKey={state.tenant}
+          onSelectionChange={(key: Key | null) => {
+            if (key != null) dispatch({ type: 'selectPreset', preset: findPreset(presets, String(key)) });
+          }}
+        >
+          {presets.map((p) => {
+            const ramps = presetThemes[p.id]?.schemes.light.ramps;
+            const swatches = ramps ? [ramps.primary[8], ramps.accent[8], ramps.neutral[8]] : [];
+            return (
+              <SelectItem
+                key={p.id}
+                id={p.id}
+                textValue={p.label}
+                description={<span lang={p.industryLang}>{p.industry}</span>}
+                icon={
+                  <span className={styles.presetSwatches}>
+                    {swatches.map((hex, i) => (
+                      <span key={i} className={styles.dot} style={{ backgroundColor: hex }} />
+                    ))}
+                  </span>
+                }
+              >
+                {p.label}
+              </SelectItem>
+            );
+          })}
+        </Select>
+      </div>
       {/* A preset card shows its tenant's industry in the tenant's own words; any still in draft say so here, under
           the cards, in the panel's voice. One note per distinct note text. */}
       {draftNotes.length > 0 && (
