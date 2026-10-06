@@ -1,11 +1,11 @@
 'use client';
 
-import { IconMoon, IconSun } from '@syntara/icons';
-import { Tab, TabList, TabPanel, Tabs, ToggleButton, ToggleButtonGroup } from '@syntara/react';
+import { IconDownload, IconMoon, IconSun } from '@syntara/icons';
+import { Button, Tab, TabList, TabPanel, Tabs, ToggleButton, ToggleButtonGroup } from '@syntara/react';
 import type { Key } from 'react-aria-components';
 import { AccessibilityPanel } from './accessibility-panel';
 import { ControlsPanel } from './controls-panel';
-import { ExportPanel } from './export-panel';
+import { ExportDialog } from './export-panel';
 import { plural } from './format';
 import { PreviewPanel } from './preview-panel';
 import { SCHEMES, TABS, oneOf, type Tab as TabId } from './state';
@@ -17,7 +17,6 @@ const TAB_LABEL: Record<TabId, string> = {
   preview: 'Preview',
   accessibility: 'Accessibility',
   tokens: 'Tokens',
-  export: 'Export',
 };
 
 function SchemeToggle() {
@@ -33,7 +32,6 @@ function SchemeToggle() {
         const scheme = oneOf(first == null ? undefined : String(first), SCHEMES);
         if (scheme) dispatch({ type: 'setScheme', scheme });
       }}
-      className={styles.schemeToggle}
     >
       <ToggleButton id="light">
         <IconSun aria-hidden />
@@ -80,7 +78,13 @@ export function ThemesWorkspace() {
               ),
             )}
           </TabList>
-          {state.tab !== 'export' && <SchemeToggle />}
+          <div className={styles.tabActions}>
+            <SchemeToggle />
+            <Button size="sm" onPress={() => dispatch({ type: 'setExportOpen', open: true })}>
+              <IconDownload aria-hidden />
+              Export
+            </Button>
+          </div>
         </div>
         <TabPanel id="preview" className={styles.panel}>
           <PreviewPanel />
@@ -91,10 +95,8 @@ export function ThemesWorkspace() {
         <TabPanel id="tokens" className={styles.panel}>
           <TokensPanel />
         </TabPanel>
-        <TabPanel id="export" className={styles.panel}>
-          <ExportPanel />
-        </TabPanel>
       </Tabs>
+      <ExportDialog />
     </div>
   );
 }

@@ -59,6 +59,16 @@
       ],
       "port": 3412,
       "url": "http://localhost:3412"
+    },
+    {
+      "name": "docs-themes-export",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/docs && NEXT_DIST_DIR=.next-themes-export exec ./node_modules/.bin/next dev --port 3517"
+      ],
+      "port": 3517,
+      "url": "http://localhost:3517"
     }
   ]
 }
