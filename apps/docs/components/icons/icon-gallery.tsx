@@ -122,7 +122,7 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
   const shown = filtered.reduce((n, g) => n + g.names.length, 0);
 
   const sectionItems = useMemo(
-    () => [{ id: 'all', name: 'All groups' }, ...groups.map((g) => ({ id: g.id, name: `${g.label} (${g.names.length})` }))],
+    () => [{ id: 'all', name: 'All categories' }, ...groups.map((g) => ({ id: g.id, name: `${g.label} (${g.names.length})` }))],
     [groups],
   );
 
@@ -143,63 +143,80 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
       <div ref={toolbarRef} className={styles.toolbar}>
         <SearchField
           aria-label="Search icons"
-          placeholder="Search icons…"
+          placeholder={`Search ${total.toLocaleString('en-US')} icons…`}
           value={query}
           onChange={setQuery}
           className={styles.search}
         />
+        {/* Two clusters: what is shown (style, category) and how it is drawn (size, stroke). Every control has a
+            label above it, sits on one baseline and is the same small height. */}
         <div className={styles.tools}>
-          <ToggleButtonGroup
-            aria-label="Icon style"
-            size="sm"
-            disallowEmptySelection
-            selectedKeys={[style]}
-            onSelectionChange={(keys) => {
-              const [k] = keys;
-              if (k != null) setStyle(k as Style);
-            }}
-          >
-            {STYLES.map((s) => (
-              <ToggleButton key={s.id} id={s.id}>
-                {s.label}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-          <Select
-            label="Group"
-            className={styles.domain}
-            items={sectionItems}
-            selectedKey={section}
-            onSelectionChange={(k) => k != null && setSection(String(k))}
-          >
-            {(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
-          </Select>
-          <ToggleButtonGroup
-            aria-label="Preview size in pixels"
-            size="sm"
-            disallowEmptySelection
-            selectedKeys={[size]}
-            onSelectionChange={(keys) => {
-              const [k] = keys;
-              if (k != null) setSize(String(k));
-            }}
-          >
-            {SIZES.map((s) => (
-              <ToggleButton key={s} id={s} className={styles.sizeToggle}>
-                {s}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-          <Slider
-            label="Stroke"
-            minValue={1}
-            maxValue={2}
-            step={0.25}
-            value={stroke}
-            onChange={(v) => setStroke(Array.isArray(v) ? (v[0] ?? defaultStroke) : v)}
-            formatOptions={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
-            className={styles.stroke}
-          />
+          <div className={styles.cluster} role="group" aria-label="Filter icons">
+            <div className={styles.field}>
+              <span id="icons-style-label" className={styles.fieldLabel}>
+                Style
+              </span>
+              <ToggleButtonGroup
+                aria-labelledby="icons-style-label"
+                size="sm"
+                disallowEmptySelection
+                selectedKeys={[style]}
+                onSelectionChange={(keys) => {
+                  const [k] = keys;
+                  if (k != null) setStyle(k as Style);
+                }}
+              >
+                {STYLES.map((s) => (
+                  <ToggleButton key={s.id} id={s.id}>
+                    {s.label}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            </div>
+            <Select
+              label="Category"
+              size="sm"
+              className={styles.category}
+              items={sectionItems}
+              selectedKey={section}
+              onSelectionChange={(k) => k != null && setSection(String(k))}
+            >
+              {(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+            </Select>
+          </div>
+          <div className={styles.cluster} role="group" aria-label="Preview">
+            <div className={styles.field}>
+              <span id="icons-size-label" className={styles.fieldLabel}>
+                Size <span className={styles.fieldUnit}>px</span>
+              </span>
+              <ToggleButtonGroup
+                aria-labelledby="icons-size-label"
+                size="sm"
+                disallowEmptySelection
+                selectedKeys={[size]}
+                onSelectionChange={(keys) => {
+                  const [k] = keys;
+                  if (k != null) setSize(String(k));
+                }}
+              >
+                {SIZES.map((s) => (
+                  <ToggleButton key={s} id={s} className={styles.sizeToggle}>
+                    {s}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            </div>
+            <Slider
+              label="Stroke"
+              minValue={1}
+              maxValue={2}
+              step={0.25}
+              value={stroke}
+              onChange={(v) => setStroke(Array.isArray(v) ? (v[0] ?? defaultStroke) : v)}
+              formatOptions={{ minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+              className={styles.stroke}
+            />
+          </div>
         </div>
       </div>
       <p className={styles.count} role="status">
