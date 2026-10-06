@@ -1,5 +1,15 @@
 # @syntara/audit
 
+## 0.2.1
+
+### Patch Changes
+
+- 5c00355: The package's repository and issue links point at the renamed GitHub repository, https://github.com/anujpatel06/syntara.
+  The old address still redirects.
+- Updated dependencies [37b9578]
+- Updated dependencies [5c00355]
+  - @syntara/theme-engine@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes

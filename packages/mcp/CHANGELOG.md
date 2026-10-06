@@ -1,5 +1,18 @@
 # @syntara/mcp
 
+## 0.1.3
+
+### Patch Changes
+
+- 9767dae: The server's instructions tell agents to set up a new app with `npx syntara init` (flags or `--look` when there is
+  no terminal) instead of writing a theme by hand.
+- 5c00355: The package's repository and issue links point at the renamed GitHub repository, https://github.com/anujpatel06/syntara.
+  The old address still redirects.
+- Updated dependencies [37b9578]
+- Updated dependencies [5c00355]
+  - @syntara/theme-engine@0.3.0
+  - @syntara/audit@0.2.1
+
 ## 0.1.2
 
 ### Patch Changes

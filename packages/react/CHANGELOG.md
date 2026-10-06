@@ -1,5 +1,14 @@
 # @syntara/react
 
+## 0.3.1
+
+### Patch Changes
+
+- 5c00355: The package's repository and issue links point at the renamed GitHub repository, https://github.com/anujpatel06/syntara.
+  The old address still redirects.
+- Updated dependencies [5c00355]
+  - @syntara/icons@0.1.1
+
 ## 0.3.0
 
 ### Minor Changes
