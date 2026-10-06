@@ -33,6 +33,7 @@ const SOURCE_ROOT = readJson(path.join(CACHE, 'source.json'))?.root ?? REPO;
 const prompts = new Map(readPrompts().map((p) => [p.id, p]));
 const PLACEHOLDER = readFileSync(path.join(REPO, 'evals/template/src/screens/Screen.tsx'), 'utf8');
 // A brand named in code: theme="vela", tenant === 'qamar', data-syntara-theme="care". Plain words in copy don't count.
+// A fixed list on purpose, not read from tenants/: changing it would change how earlier iterations score.
 const TENANT_WORDS = /(theme|tenant|brand)[\w-]*\s*(?:===?|!==?|=|:)\s*\{?\s*["'`](vela|harbor|qamar|care|house)["'`]/gi;
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'];
 

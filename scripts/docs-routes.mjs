@@ -1,8 +1,12 @@
 // Every route the docs site prerenders, shared by the scripts that sweep the running site so they cannot drift
 // apart on which pages count as covered.
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 
-export const TENANTS = ['vela', 'harbor', 'qamar', 'care', 'haat', 'house'];
+// Every tenants/<id>/ with a brand.json, house included (the block views render the site's own brand too).
+export const TENANTS = readdirSync('tenants', { withFileTypes: true })
+  .filter((d) => d.isDirectory() && existsSync(`tenants/${d.name}/brand.json`))
+  .map((d) => d.name)
+  .sort();
 export const BLOCKS = ['benefits-overview', 'portfolio', 'dashboard-overview', 'request-flow', 'settings', 'sign-in', 'activity-table', 'hero-orbit', 'hero-gallery', 'hero-cards', 'hero-aurora'];
 
 export function docsRoutes() {
