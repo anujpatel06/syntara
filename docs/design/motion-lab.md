@@ -217,3 +217,11 @@ photos for a video; what carries over is below. Controls are in two kinds, and t
 
 Not taken: Keyframes, Text, Logo, background, Position, Shadow (they arrange images for a video, not how a
 component moves), and scale amounts (decision 6).
+
+### Batch 2 (2026-10-06, after Anuj: "it's live now, add the next batch of components")
+
+Ten more, using only the two methods batch 1 proved: Sheet (stand-in wearing `sheet.module.css`, modal like
+Dialog); Checkbox (`isSelected`), Radio group (`value`), Toggle group (`selectedKeys`), Chip (`selectedKeys`),
+Steps (`current`); Badge, Meter, Sparkline and Avatar (remounted each loop: they animate as they mount). 16 in all.
+Left for batch 3, because opening them moves focus or announces to screen readers: Popover, Select, Menu,
+Combobox, Date picker, Command, Toast.

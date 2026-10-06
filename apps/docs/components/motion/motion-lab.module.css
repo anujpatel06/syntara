@@ -561,6 +561,201 @@
   background: var(--syntara-color-action-primary-bg);
 }
 
+/* Batch 2 drawings. */
+.ctSheetWrap {
+  justify-items: end;
+  padding: 0;
+}
+.ctSheet {
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-1);
+  inline-size: 46%;
+  block-size: 100%;
+  padding: var(--syntara-space-2) calc(var(--syntara-space-1) * 1.5);
+  background: var(--syntara-color-surface-raised);
+  box-shadow: var(--syntara-shadow-overlay);
+}
+.ctSheetFoot {
+  display: flex;
+  justify-content: flex-end;
+  align-self: end;
+}
+.ctSheetFoot > .ctPrimary {
+  inline-size: 60%;
+}
+.ctWrapRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: var(--syntara-space-1);
+}
+
+.ctBox {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-action-primary-bg);
+}
+.ctTick {
+  inline-size: 70%;
+  block-size: 70%;
+  fill: none;
+  stroke: var(--syntara-color-action-primary-fg);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ctRow > .ctBox + .ctLineShort {
+  inline-size: 40%;
+}
+
+.ctRadio {
+  flex: none;
+  inline-size: var(--syntara-space-3);
+  block-size: var(--syntara-space-3);
+  border: calc(var(--syntara-hairline) * 1.5) solid var(--syntara-color-border-strong);
+  border-radius: var(--syntara-radius-pill);
+}
+.ctRadioOn {
+  border-color: var(--syntara-color-action-primary-bg);
+  background: radial-gradient(var(--syntara-color-action-primary-bg) 45%, transparent 50%);
+}
+.ctStack > .ctRow {
+  justify-content: flex-start;
+}
+
+.ctSegmented {
+  display: flex;
+  gap: calc(var(--syntara-space-1) / 2);
+  inline-size: 80%;
+  padding: calc(var(--syntara-space-1) / 2);
+  border-radius: var(--syntara-radius-badge);
+  background: color-mix(in oklab, var(--syntara-color-text-default) 10%, var(--syntara-color-surface-default));
+}
+.ctSeg {
+  flex: 1;
+  block-size: var(--syntara-space-4);
+  border-radius: calc(var(--syntara-radius-badge) - var(--syntara-hairline));
+}
+.ctSegOn {
+  background: var(--syntara-color-surface-raised);
+  box-shadow: var(--syntara-shadow-raised);
+}
+
+.ctChip {
+  display: block;
+  inline-size: 38%;
+  block-size: var(--syntara-space-4);
+  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
+  border-radius: var(--syntara-radius-pill);
+}
+.ctChipOn {
+  border-color: transparent;
+  background: var(--syntara-color-action-primary-bg);
+}
+
+.ctSteps {
+  display: flex;
+  align-items: center;
+  inline-size: 80%;
+}
+.ctStep {
+  flex: none;
+  inline-size: var(--syntara-space-4);
+  block-size: var(--syntara-space-4);
+  border: calc(var(--syntara-hairline) * 1.5) solid var(--syntara-color-border-strong);
+  border-radius: var(--syntara-radius-pill);
+}
+.ctStepDone {
+  border-color: var(--syntara-color-action-primary-bg);
+  background: var(--syntara-color-action-primary-bg);
+}
+.ctStepNow {
+  border-color: var(--syntara-color-action-primary-bg);
+}
+.ctStepLink {
+  flex: 1;
+  block-size: calc(var(--syntara-hairline) * 2);
+  background: var(--syntara-color-border-subtle);
+}
+.ctStepLinkDone {
+  background: var(--syntara-color-action-primary-bg);
+}
+
+.ctBadge {
+  display: block;
+  inline-size: 28%;
+  block-size: var(--syntara-space-3);
+  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
+  border-radius: var(--syntara-radius-pill);
+}
+.ctBadgeSoft {
+  border-color: transparent;
+  background: color-mix(in oklab, var(--syntara-color-action-primary-bg) 22%, var(--syntara-color-surface-default));
+}
+.ctBadgeSolid {
+  border-color: transparent;
+  background: var(--syntara-color-action-primary-bg);
+}
+
+.ctMeter {
+  display: block;
+  block-size: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, var(--syntara-color-text-default) 12%, var(--syntara-color-surface-default));
+  overflow: clip;
+}
+.ctMeterFill {
+  display: block;
+  inline-size: 42%;
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--syntara-color-action-primary-bg);
+}
+
+.ctSpark {
+  inline-size: 80%;
+  block-size: 50%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--syntara-color-action-primary-bg);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.ctSpark path {
+  vector-effect: non-scaling-stroke;
+}
+
+.ctAvatars {
+  display: flex;
+}
+.ctAvatar {
+  inline-size: var(--syntara-space-6);
+  block-size: var(--syntara-space-6);
+  border: calc(var(--syntara-hairline) * 2) solid var(--syntara-color-surface-sunken);
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, var(--syntara-color-action-primary-bg) 30%, var(--syntara-color-surface-default));
+}
+.ctAvatar + .ctAvatar {
+  margin-inline-start: calc(var(--syntara-space-2) * -1);
+}
+.ctAvatar[data-i='1'] {
+  background: color-mix(in oklab, var(--syntara-color-text-default) 25%, var(--syntara-color-surface-default));
+}
+.ctAvatar[data-i='2'] {
+  background: color-mix(in oklab, var(--syntara-color-action-primary-bg) 60%, var(--syntara-color-surface-default));
+}
+.ctAvatar[data-i='3'] {
+  background: color-mix(in oklab, var(--syntara-color-text-default) 45%, var(--syntara-color-surface-default));
+}
+
 /* ---- Canvas ---- */
 
 .canvas {
@@ -643,6 +838,21 @@
   padding-block-start: var(--syntara-space-3);
   color: var(--syntara-color-text-subtle);
   font-size: var(--syntara-font-size-md);
+}
+
+/* Rows and cards for the batch 2 specimens. */
+.specimenRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syntara-space-3);
+}
+.specimenCard.specimenCard {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 2.5));
+}
+.specimenSpark.specimenSpark {
+  block-size: var(--syntara-space-12);
 }
 
 /* Dialog's overlay is position: fixed over the viewport; inside the lab it fills the stage instead.

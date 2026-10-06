@@ -1,0 +1,484 @@
+/* Batch 3 (page): stage layouts and tile drawings. Tokens only; logical properties only. A rule that restyles a
+   Syntara component's class doubles its own class (scripts/check-override-weight.mjs). */
+
+/* ---- Hero ----
+   The hero is a page section (704px tall at least for orbit, its wide layout from 1024px), so the stage shows it as a
+   smaller view of a desktop page: zoom 0.6, the factor a 1280 × 853 page needs to fit the 768 × 512 stage. Zoom scales
+   the picture only: every duration, curve and relative distance in the hero's motion stays its own. */
+.heroView {
+  position: absolute;
+  inset: 0;
+  zoom: 0.6;
+}
+.hero.hero {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+/* ---- Marquee ---- */
+.marqueeView {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  gap: var(--syntara-space-6);
+  padding-block: var(--syntara-space-8);
+}
+.caption {
+  margin: 0;
+  padding-inline: var(--syntara-space-6);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  text-align: center;
+}
+/* The logo style marquee-demo.tsx sets inline. */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-xl);
+  font-weight: var(--syntara-font-weight-semibold);
+  letter-spacing: var(--syntara-font-heading-tracking);
+  white-space: nowrap;
+}
+
+/* ---- Sidebar ---- */
+.sidebarView {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: var(--syntara-space-6);
+  padding: var(--syntara-space-4);
+  container-type: inline-size;
+}
+.sidebar.sidebar {
+  flex: none;
+  overflow: clip;
+}
+.pageArea {
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-4);
+  flex: 1;
+  min-inline-size: 0;
+  padding-block: var(--syntara-space-4);
+}
+.pageTitle {
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-2xl);
+  font-weight: var(--syntara-font-weight-semibold);
+  letter-spacing: var(--syntara-font-heading-tracking);
+}
+.pageBlock {
+  display: block;
+  block-size: var(--syntara-space-24);
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-color-surface-sunken);
+}
+/* A phone has no room for the page beside the panel. */
+@container (max-width: 480px) {
+  .pageArea {
+    display: none;
+  }
+}
+
+/* ---- Footer ----
+   Its desktop layout (aside beside the columns) starts at 960px wide, so like Hero it is shown as a smaller view of a
+   desktop page: zoom 0.75 makes the 766px stage a 1021px footer. Picture only; the hover's curve and timing stay.
+   At the bottom of the stage, like the end of a page; from the top when a narrow frame can't fit it, so the wordmark
+   and the social links (the motion) stay in view. */
+.footerView {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe flex-end;
+  overflow: clip;
+  zoom: 0.75;
+}
+.socialRow.socialRow {
+  display: flex;
+  gap: var(--syntara-space-3);
+}
+
+/* ---- File upload, Prompt composer, Streaming response: a column of a sensible reading width ---- */
+.fileView > * {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 3.75));
+}
+.composerView > * {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 4.5));
+}
+.streamView > * {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 4.75));
+}
+
+/* The chat around the response, as in streaming-response-demo.tsx. */
+.chat {
+  display: grid;
+  gap: var(--syntara-space-5);
+  /* Room for the whole answer and its sources, so the layout doesn't jump as the text grows. */
+  min-block-size: calc(var(--syntara-space-32) * 2);
+  align-content: start;
+}
+.question {
+  justify-self: end;
+  max-inline-size: 80%;
+  margin: 0;
+  padding-block: var(--syntara-space-2);
+  padding-inline: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-color-surface-selected);
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-md);
+}
+.answer {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--syntara-space-3);
+}
+.mark {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  border: var(--syntara-hairline) solid var(--syntara-color-border-default);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-raised);
+  color: var(--syntara-color-text-brand);
+}
+.answerBody {
+  flex: 1;
+  min-inline-size: 0;
+  padding-block-start: var(--syntara-space-1);
+}
+
+/* ---- Tile drawings (spans only). Same scale as the .ct* drawings in motion-lab.module.css. ---- */
+
+/* Hero: copy at the start, rings around a lamp at the end. */
+.tHero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syntara-space-2);
+}
+.tHeroCopy {
+  display: grid;
+  gap: var(--syntara-space-1);
+  flex: 1;
+}
+.tHeadline,
+.tHeadlineShort {
+  display: block;
+  block-size: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.75;
+}
+.tHeadlineShort {
+  inline-size: 70%;
+  opacity: 0.35;
+}
+.tRings {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 46%;
+  block-size: var(--syntara-space-10);
+}
+.tRing {
+  position: absolute;
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, var(--syntara-color-action-primary-bg) 25%, var(--syntara-color-surface-sunken));
+}
+.tRing[data-n='3'] {
+  inset: 0;
+}
+.tRing[data-n='2'] {
+  inset: var(--syntara-space-1) calc(var(--syntara-space-1) * 1.5);
+  background: color-mix(in oklab, var(--syntara-color-action-primary-bg) 50%, var(--syntara-color-surface-sunken));
+}
+.tRing[data-n='1'] {
+  inset: var(--syntara-space-2) var(--syntara-space-3);
+  background: var(--syntara-color-action-primary-bg);
+}
+.tLamp {
+  position: relative;
+  display: block;
+  inline-size: var(--syntara-space-4);
+  block-size: calc(var(--syntara-space-1) * 1.5);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-raised);
+}
+
+/* Marquee: a strip of logos running off both edges, faded at the ends. */
+.tMarquee {
+  align-content: center;
+  gap: var(--syntara-space-2);
+  overflow: clip;
+  padding-inline: 0;
+}
+.tStrip {
+  display: flex;
+  gap: var(--syntara-space-2);
+  mask: linear-gradient(to right, transparent, currentColor 20%, currentColor 80%, transparent);
+}
+.tLogo {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: var(--syntara-space-1);
+}
+.tLogoMark {
+  display: block;
+  flex: none;
+  inline-size: var(--syntara-space-3);
+  block-size: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.55;
+}
+.tLogoMark[data-on] {
+  background: var(--syntara-color-action-primary-bg);
+  opacity: 1;
+}
+.tLogoName {
+  display: block;
+  flex: none;
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.4;
+}
+
+/* Sidebar: a panel at the start with an open group, the page beside it. */
+.tSidebarWrap {
+  display: flex;
+  align-items: stretch;
+  gap: var(--syntara-space-2);
+}
+.tSidebar {
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-1);
+  inline-size: 42%;
+  padding: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-canvas);
+  box-shadow: 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+}
+.tNav,
+.tSub {
+  display: block;
+  block-size: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-badge);
+  background: color-mix(in oklab, currentColor 18%, transparent);
+}
+.tNavOn {
+  background: var(--syntara-color-action-primary-bg);
+}
+.tSub {
+  margin-inline-start: var(--syntara-space-2);
+  block-size: var(--syntara-space-1);
+  background: color-mix(in oklab, currentColor 30%, transparent);
+}
+.tPage {
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-1);
+  flex: 1;
+  padding-block: var(--syntara-space-1);
+}
+.tPageBlock {
+  display: block;
+  block-size: var(--syntara-space-6);
+  border-radius: var(--syntara-radius-badge);
+  background: color-mix(in oklab, currentColor 8%, transparent);
+}
+
+/* Footer: socials and link columns over a big faint wordmark cut by the horizon. */
+.tFooter {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: var(--syntara-space-2);
+  padding-block-end: 0;
+}
+.tWordmark {
+  display: block;
+  block-size: var(--syntara-space-6);
+  margin-inline: var(--syntara-space-1);
+  border-start-start-radius: var(--syntara-radius-badge);
+  border-start-end-radius: var(--syntara-radius-badge);
+  background: color-mix(in oklab, currentColor 10%, transparent);
+  box-shadow: inset 0 calc(var(--syntara-hairline) * -1) 0 var(--syntara-color-border-default);
+}
+.tFooterBody {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--syntara-space-2);
+}
+.tSocials {
+  display: flex;
+  align-items: flex-start;
+  gap: calc(var(--syntara-space-1) / 2);
+}
+.tSocial {
+  display: block;
+  inline-size: var(--syntara-space-3);
+  block-size: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-raised);
+  box-shadow: 0 0 0 var(--syntara-hairline) var(--syntara-color-border-subtle);
+}
+.tSocialOn {
+  background: var(--syntara-color-action-primary-bg);
+  translate: 0 calc(var(--syntara-hairline) * -2);
+}
+.tCols {
+  display: flex;
+  gap: var(--syntara-space-1);
+  flex: 1;
+  max-inline-size: 55%;
+}
+.tCol {
+  display: grid;
+  gap: var(--syntara-space-1);
+  flex: 1;
+}
+.tCol > * {
+  inline-size: 100%;
+}
+
+/* File upload: a dashed zone, then a file row with its bar part-way. */
+.tZone {
+  display: grid;
+  justify-items: center;
+  gap: var(--syntara-space-1);
+  padding: var(--syntara-space-1);
+  border: var(--syntara-hairline) dashed var(--syntara-color-border-strong);
+  border-radius: var(--syntara-radius-badge);
+}
+.tZoneIcon {
+  display: block;
+  inline-size: var(--syntara-space-3);
+  block-size: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, currentColor 18%, transparent);
+}
+.tFile {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-1);
+}
+.tFileIcon {
+  display: block;
+  flex: none;
+  inline-size: var(--syntara-space-3);
+  block-size: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-badge);
+  background: color-mix(in oklab, currentColor 18%, transparent);
+}
+.tFileBody {
+  display: grid;
+  gap: calc(var(--syntara-space-1) / 2);
+  flex: 1;
+}
+.tBar {
+  display: block;
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-pill);
+  background: color-mix(in oklab, currentColor 12%, transparent);
+  overflow: clip;
+}
+.tBarFill {
+  display: block;
+  inline-size: 64%;
+  block-size: 100%;
+  background: var(--syntara-color-action-primary-bg);
+}
+
+/* Prompt composer: a box with a soft brand glow, a pill and the send button. */
+.tComposer {
+  display: grid;
+  gap: var(--syntara-space-2);
+  inline-size: 84%;
+  padding: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-raised);
+  box-shadow:
+    0 0 0 var(--syntara-hairline) color-mix(in oklab, var(--syntara-color-action-primary-bg) 60%, transparent),
+    0 0 var(--syntara-space-4) color-mix(in oklab, var(--syntara-color-action-primary-bg) 45%, transparent);
+}
+.tComposerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tPill {
+  display: block;
+  inline-size: 36%;
+  block-size: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-pill);
+  box-shadow: inset 0 0 0 var(--syntara-hairline) var(--syntara-color-border-default);
+}
+.tSend {
+  display: block;
+  inline-size: var(--syntara-space-4);
+  block-size: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-action-primary-bg);
+}
+
+/* Streaming response: lines of text, the last one ending in the brand caret, and the writing line. */
+.tLastLine {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--syntara-space-1) / 2);
+}
+.tLastText {
+  display: block;
+  inline-size: 55%;
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.55;
+}
+.tCaret {
+  display: block;
+  inline-size: calc(var(--syntara-hairline) * 2);
+  block-size: var(--syntara-space-3);
+  background: var(--syntara-color-action-primary-bg);
+  box-shadow: 0 0 var(--syntara-space-1) var(--syntara-color-action-primary-bg);
+}
+.tWriting {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-1);
+  margin-block-start: var(--syntara-space-1);
+}
+.tDot {
+  display: block;
+  inline-size: var(--syntara-space-1);
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-action-primary-bg);
+}
+.tWritingText {
+  display: block;
+  inline-size: 30%;
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.3;
+}
+/* The second strip starts half a logo along, so the two read as one strip caught mid-scroll. */
+.tStrip + .tStrip {
+  margin-inline-start: calc(var(--syntara-space-6) * -1);
+}
