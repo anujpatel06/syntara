@@ -1,11 +1,11 @@
 # Niche icon pack — domain list (draft, pending Anuj)
 
-Goal: 2,000 outline icons at niche level, in a separate pack (working name `@syntara/icons-niche`).
+Goal: 2,000 outline icons at niche level, in `@syntara/icons`, behind the entry `@syntara/icons/niche`.
 Outline only; duotone comes later, per domain. Style is the existing spec in
 `packages/icons/src/create-icon.tsx` (ADR-014): 24×24 grid, 1.5 stroke, round caps and joins,
 curvy, ≤ 3 subpaths, `currentColor` only.
 
-Status: **draft for approval. Nothing is drawn yet.** Decision on the pack home: Claude recommended, pending Anuj.
+Status: **draft for approval. Nothing is drawn yet.** Pack home: same package (Anuj); own entry point (Claude recommended, pending Anuj).
 
 ## Bar for every icon (measurable)
 

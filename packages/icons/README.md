@@ -32,11 +32,29 @@ real colour.
 no area, so there is nothing to fill; their twins exist and render exactly like the outline, which keeps the set 1:1
 so a product can move its whole icon layer in one import change.
 
+## Niche icons: `@syntara/icons/niche`
+
+**2,000 more outline icons in 40 domains** (healthcare specialties, dental, anatomy, finance, legal, farming, aviation
+and more), same style and same `createIcon`, in the same package under their own entry point (ADR-052):
+
+```tsx
+import { IconCardiology } from '@syntara/icons/niche';
+import { nicheDomains } from '@syntara/icons/niche'; // domain → icon names, for docs, search and pickers
+```
+
+They sit behind their own entry on purpose: the main entry is imported wholesale by the server-driven UI renderer, the
+docs gallery and `syntara/icons`, and 2,000 more icons there would grow all of them. Outline only; no duotone twins yet.
+Every icon passes the pack rules (≤ 5 stroked subpaths, ≤ 4 filled dots, drawing inside the live area, a unique name
+that does not clash with the main set), checked by `test/niche.test.tsx` and `check:niche-drawing`. What those cannot
+prove is that an icon *reads* as its name; about 30 were flagged as weak in `docs/log.md`. The list of domains and
+their target counts is `docs/design/icon-domains.md`.
+
 ## Scripts
 
 ```sh
 pnpm --filter @syntara/icons sheet        # render the review sheet
 pnpm --filter @syntara/icons check:tints  # find tint parts that overlap
+pnpm --filter @syntara/icons check:niche-drawing  # niche icons stay inside the live area (real browser)
 ```
 
 RTL: icons flip through prefix selectors on the components that use them (`[data-syntara-icon^='arrow']`), and a

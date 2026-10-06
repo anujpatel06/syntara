@@ -6,7 +6,7 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
-## 2026-10-06 — 2,000 niche icons as `@syntara/icons-niche` (ADR-052)
+## 2026-10-06 — 2,000 niche icons in `@syntara/icons/niche` (ADR-052)
 
 Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
 
@@ -16,19 +16,24 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
 - **Drawn** by nine parallel drawing agents plus three top-up agents (the first batch lost 63 icons to duplicate names,
   which were removed, not renamed), then a second pass for icons over the stroke cap and the weak list, and a third for
   the dot cap. Drawers cut and replaced about 200 drawings that read as the wrong object (a plough that read as a banana).
-- **New package** `packages/icons-niche`: `src/icons/<domain>.ts` (40 files), `src/domains.ts` (domain → names),
-  tests, `check:drawing` (live-area geometry in a real browser), README, changeset, ADR-052.
+- **Into `@syntara/icons`** (Anuj: "include in same"; first built as a separate package, then merged): `src/icons/niche/<domain>.ts`
+  (40 files), `src/niche.ts` and `src/niche-domains.ts` (domain → names) behind a new entry `@syntara/icons/niche`;
+  `test/niche.test.tsx`, `check:niche-drawing` (live-area geometry in a real browser), README section, changeset, ADR-052.
+  **Own entry, not the main one**, because the server-driven UI renderer, the docs gallery and `syntara/icons` import the
+  whole main entry; a test keeps niche icons out of it.
 
 **Decided**
 - Outline only, duotone later per domain: **Anuj**.
 - Cap of 5 stroked subpaths and cap of 4 filled dots: **Anuj** (2026-10-06).
-- Separate package, not inside `@syntara/icons`: **Claude recommended, pending Anuj**.
+- Same package as `@syntara/icons`: **Anuj**. Own entry point `/niche` instead of the main entry: **Claude recommended, pending Anuj**.
 
 **Results** (commands run from the worktree)
-- `pnpm --filter @syntara/icons-niche test` — 6 passed (2,000 icons; unique names; caps; every icon in one domain; renders).
-- `pnpm --filter @syntara/icons-niche check:drawing` — `{"icons":2000,"problems":0}`.
-- `pnpm --filter @syntara/icons-niche typecheck` — clean. `build` — dist with one module per domain, `anatomy-skull` found in `dist/icons/healthcare-anatomy.js`.
-- `/verify` on this branch: `pnpm typecheck` clean (all packages); `pnpm test` 2,357 passed, 0 failed, and `node scripts/check-test-counts.mjs --from <output>` says the README row matches (it needed a `niche icons` part, added); `pnpm test:themes` 118,000/118,000; `pnpm check:meta` 58/58; `pnpm registry` 82 ok; `check-override-weight` clean; `pnpm --filter @syntara/docs build` 316/316 pages; `check-ssr-tabs` 0 of 592 tab lists missing a panel; hydration 0/288; theme links 0 failures; narrow overflow 0/288; CSP 0/144; axe 0 violation nodes (144 routes × 2 schemes); overlay exit 0 failures (108 tooltips, 4 menus). None of these exercise `icons-niche`: the docs site does not use it yet.
+- After merging into `@syntara/icons` (entry `/niche`), re-run from the worktree:
+  - `pnpm --filter @syntara/icons test`: 966 passed (the 959 existing + 7 niche: 2,000 icons; unique names; caps; every icon in one domain; renders; main entry has none of them).
+  - `pnpm --filter @syntara/icons check:niche-drawing`: `{"icons":2000,"problems":0}`. `typecheck` clean.
+  - `pnpm --filter @syntara/icons build`: `dist/index.js` 17.07 kB (unchanged main entry), `dist/niche.js` 68.86 kB; `anatomy-skull` found in `dist/icons/niche/healthcare-anatomy.js` and absent from `dist/index.js`.
+  - `pnpm typecheck` clean; `pnpm test` 2,358 passed, 0 failed, and `check-test-counts.mjs` says the README row matches (`--fix` wrote 966 icons); `pnpm check:meta` 58/58; `pnpm registry` 82 ok; `check-override-weight` clean; `pnpm --filter @syntara/docs build` 316/316 pages; `check-ssr-tabs` 0 of 592.
+  - Browser sweeps (hydration, links, overflow, CSP, axe, overlay) were last run on the first layout (separate package): all 0 failures, 144 routes. Not re-run after the merge: `git diff $(git merge-base HEAD origin/main) -- apps packages/react packages/sdui packages/syntara packages/mcp packages/audit packages/theme-engine/src` is empty, and the docs build output is unchanged in kind. `pnpm test:themes` was not re-run: the engine is untouched (118,000/118,000 on the first layout).
 - Strokes per icon: 0–2: 432, 3: 628, 4: 594, 5: 346 (940 above the aim of 3). The shipped set bends the aim too.
 
 **Next / known gaps**
