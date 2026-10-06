@@ -81,9 +81,10 @@ export const IconMoonSurface = createIcon('moon-surface', [
   ['circle', { cx: 9.5, cy: 15.5, r: 1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconOrbitPath = createIcon('orbit-path', [
-  ['circle', { cx: 12, cy: 12, r: 3.25 }],
-  ['ellipse', { cx: 12, cy: 12, rx: 9.25, ry: 4, transform: 'rotate(-25 12 12)' }],
-  ['circle', { cx: 19.5, cy: 6.75, r: 1.3, fill: 'currentColor', stroke: 'none' }],
+  ['ellipse', { cx: 12, cy: 12, rx: 8.5, ry: 5.5, transform: 'rotate(-20 12 12)' }],
+  ['circle', { cx: 6, cy: 12, r: 2, transform: 'rotate(-20 12 12)' }],
+  ['path', { d: 'M10.5 5.1 12.2 6.5l-1.7 1.4', transform: 'rotate(-20 12 12)' }],
+  ['circle', { cx: 19.36, cy: 14.75, r: 1.4, fill: 'currentColor', stroke: 'none', transform: 'rotate(-20 12 12)' }],
 ]);
 export const IconOreChunk = createIcon('ore-chunk', [
   ['path', { d: 'M3.5 15.5 6 8.5l5-3.5 6.5 1.5 3 6.5-2.5 6.5H7.5Z' }],
@@ -106,10 +107,11 @@ export const IconSpaceRocket = createIcon('space-rocket', [
   ['path', { d: 'M10.25 19.25 12 21.25l1.75-2' }],
 ]);
 export const IconSpaceSatellite = createIcon('space-satellite', [
-  ['rect', { x: 9.5, y: 9, width: 5, height: 6, rx: 1.5, transform: 'rotate(-45 12 12)' }],
-  ['rect', { x: 2.75, y: 8, width: 4, height: 8, rx: 1, transform: 'rotate(-45 12 12)' }],
-  ['rect', { x: 17.25, y: 8, width: 4, height: 8, rx: 1, transform: 'rotate(-45 12 12)' }],
-  ['path', { d: 'M6.75 12H9.5M14.5 12h2.75', transform: 'rotate(-45 12 12)' }],
+  ['rect', { x: 9.5, y: 7.5, width: 5, height: 5.5, rx: 1 }],
+  ['path', { d: 'M9.5 10.25h-2v-3h-5v6h5v-3h-5' }],
+  ['path', { d: 'M14.5 10.25h2v-3h5v6h-5v-3h5' }],
+  ['path', { d: 'M12 13v3' }],
+  ['path', { d: 'M8.5 19.5a3.5 3.5 0 0 1 7 0Z' }],
 ]);
 export const IconSpiralGalaxy = createIcon('spiral-galaxy', [
   ['path', { d: 'M12 12C15 12 16.5 9.5 15.5 7.5S11.5 4 8.5 5 4 8.5 4.5 11.5' }],

@@ -84,10 +84,12 @@ export const IconParkingMeter = createIcon('parking-meter', [
   ['path', { d: 'M12 12.5v8M8.5 20.5h7' }],
 ]);
 export const IconParliamentSeats = createIcon('parliament-seats', [
-  ['path', { d: 'M3.5 20.5h17' }],
-  ['path', { d: 'M10.5 20.5v-3.5h3v3.5' }],
-  ['path', { d: 'M3.75 17.5a8.25 8.25 0 0 1 16.5 0' }],
-  ['path', { d: 'M7 17.5a5 5 0 0 1 10 0' }],
+  ['path', { d: 'M3.09 17.75A9 9 0 0 1 6.46 11.91M8.63 10.66a9 9 0 0 1 6.74 0M17.54 11.91a9 9 0 0 1 3.37 5.84' }],
+  ['circle', { cx: 6.92, cy: 16.89, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 9.89, cy: 13.92, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 14.11, cy: 13.92, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 17.08, cy: 16.89, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M2.5 20.5h19' }],
 ]);
 export const IconPetition = createIcon('petition', [
   ['rect', { x: 5, y: 4.5, width: 14, height: 16.5, rx: 2.5 }],

@@ -6,14 +6,16 @@ export const IconAmpoule = createIcon('ampoule', [
   ['path', { d: 'M10.5 7.5h3' }],
 ]);
 export const IconAutoclave = createIcon('autoclave', [
-  ['rect', { x: 3, y: 8, width: 18, height: 12.5, rx: 3 }],
-  ['circle', { cx: 12, cy: 14.25, r: 3.5 }],
-  ['path', { d: 'M8.5 5.5c-.75-.75-.75-1.5 0-2.25M12 5.5c-.75-.75-.75-1.5 0-2.25M15.5 5.5c-.75-.75-.75-1.5 0-2.25' }],
+  ['path', { d: 'M15 9.5 9.6 17A2.25 2.25 0 1 0 6.9 20.5 2.25 2.25 0 1 0 9.6 17' }],
+  ['path', { d: 'M9 9.5l5.4 7.5A2.25 2.25 0 1 1 17.1 20.5 2.25 2.25 0 1 1 14.4 17' }],
+  ['path', { d: 'M8 7.25c-.75-.75-.75-1.5 0-2.25s.75-1.5 0-2.25M12 7.25c-.75-.75-.75-1.5 0-2.25s.75-1.5 0-2.25M16 7.25c-.75-.75-.75-1.5 0-2.25s.75-1.5 0-2.25' }],
 ]);
 export const IconBabyIncubator = createIcon('baby-incubator', [
-  ['path', { d: 'M4.5 13.5V12a7.5 6 0 0 1 15 0v1.5' }],
-  ['rect', { x: 3, y: 13.5, width: 18, height: 4.5, rx: 1.75 }],
-  ['path', { d: 'M6.5 18v2.5M17.5 18v2.5' }],
+['path', { d: 'M3.5 14V9a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4v5' }],
+  ['rect', { x: 2.5, y: 14, width: 19, height: 3, rx: 1.5 }],
+  ['path', { d: 'M7.5 21.5H12V17v4.5h4.5' }],
+  ['circle', { cx: 8.5, cy: 11.5, r: 2 }],
+  ['path', { d: 'M11.5 9.75h3.75a1.75 1.75 0 0 1 0 3.5H11.5' }],
 ]);
 export const IconBloodBag = createIcon('blood-bag', [
   ['rect', { x: 5.5, y: 3, width: 13, height: 13.5, rx: 3.5 }],
@@ -210,9 +212,11 @@ export const IconMedicalGlove = createIcon('medical-glove', [
   ['rect', { x: 7, y: 18, width: 10.25, height: 3, rx: 1 }],
 ]);
 export const IconMedicalIdCard = createIcon('medical-id-card', [
-  ['rect', { x: 3, y: 5, width: 18, height: 14, rx: 3 }],
-  ['path', { d: 'M8 10v4M6 12h4' }],
-  ['path', { d: 'M13 10.5h4.5M13 13.5h3' }],
+['rect', { x: 2.5, y: 5, width: 19, height: 14, rx: 2.5 }],
+  ['circle', { cx: 8, cy: 10, r: 2 }],
+  ['path', { d: 'M4.75 16a3.25 3.25 0 0 1 6.5 0' }],
+  ['path', { d: 'M14 13.5h4.5M14 16h3' }],
+  ['path', { d: 'M15.75 7.5h1.5V9h1.5v1.5h-1.5V12h-1.5v-1.5h-1.5V9h1.5Z', fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconMedicalScissors = createIcon('medical-scissors', [
   ['circle', { cx: 7, cy: 17.5, r: 2.5 }],
@@ -236,9 +240,11 @@ export const IconMriScanner = createIcon('mri-scanner', [
   ['path', { d: 'M2.75 14.25h18.5' }],
 ]);
 export const IconNurseCallButton = createIcon('nurse-call-button', [
-  ['rect', { x: 7.5, y: 3, width: 9, height: 14, rx: 4.5 }],
-  ['circle', { cx: 12, cy: 8, r: 2 }],
-  ['path', { d: 'M12 17v2.5c0 1 .75 1.75 1.75 1.75H19' }],
+['rect', { x: 3.5, y: 6, width: 7, height: 11.5, rx: 3.5 }],
+  ['circle', { cx: 7, cy: 10, r: 1.75 }],
+  ['path', { d: 'M7 17.5v1.25c0 1.5 1 2.75 2.75 2.75H14' }],
+  ['path', { d: 'M14 11c.5-.5.75-1.25.75-2.5a3 3 0 0 1 6 0c0 1.25.25 2 .75 2.5Z' }],
+  ['circle', { cx: 17.75, cy: 12.75, r: 0.9, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconNurseCap = createIcon('nurse-cap', [
   ['path', { d: 'M4 15.5 5.25 8c4.5-2 9-2 13.5 0L20 15.5c-5-1.5-11-1.5-16 0Z' }],
@@ -254,9 +260,10 @@ export const IconPregnancyTest = createIcon('pregnancy-test', [
   ['path', { d: 'M12 7.5v2M11 8.5h2', transform: 'rotate(45 12 12)' }],
 ]);
 export const IconProstheticLeg = createIcon('prosthetic-leg', [
-  ['path', { d: 'M8.5 3.5h7l-1.25 7.25a1.5 1.5 0 0 1-1.5 1.25h-1.5a1.5 1.5 0 0 1-1.5-1.25Z' }],
-  ['path', { d: 'M12 12v5.5' }],
-  ['path', { d: 'M10.5 17.5h4c2 0 4.5 1.25 5 3H10.5Z' }],
+['path', { d: 'M8 2.5h7.5l-1 5.25a2 2 0 0 1-2 1.75h-1.5a2 2 0 0 1-2-1.75Z' }],
+  ['circle', { cx: 11.75, cy: 11.25, r: 1.75 }],
+  ['path', { d: 'M11.75 13v4' }],
+  ['path', { d: 'M10.25 17h3l4.75 2c1 .4 1 1.75-.25 1.75H10.25a1 1 0 0 1-1-1V18a1 1 0 0 1 1-1Z' }],
 ]);
 export const IconRapidTest = createIcon('rapid-test', [
   ['rect', { x: 7, y: 2.75, width: 10, height: 18.5, rx: 3.5 }],

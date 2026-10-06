@@ -131,9 +131,9 @@ export const IconInStock = createIcon('in-stock', [
   ['path', { d: 'M16.75 5.75l1.75 1.75 3-3.5' }],
 ]);
 export const IconInventory = createIcon('inventory', [
-  ['rect', { x: 3.5, y: 12.5, width: 8, height: 8, rx: 2.5 }],
-  ['rect', { x: 12.5, y: 12.5, width: 8, height: 8, rx: 2.5 }],
-  ['rect', { x: 8, y: 3.5, width: 8, height: 8, rx: 2.5 }],
+  ['path', { d: 'M9 4.5v-1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h2.5A1.5 1.5 0 0 1 19 6v14a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 20V6a1.5 1.5 0 0 1 1.5-1.5Z' }],
+  ['path', { d: 'M7.75 10.5l1.25 1.25 2-2.25M7.75 16l1.25 1.25 2-2.25' }],
+  ['path', { d: 'M13 11h3M13 16.5h3' }],
 ]);
 export const IconLoyaltyCard = createIcon('loyalty-card', [
   ['rect', { x: 2.5, y: 5.5, width: 19, height: 13, rx: 2.5 }],
@@ -239,10 +239,10 @@ export const IconShippingPallet = createIcon('shipping-pallet', [
   ['path', { d: 'M3 15h18v5.5h-3.5v-3h-3.75v3h-3.5v-3H6.5v3H3Z' }],
 ]);
 export const IconShopScale = createIcon('shop-scale', [
-  ['path', { d: 'M3.5 7.5c0 2 1.75 3 3.5 3h10c1.75 0 3.5-1 3.5-3Z' }],
-  ['path', { d: 'M12 10.5v2.5' }],
-  ['rect', { x: 5, y: 13, width: 14, height: 7.5, rx: 2.5 }],
-  ['rect', { x: 8.5, y: 15.5, width: 7, height: 2.5, rx: 1.25 }],
+  ['path', { d: 'M3.5 6C5 8.5 8 9 12 9v2.5V9c4 0 7-.5 8.5-3' }],
+  ['path', { d: 'M6.75 11.5h10.5l2 9H4.75Z' }],
+  ['circle', { cx: 12, cy: 16, r: 2.75 }],
+  ['path', { d: 'M12 16l1.5-1.5' }],
 ]);
 export const IconShoppingBasket = createIcon('shopping-basket', [
   ['path', { d: 'M3 10h18l-1.75 8.5a2.5 2.5 0 0 1-2.45 2H7.2a2.5 2.5 0 0 1-2.45-2Z' }],

@@ -11,8 +11,9 @@ export const IconBiofuel = createIcon('biofuel', [
   ['path', { d: 'M12 15c0-2.5 1.25-4 3-4.5-.25 2.5-1.25 4-3 4.5Z' }],
 ]);
 export const IconCarbonReduction = createIcon('carbon-reduction', [
-  ['path', { d: 'M7.5 15.5a4 4 0 0 1-.5-8 5.5 5.5 0 0 1 10.5 1.5 3.25 3.25 0 0 1 0 6.5' }],
-  ['path', { d: 'M12 11v9.5M9.5 18l2.5 2.5 2.5-2.5' }],
+  ['path', { d: 'M3.5 19.5C3.5 12 7 7.5 13.5 6.5c0 7-3.5 12-10 13Z' }],
+  ['path', { d: 'M3.5 19.5 9.5 12' }],
+  ['path', { d: 'M18.5 3.5v16M15.5 16.5l3 3 3-3' }],
 ]);
 export const IconCircuitBreaker = createIcon('circuit-breaker', [
   ['rect', { x: 6, y: 3, width: 12, height: 18, rx: 3 }],

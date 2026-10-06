@@ -178,9 +178,10 @@ export const IconSaveTheDate = createIcon('save-the-date', [
   ['path', { d: 'M12 13.73l-2.52-2.4675000000000002a1.785 1.785 0 0 1 2.52-2.52 1.785 1.785 0 0 1 2.52 2.52Z' }],
 ]);
 export const IconSchoolBackpack = createIcon('school-backpack', [
-  ['rect', { x: 5.5, y: 6.5, width: 13, height: 14.5, rx: 3.5 }],
-  ['path', { d: 'M9 6.5V5.25a3 3 0 0 1 6 0V6.5' }],
-  ['rect', { x: 8.5, y: 13.5, width: 7, height: 4.5, rx: 1.5 }],
+  ['path', { d: 'M5.5 20V10a6 6 0 0 1 6-6h1a6 6 0 0 1 6 6v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1Z' }],
+  ['path', { d: 'M5.5 10.5c2 1.5 4.25 2 6.5 2s4.5-.5 6.5-2' }],
+  ['path', { d: 'M8.5 21v-3.5a1.5 1.5 0 0 1 1.5-1.5h4a1.5 1.5 0 0 1 1.5 1.5V21' }],
+  ['path', { d: 'M5.5 11c-1.75.5-2.75 2-2.75 4v3.5M18.5 11c1.75.5 2.75 2 2.75 4v3.5' }],
 ]);
 export const IconWeddingArch = createIcon('wedding-arch', [
   ['path', { d: 'M5.5 21V10a6.5 6.5 0 0 1 13 0v11' }],

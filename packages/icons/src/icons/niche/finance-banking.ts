@@ -132,9 +132,9 @@ export const IconCoinPurse = createIcon('coin-purse', [
   ['path', { d: 'M9.8 5.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0M12 5.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0 -2.2 0' }],
 ]);
 export const IconCoinStack = createIcon('coin-stack', [
-  ['rect', { x: 5, y: 16.5, width: 14, height: 4, rx: 2 }],
-  ['rect', { x: 5, y: 12.5, width: 14, height: 4, rx: 2 }],
-  ['rect', { x: 5, y: 8.5, width: 14, height: 4, rx: 2 }],
+  ['ellipse', { cx: 12, cy: 6, rx: 8, ry: 3 }],
+  ['rect', { x: 4, y: 12, width: 16, height: 3.5, rx: 1.75 }],
+  ['rect', { x: 4, y: 18, width: 16, height: 3.5, rx: 1.75 }],
 ]);
 export const IconCreditScore = createIcon('credit-score', [
   ['path', { d: 'M3.5 16a8.5 8.5 0 0 1 17 0' }],
@@ -271,10 +271,11 @@ export const IconProfit = createIcon('profit', [
   ['path', { d: 'M18 20V5M15 8l3-3 3 3' }],
 ]);
 export const IconRemittance = createIcon('remittance', [
-  ['circle', { cx: 12, cy: 14.25, r: 6.5 }],
-  ['ellipse', { cx: 12, cy: 14.25, rx: 2.75, ry: 6.5 }],
-  ['path', { d: 'M4.5 6.5c4.25-3.75 10.75-3.75 15 0' }],
-  ['path', { d: 'M19.75 3.5v3.25H16.5' }],
+  ['rect', { x: 2.5, y: 3.5, width: 11, height: 7, rx: 1.5 }],
+  ['circle', { cx: 8, cy: 7, r: 1.25, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 15, cy: 15.5, r: 6 }],
+  ['path', { d: 'M15 9.5c-1.5 1.5-2.25 3.75-2.25 6s.75 4.5 2.25 6c1.5-1.5 2.25-3.75 2.25-6S16.5 11 15 9.5M9 15.5h12' }],
+  ['path', { d: 'M5 12.5c0 2 1 3 2.5 3l-1.5-1.5 1.5 1.5-1.5 1.5' }],
 ]);
 export const IconRequestMoney = createIcon('request-money', [
   ['rect', { x: 3, y: 3.5, width: 15, height: 9.5, rx: 2.5 }],

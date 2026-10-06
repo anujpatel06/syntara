@@ -121,9 +121,11 @@ export const IconFootballPitch = createIcon('football-pitch', [
   ['circle', { cx: 12, cy: 12, r: 2.75 }],
 ]);
 export const IconGolfBag = createIcon('golf-bag', [
-  ['rect', { x: 7, y: 8.5, width: 10, height: 12, rx: 3 }],
-  ['path', { d: 'M9.5 8.5V4.5M12.5 8.5V3.5M15 8.5V5' }],
-  ['path', { d: 'M7 12.5h10' }],
+  ['path', { d: 'M7.5 9.5h8l-.75 10.5a1.5 1.5 0 0 1-1.5 1.5h-3.5a1.5 1.5 0 0 1-1.5-1.5Z', transform: 'rotate(12 12 12)' }],
+  ['path', { d: 'M7.6 11c-3.5 2.5-3.5 7 .5 9', transform: 'rotate(12 12 12)' }],
+  ['path', { d: 'M9 9.5V5.25c-.5-1.5-3.25-1.75-3.25-.25 0 1 1.75 1.25 3.25.25', transform: 'rotate(12 12 12)' }],
+  ['path', { d: 'M11.5 9.5V3.25l2.25 1', transform: 'rotate(12 12 12)' }],
+  ['path', { d: 'M14 9.5V4.25h2.25', transform: 'rotate(12 12 12)' }],
 ]);
 export const IconGolfClub = createIcon('golf-club', [
   ['path', { d: 'M17 3 9.5 17.5' }],
@@ -194,9 +196,11 @@ export const IconLaurelWreath = createIcon('laurel-wreath', [
   ['path', { d: 'M4.6 9.5Q5.1 7.5 3.25 6.6Q2.74 8.6 4.6 9.5ZM5.1 13.75Q4.36 11.82 2.33 12.15Q3.06 14.08 5.1 13.75ZM7.25 17.25Q5.9 15.69 4.1 16.69Q5.44 18.25 7.25 17.25ZM19.4 9.5Q21.26 8.6 20.75 6.6Q18.9 7.5 19.4 9.5ZM18.9 13.75Q20.94 14.08 21.67 12.15Q19.64 11.82 18.9 13.75ZM16.75 17.25Q18.56 18.25 19.9 16.69Q18.1 15.69 16.75 17.25Z', fill: 'currentColor' }],
 ]);
 export const IconMartialArtsBelt = createIcon('martial-arts-belt', [
-  ['path', { d: 'M3 9.5h7M14 9.5h7' }],
-  ['rect', { x: 10, y: 7.5, width: 4, height: 4, rx: 1.5 }],
-  ['path', { d: 'M10.5 11.5l-3 7.5 2.25.75 2.25-8M13.5 11.5l3 7.5-2.25.75-2.25-8' }],
+  ['path', { d: 'M2.5 7.5c2.5 1 5 1.5 7.5 1.5v4.5c-2.5 0-5-.5-7.5-1.5' }],
+  ['path', { d: 'M21.5 7.5c-2.5 1-5 1.5-7.5 1.5v4.5c2.5 0 5-.5 7.5-1.5' }],
+  ['rect', { x: 10, y: 8, width: 4, height: 6.5, rx: 1 }],
+  ['path', { d: 'M10.75 14.5 7.5 20.75l2.5 1 2.5-7.25' }],
+  ['path', { d: 'M13.25 14.5l2.5 4.75 2.25-1-2.75-3.75' }],
 ]);
 export const IconMedal = createIcon('medal', [
   ['path', { d: 'M8 3l2.75 7.5M16 3l-2.75 7.5' }],
@@ -217,9 +221,10 @@ export const IconPommelHorse = createIcon('pommel-horse', [
   ['path', { d: 'M6.5 13 5 20.5M17.5 13l1.5 7.5' }],
 ]);
 export const IconProteinShaker = createIcon('protein-shaker', [
-  ['path', { d: 'M6.5 9h11l-1.25 10.25a1.5 1.5 0 0 1-1.5 1.25h-5.5a1.5 1.5 0 0 1-1.5-1.25Z' }],
-  ['rect', { x: 6, y: 6, width: 12, height: 3, rx: 1.25 }],
-  ['path', { d: 'M9.5 6V4h3v2' }],
+  ['path', { d: 'M7 10h10l-.75 10a1.5 1.5 0 0 1-1.5 1.5h-5.5a1.5 1.5 0 0 1-1.5-1.5Z' }],
+  ['rect', { x: 6.5, y: 6.5, width: 11, height: 3.5, rx: 1 }],
+  ['path', { d: 'M8.5 6.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2.5' }],
+  ['path', { d: 'M13 13.5h2M13 17h2' }],
 ]);
 export const IconPunchingBag = createIcon('punching-bag', [
   ['path', { d: 'M12 2.75V5' }],

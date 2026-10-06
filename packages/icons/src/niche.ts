@@ -1,5 +1,5 @@
 /**
- * The niche icon pack, 1,959 outline icons in 40 domains (ADR-054): `import { IconCardiology } from '@syntara/icons/niche'`.
+ * The niche icon pack, 1,954 outline icons in 40 domains (ADR-054): `import { IconCardiology } from '@syntara/icons/niche'`.
  * Its own entry point on purpose: the main entry stays the 480-icon set that the server-driven UI renderer, the docs
  * gallery and `syntara/icons` import wholesale. Same package, same style spec, same `createIcon`.
  */

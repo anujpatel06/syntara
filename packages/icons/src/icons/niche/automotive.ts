@@ -81,10 +81,11 @@ export const IconCoolantTemperature = createIcon('coolant-temperature', [
   ['path', { d: 'M3.5 19.5q2.1-1.5 4.25 0M16.25 19.5q2.1-1.5 4.25 0' }],
 ]);
 export const IconDrivingLicence = createIcon('driving-licence', [
-  ['rect', { x: 3, y: 5, width: 18, height: 14, rx: 3 }],
-  ['circle', { cx: 8.5, cy: 10.25, r: 2 }],
-  ['path', { d: 'M5.5 16a3 3 0 0 1 6 0' }],
-  ['path', { d: 'M14 10h4M14 13.5h3' }],
+  ['rect', { x: 2.75, y: 5, width: 18.5, height: 14, rx: 3 }],
+  ['path', { d: 'M5 14.25V12l1.75-.75 1.25-2.25h3.25l1.5 2.25 1 .5v2.5Z' }],
+  ['circle', { cx: 7.25, cy: 14.5, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 11.5, cy: 14.5, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M16 10h2.5M16 13.5h2.5' }],
 ]);
 export const IconElectricCar = createIcon('electric-car', [
   ['path', { d: 'M4.75 16.5H4.5a1.25 1.25 0 0 1-1.25-1.25v-2a2.5 2.5 0 0 1 2.5-2.5h.75Q7.25 10.75 7.6 10.05L8.4 8.5C9.1 7.2 10.2 6.5 11.75 6.5h1C14.3 6.5 15.4 7.2 16.1 8.5l.8 1.55Q17.25 10.75 18 10.75h.25a2.5 2.5 0 0 1 2.5 2.5v2a1.25 1.25 0 0 1-1.25 1.25h-.25a2.75 2.75 0 0 0-5.5 0h-3.5a2.75 2.75 0 0 0-5.5 0Z', transform: 'translate(0 3)' }],
@@ -112,10 +113,12 @@ export const IconEvConnector = createIcon('ev-connector', [
   ['circle', { cx: 14, cy: 16, r: 0.95, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconExhaustPipe = createIcon('exhaust-pipe', [
-  ['path', { d: 'M15.5 10.5h-11a2.5 2.5 0 0 0 0 5h11' }],
-  ['ellipse', { cx: 15.5, cy: 13, rx: 1.25, ry: 2.5 }],
-  ['circle', { cx: 19.5, cy: 8.5, r: 1.75 }],
-  ['circle', { cx: 17, cy: 5, r: 1.25 }],
+  ['path', { d: 'M4.75 17.75 8 17V13.75a1.5 1.5 0 0 1 1-1.4l2-.85 2-3.25h5l2.25 3.25.75.4a1.5 1.5 0 0 1 .75 1.3V17h-1.25' }],
+  ['path', { d: 'M11.5 17h4.5' }],
+  ['circle', { cx: 9.75, cy: 17, r: 1.75 }],
+  ['circle', { cx: 17.75, cy: 17, r: 1.75 }],
+  ['circle', { cx: 3.75, cy: 14.25, r: 1.5 }],
+  ['circle', { cx: 3.25, cy: 10.5, r: 1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconFuelPump = createIcon('fuel-pump', [
   ['path', { d: 'M4 20.5v-15a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v15M3 20.5h12' }],

@@ -44,8 +44,9 @@ export const IconButterflySpecimen = createIcon('butterfly-specimen', [
   ['path', { d: 'M12 7.5l-1.5-3M12 7.5l1.5-3' }],
 ]);
 export const IconCaveStalactites = createIcon('cave-stalactites', [
-  ['path', { d: 'M3 4h2l1.5 5L8 4h2.5l1.5 7 1.5-7H16l1.5 4.5L19 4h2' }],
-  ['path', { d: 'M3 20.5h4l1.5-4 1.5 4h4.5l1.25-3 1.25 3H21' }],
+  ['path', { d: 'M2.5 4H5l1.5 6.5L8 4h3l1.25 4.5L13.5 4h3l1.5 7.5 1.5-7.5h2' }],
+  ['path', { d: 'M2.5 20.5h4l2-5 2 5h4.5l1.5-3.5 1.5 3.5h3.5' }],
+  ['circle', { cx: 18, cy: 14, r: 1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconCentrifuge = createIcon('centrifuge', [
   ['circle', { cx: 12, cy: 12, r: 8.5 }],
@@ -65,10 +66,10 @@ export const IconChromosome = createIcon('chromosome', [
   ['rect', { x: 10, y: 2.5, width: 4, height: 19, rx: 2, transform: 'rotate(-25 12 12)' }],
 ]);
 export const IconCitation = createIcon('citation', [
-  ['circle', { cx: 7.5, cy: 14, r: 3 }],
-  ['path', { d: 'M4.5 14c0-4 2-6.75 5-7.75' }],
-  ['circle', { cx: 16.5, cy: 14, r: 3 }],
-  ['path', { d: 'M13.5 14c0-4 2-6.75 5-7.75' }],
+  ['path', { d: 'M5 9.5c-.25-2.5.75-4.25 2.75-5M10.5 9.5c-.25-2.5.75-4.25 2.75-5' }],
+  ['circle', { cx: 6.5, cy: 9.5, r: 1.75, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 12, cy: 9.5, r: 1.75, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M4.5 15h15M4.5 19h10' }],
 ]);
 export const IconConvexLens = createIcon('convex-lens', [
   ['path', { d: 'M12 3.5c2 2.5 2 14.5 0 17-2-2.5-2-14.5 0-17Z' }],
@@ -82,15 +83,11 @@ export const IconCrystalLattice = createIcon('crystal-lattice', [
   ['circle', { cx: 4.5, cy: 19.5, r: 1.3, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 15.5, cy: 19.5, r: 1.3, fill: 'currentColor', stroke: 'none' }],
 ]);
-export const IconEarthCore = createIcon('earth-core', [
-  ['path', { d: 'M20.5 12A8.5 8.5 0 1 1 12 3.5V12Z' }],
-  ['path', { d: 'M12 7.5A4.5 4.5 0 1 0 16.5 12' }],
-  ['circle', { cx: 12, cy: 12, r: 1.4, fill: 'currentColor', stroke: 'none' }],
-]);
 export const IconFaultLine = createIcon('fault-line', [
-  ['path', { d: 'M3 20.5V9.5h8.5L10 20.5Z' }],
-  ['path', { d: 'M13.5 20.5 15 6.5h6v14Z' }],
-  ['path', { d: 'M3 14h7.8M14.6 10.5H21' }],
+  ['path', { d: 'M2 7.5h8.5l1.75 3-1.75 2.75 2 3-1.5 2.75 1 2.5' }],
+  ['path', { d: 'M12.5 13.5H22' }],
+  ['path', { d: 'M4 13 6.25 10.75 8.5 13 6.25 10.75V19' }],
+  ['path', { d: 'M15 19.25 17.25 21.5 19.5 19.25 17.25 21.5V16' }],
 ]);
 export const IconFieldBinoculars = createIcon('field-binoculars', [
   ['rect', { x: 3.5, y: 8, width: 7, height: 12, rx: 3.5 }],
@@ -122,12 +119,10 @@ export const IconHerbariumSheet = createIcon('herbarium-sheet', [
   ['path', { d: 'M9 17c0-4.5 2.5-8 6.5-9.5.5 5-2 9-6.5 9.5ZM9 17l3.5-5' }],
 ]);
 export const IconLabBalance = createIcon('lab-balance', [
-  ['path', { d: 'M11 3.5V6l-2.5 5h7L13 6V3.5' }],
-  ['path', { d: 'M5 11h14' }],
-  ['path', { d: 'M12 11v2.5' }],
-  ['rect', { x: 3, y: 13.5, width: 18, height: 7, rx: 2.5 }],
-  ['circle', { cx: 8, cy: 17, r: 0.9, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 11, cy: 17, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M4.5 7h15M12 7v13.5M8.5 20.5h7' }],
+  ['path', { d: 'M2.25 13.5 4.5 7l2.25 6.5a2.25 2.25 0 0 1-4.5 0Z' }],
+  ['path', { d: 'M17.25 13.5 19.5 7l2.25 6.5a2.25 2.25 0 0 1-4.5 0Z' }],
+  ['circle', { cx: 12, cy: 5, r: 1.25, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconLabBarometer = createIcon('lab-barometer', [
   ['circle', { cx: 12, cy: 12, r: 8.5 }],
@@ -205,9 +200,10 @@ export const IconPeriodicElement = createIcon('periodic-element', [
   ['circle', { cx: 7.25, cy: 7.25, r: 0.85, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconPeriodicTable = createIcon('periodic-table', [
-  ['path', { d: 'M2.75 3.5H5.5v2.25h2.25V9h8.5V5.75h2.25V3.5h2.75V15.5H2.75Z' }],
-  ['path', { d: 'M7.75 9v6.5M16.25 9v6.5' }],
-  ['rect', { x: 7.75, y: 17.5, width: 10.5, height: 3, rx: 1 }],
+  ['path', { d: 'M3 3.5h3v3h12v-3h3v12H3Z' }],
+  ['path', { d: 'M6 6.5v9h3v-9h3v9h3v-9h3v9' }],
+  ['path', { d: 'M3 9.5h18v3H3' }],
+  ['rect', { x: 6, y: 17.5, width: 12, height: 3, rx: 1 }],
 ]);
 export const IconPhStrip = createIcon('ph-strip', [
   ['rect', { x: 9.5, y: 2.5, width: 5, height: 13, rx: 2.5 }],
@@ -227,9 +223,11 @@ export const IconPhysicsSpring = createIcon('physics-spring', [
   ['path', { d: 'M12 3v2h4.5L7.5 8.5h9L7.5 12h9L7.5 15.5h9L7.5 19H12v2' }],
 ]);
 export const IconPlantCell = createIcon('plant-cell', [
-  ['rect', { x: 3.5, y: 4, width: 17, height: 16, rx: 4.5 }],
-  ['rect', { x: 6, y: 6.5, width: 12, height: 11, rx: 2.5 }],
-  ['circle', { cx: 14.5, cy: 10, r: 1.75 }],
+  ['path', { d: 'M4.5 5 14 3.5l6 3 .5 11-6.5 3.5-10-1.5L3 12Z' }],
+  ['path', { d: 'M7 8.5c2-1.5 5-1 6 .5s.5 5-1.5 6.5-5 1-5.5-1-1-4.5 1-6Z' }],
+  ['circle', { cx: 16.25, cy: 14.75, r: 2.25 }],
+  ['ellipse', { cx: 16, cy: 8, rx: 1.6, ry: 1 }],
+  ['circle', { cx: 16.25, cy: 14.75, r: 0.8, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconPulley = createIcon('pulley', [
   ['path', { d: 'M9.5 3h5M12 3v3.5' }],
@@ -263,8 +261,8 @@ export const IconRockHammer = createIcon('rock-hammer', [
   ['path', { d: 'M15.5 10v10.5' }],
 ]);
 export const IconRockStrata = createIcon('rock-strata', [
-  ['rect', { x: 3, y: 4.5, width: 18, height: 15, rx: 3 }],
-  ['path', { d: 'M3 10.5l18-3M3 15.5l18-3' }],
+  ['path', { d: 'M3 20.5V8l3.5-1.5 3 1L13 5l3 1.5 2.5-1L21 7v13.5Z' }],
+  ['path', { d: 'M3 11.5c3-1 6 1 9 0s6-1 9 0M3 15c3-1 6 1 9 0s6-1 9 0M3 18c3-1 6 1 9 0s6-1 9 0' }],
 ]);
 export const IconSampleVial = createIcon('sample-vial', [
   ['rect', { x: 8.5, y: 3, width: 7, height: 4, rx: 1.5 }],

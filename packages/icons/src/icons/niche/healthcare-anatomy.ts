@@ -77,8 +77,9 @@ export const IconAnatomyFinger = createIcon('anatomy-finger', [
   ['path', { d: 'M9.5 14V5a1.5 1.5 0 0 1 3 0v6.25a1.5 1.5 0 0 1 3 0v.5a1.5 1.5 0 0 1 3 0V16c0 3-2 5-5 5h-1c-2.5 0-3.75-1.25-4.75-3l-1.5-2.75c-.5-.9-.2-1.75.55-2.15.75-.4 1.6-.15 2.1.6L9.5 14' }],
 ]);
 export const IconAnatomyFingernail = createIcon('anatomy-fingernail', [
-  ['path', { d: 'M8 21V9a4 4 0 0 1 8 0v12' }],
-  ['path', { d: 'M9.75 9a2.25 2.25 0 0 1 4.5 0v2.5a1 1 0 0 1-1 1h-2.5a1 1 0 0 1-1-1Z' }],
+['path', { d: 'M7.5 20.5V9a4.5 4.5 0 0 1 9 0v11.5', transform: 'rotate(-20 12 12)' }],
+  ['path', { d: 'M9.5 11.5V9a2.5 2.5 0 0 1 5 0v2.5c-1.5 1-3.5 1-5 0Z', transform: 'rotate(-20 12 12)' }],
+  ['path', { d: 'M10 17h4', transform: 'rotate(-20 12 12)' }],
 ]);
 export const IconAnatomyFist = createIcon('anatomy-fist', [
   ['path', { d: 'M6 13V9.25a1.75 1.75 0 0 1 3.5 0 1.75 1.75 0 0 1 3.5 0 1.75 1.75 0 0 1 3.5 0 1.75 1.75 0 0 1 3.5 0V14c0 4-2.5 7-6.5 7h-1c-3.25 0-5.5-2.25-6-5' }],
@@ -165,11 +166,6 @@ export const IconAnatomyRibcage = createIcon('anatomy-ribcage', [
   ['path', { d: 'M12 3.5v12' }],
   ['path', { d: 'M4.85 8.75C7.5 8 10 8.25 12 9.5c2-1.25 4.5-1.5 7.15-.75' }],
   ['path', { d: 'M4.9 13c2.5-.75 5-.5 7.1.75 2.1-1.25 4.6-1.5 7.1-.75' }],
-]);
-export const IconAnatomyShoulder = createIcon('anatomy-shoulder', [
-  ['circle', { cx: 9.5, cy: 6.5, r: 3 }],
-  ['path', { d: 'M3.5 21v-2a5 5 0 0 1 5-5h5a4.5 4.5 0 0 1 4.5 4.5V21' }],
-  ['path', { d: 'M14.72 11.61A7 7 0 0 1 20.39 17.28' }],
 ]);
 export const IconAnatomySkeleton = createIcon('anatomy-skeleton', [
   ['circle', { cx: 12, cy: 4.5, r: 2 }],

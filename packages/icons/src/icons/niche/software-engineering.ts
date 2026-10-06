@@ -218,10 +218,9 @@ export const IconHashFunction = createIcon('hash-function', [
   ['path', { d: 'M9.5 3.5 8 20.5M16 3.5l-1.5 17M4.5 9h16M3.5 15h16' }],
 ]);
 export const IconIssueTracker = createIcon('issue-tracker', [
-  ['rect', { x: 3, y: 5, width: 18, height: 14, rx: 2.5 }],
-  ['circle', { cx: 8, cy: 12, r: 2.25 }],
-  ['circle', { cx: 8, cy: 12, r: 0.8, fill: 'currentColor', stroke: 'none' }],
-  ['path', { d: 'M13 10.5h4.5M13 13.5h3' }],
+  ['path', { d: 'M3 7.5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2V10a2 2 0 0 0 0 4v2.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V14a2 2 0 0 0 0-4Z' }],
+  ['circle', { cx: 12, cy: 12, r: 3 }],
+  ['circle', { cx: 12, cy: 12, r: 0.9, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconKanbanBoard = createIcon('kanban-board', [
   ['rect', { x: 3, y: 3.5, width: 18, height: 17, rx: 3 }],
@@ -305,8 +304,10 @@ export const IconResponsiveDevices = createIcon('responsive-devices', [
   ['rect', { x: 15.5, y: 9, width: 6, height: 11.5, rx: 1.75 }],
 ]);
 export const IconRollback = createIcon('rollback', [
-  ['rect', { x: 5, y: 12, width: 14, height: 8.5, rx: 2.5 }],
-  ['path', { d: 'M15.5 9V7.5a3 3 0 0 0-3-3H6.5M9 2.5 6.5 4.5 9 6.5' }],
+  ['path', { d: 'M3.5 12A8.5 8.5 0 1 0 6 6L3.5 8.5' }],
+  ['path', { d: 'M3.5 4v4.5H8' }],
+  ['path', { d: 'M8.5 9.5h4.5l2.5 2.5-2.5 2.5H8.5Z' }],
+  ['circle', { cx: 10.25, cy: 12, r: 0.8, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconSchemaDiagram = createIcon('schema-diagram', [
   ['rect', { x: 3, y: 3.5, width: 8, height: 7, rx: 2 }],

@@ -54,8 +54,9 @@ export const IconComputerMouse = createIcon('computer-mouse', [
   ['path', { d: 'M12 7v3' }],
 ]);
 export const IconCrystalOscillator = createIcon('crystal-oscillator', [
-  ['rect', { x: 3.5, y: 5.5, width: 17, height: 9, rx: 4.5 }],
-  ['path', { d: 'M8.5 14.5v6M15.5 14.5v6' }],
+  ['path', { d: 'M2.5 12h4.5M17 12h4.5' }],
+  ['path', { d: 'M7 7v10M17 7v10' }],
+  ['rect', { x: 9.75, y: 8, width: 4.5, height: 8, rx: 0.75 }],
 ]);
 export const IconDiode = createIcon('diode', [
   ['path', { d: 'M2.5 12h5M16.5 12h5' }],
@@ -69,9 +70,11 @@ export const IconDipSwitch = createIcon('dip-switch', [
   ['rect', { x: 15.25, y: 8.5, width: 2.5, height: 7, rx: 1.25 }],
 ]);
 export const IconElectricMotor = createIcon('electric-motor', [
-  ['rect', { x: 3, y: 6, width: 12, height: 12, rx: 3 }],
-  ['path', { d: 'M15 8.5h1.5a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H15M18.5 12h3' }],
-  ['path', { d: 'M5.5 18v2.5h7V18' }],
+  ['rect', { x: 2.5, y: 6, width: 13, height: 12, rx: 2 }],
+  ['path', { d: 'M2.5 10h13v4h-13' }],
+  ['path', { d: 'M15.5 8.5h2v7h-2' }],
+  ['path', { d: 'M17.5 12h4' }],
+  ['path', { d: 'M5 18v2.5h8V18' }],
 ]);
 export const IconElectricalGround = createIcon('electrical-ground', [
   ['path', { d: 'M12 3.5v8M5 11.5h14M8 15.5h8M10.5 19.5h3' }],
@@ -285,10 +288,10 @@ export const IconUsbDrive = createIcon('usb-drive', [
   ['circle', { cx: 13, cy: 6, r: 0.7, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconVoltageRegulator = createIcon('voltage-regulator', [
-  ['path', { d: 'M7.5 9V5a2 2 0 0 1 2-2h5a2 2 0 0 1 2 2v4' }],
-  ['circle', { cx: 12, cy: 6, r: 1.25, fill: 'currentColor', stroke: 'none' }],
-  ['rect', { x: 6.5, y: 9, width: 11, height: 7, rx: 2 }],
-  ['path', { d: 'M9 16v5M12 16v5M15 16v5' }],
+  ['path', { d: 'M6 10V5a1.5 1.5 0 0 1 1.5-1.5h9A1.5 1.5 0 0 1 18 5v5' }],
+  ['circle', { cx: 12, cy: 6.75, r: 1.4 }],
+  ['rect', { x: 5, y: 10, width: 14, height: 5, rx: 1 }],
+  ['path', { d: 'M8.5 21v-6H12v6-6h3.5v6' }],
 ]);
 export const IconWebcam = createIcon('webcam', [
   ['circle', { cx: 12, cy: 10, r: 6.5 }],

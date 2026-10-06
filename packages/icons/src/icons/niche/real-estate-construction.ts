@@ -7,12 +7,13 @@ export const IconAFrameHouse = createIcon('a-frame-house', [
   ['path', { d: 'M12 9.5v2' }],
 ]);
 export const IconApartmentBuilding = createIcon('apartment-building', [
-  ['rect', { x: 5, y: 3, width: 14, height: 17.5, rx: 3 }],
-  ['path', { d: 'M10.5 20.5v-3h3v3' }],
-  ['circle', { cx: 9, cy: 7.5, r: 1.1, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 15, cy: 7.5, r: 1.1, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 9, cy: 12, r: 1.1, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 15, cy: 12, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M2.5 21H6.5V5H4.75h14.5H17.5V21h4' }],
+  ['path', { d: 'M10.5 21v-2.75h3V21' }],
+  ['path', { d: 'M9.5 15h.5M14 15h.5' }],
+  ['circle', { cx: 9.75, cy: 8, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 14.25, cy: 8, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 9.75, cy: 11.5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 14.25, cy: 11.5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconBalcony = createIcon('balcony', [
   ['path', { d: 'M8 20.5V8a4 4 0 0 1 8 0v12.5' }],
@@ -30,10 +31,12 @@ export const IconBlueprint = createIcon('blueprint', [
   ['path', { d: 'M11 9.5h6v7h-6Z' }],
 ]);
 export const IconBoomLift = createIcon('boom-lift', [
-  ['rect', { x: 3, y: 15, width: 10.5, height: 3.5, rx: 1.5 }],
-  ['path', { d: 'M8 15 15.5 8' }],
-  ['rect', { x: 14, y: 3, width: 7, height: 5, rx: 1.5 }],
-  ['path', { d: 'M4.25 19.75a1.25 1.25 0 1 0 2.5 0a1.25 1.25 0 1 0 -2.5 0M9.75 19.75a1.25 1.25 0 1 0 2.5 0a1.25 1.25 0 1 0 -2.5 0' }],
+  ['rect', { x: 2.5, y: 14.5, width: 11, height: 3, rx: 1.25 }],
+  ['circle', { cx: 5.5, cy: 19.75, r: 1.75, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 10.5, cy: 19.75, r: 1.75, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M7.5 14.5 17 10.5' }],
+  ['path', { d: 'M12.5 6h1v4.5h7v-4.5h1' }],
+  ['circle', { cx: 17, cy: 3.5, r: 1.25, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconBrickWall = createIcon('brick-wall', [
   ['rect', { x: 2.75, y: 5, width: 18.5, height: 14, rx: 2.5 }],
@@ -130,9 +133,9 @@ export const IconHandSaw = createIcon('hand-saw', [
   ['rect', { x: 16.75, y: 9, width: 2.5, height: 4, rx: 1.25 }],
 ]);
 export const IconHardHat = createIcon('hard-hat', [
-  ['path', { d: 'M4.5 16a7.5 7.5 0 0 1 15 0' }],
-  ['rect', { x: 2.5, y: 16, width: 19, height: 3, rx: 1.5 }],
-  ['path', { d: 'M10 9V5.75a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 .75.75V9' }],
+  ['path', { d: 'M4.5 16.5C4.5 11 7.75 7 12 7s7.5 4 7.5 9.5' }],
+  ['rect', { x: 2.5, y: 16.5, width: 19, height: 2.5, rx: 1.25 }],
+  ['path', { d: 'M10.5 16.5V7.25M13.5 16.5V7.25' }],
 ]);
 export const IconHomeInspection = createIcon('home-inspection', [
   ['path', { d: 'M3.75 11 12 4l8.25 7M5.75 9.5V19a1.5 1.5 0 0 0 1.5 1.5h9.5a1.5 1.5 0 0 0 1.5-1.5V9.5' }],
@@ -272,9 +275,9 @@ export const IconScaffolding = createIcon('scaffolding', [
   ['path', { d: 'M4 14 20 8' }],
 ]);
 export const IconScrewdriver = createIcon('screwdriver', [
-  ['rect', { x: 9.5, y: 2.75, width: 5, height: 8, rx: 2.5, transform: 'rotate(45 12 12)' }],
-  ['path', { d: 'M12 10.75V18.5', transform: 'rotate(45 12 12)' }],
-  ['path', { d: 'M11.25 18.5h1.5v1.75L12 21l-.75-.75Z', transform: 'rotate(45 12 12)' }],
+  ['path', { d: 'M10 10c-.5-2.5-.75-5-.5-6.25A1.25 1.25 0 0 1 10.75 2.5h2.5a1.25 1.25 0 0 1 1.25 1.25c.25 1.25 0 3.75-.5 6.25Z', transform: 'rotate(45 12 12)' }],
+  ['path', { d: 'M11.25 4.75v3M12.75 4.75v3', transform: 'rotate(45 12 12)' }],
+  ['path', { d: 'M12 10v8.5l-.75.75V22h1.5v-2.75L12 18.5', transform: 'rotate(45 12 12)' }],
 ]);
 export const IconShovel = createIcon('shovel', [
   ['path', { d: 'M3.5 20.5V16l2.5-2.5 4.5 4.5L8 20.5Z' }],

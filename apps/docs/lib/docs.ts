@@ -118,7 +118,7 @@ export const DOC_PAGES: readonly DocPage[] = [
     slug: 'icons',
     href: '/docs/icons',
     title: 'Icons',
-    description: 'Syntara’s own icon set, curvy and minimal, with 1,959 niche icons. Search it, try a size and stroke, copy an import.',
+    description: 'Syntara’s own icon set, curvy and minimal, with 1,954 niche icons. Search it, try a size and stroke, copy an import.',
     group: 'foundations',
     keywords: 'icons svg glyphs @syntara/icons stroke grid tabler lucide',
   },

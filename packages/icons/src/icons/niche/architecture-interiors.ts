@@ -29,10 +29,13 @@ export const IconBookshelf = createIcon('bookshelf', [
   ['path', { d: 'M13 21l2.25-5.5' }],
 ]);
 export const IconChandelier = createIcon('chandelier', [
-  ['path', { d: 'M12 2.5v12' }],
-  ['path', { d: 'M4.5 9.5v1a4 4 0 0 0 4 4h7a4 4 0 0 0 4-4v-1' }],
-  ['path', { d: 'M4.5 8C3.7 8 3.25 7.5 3.25 6.8c0-.8.75-1.3 1.25-2.3.5 1 1.25 1.5 1.25 2.3 0 .7-.45 1.2-1.25 1.2ZM19.5 8c-.8 0-1.25-.5-1.25-1.2 0-.8.75-1.3 1.25-2.3.5 1 1.25 1.5 1.25 2.3 0 .7-.45 1.2-1.25 1.2Z' }],
-  ['circle', { cx: 12, cy: 17.5, r: 0.95, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M12 12V5a2.5 2.5 0 0 1-2.5-2.5h5A2.5 2.5 0 0 1 12 5' }],
+  ['path', { d: 'M3.5 9.5v1c0 2.75 1.75 4.5 4 4.5S11 12 12 12s2.25 3 4.5 3 4-1.75 4-4.5v-1' }],
+  ['path', { d: 'M2.5 9.5h2M19.5 9.5h2' }],
+  ['path', { d: 'M3.5 5.75c.75 1 1.25 1.6 1.25 2.25a1.25 1.25 0 0 1-2.5 0c0-.65.5-1.25 1.25-2.25Z', fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M20.5 5.75c.75 1 1.25 1.6 1.25 2.25a1.25 1.25 0 0 1-2.5 0c0-.65.5-1.25 1.25-2.25Z', fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M7.5 18.25c.75-1 1.25-1.6 1.25-2.25a1.25 1.25 0 0 0-2.5 0c0 .65.5 1.25 1.25 2.25Z', fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M16.5 18.25c.75-1 1.25-1.6 1.25-2.25a1.25 1.25 0 0 0-2.5 0c0 .65.5 1.25 1.25 2.25Z', fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconChestOfDrawers = createIcon('chest-of-drawers', [
   ['rect', { x: 4, y: 3.5, width: 16, height: 15, rx: 2.5 }],

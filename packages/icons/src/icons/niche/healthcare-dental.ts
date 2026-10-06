@@ -25,9 +25,6 @@ export const IconDentalBridge = createIcon('dental-bridge', [
   ['path', { d: 'M3.5 7.5a3 3 0 0 1 3-3h11a3 3 0 0 1 3 3V10c0 1-1 1.75-1.75 2.5L18 19a1.25 1.25 0 0 1-2.5 0L15 13H9l-.5 6A1.25 1.25 0 0 1 6 19l-.75-6.5C4.5 11.75 3.5 11 3.5 10Z' }],
   ['path', { d: 'M9 4.5V13M15 4.5V13' }],
 ]);
-export const IconDentalCanine = createIcon('dental-canine', [
-  ['path', { d: 'M12 3.5c1.5 1.25 3.75 3 4.25 5.25.4 1.9-.5 3.6-1.25 5.25l-1.75 5.75a1.35 1.35 0 0 1-2.5 0L9 14c-.75-1.65-1.65-3.35-1.25-5.25C8.25 6.5 10.5 4.75 12 3.5Z' }],
-]);
 export const IconDentalCavity = createIcon('dental-cavity', [
   ['path', { d: 'M12 5.75 C10.75 4.6 9.4 4 8 4 5.6 4 4 5.9 4 8.4 c0 2.2 1.1 3.9 1.8 6.2 0.5 1.8 0.8 5.4 2.45 5.4 1.45 0 1.55 -4.5 3.75 -4.5 s2.3 4.5 3.75 4.5 c1.65 0 1.95 -3.6 2.45 -5.4 0.7 -2.3 1.8 -4 1.8 -6.2 C20 5.9 18.4 4 16 4 c-1.4 0 -2.75 0.6 -4 1.75 Z' }],
   ['circle', { cx: 14.75, cy: 8.5, r: 1.5, fill: 'currentColor', stroke: 'none' }],
@@ -54,15 +51,16 @@ export const IconDentalDenture = createIcon('dental-denture', [
   ['path', { d: 'M4 12.5v2.75a1.75 1.75 0 0 0 3.5 0V12.5M7.5 12.5v3.75a2.25 2.25 0 0 0 4.5 0V12.5M12 12.5v3.75a2.25 2.25 0 0 0 4.5 0V12.5M16.5 12.5v2.75a1.75 1.75 0 0 0 3.5 0V12.5' }],
 ]);
 export const IconDentalDrill = createIcon('dental-drill', [
-  ['path', { d: 'M9.25 20.5 10 10h4l.75 10.5Z', transform: 'rotate(-25 12 14)' }],
-  ['path', { d: 'M10.5 10V6.75A2.75 2.75 0 0 1 13.25 4h4.5a1.75 1.75 0 0 1 0 3.5H14V10', transform: 'rotate(-25 12 14)' }],
-  ['path', { d: 'M17.5 7.5v3.25', transform: 'rotate(-25 12 14)' }],
+['rect', { x: 10.5, y: 10, width: 3, height: 11, rx: 1.5, transform: 'translate(-1.5 .5) rotate(35 12 12)' }],
+  ['rect', { x: 9.5, y: 3.5, width: 5, height: 4, rx: 2, transform: 'translate(-1.5 .5) rotate(35 12 12)' }],
+  ['path', { d: 'M12 7.5V10M14.5 5.5H17', transform: 'translate(-1.5 .5) rotate(35 12 12)' }],
+  ['circle', { cx: 18.5, cy: 3.75, r: 0.75, fill: 'currentColor', stroke: 'none', transform: 'translate(-1.5 .5) rotate(35 12 12)' }],
+  ['circle', { cx: 18.5, cy: 7.25, r: 0.75, fill: 'currentColor', stroke: 'none', transform: 'translate(-1.5 .5) rotate(35 12 12)' }],
 ]);
 export const IconDentalElectricToothbrush = createIcon('dental-electric-toothbrush', [
-  ['rect', { x: 8.5, y: 10, width: 7, height: 11.5, rx: 3 }],
-  ['path', { d: 'M12 10V7' }],
-  ['rect', { x: 10.25, y: 2.75, width: 3.5, height: 4.25, rx: 1.5 }],
-  ['circle', { cx: 12, cy: 14.5, r: 1, fill: 'currentColor', stroke: 'none' }],
+['path', { d: 'M10.75 3.5a1.25 1.25 0 0 1 2.5 0V10c0 .75 2.75 1 2.75 3v6.5a2 2 0 0 1-2 2h-3.5a2 2 0 0 1-2-2V13c0-2 2.75-2.25 2.75-3Z' }],
+  ['path', { d: 'M10.75 3.75H8M10.75 5.75H8M10.75 7.75H8' }],
+  ['circle', { cx: 12, cy: 15.5, r: 1.25 }],
 ]);
 export const IconDentalEmergency = createIcon('dental-emergency', [
   ['path', { d: 'M10.25 8.88 C9.27 7.98 8.22 7.51 7.13 7.51 5.26 7.51 4.01 8.99 4.01 10.94 c0 1.72 0.86 3.04 1.4 4.84 0.39 1.4 0.62 4.21 1.91 4.21 1.13 0 1.21 -3.51 2.93 -3.51 s1.79 3.51 2.93 3.51 c1.29 0 1.52 -2.81 1.91 -4.21 0.55 -1.79 1.4 -3.12 1.4 -4.84 C16.49 8.99 15.24 7.51 13.37 7.51 c-1.09 0 -2.15 0.47 -3.12 1.36 Z' }],
@@ -111,7 +109,8 @@ export const IconDentalPain = createIcon('dental-pain', [
   ['path', { d: 'M3.25 8.75a6 6 0 0 0 0 6.5M20.75 8.75a6 6 0 0 1 0 6.5' }],
 ]);
 export const IconDentalPremolar = createIcon('dental-premolar', [
-  ['path', { d: 'M12 6c-1-1.25-2-2-3.25-2C7 4 6 5.5 6 7.5c0 2.5 1.5 4 2.5 6l2.25 5.75a1.35 1.35 0 0 0 2.5 0L15.5 13.5c1-2 2.5-3.5 2.5-6 0-2-1-3.5-2.75-3.5-1.25 0-2.25.75-3.25 2Z' }],
+['path', { d: 'M12 5c-.9-1.15-1.8-1.75-2.75-1.75C7.75 3.25 7 4.75 7 7c0 2 .75 3.5 1 5l.75 7.75c.1 1.1 1.65 1.25 1.95.2L12 15.5l1.3 4.45c.3 1.05 1.85.9 1.95-.2L16 12c.25-1.5 1-3 1-5 0-2.25-.75-3.75-2.25-3.75-.95 0-1.85.6-2.75 1.75Z' }],
+  ['path', { d: 'M8.25 11.5c2.5.75 5 .75 7.5 0' }],
 ]);
 export const IconDentalRecord = createIcon('dental-record', [
   ['rect', { x: 5, y: 4.5, width: 14, height: 16.5, rx: 3 }],
@@ -144,8 +143,8 @@ export const IconDentalWhitening = createIcon('dental-whitening', [
   ['path', { d: 'M18.5 2.5c.3 1.6.9 2.2 2.5 2.5-1.6.3-2.2.9-2.5 2.5-.3-1.6-.9-2.2-2.5-2.5 1.6-.3 2.2-.9 2.5-2.5Z' }],
 ]);
 export const IconDentalWisdomTooth = createIcon('dental-wisdom-tooth', [
-  ['path', { d: 'M7.25 9.56 C6.56 8.93 5.82 8.6 5.05 8.6 3.73 8.6 2.85 9.64 2.85 11.02 c0 1.21 0.61 2.15 0.99 3.41 0.28 0.99 0.44 2.97 1.35 2.97 0.8 0 0.85 -2.48 2.06 -2.48 s1.26 2.48 2.06 2.48 c0.91 0 1.07 -1.98 1.35 -2.97 0.39 -1.26 0.99 -2.2 0.99 -3.41 C11.65 9.64 10.77 8.6 9.45 8.6 c-0.77 0 -1.51 0.33 -2.2 0.96 Z' }],
-  ['path', { d: 'M15.5 11.06 C14.81 10.43 14.07 10.1 13.3 10.1 11.98 10.1 11.1 11.14 11.1 12.52 c0 1.21 0.61 2.15 0.99 3.41 0.28 0.99 0.44 2.97 1.35 2.97 0.8 0 0.85 -2.48 2.06 -2.48 s1.26 2.48 2.06 2.48 c0.91 0 1.07 -1.98 1.35 -2.97 0.39 -1.26 0.99 -2.2 0.99 -3.41 C19.9 11.14 19.02 10.1 17.7 10.1 c-0.77 0 -1.51 0.33 -2.2 0.96 Z', transform: 'rotate(-42 15.5 14.5)' }],
+  ['path', { transform: 'translate(12 12.5) rotate(-15) scale(.88) translate(-12 -12.5)', d: 'M12 5.75C10.75 4.6 9.4 4 8 4 5.6 4 4 5.9 4 8.4c0 2.2 1.1 3.9 1.8 6.2.5 1.8.8 5.4 2.45 5.4 1.45 0 1.55-4.5 3.75-4.5s2.3 4.5 3.75 4.5c1.65 0 1.95-3.6 2.45-5.4.7-2.3 1.8-4 1.8-6.2C20 5.9 18.4 4 16 4c-1.4 0-2.75.6-4 1.75Z' }],
+  ['path', { d: 'M2.5 9.5c3-1.25 5.5 1 9.5 0s6.5-2.75 9.5-1.5' }],
 ]);
 export const IconDentalXray = createIcon('dental-xray', [
   ['rect', { x: 3.5, y: 3.5, width: 17, height: 17, rx: 3.25 }],

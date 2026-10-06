@@ -113,10 +113,13 @@ export const IconOfferLetter = createIcon('offer-letter', [
   ['path', { d: 'M9 14.25l2 2 4-4' }],
 ]);
 export const IconOfficeChair = createIcon('office-chair', [
-  ['rect', { x: 7, y: 2.75, width: 10, height: 9, rx: 3 }],
-  ['path', { d: 'M5 13.75h14' }],
-  ['path', { d: 'M12 13.75v4.5' }],
-  ['path', { d: 'M7 20.75l5-2.5 5 2.5' }],
+  ['rect', { x: 5.5, y: 2.75, width: 3.5, height: 9.5, rx: 1.75 }],
+  ['path', { d: 'M7.25 12.25v.5a1.5 1.5 0 0 0 1.5 1.5h9.5' }],
+  ['path', { d: 'M13 14.25v4.25' }],
+  ['path', { d: 'M7.5 18.5h11' }],
+  ['circle', { cx: 7.75, cy: 20.75, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 13, cy: 20.75, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 18.25, cy: 20.75, r: 1.1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconOfficeDesk = createIcon('office-desk', [
   ['path', { d: 'M2.75 9h18.5' }],
@@ -243,9 +246,14 @@ export const IconSuggestionBox = createIcon('suggestion-box', [
   ['circle', { cx: 19, cy: 8.5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconTaskBoard = createIcon('task-board', [
-  ['rect', { x: 3, y: 3.5, width: 5, height: 17, rx: 1.75 }],
-  ['rect', { x: 9.5, y: 3.5, width: 5, height: 11, rx: 1.75 }],
-  ['rect', { x: 16, y: 3.5, width: 5, height: 7.5, rx: 1.75 }],
+  ['rect', { x: 2.75, y: 3, width: 5, height: 1.75, rx: 0.875, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 9.5, y: 3, width: 5, height: 1.75, rx: 0.875, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 16.25, y: 3, width: 5, height: 1.75, rx: 0.875, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 2.75, y: 7.25, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 2.75, y: 12.75, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 9.5, y: 7.25, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 16.25, y: 7.25, width: 5, height: 3.5, rx: 1 }],
+  ['rect', { x: 16.25, y: 12.75, width: 5, height: 3.5, rx: 1 }],
 ]);
 export const IconTeamLead = createIcon('team-lead', [
   ['circle', { cx: 12, cy: 10.25, r: 3 }],

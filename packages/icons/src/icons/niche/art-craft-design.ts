@@ -43,12 +43,6 @@ export const IconEasel = createIcon('easel', [
   ['rect', { x: 5, y: 3.5, width: 14, height: 10.5, rx: 2 }],
   ['path', { d: 'M8.5 14 6 20.5M15.5 14l2.5 6.5M12 14v4' }],
 ]);
-export const IconEmbroideryHoop = createIcon('embroidery-hoop', [
-  ['circle', { cx: 12, cy: 13, r: 7.5 }],
-  ['circle', { cx: 12, cy: 13, r: 5.5 }],
-  ['path', { d: 'M10.5 5.75V3.25h3v2.5' }],
-  ['path', { d: 'M10.5 11.5l3 3M13.5 11.5l-3 3' }],
-]);
 export const IconEraser = createIcon('eraser', [
   ['rect', { x: 4, y: 8, width: 15, height: 8, rx: 2.5, transform: 'rotate(-45 11.5 12)' }],
   ['path', { d: 'M9.5 8v8', transform: 'rotate(-45 11.5 12)' }],

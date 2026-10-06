@@ -39,9 +39,12 @@ export const IconGasFee = createIcon('gas-fee', [
   ['path', { d: 'M13.5 11h2a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 0 3 0V8.5L17.5 6' }],
 ]);
 export const IconHardwareWallet = createIcon('hardware-wallet', [
-  ['rect', { x: 6.5, y: 8, width: 11, height: 13, rx: 2.5 }],
-  ['path', { d: 'M9.5 8V3.25h5V8' }],
-  ['path', { d: 'M12.00 11.50L14.60 13.00L14.60 16.00L12.00 17.50L9.40 16.00L9.40 13.00Z' }],
+  ['rect', { x: 2.5, y: 8, width: 14.5, height: 8, rx: 2.5 }],
+  ['path', { d: 'M17 10.25h4.5v3.5H17' }],
+  ['path', { d: 'M18.75 12h1' }],
+  ['rect', { x: 5.25, y: 10.5, width: 6.5, height: 3, rx: 0.75 }],
+  ['circle', { cx: 14.25, cy: 10.75, r: 0.85, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 14.25, cy: 13.25, r: 0.85, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconMiningRig = createIcon('mining-rig', [
   ['rect', { x: 2.75, y: 5.5, width: 18.5, height: 11.5, rx: 2.5 }],

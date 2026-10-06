@@ -132,9 +132,11 @@ export const IconShrineGate = createIcon('shrine-gate', [
   ['path', { d: 'M7 5.9V21M17 5.9V21' }],
 ]);
 export const IconSingingBowl = createIcon('singing-bowl', [
-  ['path', { d: 'M3.5 11h17c0 5-3.8 9-8.5 9s-8.5-4-8.5-9Z' }],
-  ['rect', { x: 12.5, y: 4.25, width: 8.5, height: 2.5, rx: 1.25, transform: 'rotate(-30 16.75 5.5)' }],
-  ['path', { d: 'M6.5 21.25h11' }],
+  ['path', { d: 'M3.5 11.5h13c0 3.6-2.9 6.5-6.5 6.5s-6.5-2.9-6.5-6.5Z' }],
+  ['path', { d: 'M5 20.5c0-1.6 2.25-2.5 5-2.5s5 .9 5 2.5Z' }],
+  ['rect', { x: 16.5, y: 19, width: 5, height: 1.5, rx: 0.75 }],
+  ['path', { d: 'M7 8.25c2-1.5 4-1.5 6 0' }],
+  ['path', { d: 'M5 5c3.25-2.25 6.75-2.25 10 0' }],
 ]);
 export const IconStoneLantern = createIcon('stone-lantern', [
   ['path', { d: 'M4.75 8.5 12 3.75l7.25 4.75Z' }],
