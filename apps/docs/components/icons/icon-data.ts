@@ -11,6 +11,8 @@ export interface IconGroup {
   label: string;
   /** Export names, e.g. "IconBell", in source order. */
   names: string[];
+  /** From `@syntara/icons/niche` (the 2,000-icon pack) rather than the main entry. */
+  niche?: boolean;
 }
 
 export interface IconSpec {
