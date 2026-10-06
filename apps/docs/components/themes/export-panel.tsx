@@ -1,7 +1,7 @@
 'use client';
 
 import { IconFileCode } from '@syntara/icons';
-import { Radio, RadioGroup, Tab, TabList, TabPanel, Tabs, ToggleButton, ToggleButtonGroup } from '@syntara/react';
+import { Dialog, Radio, RadioGroup, Tab, TabList, TabPanel, Tabs, ToggleButton, ToggleButtonGroup } from '@syntara/react';
 import { toCSS, toDTCG, toFigmaFiles, type FigmaModes, type Theme } from '@syntara/theme-engine';
 import { useDeferredValue, useId, useMemo, useState, type ReactNode } from 'react';
 import type { Key, Selection } from 'react-aria-components';
@@ -106,7 +106,8 @@ function Files({ files }: { files: ExportFile[] }) {
   );
 }
 
-export function ExportPanel() {
+/** Opened from the Export button beside the tab row (the same pattern as the Motion lab's Export). */
+export function ExportDialog() {
   const { theme: liveTheme, state, dispatch, preset, edited } = useThemes();
   const theme = useDeferredValue(liveTheme);
   const slug = `${preset.id}${edited ? '-custom' : ''}`;
@@ -118,66 +119,74 @@ export function ExportPanel() {
   const filesId = useId();
 
   return (
-    <div className={styles.stack}>
-      <section className={styles.section} aria-labelledby={appId}>
-        <div className={styles.sectionHead}>
-          <h2 id={appId} className={styles.h2}>
-            Use in your app
-          </h2>
-          <p className={styles.sub}>
-            Run this in your React project. It asks only your brand’s name, writes this theme with every contrast check
-            passing, and tells you the two lines to add.
-          </p>
-        </div>
-        <InstallCommand command={command} label="Copy the setup command" block />
-      </section>
-      <section className={styles.section} aria-labelledby={filesId}>
-        <h2 id={filesId} className={styles.h2}>
-          Or take the token files
-        </h2>
-        <Tabs
-          variant="pill"
-          selectedKey={format}
-          onSelectionChange={(key: Key) => {
-            const next = oneOf(String(key), FORMATS);
-            if (next) dispatch({ type: 'setFormat', format: next });
-          }}
-          className={styles.exportTabs}
-        >
-          <TabList aria-label="Export format">
+    <Dialog
+      isOpen={state.exportOpen}
+      onOpenChange={(open) => dispatch({ type: 'setExportOpen', open })}
+      size="lg"
+      title="Export"
+      description="Set this theme up in your app with one command, or take the token files."
+    >
+      <div className={styles.exportStack}>
+        <section className={styles.section} aria-labelledby={appId}>
+          <div className={styles.sectionHead}>
+            <h3 id={appId} className={styles.h3}>
+              Use in your app
+            </h3>
+            <p className={styles.sub}>
+              Run this in your React project. It asks only your brand’s name, writes this theme with every contrast check
+              passing, and tells you the two lines to add.
+            </p>
+          </div>
+          <InstallCommand command={command} label="Copy the setup command" block />
+        </section>
+        <section className={styles.section} aria-labelledby={filesId}>
+          <h3 id={filesId} className={styles.h3}>
+            Or take the token files
+          </h3>
+          <Tabs
+            variant="pill"
+            selectedKey={format}
+            onSelectionChange={(key: Key) => {
+              const next = oneOf(String(key), FORMATS);
+              if (next) dispatch({ type: 'setFormat', format: next });
+            }}
+            className={styles.exportTabs}
+          >
+            <TabList aria-label="Export format">
+              {FORMATS.map((f) => (
+                <Tab key={f} id={f}>
+                  {FORMAT_LABEL[f]}
+                </Tab>
+              ))}
+            </TabList>
             {FORMATS.map((f) => (
-              <Tab key={f} id={f}>
-                {FORMAT_LABEL[f]}
-              </Tab>
+              <TabPanel key={f} id={f} className={styles.exportPanel}>
+                <p className={styles.sub}>{NOTES[f]}</p>
+                {f === 'figma' && (
+                  <RadioGroup
+                    label="Figma plan"
+                    description={FIGMA_PLAN_NOTE[figmaModes]}
+                    orientation="horizontal"
+                    value={figmaModes}
+                    onChange={(value) => {
+                      const next = oneOf(value, FIGMA_MODES);
+                      if (next) dispatch({ type: 'setFigmaModes', figmaModes: next });
+                    }}
+                    className={styles.figmaPlan}
+                  >
+                    {FIGMA_PLAN_ORDER.map((m) => (
+                      <Radio key={m} value={m}>
+                        {FIGMA_PLAN_LABEL[m]}
+                      </Radio>
+                    ))}
+                  </RadioGroup>
+                )}
+                <Files files={files} />
+              </TabPanel>
             ))}
-          </TabList>
-          {FORMATS.map((f) => (
-            <TabPanel key={f} id={f} className={styles.exportPanel}>
-              <p className={styles.sub}>{NOTES[f]}</p>
-              {f === 'figma' && (
-                <RadioGroup
-                  label="Figma plan"
-                  description={FIGMA_PLAN_NOTE[figmaModes]}
-                  orientation="horizontal"
-                  value={figmaModes}
-                  onChange={(value) => {
-                    const next = oneOf(value, FIGMA_MODES);
-                    if (next) dispatch({ type: 'setFigmaModes', figmaModes: next });
-                  }}
-                  className={styles.figmaPlan}
-                >
-                  {FIGMA_PLAN_ORDER.map((m) => (
-                    <Radio key={m} value={m}>
-                      {FIGMA_PLAN_LABEL[m]}
-                    </Radio>
-                  ))}
-                </RadioGroup>
-              )}
-              <Files files={files} />
-            </TabPanel>
-          ))}
-        </Tabs>
-      </section>
-    </div>
+          </Tabs>
+        </section>
+      </div>
+    </Dialog>
   );
 }
