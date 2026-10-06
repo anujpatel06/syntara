@@ -24,7 +24,7 @@ Branch `fix/niche-icons-review`, from `main` at bf99e00, in its own worktree.
 - `pnpm --filter @syntara/icons test` 966 passed; `check:niche-drawing` `{"icons":1954,"problems":0}`; `typecheck` clean.
 - `pnpm test` 2,374 passed 0 failed, README row matches; `pnpm test:themes` 118,000/118,000; `check:meta` 58/58; `registry` 82 ok; `check-override-weight` clean.
 - `pnpm --filter @syntara/docs build` 317/317 pages; `out/docs/icons.html` holds 2,434 distinct icon marks (480 main + 1,954 niche); `check-ssr-tabs` 0 of 592; hydration 0/292; theme links 0; sideways scroll 0/292; CSP 0/146.
-- Local `axe-sweep` and `check-overlay-exit` were still running when this was committed (on Anuj's word); the PR's CI check `axe · overlay exit` is the first full result for them.
+- Local `axe-sweep` (146 routes × 2 schemes) 0 violation nodes and `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers) finished after this was committed (on Anuj's word).
 - By my own read of the final sheets, about 12 of the 20 second-round icons now read clearly; 3 are borderline and remain (`radiotherapy`, `singing-bowl`, `fault-line`). That is Claude's judgement, not measured and not Anuj's.
 
 **Next / known gaps**
