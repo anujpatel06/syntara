@@ -36,6 +36,52 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Header nav never wraps; search grows only where the row fits
+
+Reported by Anuj: "Get started" in the site header broke onto two lines around 1080px, on syntara.live and on `main` (d3ca2e5).
+
+**Changed**
+- `apps/docs/components/site/site-header.module.css`: main-nav links are `white-space: nowrap`; the header search
+  stays icon-only until 1024px (was 960), takes its 192px field from 1024 and its 288px field from 1120 (was 1024).
+  The reasoning and the measurements are in the comment above the media queries.
+- `apps/docs/components/site/search.tsx`: the header search button reads "Search docs…" (was "Search
+  documentation…", cut off at 192px). Its accessible name is now "Search docs" too, so the visible label stays inside
+  it (WCAG 2.5.3). The search dialog's own field keeps "Search documentation…".
+
+**Decided**
+- Keep every nav link and grow the search later, rather than hiding "Get started" until 1104px, which would drop it at
+  1024px laptop widths — **Claude recommended, Anuj accepted**.
+- "Search docs" as the header label — **Anuj**.
+
+**Results**
+- Before, on syntara.live, every width 768–1400px: "Get started" wrapped at 960–1006 and 1024–1102; no sideways
+  scroll — a one-off Playwright sweep (scratch script, not committed) reading each nav link's line boxes.
+- The row needs 1006px with the 192px field and 1102px with the 288px one (nav 556px on one line) — same sweep with
+  links forced to one line. New breakpoints leave 18px spare at 1024 and at 1120.
+- After, on this branch's dev server, 768–1400px: no wrapped links, no sideways scroll — same sweep.
+- `/verify` on build `jzZ9mWlEabVKocCYW5v-9`, served on port 3418 because another session held 3000
+  (`SYNTARA_BASE_URL=http://localhost:3418`):
+  - Typecheck clean — `pnpm typecheck`.
+  - 2,351 tests across 8 packages, 0 failing; the README count matches — `pnpm test`, `node scripts/check-test-counts.mjs`.
+  - Fuzz: 118,000 / 118,000 checks; adjustments per brand median 4 — `pnpm test:themes`.
+  - 58/58 components pass — `pnpm check:meta`. 82 registry items — `pnpm registry`.
+  - 0 component restyles of equal weight — `node scripts/check-override-weight.mjs`.
+  - 316/316 pages built — `pnpm --filter @syntara/docs build`. The new rules are in the build:
+    `grep -rl 'min-width:1120px' apps/docs/out/_next/static` and `Search docs…` in `out/index.html`.
+  - 0 pages missing a tab panel — `node scripts/check-ssr-tabs.mjs`.
+  - 0 hydration failures of 288 — `check-hydration.mjs`. 0 of 5 theme-link failures — `check-theme-links.mjs`.
+  - 0 of 288 pages scroll sideways at 320 and 768px — `check-narrow-overflow.mjs`.
+  - 0 of 144 pages broken by the CSP — `check-csp.mjs`.
+  - 0 axe violation nodes, 144 routes × 2 schemes — `axe-sweep.mjs`. Its first run crashed before measuring
+    (Playwright's browser failed to launch); the re-run on the same build passed.
+  - 0 overlay failures (108 tooltips, 4 menus and popovers) — `check-overlay-exit.mjs`.
+
+**Next**
+- The `/screenshots` sweep was not run this session.
+- syntara.live still shows the wrap until this merges and deploys.
+
+---
+
 ## 2026-10-06 — The homepage's app window fits iPhones
 
 Branch `fix/home-showcase-mobile`, from `main` at 37b9578, in its own worktree.
