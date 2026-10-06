@@ -23,7 +23,7 @@ export default function Themes() {
   return (
     <ThemesProvider presets={presets} initial={initial}>
       <PageShell
-        eyebrow="Themes"
+        density="compact"
         title={
           <>
             One colour in, <em>a whole brand</em> out

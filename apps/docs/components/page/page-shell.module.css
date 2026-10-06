@@ -29,6 +29,12 @@
   max-inline-size: calc(var(--docs-prose) + var(--syntara-space-16));
 }
 
+.heading {
+  display: grid;
+  justify-items: start;
+  gap: var(--syntara-space-3);
+}
+
 .eyebrow.eyebrow {
   margin-block-end: var(--syntara-space-1);
 }
@@ -67,4 +73,39 @@
   flex-wrap: wrap;
   gap: var(--syntara-space-2);
   margin-block-start: var(--syntara-space-3);
+}
+
+/* ---- Compact: tool pages (themes), where the tool should start high on the screen. ---- */
+
+.container[data-density='compact'] {
+  padding-block-start: var(--syntara-space-8);
+}
+.container[data-density='compact'] .header {
+  max-inline-size: none;
+  justify-items: stretch;
+}
+.container[data-density='compact'] .heading {
+  gap: var(--syntara-space-2);
+}
+.container[data-density='compact'] .title {
+  font-size: var(--syntara-font-size-3xl);
+  letter-spacing: var(--syntara-font-tracking-3xl);
+}
+.container[data-density='compact'] .description {
+  font-size: var(--syntara-font-size-md);
+  letter-spacing: var(--syntara-font-tracking-md);
+}
+.container[data-density='compact'] .actions {
+  margin-block-start: var(--syntara-space-1);
+}
+/* Wide: title and description on the start side, actions level with them on the end side. */
+@media (min-width: 1024px) {
+  .container[data-density='compact'] .header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--syntara-space-8);
+  }
+  .container[data-density='compact'] .actions {
+    margin-block-start: 0;
+  }
 }

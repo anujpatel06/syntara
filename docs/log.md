@@ -48,6 +48,39 @@ Branch `feat/motion-lab-batch-2`, from `main` at 15a81d3, merged up to c8e1ca5, 
 
 ---
 
+## 2026-10-06 — Themes: inputs on the right, Export top right, compact header
+
+Branch `feat/themes-inputs-right`, from `main` at c8e1ca5 (after #104).
+
+**Changed**
+- `/themes` workspace: the preview and its tabs on the start side, the brand inputs on the end side (still sticky), like
+  the Motion lab's settings panel. The inputs also come after the views in the source, so focus order matches the
+  screen; on narrow screens the page stacks preview first, inputs below.
+- Export heads the inputs column on wide screens, level with the tab row and sharing its hairline. Below 1024px it sits
+  beside Light/Dark instead (two `ExportButton`s, CSS shows one).
+- `PageShell` has `density="compact"` (smaller title and description, actions beside the title on wide screens, less
+  space above). Only `/themes` uses it; the other four pages keep the default. `/themes` drops the "Themes" eyebrow;
+  the stat figures are one size smaller (`2xl`).
+
+**Decided**
+- Inputs on the right; Export at the top of the inputs column; compact header as one row; Export beside Light/Dark on
+  phones (Claude recommended, Anuj accepted, from screenshots and options).
+- Only move the inputs, not the Motion lab's full-screen editor layout (Claude recommended, Anuj accepted).
+- Skip `/verify` and `/screenshots`: **Anuj**.
+
+**Results**
+- `npx tsc --noEmit -p apps/docs`: exit 0.
+- In the dev server at 1440 × 900 (measured with `getBoundingClientRect`): the tab row starts at 209px, was 397px.
+  Export's bottom edge and hairline match the Light/Dark toggle's (both 437px before the header change). At 375px one
+  Export shows, beside Light/Dark, and the page has no sideways scroll.
+- Not run: `/verify`, `/screenshots`, axe. Light mode, RTL, and the four other pages that share `PageShell` are
+  unchecked by eye (their markup gains one wrapper `div` around the title and description).
+
+**Next**
+- The shared header changed; the screenshot sweep would be the check that the other four pages still look the same.
+
+---
+
 ## 2026-10-06 — Themes: Export is a button and a dialog, not a tab
 
 Branch `feat/themes-export-dialog`, from `main` at cde820f.

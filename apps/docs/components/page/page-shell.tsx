@@ -13,6 +13,7 @@ export function PageShell({
   actions,
   children,
   width = 'default',
+  density = 'default',
 }: {
   eyebrow?: ReactNode;
   title?: ReactNode;
@@ -21,19 +22,23 @@ export function PageShell({
   children?: ReactNode;
   /** `default` = site container, `narrow` = prose width. */
   width?: 'default' | 'narrow';
+  /** `compact` = smaller title, actions beside it on wide screens, less space above. For tool pages (themes). */
+  density?: 'default' | 'compact';
 }) {
   return (
     <main id="main" tabIndex={-1} className={styles.main}>
-      <div className={styles.container} data-width={width}>
+      <div className={styles.container} data-width={width} data-density={density}>
         {(title || description) && (
           <header className={styles.header}>
-            {eyebrow && (
-              <Eyebrow lead="rule" className={styles.eyebrow}>
-                {eyebrow}
-              </Eyebrow>
-            )}
-            {title && <h1 className={styles.title}>{title}</h1>}
-            {description && <p className={styles.description}>{description}</p>}
+            <div className={styles.heading}>
+              {eyebrow && (
+                <Eyebrow lead="rule" className={styles.eyebrow}>
+                  {eyebrow}
+                </Eyebrow>
+              )}
+              {title && <h1 className={styles.title}>{title}</h1>}
+              {description && <p className={styles.description}>{description}</p>}
+            </div>
             {actions && <div className={styles.actions}>{actions}</div>}
           </header>
         )}
