@@ -198,22 +198,6 @@
   font-weight: var(--syntara-font-weight-semibold);
   line-height: var(--syntara-line-height-snug);
 }
-.cardFeel {
-  align-self: start;
-  color: var(--syntara-color-text-subtle);
-  font-size: var(--syntara-font-size-xs);
-  font-weight: var(--syntara-font-weight-regular);
-  line-height: var(--syntara-line-height-snug);
-}
-
-.componentCard {
-  display: grid;
-  gap: var(--syntara-space-1);
-  padding: var(--syntara-space-3);
-  border: var(--syntara-hairline) solid var(--syntara-color-text-default);
-  border-radius: var(--syntara-radius-container);
-  background: var(--syntara-color-surface-selected);
-}
 
 .hint {
   margin: 0;
@@ -445,6 +429,12 @@
   background: var(--syntara-color-action-primary-bg);
 }
 
+/* Batch 2 drawings. */
+
+.ctRow > .ctBox + .ctLineShort {
+  inline-size: 40%;
+}
+
 /* ---- Canvas ---- */
 
 .canvas {
@@ -536,6 +526,21 @@
   inset-block-start: var(--syntara-space-3);
   inset-inline-end: var(--syntara-space-3);
   z-index: 2;
+}
+
+/* Rows and cards for the batch 2 specimens. */
+.specimenRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syntara-space-3);
+}
+.specimenCard.specimenCard {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 2.5));
+}
+.specimenSpark.specimenSpark {
+  block-size: var(--syntara-space-12);
 }
 
 /* Dialog's overlay is position: fixed over the viewport; inside the lab it fills the stage instead.

@@ -167,8 +167,9 @@ Decide separately.
 ## 12. Components on the left, every motion control on the right (Anuj, 2026-10-06)
 
 Anuj: "left side should come all the components i can select to animate and on right all the controls to
-animate". The left panel lists the components as tiles, two in a row, each with a still drawing of the component in the
-chosen brand's tokens (`component-thumbs.tsx`) and its name; the selected component's description sits under the
+animate". The left panel lists the components as tiles, two in a row, each with a still of the real component (its
+`<name>-demo` example through `ExampleThumb`, as on /docs/components; this replaced hand-drawn sketches, Anuj,
+#103) in the chosen brand, and its name; the selected component's description sits under the
 list (Anuj's follow-ups). Grouped Overlays / Controls / Content; the right panel holds motion
 style (three small tiles in a row, Anuj's follow-up; the selected style's description under the row), brand,
 timing and preview.
@@ -217,3 +218,33 @@ photos for a video; what carries over is below. Controls are in two kinds, and t
 
 Not taken: Keyframes, Text, Logo, background, Position, Shadow (they arrange images for a video, not how a
 component moves), and scale amounts (decision 6).
+
+### Batch 2 (2026-10-06, after Anuj: "it's live now, add the next batch of components")
+
+Ten more, using only the two methods batch 1 proved: Sheet (stand-in wearing `sheet.module.css`, modal like
+Dialog); Checkbox (`isSelected`), Radio group (`value`), Toggle group (`selectedKeys`), Chip (`selectedKeys`),
+Steps (`current`); Badge, Meter, Sparkline and Avatar (remounted each loop: they animate as they mount). 16 in all.
+Left for batch 3, because opening them moves focus or announces to screen readers: Popover, Select, Menu,
+Combobox, Date picker, Command, Toast.
+
+### Batch 3 (2026-10-06, Anuj: "first complete all components")
+
+The other 34 components with motion, built by four helpers in parallel, each owning its own files under
+`apps/docs/components/motion/batch3/` (`<group>-list.ts`, `<group>.tsx`, `<group>.module.css`): Overlays (Popover,
+Select, Menu, Combobox, Date picker, Command, Toast), Inputs and presses (Button, Link, Breadcrumbs, Pagination, Text
+field, Text area, Search field, Slider, Calendar), Data (Area chart, Bar chart, Chart, Data table, Progress,
+Skeleton, Spinner, Tag, Person chip, Alert, Card) and Page (Hero, Marquee, Sidebar, Footer, File upload, Prompt
+composer, Streaming response). 50 in all, in six groups.
+
+Two more reasons a component loops as a stand-in, on top of "it is modal":
+- it moves focus or announces through a live region when it opens (Popover, Select, Menu, Combobox, Date picker,
+  Command, Toast, Streaming response);
+- its motion only happens on hover, press, focus or drag, which React Aria sets from real input and props can't reach
+  (Button, Link, Breadcrumbs, the three fields, Slider, Alert, the Footer's social links). The stand-in sets the same
+  `data-*` attributes the real component would.
+
+Known limits, said in the lab's own terms: Slider's thumb doesn't travel (the real one jumps); Alert and Footer
+move only a little (their real motion is a close-button press and a 1px hover lift); Hero and Footer are shown at
+`zoom` 0.6 and 0.75 to fit the stage; Chart's hover is driven by pointer events sent to its plot; Calendar and
+Date picker show today's dot from the visitor's clock.
+

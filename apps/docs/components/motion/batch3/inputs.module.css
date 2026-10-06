@@ -1,0 +1,38 @@
+/* Batch 3 (inputs): stage layout for the stand-ins and the tile drawings. Tokens only. */
+
+/* ---- Stage ---- */
+
+/* Widths for a field on the stage: a form field's width, not the stage's. */
+.field {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 2.5));
+}
+.fieldWide {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 3.25));
+}
+
+/* The slider stand-in places its fill and thumb the way React Aria does inline (position + percentage), at a
+   fixed 60%. Doubled classes: they sit on slider.module.css's own elements (scripts/check-override-weight.mjs). */
+.track.track {
+  --_value: 60%;
+  position: relative;
+}
+.fill.fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: var(--_value);
+}
+.thumb.thumb {
+  position: absolute;
+  inset-inline-start: var(--_value);
+  transform: translate(-50%, -50%);
+}
+.thumb.thumb:dir(rtl) {
+  transform: translate(50%, -50%);
+}
+
+/* ---- Tiles (match the .ct* drawings in motion-lab.module.css) ---- */
+
+/* The underline: a hairline under the text bar. */
+
+/* A field box; the focused one has the focus ring and halo, the state these tiles move into. */

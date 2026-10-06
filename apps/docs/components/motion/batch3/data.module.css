@@ -1,0 +1,41 @@
+/* Batch 3 (data): stage layout and tile drawings. Brand tokens only; no motion of our own (it is all the components'). */
+
+/* ---- Stage ---- */
+
+/* A chart's Card fills the specimen's width, as in area-chart-demo (doubled: it restyles Card's own class). */
+.chartCard.chartCard {
+  inline-size: 100%;
+}
+
+/* The table is wider than the other specimens: four columns and a selection column. */
+.tableWide > * {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 4.5));
+}
+
+/* Spinners take the brand's ink, as spinner-demo does. */
+.brandInk {
+  color: var(--syntara-color-text-brand);
+}
+
+.skeletonBody.skeletonBody {
+  display: grid;
+  gap: var(--syntara-space-4);
+}
+
+.cardRows.cardRows {
+  display: grid;
+  gap: var(--syntara-space-2);
+}
+.cardRow {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--syntara-space-4);
+  font-size: var(--syntara-font-size-sm);
+}
+.muted {
+  color: var(--syntara-color-text-subtle);
+}
+
+/* ---- Tiles (component-thumbs.tsx style: still drawings, spans and inline SVG) ---- */
+
+/* The readout pill, ending just before the crosshair (37 / 60 along), clear of the line's end. */
