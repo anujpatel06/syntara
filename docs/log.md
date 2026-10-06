@@ -6,6 +6,51 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Motion lab: six components, tiles, and more controls (ADR-055 revision)
+
+Branch `feat/motion-lab-components`, from `main` at fa8c03f, merged up to f6785a0, in its own worktree.
+
+**Changed**
+- `apps/docs/components/motion/specimen-list.ts` (plain data, readable by the server page) and `specimens.tsx`:
+  six components, one per kind of movement. Dialog loops as the stand-in; Tooltip (`isOpen`), Switch
+  (`isSelected`), Tabs (`selectedKey`), Accordion (`expandedKeys`) and Stat tile (remounted) are the real
+  components.
+- The loop now waits for whatever animations the change starts anywhere under the stage or portalled from it
+  (a tooltip lands in `<body>`), so each component's loop is as long as its own motion.
+- Left panel: components as tiles, two in a row, each with a still drawing in the brand's tokens
+  (`component-thumbs.tsx`). Right panel: Frame, motion style as three tiles in a row, brand, timing, curves,
+  playback, Reset.
+- New controls (spec §13): Fast / Normal / Slow durations that keep their order, standard and enter easing, and a
+  curve graph (exported); Frame (Desktop / Tablet / Phone, phone-shaped so Dialog shows its bottom sheet), slow
+  motion 0.25–1×, hold time, Reset (preview only). `motion-math.ts` gains `Tuning`, `orderDurations`,
+  `playbackVars`, `easingPoints`.
+- The Export dialog's second tab shows the selected component's own example.
+
+**Decided**
+- Components left, controls right; tiles; more controls. **Anuj** (ADR-055 revision).
+- First batch of six, one per kind of movement; real components except Dialog. **Claude**, pending Anuj's review of
+  the batch.
+
+**Results**
+- Each of the six loops, page errors 0 (Playwright, 5.2 s per component, watching animations under the stage).
+- Controls, one Playwright run: Slow dragged to 120 ms pushed Normal to 110 and Fast to 100; Decelerate appears
+  in the export as `cubic-bezier(0, 0, 0.2, 1)`; at 0.25× the stage's slow duration was 480 ms and the export's
+  120 ms; Phone made the stage 308 × 667 with the sheet's Cancel 29 px above its bottom; Reset restored 320 ms,
+  the enter curve and Desktop.
+- `/verify`, once, after Anuj asked to commit: `pnpm typecheck` passes; `pnpm test` 2,374 tests across 8 packages,
+  none failing (README row matches); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand (reports
+  not committed); `pnpm check:meta` 58/58; `pnpm registry` ok; `check-override-weight` 0; docs build 318/318;
+  `check-ssr-tabs` 0. Served on :3472 (`SYNTARA_BASE_URL=http://localhost:3472`): `check-hydration` 0 (147 × 2),
+  `check-theme-links` 0 of 5, `check-narrow-overflow` 0 (147 × 320, 768), `check-csp` 0 (147), `axe-sweep` 0
+  violation nodes (147 × 2), `check-overlay-exit` 0. Change shipped: `grep -rl "Hold open"
+  apps/docs/out/_next/static` finds the chunk.
+
+**Next**
+- Anuj reviews the six; then the other ~44 components in batches, each with its drawing.
+- The right panel scrolls by 165 px even at 1640 px tall: fold Curves and Playback if that's too long.
+
+---
+
 ## 2026-10-06 — @syntara/mcp carries its own data, so `npx` works
 
 Branch `feat/mcp-bundle-data`, on top of `docs/mcp-needs-checkout` (PR #89), in `../strata-mcp-docs`.

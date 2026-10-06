@@ -118,10 +118,11 @@
   font-weight: var(--syntara-font-weight-regular);
 }
 
-/* Style cards: a live thumbnail on top, the name and its feel under it. */
+/* Style tiles: three in a row, a live thumbnail on top and the name under it. The selected style's
+   description sits under the row (.hint), not in every tile. */
 .cards.cards {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--syntara-space-2);
   inline-size: 100%;
   padding: 0;
@@ -132,18 +133,15 @@
 
 .card.card {
   display: grid;
-  grid-template-columns: calc(var(--syntara-space-16) + var(--syntara-space-4)) minmax(0, 1fr);
-  grid-template-rows: auto auto;
-  column-gap: var(--syntara-space-3);
-  row-gap: var(--syntara-space-1);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: var(--syntara-space-2);
   block-size: auto;
   min-block-size: 0;
   padding: var(--syntara-space-2);
   border: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
   border-radius: var(--syntara-radius-container);
   background: var(--syntara-color-surface-default);
-  text-align: start;
   white-space: normal;
 }
 .card.card[data-selected] {
@@ -154,8 +152,8 @@
 }
 
 .thumb {
-  grid-row: 1 / span 2;
   display: grid;
+  inline-size: 100%;
   place-items: center;
   aspect-ratio: 4 / 3;
   border-radius: calc(var(--syntara-radius-container) - var(--syntara-space-1));
@@ -248,6 +246,321 @@
   line-height: var(--syntara-line-height-normal);
 }
 
+/* Component list: grouped, one row per component, the selected one outlined like the style cards. */
+.componentList.componentList {
+  display: grid;
+  gap: var(--syntara-space-4);
+  inline-size: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+.group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--syntara-space-2);
+}
+.groupLabel {
+  grid-column: 1 / -1;
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-xs);
+  font-weight: var(--syntara-font-weight-medium);
+}
+/* Component tiles, two in a row: a still drawing of the component, its name under it. Same edge and selected
+   outline as the style tiles. The selected component's description sits under the list (.hint). */
+.componentItem.componentItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: var(--syntara-space-2);
+  inline-size: 100%;
+  block-size: auto;
+  min-block-size: 0;
+  padding: var(--syntara-space-2);
+  border: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-container);
+  background: var(--syntara-color-surface-default);
+  white-space: normal;
+}
+.componentItem.componentItem[data-hovered] {
+  background: var(--syntara-color-surface-sunken);
+}
+.componentItem.componentItem[data-selected] {
+  border-color: var(--syntara-color-text-default);
+  background: var(--syntara-color-surface-selected);
+  color: var(--syntara-color-text-default);
+  box-shadow: 0 0 0 var(--syntara-hairline) var(--syntara-color-text-default);
+}
+
+/* ---- Component drawings (component-thumbs.tsx). Brand tokens from the stage theme; sizes in space tokens. ---- */
+
+.componentThumb {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: calc(var(--syntara-radius-container) - var(--syntara-space-1));
+  background: var(--syntara-color-surface-sunken);
+  overflow: clip;
+}
+.ct {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: var(--syntara-space-2);
+  color: var(--syntara-color-text-default);
+}
+.ctDim {
+  background: color-mix(in oklab, var(--syntara-color-text-default) 38%, var(--syntara-color-surface-default));
+}
+.ctColumn {
+  align-content: center;
+  gap: var(--syntara-space-1);
+}
+.ctStack {
+  align-content: center;
+  justify-items: stretch;
+  gap: var(--syntara-space-1);
+  padding-inline: var(--syntara-space-3);
+}
+.ctRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syntara-space-1);
+}
+
+.ctLine,
+.ctLineShort {
+  display: block;
+  inline-size: 100%;
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.55;
+}
+.ctLineShort {
+  inline-size: 60%;
+  opacity: 0.3;
+}
+
+.ctPanel {
+  display: grid;
+  gap: var(--syntara-space-1);
+  inline-size: 70%;
+  padding: calc(var(--syntara-space-1) * 1.5);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-raised);
+  box-shadow: var(--syntara-shadow-overlay);
+}
+.ctActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: calc(var(--syntara-space-1) / 2);
+  margin-block-start: calc(var(--syntara-space-1) / 2);
+}
+.ctGhost,
+.ctPrimary {
+  display: block;
+  inline-size: 26%;
+  block-size: var(--syntara-space-2);
+  border-radius: var(--syntara-radius-badge);
+}
+.ctGhost {
+  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
+}
+.ctPrimary {
+  background: var(--syntara-color-action-primary-bg);
+}
+
+.ctTip {
+  position: relative;
+  display: block;
+  inline-size: 64%;
+  block-size: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-inverse);
+}
+.ctTip::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 100%;
+  inset-inline-start: 50%;
+  translate: -50% 0;
+  border: calc(var(--syntara-space-1) * 0.75) solid transparent;
+  border-block-start-color: var(--syntara-color-surface-inverse);
+}
+.ctOutlineButton {
+  display: block;
+  inline-size: 40%;
+  block-size: var(--syntara-space-4);
+  margin-block-start: var(--syntara-space-1);
+  border: var(--syntara-hairline) solid var(--syntara-color-border-strong);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-default);
+}
+
+.ctTrack {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex: none;
+  inline-size: calc(var(--syntara-space-8) + var(--syntara-space-1));
+  block-size: var(--syntara-space-5);
+  padding: calc(var(--syntara-space-1) / 2);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-action-primary-bg);
+}
+.ctKnob {
+  display: block;
+  inline-size: var(--syntara-space-4);
+  block-size: var(--syntara-space-4);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-raised);
+}
+.ctRow > .ctLineShort {
+  inline-size: 34%;
+}
+
+.ctTabs {
+  display: flex;
+  gap: var(--syntara-space-1);
+  padding-block-end: var(--syntara-space-1);
+  border-block-end: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
+  margin-block-end: var(--syntara-space-1);
+}
+.ctTab {
+  position: relative;
+  display: block;
+  flex: 1;
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.3;
+}
+.ctTabOn {
+  opacity: 0.8;
+}
+.ctTabOn::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(var(--syntara-space-2) + var(--syntara-hairline));
+  block-size: calc(var(--syntara-hairline) * 2);
+  background: var(--syntara-color-action-primary-bg);
+}
+
+.ctAccRow {
+  display: grid;
+  gap: var(--syntara-space-1);
+  padding-block: var(--syntara-space-1);
+  border-block-end: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
+}
+/* Each row's title: a darker line with the chevron's place kept at the end. */
+.ctAccTitle {
+  display: block;
+  inline-size: 70%;
+  block-size: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.ctStat {
+  display: grid;
+  gap: var(--syntara-space-1);
+  flex: 1;
+  padding: var(--syntara-space-1);
+  border: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-default);
+}
+.ctFigure {
+  display: block;
+  inline-size: 50%;
+  block-size: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-badge);
+  background: currentColor;
+  opacity: 0.8;
+}
+
+/* Segmented rows (Frame, Slow motion, Hold open) fill the panel's width, options equal. */
+.segmented.segmented {
+  inline-size: 100%;
+}
+.segment.segment {
+  flex: 1 1 0;
+}
+
+/* "Preview only": settings that change the stage, never the exported tokens (spec §13). */
+.previewOnly {
+  margin-inline-start: var(--syntara-space-2);
+  padding-block: calc(var(--syntara-space-1) / 2);
+  padding-inline: var(--syntara-space-2);
+  border: var(--syntara-hairline) solid var(--syntara-color-border-subtle);
+  border-radius: var(--syntara-radius-badge);
+  font-weight: var(--syntara-font-weight-medium);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* Curve graph: the enter easing (text colour) and the spring (brand colour) against the line where motion rests. */
+.curve {
+  display: grid;
+  gap: var(--syntara-space-2);
+  margin: 0;
+  padding: var(--syntara-space-3);
+  border-radius: var(--syntara-radius-badge);
+  background: var(--syntara-color-surface-sunken);
+}
+.curveSvg {
+  display: block;
+  inline-size: 100%;
+  block-size: calc(var(--syntara-space-16) + var(--syntara-space-8));
+  overflow: visible;
+}
+.curveRest {
+  stroke: var(--syntara-color-border-subtle);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  vector-effect: non-scaling-stroke;
+}
+.curveEnter,
+.curveSpring {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.curveEnter {
+  stroke: var(--syntara-color-text-subtle);
+}
+.curveSpring {
+  stroke: var(--syntara-color-action-primary-bg);
+}
+.curveKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--syntara-space-1) var(--syntara-space-3);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-xs);
+  font-variant-numeric: tabular-nums;
+}
+.keyEnter::before,
+.keySpring::before {
+  content: '';
+  display: inline-block;
+  inline-size: var(--syntara-space-3);
+  block-size: calc(var(--syntara-hairline) * 2);
+  margin-inline-end: var(--syntara-space-1);
+  vertical-align: middle;
+  background: var(--syntara-color-text-subtle);
+}
+.keySpring::before {
+  background: var(--syntara-color-action-primary-bg);
+}
+
 /* ---- Canvas ---- */
 
 .canvas {
@@ -285,6 +598,20 @@
   isolation: isolate;
 }
 
+/* Frame (preview only): Tablet and Phone narrow the stage. Phone is under Dialog's 480px container breakpoint, so
+   Dialog shows as a bottom sheet there, as it does on a phone. */
+.stage.stage[data-frame='tablet'] {
+  max-inline-size: calc(var(--syntara-space-32) * 4.5);
+}
+.stage.stage[data-frame='phone'] {
+  /* A phone's shape (390 × 844), as tall as the canvas allows: a short wide box had no room for the sheet. */
+  inline-size: auto;
+  max-inline-size: none;
+  block-size: 100%;
+  max-block-size: none;
+  aspect-ratio: 390 / 844;
+}
+
 /* What the dialog opens over: the button that would open it, on the brand's page. */
 .page {
   position: absolute;
@@ -292,6 +619,30 @@
   display: grid;
   place-items: center;
   padding: var(--syntara-space-6);
+}
+
+/* What the loop drives. Fills the stage so a stand-in overlay can cover it. */
+.stageContent {
+  position: absolute;
+  inset: 0;
+}
+
+/* A real component on the stage, centred at its natural size. */
+.specimen {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--syntara-space-8);
+}
+.specimenWide > * {
+  inline-size: min(100%, calc(var(--syntara-space-32) * 3.5));
+}
+.specimenText {
+  margin: 0;
+  padding-block-start: var(--syntara-space-3);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-md);
 }
 
 /* Dialog's overlay is position: fixed over the viewport; inside the lab it fills the stage instead.
@@ -367,7 +718,7 @@
   .editor {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto auto auto auto;
-    grid-template-areas: 'top' 'canvas' 'right' 'left';
+    grid-template-areas: 'top' 'canvas' 'left' 'right';
     block-size: auto;
   }
   .topBar {

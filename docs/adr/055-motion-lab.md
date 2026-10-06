@@ -67,3 +67,19 @@ and 32px over at 1024 and 1120 (the search's growth steps). Following the header
 every step), "Motion" shows from 810px, and the search grows at 1074 and 1170 instead of 1024 and 1120. Below
 810 it is in the mobile menu and the footer.
 
+
+## Revision, 2026-10-06: more components, tiles, more controls
+
+**Anuj** decided, in order:
+
+1. "Left side should come all the components I can select to animate and on right all the controls to animate."
+   The left panel became a component list; motion style moved to the right with brand, timing and preview.
+2. Motion styles as small tiles in a row; components as tiles two in a row, each with a small drawing of the
+   component.
+3. "Add more motion controls, see the reference website." Spec §13: Fast / Normal / Slow durations and two easing
+   choices (exported), plus Frame, slow motion, hold time and Reset (preview only).
+
+**Claude** chose, following the spec's "one before many": the first batch is one component per kind of movement
+(Dialog, Tooltip, Switch, Tabs, Accordion, Stat tile). Every one but Dialog is the real component driven through
+its own props; Dialog stays a stand-in (decision 7). The other ~44 components with motion wait for Anuj to approve
+this batch.
