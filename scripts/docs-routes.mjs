@@ -19,6 +19,7 @@ export function docsRoutes() {
     '/docs/components',
     '/blocks',
     '/themes',
+    '/motion',
     '/colors',
     '/story',
     // File pages (not .mdx): listed by hand, or no sweep would ever visit them.

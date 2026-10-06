@@ -26,6 +26,7 @@ export const FOOTER_COLUMNS: ReadonlyArray<{ title: string; links: ReadonlyArray
     title: 'Brand',
     links: [
       { href: '/themes', label: 'Themes' },
+      { href: '/motion', label: 'Motion lab' },
       { href: '/colors', label: 'Colors' },
       { href: '/docs/icons', label: 'Icons' },
       { href: '/docs/accessibility', label: 'Accessibility' },

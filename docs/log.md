@@ -36,6 +36,63 @@ Branch `feat/docs-niche-icons`, from `main` at eb1ee7a, in its own worktree.
 
 ---
 
+## 2026-10-06 — Motion lab: spec and first build (ADR-055)
+
+Branch `docs/motion-lab-spec`, from `main` at 9fcc9a5, in its own worktree. Written first on `feat/icons-style-filter`
+(11 commits behind `main`) and moved here before committing. ADR renumbered 050 → 053 → 055: `main` had taken 050–054 by the time this merged.
+
+**Changed**
+- Read https://animos.app (landing page only, editor not opened) at Anuj's request.
+- `docs/design/motion-lab.md`: spec for a `/motion` docs page. Pick a brand and a component, pick a motion style,
+  watch it loop, copy the code. Not a video tool.
+- Cross-checked the spec against the repo and fixed it: Snappy's first spring (600/30) measured 8.5% overshoot and
+  Calm's (220/30) took 536 ms, both breaking the spec's own rules; replaced with 700/38 (3.7%, 311 ms) and 300/34
+  (0.0%, 446 ms). Command in the spec, §4. Also: seven motion tokens, not six; scale amounts are not tokens (11
+  values in component CSS), so styles change time and curve only; Dialog enters from 0.94, not 0.96; the code panel
+  prints `[data-syntara-theme="<id>"]`, because a `:root` override loses to what `npx syntara init` writes.
+- `docs/adr/055-motion-lab.md`.
+- **Built `/motion`** (`apps/docs/app/motion/page.tsx`, `apps/docs/components/motion/`): an editor laid out after
+  the Animos editor (spec §11): top bar with Export, style cards with live thumbnails on the left, a dotted canvas
+  with the stage and a play bar in the centre, brand / timing / preview on the right. Export opens a real Dialog with
+  the token overrides (Copy, Download) and Dialog's example. A "Motion lab" link under Brand in the shared footer.
+- **The stage loops a stand-in, not the modal.** Found while building: a looping modal blocks the controls and moves
+  focus every cycle. The stand-in is Dialog's markup wearing `dialog.module.css` itself (imported, not copied), inert
+  and hidden from assistive tech; "Try the real Dialog" opens the component.
+- Loop timing reads each animation's own end time instead of awaiting `finished`, which Chromium resolved ~650 ms
+  after a 120 ms exit had ended (measured in the lab).
+- `scripts/docs-routes.mjs` gains `/motion`, so the sweeps cover it.
+
+**Decided**
+- All six spec decisions (three styles; a docs demo, not an engine option; home-page link only; share clip last;
+  "Gentle" instead of "Calm"; no scale tokens in v1). **Claude recommended, Anuj accepted** (ADR-055).
+- The stage loops a stand-in with Dialog's own stylesheet, plus a button for the real Dialog. **Claude recommended,
+  Anuj chose** (ADR-055, option 7a).
+- The editor layout after Animos, and the build overall: **Anuj** approved, 2026-10-06.
+
+**Results**
+- Loop phases in Tactile, measured with a MutationObserver in the dev build: opening 412–418 ms (spring 402 ms),
+  held 1,219–1,246 ms (1,200), closing 139–144 ms (120), rest 626–634 ms (600).
+- Pasting the exported block changed a `[data-syntara-theme="harbor"]` element's `--syntara-motion-duration-fast`
+  from 120 ms to 80 ms; the same block under `:root` left it at 120 ms.
+- `/verify`, once, after Anuj approved: `pnpm typecheck` passes; `pnpm test` 2,356 tests across 8 packages, none
+  failing (`node scripts/check-test-counts.mjs --from <log>`: README row matches); `pnpm test:themes` 118,000 /
+  118,000 checks, median 4 adjustments per brand (only the timing lines moved, reports not committed);
+  `pnpm check:meta` 58/58; `pnpm registry` every item ok; `node scripts/check-override-weight.mjs` 0 (it caught
+  `.exportPanel`, now doubled); `pnpm --filter @syntara/docs build` 317/317 pages; `node scripts/check-ssr-tabs.mjs`
+  0 missing panels. Served on :3472 (`serve out -l 3472 --no-port-switching`; :3000 held by another worktree's
+  server), `SYNTARA_BASE_URL=http://localhost:3472`: `check-hydration` 0 failures (144 routes × 2, then `/motion`
+  × 2), `check-theme-links` 0 of 5, `check-narrow-overflow` 0 pages scrolling sideways (288, then `/motion` at 320
+  and 768), `check-csp` 0 failures (144, then `/motion`), `axe-sweep` 0 violation nodes (145 routes × 2 schemes,
+  `/motion` included), `check-overlay-exit` 0 failures. Change shipped: `grep -rl "Try the real Dialog"
+  apps/docs/out/_next/static` finds the chunk.
+
+**Next**
+- Tune Gentle and Snappy by eye with Anuj; re-measure any spring that changes.
+- Video export is not built (spec §11): needs the Dialog drawn again in a canvas, or a server capture step, plus an
+  MP4 encoder. A separate decision.
+
+---
+
 ## 2026-10-06 — 2,000 niche icons in `@syntara/icons/niche` (ADR-054)
 
 Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
