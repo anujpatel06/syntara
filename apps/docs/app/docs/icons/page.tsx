@@ -140,6 +140,11 @@ export default function IconsPage() {
         Why the set gained a second style, and what was rejected: <AdrLink n="036" />.
       </P>
 
+      <P>
+        Looking for something more specific, like an orthodontist’s braces or a tractor? There are 2,000 more at niche
+        level, in 40 domains: <a href="/docs/icons/niche" className={styles.inlineLink}>Niche icons</a>.
+      </P>
+
       <H2 id="all-icons">All icons</H2>
       {/* The page's own scope, so the toast region copies the house theme and the site's scheme. */}
       <ThemeScope theme="house" data-syntara-scheme="site">
