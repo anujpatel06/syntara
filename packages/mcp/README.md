@@ -82,7 +82,7 @@ If the file doesn't exist, reading the resource returns a "not found" error. The
 
 ## Setup
 
-`npx @syntara/mcp` works. To run it from a checkout of this repo instead, point your client at the file and run `pnpm install` in the repo first.
+Run it from a checkout of this repo: run `pnpm install` in the repo, then point your client at the file. `npx @syntara/mcp` starts the server, but on its own every tool fails, because the data it reads isn't in the npm package yet (see [Limits](#limits)).
 
 Replace `/path/to/syntara` with the absolute path of your checkout.
 
@@ -227,7 +227,7 @@ pnpm --filter @syntara/mcp typecheck
 
 ## Limits
 
-- **It needs a checkout of the repo.** The data isn't bundled in the package. Publishing to npm (Phase 6) needs a decision on how the data ships.
+- **It needs a checkout of the repo.** The package is on npm, but the data isn't bundled in it: run from `npx` alone, every tool answers "No Syntara repo" and `syntara://agents` is not found (checked with 0.1.3 on 2026-10-06). Bundling the data is the next step.
 - **Token names are derived.** The CSS variable is the contract. The dotted name comes from rules in `src/tokens.ts`, for example `--syntara-font-size-md` → `font.size.md`. Density tokens and a few others have no group, so they keep their CSS name: `control-height`, `hairline`. The `tokens` list in `get_component` comes from the meta files as written, and some of those names differ from the derived ones (`icon.stroke` and `icon-stroke` both appear).
 - **Density tokens use the tenant's own density.** There is no `density` input.
 - **A pattern's `structure` is the first paragraph of the comment at the top of its source**, up to six sentences. It is as good as that comment.
