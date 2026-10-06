@@ -40,6 +40,11 @@ Branch `fix/home-showcase-mobile`, from `main` at 37b9578, in its own worktree.
   (the new inline script passes the site's policy); `axe-sweep` 0 violation nodes over 144 × 2;
   `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
 - Shipped: `grep -rl 'page-w' apps/docs/out/_next/static` → 2 files; `transform:none!important` in 1 CSS chunk.
+- Screenshot sweep of `/` (the homepage is always dark, ADR-047, so no tenant matrix): `shoot.mjs` at 320, 390, 768,
+  1079, 1081, 1280px × light/dark, and Playwright WebKit on iPhone SE (320), iPhone 14 (390), iPad Mini (768) ×
+  light/dark, top and scrolled. Window width in WebKit 272 / 342 / 720px (the screen minus 24px a side), page width
+  equal to the screen at all three. Desktop (1081, 1280) unchanged. Seen, already on the live site, not this change:
+  the header's "Get started" wraps to two lines around 1080px; Cloudflare's analytics beacon is blocked by the CSP.
 
 **Next**
 - Playwright's WebKit installs only under Node 24 here (`/usr/local/bin/node node_modules/playwright/cli.js install
