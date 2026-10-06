@@ -437,3 +437,9 @@
 .gallery {
   --syntara-icon-tint: color-mix(in oklab, var(--syntara-color-feedback-info-solid) 45%, transparent);
 }
+
+/* Niche page: the domain picker sits with the other tools and is wide enough for "Healthcare: equipment and lab (65)". */
+.domain.domain {
+  inline-size: calc(var(--syntara-space-16) * 3.5);
+  max-inline-size: 100%;
+}
