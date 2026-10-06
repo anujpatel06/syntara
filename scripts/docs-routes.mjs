@@ -28,7 +28,6 @@ export function docsRoutes() {
     '/story',
     // File pages (not .mdx): listed by hand, or no sweep would ever visit them.
     '/docs/icons',
-    '/docs/icons/niche',
     ...docs.map((d) => `/docs/${d}`),
     ...comps.map((c) => `/docs/components/${c}`),
     ...BLOCKS.flatMap((b) => TENANTS.map((t) => `/blocks/${b}/view?tenant=${t}`)),

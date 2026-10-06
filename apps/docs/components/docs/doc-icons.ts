@@ -35,7 +35,6 @@ export const DOC_ICONS: Readonly<Record<string, Icon>> = {
   '/docs/density': IconBaselineDensityMedium,
   '/docs/accessibility': IconAccessible,
   '/docs/icons': IconSparkles,
-  '/docs/icons/niche': IconSparkles,
   '/docs/governance': IconScale,
   '/docs/raise-a-conflict': IconMessage,
   '/docs/changelog': IconHistory,

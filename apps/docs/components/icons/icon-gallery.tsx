@@ -3,10 +3,13 @@
 import * as SyntaraIcons from '@syntara/icons';
 import { IconCopy, IconSearch } from '@syntara/icons';
 import type { Icon } from '@syntara/icons';
+import * as NicheIcons from '@syntara/icons/niche';
 import {
   Button,
   EmptyState,
   SearchField,
+  Select,
+  SelectItem,
   Slider,
   ToggleButton,
   ToggleButtonGroup,
@@ -18,8 +21,8 @@ import { copyText } from '@/components/mdx/code-frame';
 import type { IconGroup } from './icon-data';
 import styles from './icons.module.css';
 
-/** Every export of @syntara/icons that is an icon (createIcon stamps `iconName`; the helper itself has none). */
-const ICONS = SyntaraIcons as unknown as Record<string, Icon | undefined>;
+/** Every icon export of @syntara/icons and of @syntara/icons/niche (createIcon stamps `iconName`; the helper itself has none). */
+const ICONS = { ...SyntaraIcons, ...NicheIcons } as unknown as Record<string, Icon | undefined>;
 const iconOf = (name: string): Icon | undefined => (ICONS[name]?.iconName ? ICONS[name] : undefined);
 
 const SIZES = ['16', '20', '24', '32'] as const;
@@ -100,6 +103,7 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
   const [query, setQuery] = useState('');
   const [size, setSize] = useState<string>('24');
   const [style, setStyle] = useState<Style>('all');
+  const [section, setSection] = useState<string>('all');
   const [stroke, setStroke] = useState(defaultStroke);
   const galleryRef = useRef<HTMLDivElement>(null);
   const toolbarRef = useRef<HTMLDivElement>(null);
@@ -108,16 +112,22 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
   const total = groups.reduce((n, g) => n + g.names.length, 0);
   const filtered = useMemo(() => {
     const q = normalise(query);
-    const inStyle = style === 'all' ? groups : groups.filter((g) => styleOf(g.id) === style);
+    const byStyle = style === 'all' ? groups : groups.filter((g) => styleOf(g.id) === style);
+    const inStyle = section === 'all' ? byStyle : byStyle.filter((g) => g.id === section);
     if (!q) return inStyle;
     return inStyle
       .map((g) => ({ ...g, names: g.names.filter((n) => normalise(n.replace(/^Icon/, '')).includes(q)) }))
       .filter((g) => g.names.length > 0);
-  }, [groups, query, style]);
+  }, [groups, query, style, section]);
   const shown = filtered.reduce((n, g) => n + g.names.length, 0);
 
-  const copy = async (name: string) => {
-    const line = `import { ${name} } from '@syntara/icons';`;
+  const sectionItems = useMemo(
+    () => [{ id: 'all', name: 'All groups' }, ...groups.map((g) => ({ id: g.id, name: `${g.label} (${g.names.length})` }))],
+    [groups],
+  );
+
+  const copy = async (name: string, niche?: boolean) => {
+    const line = `import { ${name} } from '@syntara/icons${niche ? '/niche' : ''}';`;
     const ok = await copyText(line);
     if (ok) {
       toast({ title: `Copied ${name}`, description: <code className={styles.toastCode}>{line}</code>, tone: 'success' });
@@ -155,6 +165,15 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
               </ToggleButton>
             ))}
           </ToggleButtonGroup>
+          <Select
+            label="Group"
+            className={styles.domain}
+            items={sectionItems}
+            selectedKey={section}
+            onSelectionChange={(k) => k != null && setSection(String(k))}
+          >
+            {(item) => <SelectItem id={item.id}>{item.name}</SelectItem>}
+          </Select>
           <ToggleButtonGroup
             aria-label="Preview size in pixels"
             size="sm"
@@ -186,16 +205,16 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
       <p className={styles.count} role="status">
         {query ? (
           <>
-            <strong>{shown}</strong> of {total} icons match “{query}”
+            <strong>{shown}</strong> of {total.toLocaleString('en-US')} icons match “{query}”
           </>
-        ) : style !== 'all' ? (
+        ) : style !== 'all' || section !== 'all' ? (
           <>
-            <strong>{shown}</strong> {style} icons, shown at {size}px with a {stroke.toFixed(2)} stroke. Click one to
+            <strong>{shown}</strong> {style === 'all' ? '' : `${style} `}icons, shown at {size}px with a {stroke.toFixed(2)} stroke. Click one to
             copy its import.
           </>
         ) : (
           <>
-            <strong>{total}</strong> icons, shown at {size}px with a {stroke.toFixed(2)} stroke. Click one to copy its
+            <strong>{total.toLocaleString('en-US')}</strong> icons, shown at {size}px with a {stroke.toFixed(2)} stroke. Click one to copy its
             import.
           </>
         )}
@@ -228,7 +247,7 @@ export function IconGallery({ groups, defaultStroke }: IconGalleryProps) {
                 if (!Glyph) return null;
                 return (
                   <li key={name} className={styles.cell}>
-                    <AriaButton className={styles.cellButton} onPress={() => copy(name)} aria-describedby="icon-copy-hint">
+                    <AriaButton className={styles.cellButton} onPress={() => copy(name, g.niche)} aria-describedby="icon-copy-hint">
                       <span className={styles.glyph}>
                         <Glyph />
                       </span>
