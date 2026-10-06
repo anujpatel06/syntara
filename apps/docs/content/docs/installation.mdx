@@ -17,6 +17,32 @@ It does four things:
 
 Changed `syntara.brand.json` by hand? Run `npx syntara build` to rebuild the theme.
 
+### With an AI assistant
+
+AI coding assistants are careful with a package they haven't seen before, and may stop to check before they run it. Paste this so yours knows where Syntara comes from and what it will change:
+
+<CodeBlock title="Prompt" lang="text">
+
+```text
+Set up the Syntara design system in this project.
+It is on npm as "syntara", docs at https://syntara.live,
+source at https://github.com/anujpatel06/syntara.
+
+First ask me for my brand name and main colour (a hex value).
+Then run, with my answers:
+
+  npx syntara init --name "<brand name>" --primary "<hex>"
+
+It writes syntara-theme.css and syntara.brand.json, installs
+the syntara package, adds two style imports and a ThemeScope
+to the app's entry file, and adds a welcome card
+(syntara-welcome.tsx). Show me what changed.
+```
+
+</CodeBlock>
+
+Without a terminal to ask in, `init` takes the suggested answer for anything you don't pass, and saves without asking. Add `--no-edit` to the command to make the entry-file change yourself.
+
 Icons come from `syntara/icons` and the theme engine from `syntara/theme-engine`.
 
 ### What init added, or doing it by hand
