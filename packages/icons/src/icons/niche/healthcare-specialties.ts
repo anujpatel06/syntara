@@ -48,8 +48,11 @@ export const IconClinicalResearch = createIcon('clinical-research', [
   ['path', { d: 'M9.5 15.5l1.75 1.75 3.25-3.25' }],
 ]);
 export const IconDermatology = createIcon('dermatology', [
-  ['rect', { x: 3.5, y: 4.5, width: 17, height: 15, rx: 3.25 }],
-  ['path', { d: 'M3.5 10.25q2.125-1.75 4.25 0t4.25 0 4.25 0 4.25 0M3.5 14.75q2.125-1.75 4.25 0t4.25 0 4.25 0 4.25 0' }],
+  ['path', { d: 'M8 21.5V19l-3.4-3.7a1.6 1.6 0 0 1 2.3-2.2l1.6 1.5V6.5a1.25 1.25 0 0 1 2.5 0V11V5a1.25 1.25 0 0 1 2.5 0V11V5.75a1.25 1.25 0 0 1 2.5 0v5.75V8a1.25 1.25 0 0 1 2.5 0v7c0 3.5-2 6.5-5.5 6.5' }],
+  ['circle', { cx: 11.5, cy: 14, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 15.25, cy: 13.75, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 13.25, cy: 17, r: 0.9, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 16.25, cy: 17.5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconDiabetology = createIcon('diabetology', [
   ['path', { d: 'M8 15.35 V8.15 a1.2 1.2 0 0 1 2.4 0 v5 a1.2 1.2 0 0 1 2.4 0 v0.4 a1.2 1.2 0 0 1 2.4 0 V16.95 c0 2.4 -1.6 4 -4 4 h-0.8 c-2 0 -3 -1 -3.8 -2.4 l-1.2 -2.2 c-0.4 -0.72 -0.16 -1.4 0.44 -1.72 0.6 -0.32 1.28 -0.12 1.68 0.48 L8 15.35' }],
@@ -123,8 +126,9 @@ export const IconGynaecology = createIcon('gynaecology', [
   ['path', { d: 'M12 14v7M8.75 17.5h6.5' }],
 ]);
 export const IconHaematology = createIcon('haematology', [
-  ['path', { d: 'M12 3.5c3 3.5 6 6.5 6 10.25a6 6 0 0 1-12 0C6 10 9 7 12 3.5Z' }],
-  ['circle', { cx: 12, cy: 14, r: 2 }],
+['path', { d: 'M7 2.75c1.75 2.25 3.5 4.25 3.5 6.5a3.5 3.5 0 0 1-7 0C3.5 7 5.25 5 7 2.75Z' }],
+  ['ellipse', { cx: 15, cy: 16, rx: 6, ry: 4.25 }],
+  ['ellipse', { cx: 15, cy: 16, rx: 2.75, ry: 1.5 }],
 ]);
 export const IconHandSurgery = createIcon('hand-surgery', [
   ['path', { d: 'M6.62 9 V4.92 a0.85 0.85 0 0 1 1.7 0 v3.4 V3.9 a0.85 0.85 0 0 1 1.7 0 V8.32 V4.58 a0.85 0.85 0 0 1 1.7 0 V9 V6.62 a0.85 0.85 0 0 1 1.7 0 V11.04 c0 2.72 -1.7 4.08 -4.08 4.08 s-3.23 -1.02 -4.42 -2.89 L3.56 10.02 a0.95 0.95 0 0 1 1.56 -1.02 l1.5 1.53' }],
@@ -138,9 +142,11 @@ export const IconHivMedicine = createIcon('hiv-medicine', [
   ['path', { d: 'M7 20.5 14 11c1-1.4 1.5-2.6 1.5-3.75C15.5 5.25 14 3.5 12 3.5S8.5 5.25 8.5 7.25c0 1.15.5 2.35 1.5 3.75l7 9.5' }],
 ]);
 export const IconHyperbaricMedicine = createIcon('hyperbaric-medicine', [
-  ['rect', { x: 2.75, y: 7, width: 18.5, height: 10, rx: 5 }],
-  ['circle', { cx: 8, cy: 12, r: 2 }],
-  ['path', { d: 'M7 17v3M17 17v3' }],
+  ['rect', { x: 2.5, y: 6.5, width: 15.5, height: 11.5, rx: 5.75 }],
+  ['circle', { cx: 10, cy: 10.5, r: 1.75 }],
+  ['path', { d: 'M6.5 16.25c0-1.75 1.5-2.75 3.5-2.75s3.5 1 3.5 2.75' }],
+  ['circle', { cx: 19.75, cy: 12.25, r: 1.75 }],
+  ['circle', { cx: 19.75, cy: 12.25, r: 0.6, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconImmunology = createIcon('immunology', [
   ['path', { d: 'M12 3.25c2 1.25 4.5 2 6.75 2.25V11c0 4.5-2.7 7.5-6.75 9.5C7.95 18.5 5.25 15.5 5.25 11V5.5C7.5 5.25 10 4.5 12 3.25Z' }],
@@ -171,10 +177,11 @@ export const IconLactation = createIcon('lactation', [
   ['path', { d: 'M8.5 13h3M8.5 16h3' }],
 ]);
 export const IconLymphatics = createIcon('lymphatics', [
-  ['path', { d: 'M12 5.5 6 17h12Z' }],
-  ['circle', { cx: 12, cy: 5.5, r: 2.4, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 6, cy: 17, r: 2.4, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 18, cy: 17, r: 2.4, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M8 21.5v-4C5.5 16 4.5 13.5 4.5 10.5 4.5 6 8 3 12 3c4 0 6.5 2.5 6.5 6l1.5 3-1.5.5v2c0 1-.75 1.5-1.75 1.5H15v5.5' }],
+  ['path', { d: 'M9.5 9.25a1.75 1.75 0 0 1 0 3.5' }],
+  ['circle', { cx: 11, cy: 15, r: 1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 11.5, cy: 17.75, r: 1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 11.75, cy: 20.5, r: 1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconMidwifery = createIcon('midwifery', [
   ['circle', { cx: 11, cy: 4.5, r: 2 }],
@@ -297,9 +304,10 @@ export const IconRadiology = createIcon('radiology', [
   ['path', { d: 'M8.25 15c.75-1.15 2-1.75 3.75-1.75s3 .6 3.75 1.75' }],
 ]);
 export const IconRadiotherapy = createIcon('radiotherapy', [
-  ['circle', { cx: 12, cy: 12, r: 6 }],
-  ['path', { d: 'M12 3v3M12 18v3M3 12h3M18 12h3' }],
-  ['circle', { cx: 12, cy: 12, r: 1.1, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M20 21V8a4.5 4.5 0 0 0-4.5-4.5H7v3.5h7.5V3.5' }],
+  ['path', { d: 'M8.5 9l1.25 2.75M13 9l-1.25 2.75' }],
+  ['circle', { cx: 10.75, cy: 15, r: 1.5 }],
+  ['path', { d: 'M3 17.25h14.5' }],
 ]);
 export const IconRheumatology = createIcon('rheumatology', [
   ['path', { d: 'M9 3.5v5a3 3 0 0 0 6 0v-5' }],
@@ -380,9 +388,6 @@ export const IconVaccination = createIcon('vaccination', [
   ['rect', { x: 15, y: 6, width: 4, height: 11.5, rx: 1.5 }],
   ['path', { d: 'M15.25 3h3.5M17 3v3' }],
   ['path', { d: 'M17 17.5V21' }],
-]);
-export const IconVascular = createIcon('vascular', [
-  ['path', { d: 'M12 21v-7c0-2-5-3-5-6.5V3.5M12 14c0-2 5-3 5-6.5V3.5M7 7.5H4M17 7.5h3' }],
 ]);
 export const IconWoundCare = createIcon('wound-care', [
   ['rect', { x: 2.5, y: 9.5, width: 19, height: 5, rx: 2.5, transform: 'rotate(45 12 12)' }],

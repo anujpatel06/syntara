@@ -35,11 +35,14 @@ export const IconCctvCamera = createIcon('cctv-camera', [
   ['path', { d: 'M10 11.5 9.25 16.5H4.5M4.5 13.75v6.25' }],
 ]);
 export const IconDogTags = createIcon('dog-tags', [
-  ['rect', { x: 2.75, y: 12.25, width: 13.5, height: 8.5, rx: 3.5 }],
-  ['path', { d: 'M7.5 12.25v-.25A3.5 3.5 0 0 1 11 8.5h6.75a3.5 3.5 0 0 1 3.5 3.5v1.5a3.5 3.5 0 0 1-3.5 3.5h-1.5' }],
-  ['path', { d: 'M5.75 12.25C5.75 6.5 8.25 3.75 11.5 3.75s5.75 1.75 6.5 4.75' }],
-  ['circle', { cx: 5.75, cy: 15.25, r: 0.85, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 18, cy: 11.25, r: 0.85, fill: 'currentColor', stroke: 'none' }],
+  ['rect', { x: 4.5, y: 8, width: 9, height: 13, rx: 3 }],
+  ['path', { d: 'M9 8a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-1.5' }],
+  ['path', { d: 'M7 14.5h4' }],
+  ['path', { d: 'M7 17.5h3' }],
+  ['circle', { cx: 7.75, cy: 10.75, r: 1 }],
+  ['circle', { cx: 6.6, cy: 7.4, r: 0.8, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 6, cy: 5.1, r: 0.8, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 6.6, cy: 2.9, r: 0.8, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconDomeCamera = createIcon('dome-camera', [
   ['path', { d: 'M3.5 5.5h17' }],

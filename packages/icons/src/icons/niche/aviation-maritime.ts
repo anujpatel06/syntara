@@ -86,8 +86,11 @@ export const IconDrone = createIcon('drone', [
   ['circle', { cx: 12, cy: 13.75, r: 0.95, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconHarbourCrane = createIcon('harbour-crane', [
-  ['path', { d: 'M7 20.5V5M4 5h16M4.5 20.5h5M7 9.5 11.5 5' }],
-  ['path', { d: 'M17 5v6.5a1.75 1.75 0 1 1-1.75 1.75' }],
+  ['path', { d: 'M2.5 8h19' }],
+  ['path', { d: 'M13 21V8l3-4.5L19 8v13' }],
+  ['path', { d: 'M16 3.5 5 8' }],
+  ['path', { d: 'M7 8v4' }],
+  ['rect', { x: 4.5, y: 12, width: 5, height: 3.5, rx: 0.5 }],
 ]);
 export const IconHelicopter = createIcon('helicopter', [
   ['path', { d: 'M3.5 4.5h14M10.5 4.5V8' }],
@@ -99,8 +102,10 @@ export const IconHelipad = createIcon('helipad', [
   ['path', { d: 'M9.25 7.5v9M14.75 7.5v9M9.25 12h5.5' }],
 ]);
 export const IconHotAirBalloon = createIcon('hot-air-balloon', [
-  ['path', { d: 'M12 2.75a6.75 6.75 0 0 0-6.75 6.75c0 3.25 3 5.5 4.5 7.75h4.5c1.5-2.25 4.5-4.5 4.5-7.75A6.75 6.75 0 0 0 12 2.75Z' }],
-  ['rect', { x: 9.75, y: 18.75, width: 4.5, height: 2.75, rx: 1.25 }],
+  ['path', { d: 'M8.5 16C5.5 14 4.5 11.5 4.5 9.5a7.5 7.5 0 0 1 15 0c0 2-1 4.5-4 6.5Z' }],
+  ['path', { d: 'M10 16C8 12 8.5 5 12 2c3.5 3 4 10 2 14' }],
+  ['path', { d: 'M8.5 16l1 3v2.5h5V19l1-3' }],
+  ['path', { d: 'M9.5 19h5' }],
 ]);
 export const IconLifeJacket = createIcon('life-jacket', [
   ['path', { d: 'M9 3.5c0 2 1.25 3.5 3 3.5s3-1.5 3-3.5h2l2 4V19a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19V7.5l2-4Z' }],

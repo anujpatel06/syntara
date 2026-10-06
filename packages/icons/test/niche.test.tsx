@@ -16,8 +16,10 @@ const strokes = (I: Icon): number =>
 const dots = (I: Icon): number => I.node.filter(([, a]) => a.fill === 'currentColor').length;
 
 describe('@syntara/icons/niche', () => {
-  it('ships 2,000 icons across the domain list', () => {
-    expect(icons).toHaveLength(2000);
+  it('ships every icon in the domain list, across 40 domains', () => {
+    // 2,000 were drawn; 41 same-object duplicates were removed in the review (docs/log.md), so the count is the domain list's.
+    expect(icons).toHaveLength(Object.values(domains).flat().length);
+    expect(icons.length).toBeGreaterThan(1900);
     expect(Object.keys(domains)).toHaveLength(40);
   });
 

@@ -104,9 +104,9 @@ export const IconInsuranceAgent = createIcon('insurance-agent', [
   ['path', { d: 'M12 14l-1 1.5 1 4 1-4Z' }],
 ]);
 export const IconInsuranceCard = createIcon('insurance-card', [
-  ['rect', { x: 2.5, y: 5, width: 19, height: 14, rx: 3 }],
-  ['path', { d: 'M8.5 9v6M5.5 12h6' }],
-  ['path', { d: 'M14 10h4.5M14 13.5h3' }],
+  ['rect', { x: 2.5, y: 5, width: 19, height: 14, rx: 2.5 }],
+  ['path', { d: 'M8 8.5c1 .75 2.25 1 3.25 1V13c0 1.75-1.5 3-3.25 3.5C6.25 16 4.75 14.75 4.75 13V9.5C5.75 9.5 7 9.25 8 8.5Z' }],
+  ['path', { d: 'M14 10.5h4.5M14 14h3' }],
 ]);
 export const IconInsuranceClaim = createIcon('insurance-claim', [
   ['path', { d: 'M12.5 20.5H6.5A2.5 2.5 0 0 1 4 18V5.5A2.5 2.5 0 0 1 6.5 3h8A2.5 2.5 0 0 1 17 5.5V11M7.5 7.5h6M7.5 11h4' }],

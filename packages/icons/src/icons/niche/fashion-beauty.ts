@@ -32,9 +32,9 @@ export const IconBelt = createIcon('belt', [
   ['circle', { cx: 18, cy: 12, r: 0.75, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconBobbyPin = createIcon('bobby-pin', [
-  ['path', { d: 'M3.5 9.5q1.5-1 3 0t3 0 3 0 3 0h2a3 3 0 0 1 0 6h-14', transform: 'rotate(-30 12 12)' }],
-  ['circle', { cx: 3.5, cy: 9.5, r: 0.95, fill: 'currentColor', stroke: 'none', transform: 'rotate(-30 12 12)' }],
-  ['circle', { cx: 3.5, cy: 15.5, r: 0.95, fill: 'currentColor', stroke: 'none', transform: 'rotate(-30 12 12)' }],
+  ['path', { d: 'M20 9.5c-1.25 0-1.5 1.25-2.75 1.25S15.75 9.5 14.5 9.5s-1.5 1.25-2.75 1.25S10.25 9.5 9 9.5H6a2.5 2.5 0 0 0 0 5h14', transform: 'rotate(-35 12 12)' }],
+  ['circle', { cx: 20, cy: 9.5, r: 1.1, fill: 'currentColor', stroke: 'none', transform: 'rotate(-35 12 12)' }],
+  ['circle', { cx: 20, cy: 14.5, r: 1.1, fill: 'currentColor', stroke: 'none', transform: 'rotate(-35 12 12)' }],
 ]);
 export const IconBowTie = createIcon('bow-tie', [
   ['path', { d: 'M10 10.5 5 7.5a1.5 1.5 0 0 0-2.25 1.3v6.4A1.5 1.5 0 0 0 5 16.5l5-3M14 10.5l5-3a1.5 1.5 0 0 1 2.25 1.3v6.4A1.5 1.5 0 0 1 19 16.5l-5-3' }],
@@ -147,9 +147,10 @@ export const IconHairbrush = createIcon('hairbrush', [
   ['circle', { cx: 14, cy: 9.75, r: 0.8, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconHandMirror = createIcon('hand-mirror', [
-  ['ellipse', { cx: 12, cy: 8.5, rx: 5.5, ry: 6 }],
-  ['path', { d: 'M12 14.5v6.5' }],
-  ['path', { d: 'M9.25 8a3.25 3.25 0 0 1 2.25-2.75' }],
+  ['ellipse', { cx: 12, cy: 9, rx: 6, ry: 7 }],
+  ['ellipse', { cx: 12, cy: 9, rx: 4, ry: 5 }],
+  ['path', { d: 'M9.75 8.5c0-1.5.75-2.75 2-3.25' }],
+  ['path', { d: 'M10.5 16c1 .75 1.25 1.75 1.25 2.75v1.25c-.75 0-1.25.5-1.25 1h3c0-.5-.5-1-1.25-1v-1.25c0-1 .25-2 1.25-2.75' }],
 ]);
 export const IconHandbag = createIcon('handbag', [
   ['path', { d: 'M3.5 10.5h17l-1 8.25a2 2 0 0 1-2 1.75h-11a2 2 0 0 1-2-1.75Z' }],
@@ -175,9 +176,9 @@ export const IconLipstick = createIcon('lipstick', [
   ['rect', { x: 8, y: 12.5, width: 8, height: 8, rx: 2 }],
 ]);
 export const IconMakeupBrush = createIcon('makeup-brush', [
-  ['path', { d: 'M9.5 9C9 6 10 3 12 2.75 14 3 15 6 14.5 9Z', transform: 'rotate(35 12 12)' }],
-  ['rect', { x: 9.5, y: 9, width: 5, height: 3, rx: 1.25, transform: 'rotate(35 12 12)' }],
-  ['path', { d: 'M10.25 12 11 21h2l.75-9', transform: 'rotate(35 12 12)' }],
+  ['path', { d: 'M11 10.5 7.5 6.75a7 7 0 0 1 9 0L13 10.5Z', transform: 'rotate(30 12 12)' }],
+  ['path', { d: 'M10.25 9.25 9.25 7M12 8.75V5.75M13.75 9.25l1-2.25', transform: 'rotate(30 12 12)' }],
+  ['path', { d: 'M11 10.5v3l.5 7.5h1l.5-7.5v-3', transform: 'rotate(30 12 12)' }],
 ]);
 export const IconMitten = createIcon('mitten', [
   ['path', { d: 'M8.5 17v-4.5L6 10.25a1.75 1.75 0 0 1 2.5-2.5V8a4.25 4.25 0 0 1 8.5 0v9' }],

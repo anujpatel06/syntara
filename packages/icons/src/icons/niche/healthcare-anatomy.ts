@@ -19,10 +19,6 @@ export const IconAnatomyBloodCells = createIcon('anatomy-blood-cells', [
   ['ellipse', { cx: 15.5, cy: 15.5, rx: 5, ry: 3.75 }],
   ['ellipse', { cx: 15.5, cy: 15.5, rx: 2, ry: 1.1 }],
 ]);
-export const IconAnatomyBloodDropCell = createIcon('anatomy-blood-drop-cell', [
-  ['path', { d: 'M12 3c3.5 4 6 7.25 6 10.5a6 6 0 0 1-12 0C6 10.25 8.5 7 12 3Z' }],
-  ['ellipse', { cx: 12, cy: 14.25, rx: 2.75, ry: 1.75 }],
-]);
 export const IconAnatomyBody = createIcon('anatomy-body', [
   ['circle', { cx: 12, cy: 4.75, r: 2.25 }],
   ['path', { d: 'M8 21v-6.5H6.5V10a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v4.5H16V21M12 14.5V21' }],
@@ -43,11 +39,6 @@ export const IconAnatomyCell = createIcon('anatomy-cell', [
   ['circle', { cx: 9, cy: 9, r: 0.95, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 15.5, cy: 15.5, r: 0.95, fill: 'currentColor', stroke: 'none' }],
 ]);
-export const IconAnatomyCellDivision = createIcon('anatomy-cell-division', [
-  ['path', { d: 'M12 9c-1-1.5-2.5-2-4.5-2a5 5 0 0 0 0 10c2 0 3.5-.5 4.5-2 1 1.5 2.5 2 4.5 2a5 5 0 0 0 0-10c-2 0-3.5.5-4.5 2Z' }],
-  ['circle', { cx: 7.5, cy: 12, r: 1.4, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 16.5, cy: 12, r: 1.4, fill: 'currentColor', stroke: 'none' }],
-]);
 export const IconAnatomyChromosome = createIcon('anatomy-chromosome', [
   ['rect', { x: 10.25, y: 3, width: 3.5, height: 18, rx: 1.75, transform: 'rotate(25 12 12)' }],
   ['rect', { x: 10.25, y: 3, width: 3.5, height: 18, rx: 1.75, transform: 'rotate(-25 12 12)' }],
@@ -64,15 +55,6 @@ export const IconAnatomyClosedEye = createIcon('anatomy-closed-eye', [
 export const IconAnatomyDizzy = createIcon('anatomy-dizzy', [
   ['path', { d: 'M7.95 20.23 v-2.55 C5.82 16.82 4.55 14.7 4.55 12.15 a5.95 5.95 0 0 1 11.9 0 c0 1.7 -0.59 2.55 -1.27 3.4 v1.27 a1.27 1.27 0 0 1 -1.27 1.27 h-1.7 v2.13' }],
   ['path', { d: 'M10.75 11.5a.75 .75 0 0 1 1.5 0a1.5 1.5 0 0 1-3 0a2.25 2.25 0 0 1 4.5 0' }],
-]);
-export const IconAnatomyEar = createIcon('anatomy-ear', [
-  ['path', { d: 'M6.5 9a5.5 5.5 0 0 1 11 0c0 2.75-1.5 4-2.75 5.25S13 16.5 13 18a3 3 0 0 1-5.75 1.25' }],
-  ['path', { d: 'M9.75 9.5a2.25 2.25 0 0 1 4.5 0c0 1.5-1.5 2-1.75 3' }],
-]);
-export const IconAnatomyEyebrow = createIcon('anatomy-eyebrow', [
-  ['path', { d: 'M3 14.5c2.5-3.25 5.5-4.75 9-4.75s6.5 1.5 9 4.75c-2.5 3.25-5.5 4.75-9 4.75s-6.5-1.5-9-4.75Z' }],
-  ['circle', { cx: 12, cy: 14.5, r: 2.25 }],
-  ['path', { d: 'M4.5 7c2.25-1.75 4.75-2.5 7.5-2.5s5.25.75 7.5 2.5' }],
 ]);
 export const IconAnatomyFace = createIcon('anatomy-face', [
   ['ellipse', { cx: 12, cy: 12, rx: 7, ry: 8.75 }],
@@ -95,8 +77,9 @@ export const IconAnatomyFinger = createIcon('anatomy-finger', [
   ['path', { d: 'M9.5 14V5a1.5 1.5 0 0 1 3 0v6.25a1.5 1.5 0 0 1 3 0v.5a1.5 1.5 0 0 1 3 0V16c0 3-2 5-5 5h-1c-2.5 0-3.75-1.25-4.75-3l-1.5-2.75c-.5-.9-.2-1.75.55-2.15.75-.4 1.6-.15 2.1.6L9.5 14' }],
 ]);
 export const IconAnatomyFingernail = createIcon('anatomy-fingernail', [
-  ['path', { d: 'M8 21V9a4 4 0 0 1 8 0v12' }],
-  ['path', { d: 'M9.75 9a2.25 2.25 0 0 1 4.5 0v2.5a1 1 0 0 1-1 1h-2.5a1 1 0 0 1-1-1Z' }],
+['path', { d: 'M7.5 20.5V9a4.5 4.5 0 0 1 9 0v11.5', transform: 'rotate(-20 12 12)' }],
+  ['path', { d: 'M9.5 11.5V9a2.5 2.5 0 0 1 5 0v2.5c-1.5 1-3.5 1-5 0Z', transform: 'rotate(-20 12 12)' }],
+  ['path', { d: 'M10 17h4', transform: 'rotate(-20 12 12)' }],
 ]);
 export const IconAnatomyFist = createIcon('anatomy-fist', [
   ['path', { d: 'M6 13V9.25a1.75 1.75 0 0 1 3.5 0 1.75 1.75 0 0 1 3.5 0 1.75 1.75 0 0 1 3.5 0 1.75 1.75 0 0 1 3.5 0V14c0 4-2.5 7-6.5 7h-1c-3.25 0-5.5-2.25-6-5' }],
@@ -106,19 +89,9 @@ export const IconAnatomyFist = createIcon('anatomy-fist', [
 export const IconAnatomyFoot = createIcon('anatomy-foot', [
   ['path', { d: 'M7 3.5V14c-1.5.5-3 1.75-3 3.5 0 1.75 1.25 3 3 3h11c1.5 0 2.5-.75 2.5-1.75 0-1.5-1.25-2-3-2.5L12.5 14V3.5' }],
 ]);
-export const IconAnatomyFootprint = createIcon('anatomy-footprint', [
-  ['path', { d: 'M10.5 21c-2 0-3.25-1.25-3.25-3.25 0-2 .75-3 .5-5-.25-2-1-3.5.25-4.75 1.5-1.5 5.5-1.5 7.5.5 1.5 1.5.5 3.5-.5 5.5-.75 1.5-.75 2.75-.75 4C14.25 20 12.5 21 10.5 21Z' }],
-  ['circle', { cx: 7.75, cy: 4.75, r: 1.3, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 10.75, cy: 3.75, r: 1.05, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 13.6, cy: 4.4, r: 0.95, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 16, cy: 6.25, r: 0.9, fill: 'currentColor', stroke: 'none' }],
-]);
 export const IconAnatomyFracture = createIcon('anatomy-fracture', [
   ['path', { d: 'M7.44 10.44 H11.38 l-1.25 1.56 1.25 1.56 H7.44 A2.5 2.5 0 1 1 5.13 12 A2.5 2.5 0 1 1 7.44 10.44 Z', transform: 'rotate(-45 12 12)' }],
   ['path', { d: 'M13.25 10.44 h3.31 A2.5 2.5 0 1 1 18.88 12 A2.5 2.5 0 1 1 16.56 13.56 H13.25 l1.25 -1.56 Z', transform: 'rotate(-45 12 12)' }],
-]);
-export const IconAnatomyHand = createIcon('anatomy-hand', [
-  ['path', { d: 'M8.5 21.5v-2l-3.6-4.1c-.75-.85-.65-2 .15-2.6.8-.6 1.9-.45 2.5.35l.95 1.35V6a1.25 1.25 0 0 1 2.5 0v5.5M11 11.5V4.75a1.25 1.25 0 0 1 2.5 0v6.75M13.5 11.5V5.75a1.25 1.25 0 0 1 2.5 0v6M16 12V8.25a1.25 1.25 0 0 1 2.5 0V15c0 2.75-1.5 4.5-2.5 4.5v2' }],
 ]);
 export const IconAnatomyHandBones = createIcon('anatomy-hand-bones', [
   ['path', { d: 'M3.75 11.5 6.25 14.75 11 18.25 8 12.5 7.5 6.5' }],
@@ -188,20 +161,11 @@ export const IconAnatomyNose = createIcon('anatomy-nose', [
   ['path', { d: 'M12.5 3.5c-.25 4-2.75 8-4 10.5-.6 1.25.1 2.5 1.5 2.5h1.75' }],
   ['path', { d: 'M14 16.5c1 0 1.75-.5 2-1.25' }],
 ]);
-export const IconAnatomyPregnantBody = createIcon('anatomy-pregnant-body', [
-  ['circle', { cx: 11, cy: 4.25, r: 2 }],
-  ['path', { d: 'M10 21l-.5-6.5c-.75-.5-1.5-1.5-1.5-3V9.75A2.25 2.25 0 0 1 10.25 7.5h1.5c1.1 0 1.9.8 2 1.9 2.4.6 4 2.6 4 5 0 2.3-1.6 3.6-3.75 3.85L13.5 21' }],
-]);
 export const IconAnatomyRibcage = createIcon('anatomy-ribcage', [
   ['path', { d: 'M9 3.75C6.5 4.25 4.9 7 4.75 11c-.15 3.5.75 6.5 2.75 8.5L12 15.5l4.5 4c2-2 2.9-5 2.75-8.5C19.1 7 17.5 4.25 15 3.75' }],
   ['path', { d: 'M12 3.5v12' }],
   ['path', { d: 'M4.85 8.75C7.5 8 10 8.25 12 9.5c2-1.25 4.5-1.5 7.15-.75' }],
   ['path', { d: 'M4.9 13c2.5-.75 5-.5 7.1.75 2.1-1.25 4.6-1.5 7.1-.75' }],
-]);
-export const IconAnatomyShoulder = createIcon('anatomy-shoulder', [
-  ['circle', { cx: 9.5, cy: 6.5, r: 3 }],
-  ['path', { d: 'M3.5 21v-2a5 5 0 0 1 5-5h5a4.5 4.5 0 0 1 4.5 4.5V21' }],
-  ['path', { d: 'M14.72 11.61A7 7 0 0 1 20.39 17.28' }],
 ]);
 export const IconAnatomySkeleton = createIcon('anatomy-skeleton', [
   ['circle', { cx: 12, cy: 4.5, r: 2 }],
@@ -218,9 +182,6 @@ export const IconAnatomySmell = createIcon('anatomy-smell', [
   ['path', { d: 'M9 4.5 c-0.25 4 -2.75 8 -4 10.5 -0.6 1.25 0.1 2.5 1.5 2.5 h1.75 M10.5 17.5 c1 0 1.75 -0.5 2 -1.25' }],
   ['path', { d: 'M15.5 5.5c1 .75 1 1.75 0 2.5s-1 1.75 0 2.5M19 5.5c1 .75 1 1.75 0 2.5s-1 1.75 0 2.5' }],
 ]);
-export const IconAnatomySpine = createIcon('anatomy-spine', [
-  ['path', { d: 'M10.75 2.75h2.5a1.25 1.25 0 0 1 1.25 1.25v0.25a1.25 1.25 0 0 1-1.25 1.25h-2.5a1.25 1.25 0 0 1-1.25-1.25v-0.25a1.25 1.25 0 0 1 1.25-1.25ZM11.75 6.75h2.5a1.25 1.25 0 0 1 1.25 1.25v0.25a1.25 1.25 0 0 1-1.25 1.25h-2.5a1.25 1.25 0 0 1-1.25-1.25v-0.25a1.25 1.25 0 0 1 1.25-1.25ZM12 10.75h2.5a1.25 1.25 0 0 1 1.25 1.25v0.25a1.25 1.25 0 0 1-1.25 1.25h-2.5a1.25 1.25 0 0 1-1.25-1.25v-0.25a1.25 1.25 0 0 1 1.25-1.25ZM11.25 14.75h2.5a1.25 1.25 0 0 1 1.25 1.25v0.25a1.25 1.25 0 0 1-1.25 1.25h-2.5a1.25 1.25 0 0 1-1.25-1.25v-0.25a1.25 1.25 0 0 1 1.25-1.25ZM10 18.75h2.5a1.25 1.25 0 0 1 1.25 1.25v0.25a1.25 1.25 0 0 1-1.25 1.25h-2.5a1.25 1.25 0 0 1-1.25-1.25v-0.25a1.25 1.25 0 0 1 1.25-1.25Z' }],
-]);
 export const IconAnatomyStomach = createIcon('anatomy-stomach', [
   ['path', { d: 'M5 21c.5-3.5 1.5-6 1.5-9s-1-4.5-1-6.5c2-1.25 4-1.5 6.5-1.5s4.5.25 6.5 1.5c0 2-1 3.5-1 6.5s1 5.5 1.5 9' }],
   ['path', { d: 'M11.5 7.5v1.75c0 1-.6 1.6-1.6 2.1-1.2.6-1.9 1.6-1.9 2.9 0 1.9 1.6 3.25 3.6 3.25 2.6 0 4.4-2.25 4.4-5 0-1.9-.9-3-2.25-3-.6 0-1.1.2-1.4.5V7.5' }],
@@ -233,11 +194,6 @@ export const IconAnatomyTear = createIcon('anatomy-tear', [
   ['path', { d: 'M3 10c2.5-3.5 5.5-5 9-5s6.5 1.5 9 5c-2.5 3.5-5.5 5-9 5s-6.5-1.5-9-5Z' }],
   ['circle', { cx: 12, cy: 10, r: 2.5 }],
   ['path', { d: 'M8 15.5c1 1.25 1.75 2 1.75 3a1.75 1.75 0 0 1-3.5 0c0-1 .75-1.75 1.75-3Z' }],
-]);
-export const IconAnatomyTeethSmile = createIcon('anatomy-teeth-smile', [
-  ['path', { d: 'M3.5 9.5h17c0 5-3.75 8.5-8.5 8.5s-8.5-3.5-8.5-8.5Z' }],
-  ['path', { d: 'M4 12.5h16' }],
-  ['path', { d: 'M8 9.5v3M12 9.5v3M16 9.5v3' }],
 ]);
 export const IconAnatomyTongue = createIcon('anatomy-tongue', [
   ['path', { d: 'M4 9c2.5 1.5 5 2 8 2s5.5-.5 8-2' }],
