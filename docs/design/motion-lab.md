@@ -163,3 +163,57 @@ Measured on the screenshot, converted to tokens:
 Video export (not built): the stand-in is live page content, which a browser can't draw into video frames
 directly. It needs either drawing the Dialog again in a canvas or a capture step on a server, and an MP4 encoder.
 Decide separately.
+
+## 12. Components on the left, every motion control on the right (Anuj, 2026-10-06)
+
+Anuj: "left side should come all the components i can select to animate and on right all the controls to
+animate". The left panel lists the components as tiles, two in a row, each with a still drawing of the component in the
+chosen brand's tokens (`component-thumbs.tsx`) and its name; the selected component's description sits under the
+list (Anuj's follow-ups). Grouped Overlays / Controls / Content; the right panel holds motion
+style (three small tiles in a row, Anuj's follow-up; the selected style's description under the row), brand,
+timing and preview.
+
+One before many: the first batch is one component per kind of movement, shown to Anuj before the rest.
+
+| Kind | First batch | How the loop drives it |
+|---|---|---|
+| Overlay that takes over the page | Dialog | Stand-in wearing `dialog.module.css` (modal: it would block the controls and move focus) |
+| Overlay next to a control | Tooltip | The real component, `isOpen` |
+| On/off state | Switch | The real component, `isSelected` |
+| Selection that slides | Tabs | The real component, `selectedKey` |
+| Height | Accordion | The real component, `expandedKeys` |
+| Content arriving | Stat tile | The real component, remounted each loop |
+
+The list lives in `apps/docs/components/motion/specimen-list.ts` (plain data, readable on the server) and the
+drawing in `specimens.tsx`. The loop waits for the animations each change starts, including overlays portalled out
+of the stage, so each component's loop is as long as its own motion. The stage is decoration: inert and hidden
+from assistive tech. Not yet covered: about 44 more components with motion (checked by grepping each component's
+CSS for keyframes, enter/exit states, press states and transitions on 2026-10-06), after Anuj approves this batch.
+
+## 13. More motion controls (Anuj, 2026-10-06: "add more motion controls, see the reference website")
+
+Read from the Animos editor's right panel on 2026-10-06 (`/editor`, page text): Frame (six aspect ratios),
+Media, Timing (loop duration 5–30 s), Text, Logo, background (colour / gradient / image), Position (padding,
+corner radius, tilt, size, perspective…), Shadow, Reset settings, and a Keyframes timeline. Most of that arranges
+photos for a video; what carries over is below. Controls are in two kinds, and the panel says which is which.
+
+**Exported (they change the seven tokens the Export dialog prints):**
+
+| Control | Range | Rule it keeps |
+|---|---|---|
+| Fast / Normal / Slow durations | 40–250 / 80–400 / 120–500 ms, step 10 | fast < normal < slow (moving one pushes its neighbour); speed then scales all three; nothing over 500 ms |
+| Standard easing | style's own, Ease in-out `(0.4, 0, 0.2, 1)`, Sharp `(0.4, 0, 0.6, 1)`, Linear | — |
+| Enter easing | style's own, Out quart `(0.25, 1, 0.5, 1)`, Gentle out `(0.22, 1, 0.36, 1)`, Decelerate `(0, 0, 0.2, 1)` | no "back" curves: their overshoot is outside rule 2 |
+| Curve graph | draws the enter easing and the spring, with the spring's measured overshoot | — |
+
+**Preview only (the stage changes, the export doesn't), as Animos's Frame and Timing:**
+
+| Control | Values |
+|---|---|
+| Frame | Desktop, Tablet, Phone. Phone is narrower than Dialog's 480 px breakpoint, so it shows the bottom sheet |
+| Playback | 0.25×, 0.5×, 1×: every duration on the stage divided by it, to watch motion slowly |
+| Hold open | 0.6, 1.2, 2 s |
+| Reset settings | back to the style as designed |
+
+Not taken: Keyframes, Text, Logo, background, Position, Shadow (they arrange images for a video, not how a
+component moves), and scale amounts (decision 6).
