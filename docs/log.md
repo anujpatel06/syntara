@@ -6,6 +6,35 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Independent review of the niche icons: 81 bad ones redrawn, 46 removed (ADR-054 amendment)
+
+Branch `fix/niche-icons-review`, from `main` at bf99e00, in its own worktree.
+
+**Changed**
+- **Review.** Eight reviewers who had not drawn any icon rated all 2,000 (rubric: does it read as its name at 24px?). 1,469 GOOD, 450 WEAK, 81 BAD (531 flagged, 26.6%). This replaces the drawers' own "about 30 weak", which was far too low.
+- **Duplicates.** Ink-overlap measurement of every icon pair (2,243 icons, IoU at 48px; `>= 0.85` involving a niche icon = 75 pairs, plus 93 pairs the reviewers named) then a look at all 168 side by side. Rule: same object drawn twice, remove one (41 removed, e.g. the seven `astronomy-*` icons that repeated the space icons); different objects drawn alike, redraw one.
+- **Redraws.** The 81 BAD plus three look-alikes (`inventory`, `driving-licence`, `concierge-bell`) were redrawn in two rounds (84 icons; round two re-did the 20 that still did not read, with new concepts).
+- **Dropped.** Five that still read as the wrong thing after 4 or more attempts: `vascular`, `dental-canine`, `anatomy-shoulder`, `earth-core`, `embroidery-hoop`. **The pack is 1,954 icons** (2,000 drawn, 41 duplicates, 5 dropped).
+
+**Decided**
+- Redraw the 81 bad ones and remove duplicates; second round on the 20 still weak; drop the 5 that could not be drawn clearly (option 3 of 3): **Anuj**.
+- Nothing is released, so removing and changing names is not a breaking change.
+
+**Results**
+- `pnpm --filter @syntara/icons test` 966 passed; `check:niche-drawing` `{"icons":1954,"problems":0}`; `typecheck` clean.
+- `pnpm test` 2,374 passed 0 failed, README row matches; `pnpm test:themes` 118,000/118,000; `check:meta` 58/58; `registry` 82 ok; `check-override-weight` clean.
+- `pnpm --filter @syntara/docs build` 317/317 pages; `out/docs/icons.html` holds 2,434 distinct icon marks (480 main + 1,954 niche); `check-ssr-tabs` 0 of 592; hydration 0/292; theme links 0; sideways scroll 0/292; CSP 0/146.
+- Local `axe-sweep` (146 routes × 2 schemes) 0 violation nodes and `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers) finished after this was committed (on Anuj's word).
+- By my own read of the final sheets, about 12 of the 20 second-round icons now read clearly; 3 are borderline and remain (`radiotherapy`, `singing-bowl`, `fault-line`). That is Claude's judgement, not measured and not Anuj's.
+
+**Next / known gaps**
+- **450 icons were rated WEAK and have not been touched.** The weakest domains by share flagged: science-research (31 of 70), agriculture-farming (23 of 60), sports-fitness (25 of 75), manufacturing (18 of 60), healthcare-dental (14 of 35).
+- Brand look-alike still WEAK: `scallop-shell` (an oil-company logo). Style outliers (busy or heavy at 16px) are listed in the review, not fixed.
+- The earlier "about 30 weak" in ADR/PR text was wrong; the review is the number to cite.
+- Anuj has not yet reviewed the icons by eye.
+
+---
+
 ## 2026-10-06 — Themes: "Start from" is a dropdown, not six cards
 
 Branch `feat/themes-preset-dropdown`, from `main` at 5c72f7b.

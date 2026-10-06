@@ -41,19 +41,14 @@ export const IconDogHouse = createIcon('dog-house', [
   ['path', { d: 'M9 20.5v-4a3 3 0 0 1 6 0v4' }],
 ]);
 export const IconDogLeash = createIcon('dog-leash', [
-  ['path', { d: 'M3.5 13.5 4.25 11.5c.5-1.25 1.5-2 2.75-2h.75l1.5 3h7.75l2.75-2.5M18.5 12.75v7.75h-2V16.5h-6.5v4h-2v-5.5L6.25 14Z' }],
-  ['path', { d: 'M9.25 12.5 14.4 6.4' }],
-  ['circle', { cx: 15.75, cy: 4.75, r: 2.1 }],
+  ['path', { d: 'M21.25 11.25 18.5 10.25c-.25-1.75-2-2.25-3-1L14.5 12H8L5.5 9.5l1.75 3.25v7.75h1.5l.5-4H14v4h1.5l.25-5.5 1.75-1.75 3-.75Z' }],
+  ['path', { d: 'M16.5 9c1 .5 1.5 2 1 3.25' }],
+  ['path', { d: 'M14.75 12C12 11 8 8 6.5 5c-.5-2-2.75-3-4-2s.75 3 4 2' }],
 ]);
 export const IconFishBowl = createIcon('fish-bowl', [
   ['path', { d: 'M7.5 4.5h9' }],
   ['path', { d: 'M8.5 4.75C5.75 6.5 4 9.25 4 12.5a8 8 0 0 0 16 0c0-3.25-1.75-6-4.5-7.75' }],
   ['path', { d: 'M5 12q1.75-1.25 3.5 0t3.5 0 3.5 0 3.5 0' }],
-]);
-export const IconGroomingScissors = createIcon('grooming-scissors', [
-  ['circle', { cx: 7, cy: 17.5, r: 2.75 }],
-  ['circle', { cx: 17, cy: 17.5, r: 2.75 }],
-  ['path', { d: 'M8.75 15.5 16.5 3.75M15.25 15.5 7.5 3.75' }],
 ]);
 export const IconHamsterWheel = createIcon('hamster-wheel', [
   ['circle', { cx: 12, cy: 10.5, r: 7.25 }],

@@ -1,10 +1,6 @@
 /** Domain: art craft design. Style spec: ../../create-icon.tsx (ADR-014); pack rules: docs/design/icon-domains.md (≤5 strokes, ≤4 filled dots). */
 import { createIcon } from '../../create-icon';
 
-export const IconArtboard = createIcon('artboard', [
-  ['rect', { x: 7, y: 7, width: 10, height: 10, rx: 1.25 }],
-  ['path', { d: 'M7 3v2.5M3 7h2.5M17 21v-2.5M21 17h-2.5' }],
-]);
 export const IconBezierCurve = createIcon('bezier-curve', [
   ['path', { d: 'M4.25 15.5h2a1.25 1.25 0 0 1 1.25 1.25v2a1.25 1.25 0 0 1 -1.25 1.25h-2a1.25 1.25 0 0 1 -1.25 -1.25v-2a1.25 1.25 0 0 1 1.25 -1.25ZM17.75 4h2a1.25 1.25 0 0 1 1.25 1.25v2a1.25 1.25 0 0 1 -1.25 1.25h-2a1.25 1.25 0 0 1 -1.25 -1.25v-2a1.25 1.25 0 0 1 1.25 -1.25Z' }],
   ['path', { d: 'M5.25 15.5C5.25 10 10 6.25 16.5 6.25' }],
@@ -46,12 +42,6 @@ export const IconDrawingTablet = createIcon('drawing-tablet', [
 export const IconEasel = createIcon('easel', [
   ['rect', { x: 5, y: 3.5, width: 14, height: 10.5, rx: 2 }],
   ['path', { d: 'M8.5 14 6 20.5M15.5 14l2.5 6.5M12 14v4' }],
-]);
-export const IconEmbroideryHoop = createIcon('embroidery-hoop', [
-  ['circle', { cx: 12, cy: 13, r: 7.5 }],
-  ['circle', { cx: 12, cy: 13, r: 5.5 }],
-  ['path', { d: 'M10.5 5.75V3.25h3v2.5' }],
-  ['path', { d: 'M10.5 11.5l3 3M13.5 11.5l-3 3' }],
 ]);
 export const IconEraser = createIcon('eraser', [
   ['rect', { x: 4, y: 8, width: 15, height: 8, rx: 2.5, transform: 'rotate(-45 11.5 12)' }],
@@ -164,14 +154,6 @@ export const IconSculpture = createIcon('sculpture', [
 export const IconSetSquare = createIcon('set-square', [
   ['path', { d: 'M4.5 5.25v13.25a1 1 0 0 0 1 1h13.25a.75.75 0 0 0 .53-1.28L5.78 4.72a.75.75 0 0 0-1.28.53Z' }],
   ['path', { d: 'M8.5 12v3.5H12Z' }],
-]);
-export const IconSewingButton = createIcon('sewing-button', [
-  ['circle', { cx: 12, cy: 12, r: 8.75 }],
-  ['circle', { cx: 12, cy: 12, r: 6.25 }],
-  ['circle', { cx: 10.25, cy: 10.25, r: 0.95, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 13.75, cy: 10.25, r: 0.95, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 10.25, cy: 13.75, r: 0.95, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 13.75, cy: 13.75, r: 0.95, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconSewingMachine = createIcon('sewing-machine', [
   ['path', { d: 'M7 9H5.5A1.5 1.5 0 0 1 4 7.5V6a1.5 1.5 0 0 1 1.5-1.5h12A1.5 1.5 0 0 1 19 6v10.5h-4V9Z' }],

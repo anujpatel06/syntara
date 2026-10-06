@@ -78,9 +78,10 @@ export const IconMetronome = createIcon('metronome', [
   ['circle', { cx: 14.3, cy: 10.5, r: 1.1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconMusicAlbum = createIcon('music-album', [
-  ['rect', { x: 3, y: 4.5, width: 12.5, height: 15, rx: 2.5 }],
-  ['path', { d: 'M15.5 6.15a6.25 6.25 0 0 1 0 11.7' }],
-  ['circle', { cx: 9.25, cy: 12, r: 2.5 }],
+  ['rect', { x: 2.5, y: 8.5, width: 12, height: 12, rx: 1.5 }],
+  ['path', { d: 'M10.52 8.5A5.5 5.5 0 1 1 14.5 14.29' }],
+  ['circle', { cx: 16, cy: 9, r: 1.25 }],
+  ['path', { d: 'M16 5.75a3.25 3.25 0 0 1 3.25 3.25' }],
 ]);
 export const IconMusicPlaylist = createIcon('music-playlist', [
   ['path', { d: 'M3.5 6h11M3.5 10.5h11M3.5 15h6' }],

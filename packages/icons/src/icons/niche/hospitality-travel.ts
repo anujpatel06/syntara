@@ -71,9 +71,11 @@ export const IconCoconutDrink = createIcon('coconut-drink', [
   ['path', { d: 'M6.75 7.5l1 3.5' }],
 ]);
 export const IconConciergeBell = createIcon('concierge-bell', [
-  ['path', { d: 'M4.5 16.5a7.5 7.5 0 0 1 15 0' }],
-  ['path', { d: 'M3 19.25h18' }],
-  ['path', { d: 'M12 9V6.5M10.25 6.5h3.5' }],
+  ['rect', { x: 3, y: 16.5, width: 18, height: 4, rx: 1.25 }],
+  ['path', { d: 'M5.5 16.5a6.5 6.5 0 0 1 13 0' }],
+  ['path', { d: 'M10 7h2v3V7h2' }],
+  ['path', { d: 'M5 8.5 3.5 7' }],
+  ['path', { d: 'M19 8.5 20.5 7' }],
 ]);
 export const IconDeskGlobe = createIcon('desk-globe', [
   ['circle', { cx: 12, cy: 10, r: 6 }],
@@ -222,10 +224,11 @@ export const IconShower = createIcon('shower', [
   ['circle', { cx: 13.75, cy: 15.75, r: 0.85, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconSightseeingViewer = createIcon('sightseeing-viewer', [
-  ['path', { d: 'M7.5 4.5h7.75a3.25 3.25 0 0 1 0 6.5H7.5Z' }],
-  ['path', { d: 'M7.5 5.75H4.75v4H7.5' }],
-  ['path', { d: 'M12 11v9.5M8.5 20.5h7' }],
-  ['circle', { cx: 14.75, cy: 7.75, r: 0.95, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 8.25, cy: 7.25, r: 3.75 }],
+  ['circle', { cx: 15.75, cy: 7.25, r: 3.75 }],
+  ['path', { d: 'M12 10.25V13.5M8 20.5h4V17v3.5h4' }],
+  ['rect', { x: 9.75, y: 13.5, width: 4.5, height: 3.5, rx: 0.75 }],
+  ['circle', { cx: 12, cy: 15.25, r: 0.75, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconSignpost = createIcon('signpost', [
   ['path', { d: 'M12 3.25v17.5M8.5 20.75h7' }],
@@ -241,10 +244,6 @@ export const IconSkis = createIcon('skis', [
   ['path', { d: 'M4 19.5 16.75 5.25c.6-.7 1.6-.9 2.5-.5M7.5 20.5 20.25 6.25c.4-.9.25-1.9-.5-2.5' }],
   ['circle', { cx: 9, cy: 14.5, r: 0.95, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 12.5, cy: 15.75, r: 0.95, fill: 'currentColor', stroke: 'none' }],
-]);
-export const IconSnorkelMask = createIcon('snorkel-mask', [
-  ['path', { d: 'M3.5 9.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2V13a3 3 0 0 1-3 3h-2.25l-1.5-1.75h-1.5L8.75 16H6.5a3 3 0 0 1-3-3Z' }],
-  ['path', { d: 'M20.5 6v10.5a3.5 3.5 0 0 1-3.5 3.5h-3' }],
 ]);
 export const IconSnowGlobe = createIcon('snow-globe', [
   ['circle', { cx: 12, cy: 10, r: 7 }],
@@ -279,9 +278,12 @@ export const IconSwimmingPool = createIcon('swimming-pool', [
   ['path', { d: 'M3 18.5q2.25-1.5 4.5 0t4.5 0 4.5 0 4.5 0' }],
 ]);
 export const IconTowelRail = createIcon('towel-rail', [
-  ['path', { d: 'M3 4.5h18' }],
-  ['path', { d: 'M7 4.5v14.5a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5V4.5' }],
-  ['path', { d: 'M7 15.5h10' }],
+  ['path', { d: 'M3.5 6h17' }],
+  ['path', { d: 'M6.5 6v11h8V6' }],
+  ['path', { d: 'M8.5 17v2.5H17V6' }],
+  ['path', { d: 'M6.5 14h8' }],
+  ['circle', { cx: 3.5, cy: 6, r: 1.25, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 20.5, cy: 6, r: 1.25, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconTriumphalArch = createIcon('triumphal-arch', [
   ['path', { d: 'M4.5 20.5V7.5h15v13h-4.75v-5.25a2.75 2.75 0 0 0-5.5 0v5.25Z' }],

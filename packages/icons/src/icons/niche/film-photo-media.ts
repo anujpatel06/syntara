@@ -146,9 +146,10 @@ export const IconPopcorn = createIcon('popcorn', [
   ['path', { d: 'M5.5 10a2.25 2.25 0 0 1 2-3.5 2.75 2.75 0 0 1 4.5-2 2.75 2.75 0 0 1 4.5 2 2.25 2.25 0 0 1 2 3.5' }],
 ]);
 export const IconPressMicrophone = createIcon('press-microphone', [
-  ['circle', { cx: 12, cy: 5.75, r: 3.25, transform: 'rotate(-30 12 12)' }],
-  ['rect', { x: 8.75, y: 9, width: 6.5, height: 5, rx: 1.25, transform: 'rotate(-30 12 12)' }],
-  ['path', { d: 'M12 14v7.25', transform: 'rotate(-30 12 12)' }],
+  ['rect', { x: 9, y: 2.5, width: 6, height: 7, rx: 3 }],
+  ['path', { d: 'M9 6h6M12 2.5v7' }],
+  ['rect', { x: 8, y: 9.5, width: 8, height: 4.5, rx: 1 }],
+  ['path', { d: 'M10.5 14l.75 7.5h1.5l.75-7.5' }],
 ]);
 export const IconPressPass = createIcon('press-pass', [
   ['path', { d: 'M8.5 3.5 12 9l3.5-5.5' }],

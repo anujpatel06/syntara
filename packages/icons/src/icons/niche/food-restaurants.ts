@@ -294,10 +294,10 @@ export const IconServingCloche = createIcon('serving-cloche', [
   ['circle', { cx: 12, cy: 5.25, r: 0.95, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconSkewer = createIcon('skewer', [
-  ['path', { d: 'M3.75 20.25 20.25 3.75' }],
-  ['rect', { x: 6.75, y: 13.25, width: 4, height: 4, rx: 1.25, transform: 'rotate(-45 8.75 15.25)' }],
-  ['rect', { x: 10, y: 10, width: 4, height: 4, rx: 1.25, transform: 'rotate(-45 12 12)' }],
-  ['rect', { x: 13.25, y: 6.75, width: 4, height: 4, rx: 1.25, transform: 'rotate(-45 15.25 8.75)' }],
+  ['path', { d: 'M12 2.5v19' }],
+  ['rect', { x: 8.5, y: 5, width: 7, height: 3.75, rx: 1 }],
+  ['circle', { cx: 12, cy: 11.375, r: 2.625 }],
+  ['rect', { x: 8.5, y: 14, width: 7, height: 3.75, rx: 1 }],
 ]);
 export const IconSoftDrink = createIcon('soft-drink', [
   ['path', { d: 'M6.5 8.5h11l-1.3 10.7a1.5 1.5 0 0 1-1.5 1.3h-5.4a1.5 1.5 0 0 1-1.5-1.3Z' }],

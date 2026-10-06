@@ -39,11 +39,12 @@ export const IconBeaker = createIcon('beaker', [
   ['circle', { cx: 13.5, cy: 15, r: 0.8, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconBoardDuster = createIcon('board-duster', [
-  ['rect', { x: 4, y: 5.5, width: 16, height: 6, rx: 3 }],
-  ['path', { d: 'M5 11.5v3a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5-1.5v-3' }],
-  ['circle', { cx: 7.5, cy: 19.5, r: 0.8, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 12, cy: 20.25, r: 0.8, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 16.5, cy: 19.5, r: 0.8, fill: 'currentColor', stroke: 'none' }],
+  ['path', { d: 'M6.5 11V8.5A2.5 2.5 0 0 1 9 6h6a2.5 2.5 0 0 1 2.5 2.5V11', transform: 'rotate(-20 12 12)' }],
+  ['path', { d: 'M5 11h14v3.5h-2.5V11v3.5h-3V11v3.5h-3V11v3.5h-3V11v3.5H5Z', transform: 'rotate(-20 12 12)' }],
+  ['path', { d: 'M2.5 20.5h12' }],
+  ['circle', { cx: 17.5, cy: 19.5, r: 1, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 20.5, cy: 18.25, r: 0.8, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 19.75, cy: 21, r: 0.7, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconBookStack = createIcon('book-stack', [
   ['rect', { x: 3.5, y: 15.5, width: 17, height: 5, rx: 2 }],
@@ -58,9 +59,10 @@ export const IconBrailleCell = createIcon('braille-cell', [
   ['circle', { cx: 14.25, cy: 16.5, r: 1.3, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconChalkboard = createIcon('chalkboard', [
-  ['rect', { x: 3, y: 3.5, width: 18, height: 13, rx: 2.5 }],
-  ['path', { d: 'M2.5 19.5h19' }],
-  ['path', { d: 'M7 10.5c1-1.5 2-1.5 3 0s2 1.5 3 0' }],
+  ['path', { d: 'M2.5 17.5h19-2.5V6.5A1.5 1.5 0 0 0 17.5 5h-12A1.5 1.5 0 0 0 4 6.5v11' }],
+  ['path', { d: 'M6.5 14.5 8.5 8l2 6.5M7.25 12.25h2.5' }],
+  ['path', { d: 'M12.75 8v6.5a2 2 0 1 0 0-3' }],
+  ['path', { d: 'M15.5 15.75h2.5' }],
 ]);
 export const IconClassroomGlobe = createIcon('classroom-globe', [
   ['circle', { cx: 12, cy: 9.5, r: 5.5 }],
@@ -77,10 +79,6 @@ export const IconCoachWhistle = createIcon('coach-whistle', [
   ['path', { d: 'M9.5 9A5 5 0 1 0 14.5 14v-1h6V9Z' }],
   ['circle', { cx: 5, cy: 5.75, r: 1.75 }],
   ['circle', { cx: 9.5, cy: 14, r: 1, fill: 'currentColor', stroke: 'none' }],
-]);
-export const IconConicalFlask = createIcon('conical-flask', [
-  ['path', { d: 'M9.5 3.5h5M10.25 3.5v5.5L5 18.5a1.5 1.5 0 0 0 1.3 2.25h11.4A1.5 1.5 0 0 0 19 18.5L13.75 9V3.5' }],
-  ['path', { d: 'M7.25 14.5h9.5' }],
 ]);
 export const IconCourseCertificate = createIcon('course-certificate', [
   ['path', { d: 'M12 17H5.5A2.5 2.5 0 0 1 3 14.5v-8A2.5 2.5 0 0 1 5.5 4h13A2.5 2.5 0 0 1 21 6.5V11' }],
@@ -158,11 +156,6 @@ export const IconLanguageExchange = createIcon('language-exchange', [
   ['path', { d: 'M5 3.5h7.5a2 2 0 0 1 2 2V10a2 2 0 0 1-2 2H8.5l-3 2.5V12H5a2 2 0 0 1-2-2V5.5a2 2 0 0 1 2-2Z' }],
   ['path', { d: 'M17.5 9H19a2 2 0 0 1 2 2v4.5a2 2 0 0 1-2 2h-.5V20l-3-2.5H11.5a2 2 0 0 1-2-2v-1' }],
   ['path', { d: 'M6.5 10l2.25-5 2.25 5M7.4 8.25h2.7' }],
-]);
-export const IconLearningBlocks = createIcon('learning-blocks', [
-  ['rect', { x: 3.5, y: 12.5, width: 8, height: 8, rx: 2 }],
-  ['rect', { x: 12.5, y: 12.5, width: 8, height: 8, rx: 2 }],
-  ['rect', { x: 8, y: 3.5, width: 8, height: 8, rx: 2 }],
 ]);
 export const IconLearningPuzzle = createIcon('learning-puzzle', [
   ['path', { d: 'M4.5 8.5h3.75a2.25 2.25 0 1 1 4.5 0h3.75a1 1 0 0 1 1 1v3.75a2.25 2.25 0 1 1 0 4.5V20.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V9.5a1 1 0 0 1 1-1Z', transform: 'translate(1 -1.75)' }],
@@ -255,18 +248,14 @@ export const IconSchoolDesk = createIcon('school-desk', [
   ['path', { d: 'M5 13.25v7.25M19 13.25v7.25' }],
 ]);
 export const IconSchoolLocker = createIcon('school-locker', [
-  ['rect', { x: 6, y: 2.5, width: 12, height: 19, rx: 2.5 }],
-  ['path', { d: 'M9 6h6M9 8.5h6' }],
-  ['path', { d: 'M15 12v3' }],
+  ['path', { d: 'M12 2.5v19H6.5A1.5 1.5 0 0 1 5 20V4a1.5 1.5 0 0 1 1.5-1.5h11A1.5 1.5 0 0 1 19 4v16a1.5 1.5 0 0 1-1.5 1.5H12' }],
+  ['path', { d: 'M7.25 5.5h2.5M7.25 8h2.5M14.25 5.5h2.5M14.25 8h2.5' }],
+  ['circle', { cx: 9.75, cy: 13, r: 0.85, fill: 'currentColor', stroke: 'none' }],
+  ['circle', { cx: 16.75, cy: 13, r: 0.85, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconSchoolRuler = createIcon('school-ruler', [
   ['rect', { x: 2.5, y: 8.5, width: 19, height: 7, rx: 2, transform: 'rotate(-45 12 12)' }],
   ['path', { d: 'M7 8.5v2.5M10 8.5V10M13 8.5v2.5M16 8.5V10', transform: 'rotate(-45 12 12)' }],
-]);
-export const IconSchoolScissors = createIcon('school-scissors', [
-  ['circle', { cx: 7, cy: 17.5, r: 2.75 }],
-  ['circle', { cx: 17, cy: 17.5, r: 2.75 }],
-  ['path', { d: 'M8.75 15.4 16 3.5M15.25 15.4 8 3.5' }],
 ]);
 export const IconSchoolhouse = createIcon('schoolhouse', [
   ['path', { d: 'M3.5 20.5v-9L12 6l8.5 5.5v9Z' }],

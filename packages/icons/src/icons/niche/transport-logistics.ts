@@ -306,10 +306,10 @@ export const IconStopSign = createIcon('stop-sign', [
   ['path', { d: 'M8.5 12h7' }],
 ]);
 export const IconStorageRack = createIcon('storage-rack', [
-  ['path', { d: 'M4 20.5V3.5h16v17' }],
-  ['path', { d: 'M4 12h16' }],
-  ['path', { d: 'M6.5 12V8h4.5v4' }],
-  ['path', { d: 'M13 20.5v-4.5h4.5v4.5' }],
+  ['path', { d: 'M4 21.5V3h16v18.5' }],
+  ['path', { d: 'M4 11h16M4 19h16' }],
+  ['rect', { x: 6.5, y: 6, width: 5.5, height: 5, rx: 0.75 }],
+  ['rect', { x: 11.5, y: 14, width: 6, height: 5, rx: 0.75 }],
 ]);
 export const IconSubwayTrain = createIcon('subway-train', [
   ['path', { d: 'M3 20.5V11a9 9 0 0 1 18 0v9.5' }],
@@ -365,7 +365,8 @@ export const IconTugboat = createIcon('tugboat', [
   ['path', { d: 'M15 14V8h2.5v6' }],
 ]);
 export const IconWoodenCrate = createIcon('wooden-crate', [
-  ['rect', { x: 3.5, y: 3.5, width: 17, height: 17, rx: 3 }],
-  ['rect', { x: 6.75, y: 6.75, width: 10.5, height: 10.5, rx: 1 }],
-  ['path', { d: 'M7 7l10 10M17 7 7 17' }],
+  ['path', { d: 'M3 9.5h11.5v11.5H3Z' }],
+  ['path', { d: 'M3 9.5 8 4.5h12.5v11.5l-6 5' }],
+  ['path', { d: 'M14.5 9.5l6-5' }],
+  ['path', { d: 'M3 13h11.5L3 17.5h11.5' }],
 ]);

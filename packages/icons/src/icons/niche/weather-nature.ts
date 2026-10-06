@@ -193,11 +193,6 @@ export const IconPinecone = createIcon('pinecone', [
   ['path', { d: 'M12 6V3' }],
   ['path', { d: 'M7 10.5l5 2.5 5-2.5M7.75 14.75l4.25 2.5 4.25-2.5' }],
 ]);
-export const IconPottedPlant = createIcon('potted-plant', [
-  ['path', { d: 'M7 14h10l-1.1 5.6a1.1 1.1 0 0 1-1.1.9H9.2a1.1 1.1 0 0 1-1.1-.9Z' }],
-  ['path', { d: 'M12 14V8' }],
-  ['path', { d: 'M12 10.5C9 10.5 7 8.5 7 5.5c3 0 5 2 5 5ZM12 8.5c0-3 2-5 5-5 0 3-2 5-5 5Z' }],
-]);
 export const IconRainbow = createIcon('rainbow', [
   ['path', { d: 'M3 18a9 9 0 0 1 18 0M6.5 18a5.5 5.5 0 0 1 11 0M10 18a2 2 0 0 1 4 0' }],
 ]);
