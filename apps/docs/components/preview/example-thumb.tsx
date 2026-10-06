@@ -1,6 +1,6 @@
 'use client';
 
-import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Component, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { examples } from '@/lib/examples.generated';
 import styles from './example-thumb.module.css';
 
@@ -24,6 +24,8 @@ export interface ExampleThumbProps {
    * the card to look like a picture of a button.
    */
   caption?: string;
+  /** How far the still is shrunk; 0.8 by default. Smaller suits a narrow tile, such as the motion lab's. */
+  zoom?: number;
 }
 
 /**
@@ -38,7 +40,7 @@ export interface ExampleThumbProps {
  * not mounted has not fetched its chunk. Nothing renders on the server either — the still is decorative, and every
  * card reads without it.
  */
-export function ExampleThumb({ name, caption }: ExampleThumbProps) {
+export function ExampleThumb({ name, caption, zoom }: ExampleThumbProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
   useEffect(() => {
@@ -56,7 +58,7 @@ export function ExampleThumb({ name, caption }: ExampleThumbProps) {
     <div className={styles.root}>
       <div ref={ref} className={styles.stage} aria-hidden="true" inert>
         {near && Example && (
-          <div className={styles.canvas}>
+          <div className={styles.canvas} style={zoom ? ({ '--thumb-zoom': zoom } as CSSProperties) : undefined}>
             <ThumbBoundary>
               <Example />
             </ThumbBoundary>

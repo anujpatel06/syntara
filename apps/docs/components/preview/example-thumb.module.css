@@ -55,7 +55,7 @@
     /* Still 100%: under `zoom` a percentage resolves against the stage divided by the zoom, so this box lays out a
        quarter wider in CSS pixels and is then drawn back at exactly the stage's width. Writing 125% here would
        compound with the zoom and hang the canvas off the stage's inline-start edge. */
-    zoom: 0.8;
+    zoom: var(--thumb-zoom, 0.8);
   }
 }
 
