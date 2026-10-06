@@ -32,9 +32,9 @@
     {
       "component": "ThemeScope",
       "name": "scheme",
-      "type": "'light' | 'dark'",
+      "type": "'light' | 'dark' | 'auto'",
       "default": "'light'",
-      "description": "Colour scheme for the subtree."
+      "description": "Colour scheme for the subtree. 'auto' follows the visitor's system setting."
     },
     {
       "component": "ThemeScope",

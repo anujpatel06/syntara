@@ -13,7 +13,7 @@ It does four things:
 1. **Asks about your brand.** A few questions, each with a suggestion: press Enter to take it. No brand guidelines? Pick a starting look instead. Built a theme on the [Themes](/themes) page? Its **Use in your app** command gives the same answers, so only the name is asked.
 2. **Writes your theme.** `syntara-theme.css` is a light and dark theme that passes every WCAG 2.2 AA contrast check. `syntara.brand.json` keeps the answers it was built from.
 3. **Installs Syntara.** It offers to run your project's own package manager to add the `syntara` package. Add `--no-install` to skip this.
-4. **Adds it to your app.** It finds your entry file (`src/main.tsx` in Vite, `app/layout.tsx` or `pages/_app.tsx` in Next.js) and adds two style imports and a `ThemeScope` around your app. It shows you the change and asks before it saves. Add `--no-edit` to skip this and do it by hand.
+4. **Adds it to your app.** It finds your entry file (`src/main.tsx` in Vite, `app/layout.tsx` or `pages/_app.tsx` in Next.js) and adds two style imports and a `ThemeScope` around your app that follows the computer's light or dark setting. It also adds a welcome card (`syntara-welcome.tsx`) that shows your brand on real components when you start the app; delete the file and its two lines when you are done, or add `--no-welcome` to skip it. It shows you the change and asks before it saves. Add `--no-edit` to skip this and do it by hand.
 
 Changed `syntara.brand.json` by hand? Run `npx syntara build` to rebuild the theme.
 
@@ -48,7 +48,7 @@ The tokens are scoped to `[data-syntara-theme="<id>"]`, one block per brand. Ski
 
 ### Wrap your app in a ThemeScope
 
-`theme` is your brand's id: the one `syntara init` printed, also in `syntara.brand.json`.
+`theme` is your brand's id: the one `syntara init` printed, also in `syntara.brand.json`. `scheme` is `light` (the default), `dark`, or `auto` to follow the computer's setting.
 
 ```tsx
 import { Button, ThemeScope } from 'syntara';
