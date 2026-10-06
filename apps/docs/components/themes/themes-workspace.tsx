@@ -1,11 +1,11 @@
 'use client';
 
-import { IconMoon, IconSun } from '@syntara/icons';
-import { Tab, TabList, TabPanel, Tabs, ToggleButton, ToggleButtonGroup } from '@syntara/react';
+import { IconDownload, IconMoon, IconSun } from '@syntara/icons';
+import { Button, Tab, TabList, TabPanel, Tabs, ToggleButton, ToggleButtonGroup } from '@syntara/react';
 import type { Key } from 'react-aria-components';
 import { AccessibilityPanel } from './accessibility-panel';
 import { ControlsPanel } from './controls-panel';
-import { ExportPanel } from './export-panel';
+import { ExportDialog } from './export-panel';
 import { plural } from './format';
 import { PreviewPanel } from './preview-panel';
 import { SCHEMES, TABS, oneOf, type Tab as TabId } from './state';
@@ -17,8 +17,18 @@ const TAB_LABEL: Record<TabId, string> = {
   preview: 'Preview',
   accessibility: 'Accessibility',
   tokens: 'Tokens',
-  export: 'Export',
 };
+
+/** One Export button per place it can show; CSS shows the one that fits the width (top of the inputs, or the tab row). */
+function ExportButton({ className }: { className?: string }) {
+  const { dispatch } = useThemes();
+  return (
+    <Button size="sm" onPress={() => dispatch({ type: 'setExportOpen', open: true })} className={className}>
+      <IconDownload aria-hidden />
+      Export
+    </Button>
+  );
+}
 
 function SchemeToggle() {
   const { state, dispatch } = useThemes();
@@ -33,7 +43,6 @@ function SchemeToggle() {
         const scheme = oneOf(first == null ? undefined : String(first), SCHEMES);
         if (scheme) dispatch({ type: 'setScheme', scheme });
       }}
-      className={styles.schemeToggle}
     >
       <ToggleButton id="light">
         <IconSun aria-hidden />
@@ -47,17 +56,16 @@ function SchemeToggle() {
   );
 }
 
-/** Inputs on the start side (sticky on wide screens), views of the generated theme in tabs on the end side. */
+/**
+ * Views of the generated theme in tabs on the start side, inputs on the end side (sticky on wide screens), like the
+ * Motion lab's settings panel. The inputs come after the views in the source too, so focus order matches what you see.
+ */
 export function ThemesWorkspace() {
   const { state, dispatch, theme } = useThemes();
   const { adjustments } = theme.summary;
 
   return (
     <div className={styles.workspace}>
-      <div className={styles.controls}>
-        <ControlsPanel />
-      </div>
-
       <Tabs
         selectedKey={state.tab}
         onSelectionChange={(key: Key) => {
@@ -80,7 +88,10 @@ export function ThemesWorkspace() {
               ),
             )}
           </TabList>
-          {state.tab !== 'export' && <SchemeToggle />}
+          <div className={styles.tabActions}>
+            <SchemeToggle />
+            <ExportButton className={styles.exportNarrow} />
+          </div>
         </div>
         <TabPanel id="preview" className={styles.panel}>
           <PreviewPanel />
@@ -91,10 +102,15 @@ export function ThemesWorkspace() {
         <TabPanel id="tokens" className={styles.panel}>
           <TokensPanel />
         </TabPanel>
-        <TabPanel id="export" className={styles.panel}>
-          <ExportPanel />
-        </TabPanel>
       </Tabs>
+      <ExportDialog />
+      <div className={styles.controls}>
+        {/* Export heads the inputs column, level with the tab row: the page's one primary action, top right. */}
+        <div className={styles.exportRow}>
+          <ExportButton />
+        </div>
+        <ControlsPanel />
+      </div>
     </div>
   );
 }
