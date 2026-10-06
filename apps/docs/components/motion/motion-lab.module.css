@@ -71,11 +71,6 @@
   gap: var(--syntara-space-2);
 }
 
-.iconToggle.iconToggle {
-  inline-size: var(--syntara-control-height);
-  padding-inline: 0;
-}
-
 /* ---- Side panels ---- */
 
 .left,
@@ -209,6 +204,63 @@
   color: var(--syntara-color-text-subtle);
   font-size: var(--syntara-font-size-sm);
   line-height: var(--syntara-line-height-snug);
+}
+
+/* A control with its own label row (FieldLabel): the same gap Slider and Select keep between label and control. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-2);
+}
+
+/* A label, its "i", and the value pushed to the end. */
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-1);
+}
+.value {
+  margin-inline-start: auto;
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  line-height: var(--syntara-line-height-snug);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.labelRow[aria-disabled] .label,
+.labelRow[aria-disabled] .value {
+  color: var(--syntara-color-text-disabled);
+}
+
+/* The "i": a 24px target (WCAG 2.5.8) around a small, quiet icon that brightens on hover and focus. */
+.infoWrap {
+  display: inline-flex;
+}
+.infoButton {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--syntara-space-6);
+  block-size: var(--syntara-space-6);
+  padding: 0;
+  border: 0;
+  border-radius: var(--syntara-radius-pill);
+  background: transparent;
+  color: var(--syntara-color-text-subtle);
+  cursor: help;
+  transition: color var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+.infoButton svg {
+  inline-size: var(--syntara-space-4);
+  block-size: var(--syntara-space-4);
+}
+.infoButton[data-hovered],
+.infoButton[data-pressed] {
+  color: var(--syntara-color-text-default);
+}
+.infoButton[data-focus-visible] {
+  color: var(--syntara-color-text-default);
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
 }
 
 /* Matches the Syntara field label (text-field.module.css). */
@@ -465,6 +517,15 @@
   padding-block-start: var(--syntara-space-3);
   color: var(--syntara-color-text-subtle);
   font-size: var(--syntara-font-size-md);
+}
+
+/* The light/dark toggle, in the stage's top corner (inline-end, so it follows an RTL brand). Above the stand-in's
+   overlay (z-index 1), so it stays reachable while a dialog is open on the stage. */
+.stageToggle.stageToggle {
+  position: absolute;
+  inset-block-start: var(--syntara-space-3);
+  inset-inline-end: var(--syntara-space-3);
+  z-index: 2;
 }
 
 /* Rows and cards for the batch 2 specimens. */

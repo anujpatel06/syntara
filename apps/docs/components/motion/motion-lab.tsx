@@ -1,6 +1,6 @@
 'use client';
 
-import { IconDownload, IconMoon, IconPlayerPause, IconPlayerPlay, IconRotate, IconSun } from '@syntara/icons';
+import { IconDownload, IconInfoCircle, IconMoon, IconPlayerPause, IconPlayerPlay, IconRotate, IconSun } from '@syntara/icons';
 import {
   Button,
   Dialog,
@@ -16,10 +16,12 @@ import {
   ThemeScope,
   ToggleButton,
   ToggleButtonGroup,
+  Tooltip,
+  TooltipTrigger,
 } from '@syntara/react';
 import { generateTheme, toCSS } from '@syntara/theme-engine';
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Selection } from 'react-aria-components';
+import { Button as AriaButton, type Selection } from 'react-aria-components';
 import { CodeViewer } from '@/components/themes/code-viewer';
 import type { ThemePreset } from '@/components/themes/state';
 import { useCopy } from '../../examples/_copy/use-copy';
@@ -136,15 +138,105 @@ function RealDialog({ isOpen, onOpenChange }: { isOpen: boolean; onOpenChange: (
  * A caps section label with a count, as the editor's panels are grouped. `previewOnly` marks a section whose
  * settings change the stage but never the exported tokens (spec §13).
  */
-function PanelHeading({ id, children, count, previewOnly }: { id: string; children: ReactNode; count?: number; previewOnly?: boolean }) {
-  return (
+function PanelHeading({
+  id,
+  children,
+  count,
+  previewOnly,
+  tip,
+}: {
+  id: string;
+  children: ReactNode;
+  count?: number;
+  previewOnly?: boolean;
+  tip?: ReactNode;
+}) {
+  const heading = (
     <h2 id={id} className={styles.panelHeading}>
       {children}
       {count != null && <span className={styles.count}> · {count}</span>}
       {previewOnly && <span className={styles.previewOnly}>Preview only</span>}
     </h2>
   );
+  if (tip == null) return heading;
+  return (
+    <div className={styles.labelRow}>
+      {heading}
+      <InfoTip about={String(children)}>{tip}</InfoTip>
+    </div>
+  );
 }
+
+/**
+ * An "i" that says what a control does. Opens on hover and keyboard focus like any tooltip, and on tap, because a
+ * phone can't hover. It sits beside a label, never inside it, so it doesn't become part of the control's name.
+ */
+function InfoTip({ about, children }: { about: string; children: ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const openAtTap = useRef(false);
+  const wrap = useRef<HTMLSpanElement>(null);
+
+  // A tap opens it and nothing hovers away to close it, so a tap anywhere else does.
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: PointerEvent) => {
+      if (!wrap.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, [open]);
+
+  return (
+    // Capture runs before React Aria closes the tooltip on press, so a second tap can close it.
+    <span ref={wrap} className={styles.infoWrap} onPointerDownCapture={() => (openAtTap.current = open)}>
+      <TooltipTrigger isOpen={open} onOpenChange={setOpen} delay={300}>
+        <AriaButton
+          className={styles.infoButton}
+          aria-label={`About ${about}`}
+          onPress={(e) => {
+            if (e.pointerType === 'touch' || e.pointerType === 'pen') setOpen(!openAtTap.current);
+          }}
+        >
+          <IconInfoCircle aria-hidden />
+        </AriaButton>
+        <Tooltip>{children}</Tooltip>
+      </TooltipTrigger>
+    </span>
+  );
+}
+
+/** A control's label with its "i", and the value at the end when there is one. */
+function FieldLabel({
+  id,
+  label,
+  tip,
+  value,
+  isDisabled,
+}: {
+  id: string;
+  label: string;
+  tip: ReactNode;
+  value?: string;
+  isDisabled?: boolean;
+}) {
+  return (
+    // aria-disabled lets axe exempt the dimmed text of a disabled control (WCAG 1.4.3), as Slider's own header does.
+    <div className={styles.labelRow} aria-disabled={isDisabled || undefined}>
+      <span id={id} className={styles.label}>
+        {label}
+      </span>
+      <InfoTip about={label}>{tip}</InfoTip>
+      {value != null && <output className={styles.value}>{value}</output>}
+    </div>
+  );
+}
+
+/** What each duration slider times. */
+const DURATION_TIP = {
+  fast: 'The quickest moves, like a hover or a press.',
+  normal: 'Most opening and closing, like a menu.',
+  slow: 'The biggest moves, like a sheet sliding in.',
+} as const;
 
 /** A labelled one-of-n toggle row, for the preview settings. */
 function Segmented<T extends string | number>({
@@ -251,6 +343,13 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
     playback: useId(),
     playbackRate: useId(),
     hold: useId(),
+    speed: useId(),
+    bounce: useId(),
+    fast: useId(),
+    normal: useId(),
+    slow: useId(),
+    standardEasing: useId(),
+    enterEasing: useId(),
   };
 
   const specimen: Specimen = SPECIMENS.find((s) => s.id === specimenId) ?? SPECIMENS[0]!;
@@ -398,7 +497,7 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
     <div className={styles.editor}>
       <style>{stageCss}</style>
 
-      {/* Top bar: the title, what's on the stage, and the one primary action. */}
+      {/* Top bar: the title, what's on the stage, and the one primary action. The light/dark toggle is on the stage. */}
       <header className={styles.topBar}>
         <div className={styles.brandMark}>
           <h1 className={styles.title}>Motion lab</h1>
@@ -408,9 +507,6 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
           {specimen.label} · {brand.label} · {style.label}
         </p>
         <div className={styles.topActions}>
-          <ToggleButton isSelected={dark} onChange={setDark} aria-label="Dark preview" className={styles.iconToggle}>
-            {dark ? <IconMoon aria-hidden /> : <IconSun aria-hidden />}
-          </ToggleButton>
           <Button onPress={() => setExportOpen(true)}>
             <IconDownload aria-hidden />
             Export
@@ -481,6 +577,26 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
               {!(specimen.standIn && realOpen) && !exportOpen && <Render phase={phase} cycle={cycle} />}
             </div>
 
+            {/* Light or dark for the preview only, so it sits on the preview, in the brand's own colours. Two named
+                options rather than one toggle, so it's plain which one is on. */}
+            <ToggleButtonGroup
+              aria-label="Preview colours"
+              size="sm"
+              disallowEmptySelection
+              selectedKeys={[dark ? 'dark' : 'light']}
+              onSelectionChange={(keys) => setDark(firstKey(keys) === 'dark')}
+              className={styles.stageToggle}
+            >
+              <ToggleButton id="light">
+                <IconSun aria-hidden />
+                Light
+              </ToggleButton>
+              <ToggleButton id="dark">
+                <IconMoon aria-hidden />
+                Dark
+              </ToggleButton>
+            </ToggleButtonGroup>
+
             <RealDialog isOpen={realOpen} onOpenChange={setRealOpen} />
             <ExportDialog
               isOpen={exportOpen}
@@ -522,7 +638,7 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
       {/* Right: every control for how it moves. */}
       <aside className={styles.right} aria-label="Motion controls">
         <section aria-labelledby={ids.frame} className={styles.section}>
-          <PanelHeading id={ids.frame} previewOnly>
+          <PanelHeading id={ids.frame} previewOnly tip="How wide the preview is. It only changes what you see here.">
             Frame
           </PanelHeading>
           <Segmented
@@ -535,7 +651,7 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
         </section>
 
         <section aria-labelledby={ids.styles} className={styles.section}>
-          <PanelHeading id={ids.styles} count={MOTION_STYLES.length}>
+          <PanelHeading id={ids.styles} count={MOTION_STYLES.length} tip="How every animation feels: its speed, its easing and whether it bounces.">
             Motion style
           </PanelHeading>
           <ToggleButtonGroup
@@ -577,7 +693,9 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
         </section>
 
         <section aria-labelledby={ids.brand} className={styles.section}>
-          <PanelHeading id={ids.brand}>Brand</PanelHeading>
+          <PanelHeading id={ids.brand} tip="Whose colours, shapes and type the preview uses. It doesn’t change the motion.">
+            Brand
+          </PanelHeading>
           <Select
             aria-labelledby={ids.brand}
             selectedKey={brand.id}
@@ -593,42 +711,74 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
 
         <section aria-labelledby={ids.timing} className={styles.section}>
           <PanelHeading id={ids.timing}>Timing</PanelHeading>
-          <Slider
-            label="Speed"
+          <div className={styles.field}>
+            <FieldLabel
+              id={ids.speed}
+              label="Speed"
+              tip="Makes every animation faster or slower at once."
+              value={effectiveSpeed.toFixed(2)}
+            />
+            {/* Slider's own label is replaced by FieldLabel (to hold the "i"), so the input's label link points at
+                nothing; thumbLabels names the input itself. */}
+            <Slider
+              aria-labelledby={ids.speed}
+              thumbLabels={['Speed']}
+              showOutput={false}
             minValue={0.5}
             maxValue={2}
             step={0.05}
             value={effectiveSpeed}
             onChange={(v) => setSpeed(Math.max(v, slowest))}
-            formatOptions={{ style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }}
-          />
+              formatOptions={{ style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }}
+            />
+          </div>
           <p className={styles.hint}>
             {slowest > 0.5
               ? `Stops at ${slowest.toFixed(2)}×: any slower and something would take longer than ${MAX_DURATION_MS} ms.`
               : '1.00 is the style as designed.'}
           </p>
-          <Slider
-            label="Bounce"
+          <div className={styles.field}>
+            <FieldLabel
+              id={ids.bounce}
+              label="Bounce"
+              tip="How far things overshoot before they settle."
+              value={`${Math.round(effectiveBounce * 100)}%`}
+              isDisabled={!bounces}
+            />
+            <Slider
+              aria-labelledby={ids.bounce}
+              thumbLabels={['Bounce']}
+              showOutput={false}
             minValue={0}
             maxValue={1}
             step={0.05}
             value={effectiveBounce}
             onChange={setBounce}
-            isDisabled={!bounces}
-            formatOptions={{ style: 'percent' }}
-          />
+              isDisabled={!bounces}
+              formatOptions={{ style: 'percent' }}
+            />
+          </div>
           {!bounces && <p className={styles.hint}>Gentle doesn’t bounce.</p>}
           {(['fast', 'normal', 'slow'] as const).map((key) => (
-            <Slider
-              key={key}
-              label={key[0]!.toUpperCase() + key.slice(1)}
+            <div key={key} className={styles.field}>
+              <FieldLabel
+                id={ids[key]}
+                label={key[0]!.toUpperCase() + key.slice(1)}
+                tip={DURATION_TIP[key]}
+                value={`${baseDurations[key]}ms`}
+              />
+              <Slider
+                aria-labelledby={ids[key]}
+                thumbLabels={[key[0]!.toUpperCase() + key.slice(1)]}
+                showOutput={false}
               minValue={DURATION_RANGES[key].min}
               maxValue={DURATION_RANGES[key].max}
               step={DURATION_STEP}
               value={baseDurations[key]}
               onChange={(v) => setDurations(orderDurations(baseDurations, key, v))}
-              formatOptions={{ style: 'unit', unit: 'millisecond', unitDisplay: 'narrow' }}
-            />
+                formatOptions={{ style: 'unit', unit: 'millisecond', unitDisplay: 'narrow' }}
+              />
+            </div>
           ))}
           <p className={styles.hint}>Fast, normal and slow before speed. Moving one keeps them in order.</p>
           <p className={styles.readout} aria-live="polite">
@@ -638,8 +788,10 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
 
         <section aria-labelledby={ids.curves} className={styles.section}>
           <PanelHeading id={ids.curves}>Curves</PanelHeading>
+          <div className={styles.field}>
+            <FieldLabel id={ids.standardEasing} label="Standard easing" tip="How things speed up and slow down when they change in place." />
           <Select
-            label="Standard easing"
+            aria-labelledby={ids.standardEasing}
             selectedKey={easingId}
             onSelectionChange={(key) => key != null && setEasingId(String(key))}
           >
@@ -652,8 +804,11 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
               </SelectItem>
             ))}
           </Select>
+          </div>
+          <div className={styles.field}>
+            <FieldLabel id={ids.enterEasing} label="Enter easing" tip="How things slow down as they arrive on screen." />
           <Select
-            label="Enter easing"
+            aria-labelledby={ids.enterEasing}
             selectedKey={enterId}
             onSelectionChange={(key) => key != null && setEnterId(String(key))}
           >
@@ -666,6 +821,7 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
               </SelectItem>
             ))}
           </Select>
+          </div>
           <CurveGraph enter={tokens.easingOut} spring={tokens.spring} overshoot={tokens.overshoot} dark={dark} />
         </section>
 
@@ -673,9 +829,11 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
           <PanelHeading id={ids.playback} previewOnly>
             Playback
           </PanelHeading>
-          <span id={ids.playbackRate} className={styles.label}>
-            Slow motion
-          </span>
+          <FieldLabel
+            id={ids.playbackRate}
+            label="Slow motion"
+            tip="Plays the preview slower so you can watch each move. Not exported."
+          />
           <Segmented
             labelledBy={ids.playbackRate}
             options={PLAYBACK_RATES}
@@ -683,9 +841,7 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
             onChange={setPlayback}
             label={(r) => `${r}×`}
           />
-          <span id={ids.hold} className={styles.label}>
-            Hold open
-          </span>
+          <FieldLabel id={ids.hold} label="Hold open" tip="How long the preview stays open before it closes again." />
           <Segmented
             labelledBy={ids.hold}
             options={HOLDS}
@@ -693,9 +849,12 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
             onChange={setHold}
             label={(h) => `${h / 1000} s`}
           />
-          <Switch isSelected={stillPreview} onChange={setStillPreview}>
-            Preview reduced motion
-          </Switch>
+          <div className={styles.labelRow}>
+            <Switch isSelected={stillPreview} onChange={setStillPreview}>
+              Preview reduced motion
+            </Switch>
+            <InfoTip about="Preview reduced motion">Shows what people see when their device is set to reduce motion.</InfoTip>
+          </div>
           <p className={styles.hint}>
             {specimen.standIn
               ? `${specimen.label} takes over the page when it opens, so the loop is a stand-in drawn with its own stylesheet. “Try the real ${specimen.label}” opens the component itself.`
