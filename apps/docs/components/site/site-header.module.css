@@ -98,6 +98,7 @@
   color: var(--syntara-color-text-subtle);
   font-size: var(--syntara-font-size-md);
   font-weight: var(--syntara-font-weight-medium);
+  white-space: nowrap;
   transition:
     color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
     outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
@@ -189,13 +190,13 @@
  * appears: gutter 24 + brand 86 + its margin 16 + nav 457 + gap 8 + actions 284 puts the row's end at 882px and
  * the end gutter at 906 — so every viewport from 768 to 881 scrolled the whole page sideways, by 114px at 768.
  * With the icon-only search the actions are 120 wide and the row needs 735, which fits at 768 with 33px spare.
- * 960 is the first round width that clears 906. Re-run `SYNTARA_WIDTHS=320,768,860,900 check-narrow-overflow`
+ * 960 was the first round width that clears 906; it now grows later still (below). Re-run `SYNTARA_WIDTHS=320,768,860,900 check-narrow-overflow`
  * before adding anything to the nav or the actions: 33px is one nav link of headroom.
  */
 /*
  * Nav items that only appear once the row is wide enough for them. "Get started" is one: the header fits at
  * 768px with 33px to spare after #38 made the search icon-only there, and this label is wider than that, so
- * showing it at 768 put every page 26px over the viewport. 960 is where the search expands too.
+ * showing it at 768 put every page 26px over the viewport. From 960 it fits beside the icon-only search.
  *
  * Below 960 the entry point is still the hero's own "Get started" button, and /docs is one item along.
  */
@@ -208,7 +209,14 @@
   }
 }
 
-@media (min-width: 960px) {
+/*
+ * The search grows in two steps, each placed where the whole row still fits on one line. Measured on
+ * syntara.live with every link held to one line: the nav is 556px wide, so the row needs 1006px with the
+ * 192px field and 1102px with the 288px one. The field used to grow at 960 and 1024, which is inside both of
+ * those, so the nav was squeezed and "Get started" broke onto two lines from 960–1006 and 1024–1102.
+ * Now: icon until 1024 (18px spare at 1024), 192px until 1120 (18px spare at 1120), then 288px.
+ */
+@media (min-width: 1024px) {
   .search.search {
     justify-content: flex-start;
     inline-size: calc(var(--syntara-space-16) * 3);
@@ -227,7 +235,7 @@
     display: inline-flex;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 1120px) {
   .search.search {
     inline-size: calc(var(--syntara-space-16) * 4.5);
   }
