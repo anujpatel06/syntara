@@ -7,7 +7,8 @@ import styles from './theme-scope.module.css';
 export interface ThemeScopeProps extends HTMLAttributes<HTMLDivElement> {
   /** Tenant id whose token CSS is loaded under [data-syntara-theme="<id>"]. Omit to inherit (e.g. a :root theme). */
   theme?: string;
-  scheme?: 'light' | 'dark';
+  /** `'auto'` follows the visitor's system setting (light or dark), with no flash: the token CSS switches by media query. */
+  scheme?: 'light' | 'dark' | 'auto';
   /** Omit to use the tenant's default density. */
   density?: 'comfortable' | 'compact';
   /**

@@ -96,9 +96,10 @@ function importInsertLine(lines) {
  *   { status: 'already' }                          the file already imports syntara/styles.css; nothing to do
  *   { status: 'manual', reason }                   not safe to edit; the reason says what was not found
  * @param {string} source
- * @param {{ kind: EntryKind, entryPath: string, cssPath: string, id: string }} where
+ * With `welcomePath`, it also imports the welcome card (welcome.js) and puts it first inside the ThemeScope.
+ * @param {{ kind: EntryKind, entryPath: string, cssPath: string, id: string, welcomePath?: string }} where
  */
-export function planWire(source, { kind, entryPath, cssPath, id }) {
+export function planWire(source, { kind, entryPath, cssPath, id, welcomePath }) {
   if (/['"]syntara\/styles\.css['"]/.test(source)) return { status: 'already' };
 
   const { pattern, label } = TARGETS[kind];
@@ -122,9 +123,15 @@ export function planWire(source, { kind, entryPath, cssPath, id }) {
     `import ${q}syntara/styles.css${q}${semi}`,
     `import ${q}${relativeImport(entryPath, cssPath)}${q}${semi}`,
   ];
+  if (welcomePath) {
+    added.push(`import { SyntaraWelcome } from ${q}${relativeImport(entryPath, welcomePath).replace(/\.[jt]sx?$/, '')}${q}${semi}`);
+  }
+  const welcome = welcomePath ? '<SyntaraWelcome />' : '';
 
   const eol = source.includes('\r\n') ? '\r\n' : '\n';
-  const open = `<ThemeScope theme="${id}" style={{ minHeight: '100vh' }}>`;
+  // 'auto' follows the computer's light or dark setting, as the app's own CSS usually does; a fixed 'light' painted
+  // a light page under an app whose text had switched to dark mode, and its headings disappeared.
+  const open = `<ThemeScope theme="${id}" scheme="auto" style={{ minHeight: '100vh' }}>`;
   const close = '</ThemeScope>';
   const match = matches[0];
   const start = /** @type {number} */ (match.index);
@@ -139,10 +146,11 @@ export function planWire(source, { kind, entryPath, cssPath, id }) {
   let wrappedSource;
   if (before.trim() === '' && after.trim() === '') {
     const indent = before;
-    const block = [`${indent}${open}`, `${indent}  ${match[0]}`, `${indent}${close}`].join(eol);
+    const inner = welcome ? [`${indent}  ${welcome}`, `${indent}  ${match[0]}`] : [`${indent}  ${match[0]}`];
+    const block = [`${indent}${open}`, ...inner, `${indent}${close}`].join(eol);
     wrappedSource = source.slice(0, lineStart) + block + source.slice(lineStart + before.length + match[0].length + after.length);
   } else {
-    wrappedSource = source.slice(0, start) + open + match[0] + close + source.slice(end);
+    wrappedSource = source.slice(0, start) + open + welcome + match[0] + close + source.slice(end);
   }
 
   const lines = wrappedSource.split(eol);
@@ -152,5 +160,5 @@ export function planWire(source, { kind, entryPath, cssPath, id }) {
   const insert = directiveAbove && !/^import\b/.test((lines[at] ?? '').trim()) ? ['', ...added] : added;
   lines.splice(at, 0, ...insert);
 
-  return { status: 'ready', source: lines.join(eol), added, wrapped: `${match[0]}  →  ${open}${match[0]}${close}` };
+  return { status: 'ready', source: lines.join(eol), added, wrapped: `${match[0]}  →  ${open}${welcome}${match[0]}${close}` };
 }
