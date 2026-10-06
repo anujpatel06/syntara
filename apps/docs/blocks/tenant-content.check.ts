@@ -2,7 +2,8 @@
  * Compile-time check that every tenant's content.json feeds every block: the docs pass each tenant's JSON straight
  * to the blocks as `content`, so it must match their content types. Nothing imports this file; `tsc` (the docs
  * typecheck, and `next build`) is what runs it. The generator's content-types.ts checks the same files against
- * the same shapes from its side.
+ * the same shapes from its side. TypeScript can't list a folder, so a new tenant is added here by hand; the site
+ * shows it either way (lib/tenants.ts reads tenants/), this only adds the type check.
  */
 import care from '../../../tenants/care/content.json';
 import haat from '../../../tenants/haat/content.json';

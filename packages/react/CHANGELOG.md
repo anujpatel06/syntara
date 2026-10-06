@@ -1,5 +1,16 @@
 # @syntara/react
 
+## 0.4.0
+
+### Minor Changes
+
+- 11163d5: `npx syntara init` now adds a welcome card to your app (`syntara-welcome.tsx`) that shows your brand on real components the first time you start it; delete the file and its two lines when you are done, or pass `--no-welcome`. The `ThemeScope` it adds follows the computer's light or dark setting (`scheme="auto"`), so an app whose own styles switch to dark mode no longer gets a light page under dark-mode text. `ThemeScope` accepts `scheme="auto"`.
+
+### Patch Changes
+
+- Updated dependencies [eb1ee7a]
+  - @syntara/icons@0.2.0
+
 ## 0.3.1
 
 ### Patch Changes

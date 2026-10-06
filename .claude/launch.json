@@ -20,6 +20,45 @@
       ],
       "port": 5181,
       "url": "http://localhost:5181"
+    },
+    {
+      "name": "generator",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/generator && exec ./node_modules/.bin/vite --port 5282 --strictPort"
+      ],
+      "port": 5282
+    },
+    {
+      "name": "docs-3142",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/docs && NEXT_DIST_DIR=.next-showcase exec ./node_modules/.bin/next dev --port 3142"
+      ],
+      "port": 3142,
+      "url": "http://localhost:3142"
+    },
+    {
+      "name": "docs-sidebar-icons",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/docs && NEXT_DIST_DIR=.next-sidebar-icons exec ./node_modules/.bin/next dev --port 3233"
+      ],
+      "port": 3233,
+      "url": "http://localhost:3233"
+    },
+    {
+      "name": "docs-mobile-banner",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/docs && NEXT_DIST_DIR=.next-mobile-banner exec ./node_modules/.bin/next dev --port 3412"
+      ],
+      "port": 3412,
+      "url": "http://localhost:3412"
     }
   ]
 }
