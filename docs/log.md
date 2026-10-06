@@ -23,7 +23,7 @@ Branch `feat/docs-icons-first`, from `main` at 5306ea4, in its own worktree.
 - `pnpm typecheck` clean; `pnpm test` 2,363 passed 0 failed, README row matches; `pnpm test:themes` 118,000/118,000; `check:meta` 58/58; `registry` 82 ok; `check-override-weight` clean.
 - `pnpm --filter @syntara/docs build`: 317/317 pages. `out/docs/icons.html` holds 2,480 distinct `data-syntara-icon` marks and `anatomy-skull`; `out/_redirects` is shipped; 264,632 bytes gzipped (`gzip -c out/docs/icons.html | wc -c`).
 - On the served build: `check-ssr-tabs` 0 of 592 tab lists missing a panel; hydration 0/292; theme links 0; sideways scroll at 320/768px 0/292; CSP 0/146.
-- **Not finished at commit time:** the local `axe-sweep` and `check-overlay-exit` were still running (committed on Anuj's word, so GitHub's `axe · overlay exit` check is the first full result). The redirect from `/docs/icons/niche` is untested until it deploys.
+- Local `axe-sweep` (146 routes × 2 schemes) 0 violation nodes and `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers), finished after the PR was opened (it was opened on Anuj's word while they ran). The redirect from `/docs/icons/niche` is untested until it deploys.
 - The first build of this session failed with `ENOSPC: no space left on device` (disk 97% full, 7.7 GiB free): a full disk, not the code. After clearing `.next`/`out` it built clean.
 
 **Next**
