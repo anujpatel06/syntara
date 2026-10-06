@@ -1,7 +1,7 @@
 The Syntara MCP server lets AI coding agents look up components, tokens and usage rules while they write code, and check their own work. It reads the same `meta.json` files as these pages.
 
-<Callout tone="info" title="Not published yet">
-  The server works from a checkout of the repo today. `npx @syntara/mcp` arrives with the npm release.
+<Callout tone="warning" title="Needs a copy of the repo">
+  `@syntara/mcp` is on npm, but the component and token data isn’t in the package yet. On its own, `npx @syntara/mcp` starts and then every lookup fails. Run it from a checkout of the repo, as shown under [Set it up](#set-it-up), until the data ships with the package.
 </Callout>
 
 ## What it does
@@ -37,7 +37,7 @@ No tool writes a file. `audit_snippet` returns each fix marked `safe: true` or `
 
 ## Set it up
 
-Run `pnpm install` in a checkout of the repo, then point your client at the server. Replace `/path/to/syntara` with the path of your checkout.
+Clone the repo and run `pnpm install` in it, then point your client at the server. Replace `/path/to/syntara` with the path of your checkout.
 
 ```sh
 claude mcp add syntara -- node /path/to/syntara/packages/mcp/bin/cli.mjs
