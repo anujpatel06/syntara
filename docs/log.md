@@ -51,6 +51,9 @@ Branch `feat/engine-grey-primary-dark`, from `main` at c8e1ca5.
 **Next**
 - Anuj: update the README's "80.0% dark" to 78.5%?
 - Open: a grey brand with no accent still gets a grey accent fill in dark (ADR-056).
+
+---
+
 ## 2026-10-06 — Themes: inputs on the right, Export top right, compact header
 
 Branch `feat/themes-inputs-right`, from `main` at c8e1ca5 (after #104).
