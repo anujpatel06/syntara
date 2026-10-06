@@ -6,6 +6,46 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Make `npx syntara init` readable to AI assistants
+
+Branch `feat/agent-friendly-install`, from `main` at ea2ca1c, rebased onto fa8c03f, in its own worktree
+(`../strata-agent-install`).
+
+Why: a friend asked their Claude to run `npx syntara init`. It looked the package up on npm, read only the one-line
+description, and stopped, because a day-old package that doesn't say what it changes is one an assistant won't run
+unasked. People typing the command themselves were never blocked.
+
+**Changed**
+- `packages/syntara/package.json`: the npm description now says what `init` writes and changes, and that it asks
+  first in a terminal (`--no-edit` skips the entry-file edit). Changeset: `agent-readable-description` (patch).
+- `apps/docs/content/docs/installation.mdx`: new "With an AI assistant" section, a prompt to paste that names the
+  npm package, site and source, asks the person for a brand name and main colour, then runs
+  `npx syntara init --name … --primary …`, and lists every file it writes or changes. It also says that without a
+  terminal `init` takes the suggested answers and saves without asking.
+
+**Decided**
+- Fixes 1 (description) and 3 (prompt on the install page): **Claude recommended, Anuj accepted**. Fix 2, npm
+  provenance (a "built by GitHub from this repo" badge, needs publishing from CI), is left for its own session.
+
+**Results**
+- The prompt's command, run with the published `syntara@0.3.0` in a scratch app with no terminal
+  (`npx -y syntara@0.3.0 init --name "Acme" --primary "#c2410c" --no-install </dev/null`): "118 of 118 contrast
+  checks pass", wrote the theme and brand files, changed `src/main.tsx`. 0.3.0 does not add the welcome card yet;
+  that ships with the pending `onboarding-welcome` changeset, which the install page already describes.
+- `/verify`, once, after Anuj approved: `pnpm typecheck` passes; `pnpm test` 2,363 tests across 8 packages, none
+  failing (README row matches); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand (reports not
+  committed); `pnpm check:meta` 58/58; `pnpm registry` ok; `check-override-weight` 0; docs build 318/318;
+  `check-ssr-tabs` 0. Served on :3108 (`SYNTARA_BASE_URL=http://localhost:3108`, :3000 held by another session):
+  `check-hydration` 0 (147 × 2), `check-theme-links` 0 of 5, `check-narrow-overflow` 0 (147 × 320, 768),
+  `check-csp` 0 (147), `axe-sweep` 0 violation nodes (147 × 2), `check-overlay-exit` 0. Change shipped:
+  `apps/docs/out/docs/installation.html` contains "With an AI assistant".
+
+**Next**
+- Merge; the description reaches npm with the next `pnpm changeset publish`. Then ask the friend to try again.
+- Fix 2, npm provenance, in its own session.
+
+---
+
 ## 2026-10-06 — One Icons page for all 2,480 icons, icons on the first screen (ADR-054)
 
 Branch `feat/docs-icons-first`, from `main` at 5306ea4, in its own worktree.

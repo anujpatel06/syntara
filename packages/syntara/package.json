@@ -1,7 +1,7 @@
 {
   "name": "syntara",
   "version": "0.3.0",
-  "description": "Everything Syntara in one install: the React components, the icon set, the token CSS for every brand and the theme engine.",
+  "description": "An accessible design system, set up by one command. `npx syntara init` writes a light and dark theme that passes WCAG 2.2 AA contrast, installs the React components and icon set, and adds two style imports and a ThemeScope to your app's entry file (in a terminal it shows the change and asks first; --no-edit skips it). Also includes the token CSS for every brand and the theme engine.",
   "type": "module",
   "license": "MIT",
   "repository": {
