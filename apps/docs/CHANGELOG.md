@@ -1,5 +1,16 @@
 # @syntara/docs
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [37b9578]
+- Updated dependencies [5c00355]
+  - @syntara/theme-engine@0.3.0
+  - @syntara/icons@0.1.1
+  - @syntara/react@0.3.1
+  - @syntara/sdui@0.2.1
+
 ## 0.1.4
 
 ### Patch Changes
