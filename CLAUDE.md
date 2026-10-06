@@ -129,4 +129,7 @@ When parallelising, give each agent exact file ownership and these rules: no dep
   commit. Before deleting, count from the exact list the delete command will use and ask with that number: on
   2026-10-06, "25" approved became 73 deleted, and one had a commit not in `main` (restored).
 - **Stopping servers:** `pgrep -f "next start"` also matches your own shell command. Kill by the PID you started instead.
+- **iPhone bugs need WebKit, not Chrome.** Every iPhone browser (and LinkedIn's in-app one) is Safari's engine; a
+  phone layout that's right in Chrome can be wrong there (#68 was). Playwright's WebKit installs only under Node 24
+  here: `/usr/local/bin/node node_modules/playwright/cli.js install webkit` (under Node 26 the unzip hangs).
 - **Offline sandboxes** can't reach Google Fonts. Screenshot scripts accept `SYNTARA_LOCAL_FONTS=<node_modules with @fontsource/*>`. You don't need this on a normal Mac.
