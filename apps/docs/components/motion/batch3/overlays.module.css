@@ -1,0 +1,137 @@
+/*
+ * Batch 3 (overlays): layout for the stand-ins and the tile drawings. Placement only: every look and every movement
+ * on the stage comes from the component's own stylesheet. Classes that share an element with a component's class
+ * are doubled (.x.x) so they win in any stylesheet order (scripts/check-override-weight.mjs).
+ */
+
+/* ---- Stage: a trigger near the top with room below it for the panel ---- */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  padding: var(--syntara-space-16) var(--syntara-space-6) var(--syntara-space-6);
+}
+/* The date picker's calendar is tall: start the field higher so the whole panel fits. */
+.sceneTight {
+  padding-block-start: var(--syntara-space-6);
+}
+
+/* The trigger's box, which the panel hangs from (React Aria positions it from the trigger in the same way). */
+.anchor.anchor {
+  position: relative;
+}
+/* A button trigger with a wider panel opening towards the inline end: shift the pair so it sits centred. */
+.anchorStart.anchorStart {
+  margin-inline-end: var(--syntara-space-32);
+}
+/* A field trigger. The list is at least as wide as the field, which React Aria passes as --trigger-width. */
+.anchorField.anchorField {
+  --trigger-width: 100%;
+  inline-size: min(100%, calc(var(--syntara-space-16) * 5));
+}
+
+/*
+ * Where the panel grows from. React Aria sets --trigger-anchor-point to the trigger's centre, measured from the panel;
+ * the stand-in sets the same point. Field panels keep the stylesheet's own fallback (top centre), which is where a
+ * field's centre falls for a list as wide as the field.
+ */
+.originButton.originButton {
+  --trigger-anchor-point: var(--syntara-space-16) 0;
+}
+.originButton.originButton:dir(rtl) {
+  --trigger-anchor-point: calc(100% - var(--syntara-space-16)) 0;
+}
+.originIcon.originIcon {
+  --trigger-anchor-point: calc(var(--syntara-control-height) / 2) 0;
+}
+.originIcon.originIcon:dir(rtl) {
+  --trigger-anchor-point: calc(100% - var(--syntara-control-height) / 2) 0;
+}
+
+/* placement="bottom start" with the component's offset (4px; Popover's own is 6px). */
+.below.below {
+  position: absolute;
+  inset-block-start: calc(100% + var(--syntara-space-1));
+  inset-inline-start: 0;
+  inline-size: max-content;
+}
+.belowWide.belowWide {
+  inset-block-start: calc(100% + var(--syntara-space-1) * 1.5);
+}
+.belowCalendar.belowCalendar {
+  max-inline-size: none;
+}
+
+/* Popover's content, as popover-demo lays it out. */
+.popoverBody {
+  display: grid;
+  gap: var(--syntara-field-gap);
+  inline-size: calc(var(--syntara-space-16) * 4);
+}
+.popoverHead {
+  display: grid;
+  gap: var(--syntara-space-1);
+}
+.popoverTitle {
+  font-weight: var(--syntara-font-weight-semibold);
+}
+.popoverHint {
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+}
+
+/* ---- Tile drawings (match .ct* in motion-lab.module.css) ---- */
+
+/* Trigger at the top, panel under it, from the inline start. */
+
+/* An open field's edge turns to the focus colour, as Select's and the date picker's do. */
+
+.tChevron {
+  flex: none;
+  inline-size: var(--syntara-space-2);
+  block-size: var(--syntara-space-2);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.6;
+}
+
+.tRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--syntara-space-1);
+  block-size: var(--syntara-space-3);
+  padding-inline: var(--syntara-space-1);
+  border-radius: var(--syntara-radius-badge);
+}
+.tRow > span:last-child {
+  flex: 1;
+}
+.tRow > span:first-child:last-child {
+  flex: none;
+  inline-size: 50%;
+}
+.tRowOn {
+  background: var(--syntara-color-surface-selected);
+}
+.tCheck {
+  flex: none;
+  inline-size: var(--syntara-space-2);
+  block-size: var(--syntara-space-2);
+  fill: none;
+  stroke: var(--syntara-color-action-primary-bg);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Command: the palette sits high over a dimmed page; the active row has the focus bar at its start. */
+
+/* Toast: one card at the bottom inline-end corner. */

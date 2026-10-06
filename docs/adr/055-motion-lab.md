@@ -83,3 +83,14 @@ every step), "Motion" shows from 810px, and the search grows at 1074 and 1170 in
 (Dialog, Tooltip, Switch, Tabs, Accordion, Stat tile). Every one but Dialog is the real component driven through
 its own props; Dialog stays a stand-in (decision 7). The other ~44 components with motion wait for Anuj to approve
 this batch.
+
+## Revision, 2026-10-06: all 50 components
+
+**Anuj** decided "first complete all components" (batch 2 approved the same day). The lab now covers every
+component whose CSS has motion: 50, in six groups. Component tiles show the real component's still (Anuj, #103,
+replacing the drawn sketches; the batch-3 sketches were removed when this branch merged it).
+
+**Claude** chose how each loops (spec §12, batch 3): the real component through its own props wherever that shows
+the motion; a stand-in wearing the component's own stylesheet where the real one would take focus, announce, or
+only move under real hover, press, focus or drag.
+
