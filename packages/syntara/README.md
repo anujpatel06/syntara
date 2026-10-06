@@ -26,6 +26,12 @@ import './syntara-theme.css';
 
 Just want the package? `npm install syntara`.
 
+Your own font instead of a ready-made pair: `--font Manrope` (any Google font) or `--font-file fonts/acme.woff2`, plus
+`--heading-font` for headings and `--script hindi` or `arabic`. It is used only if it passes six checks, run in a minute
+or two in your Chrome or Edge: real Regular to Bold, every letter drawn by the font, no letter cut off at any size,
+line spacing within limits, and lower-case letters tall enough to read at 12px. If it fails, you get the reason in a
+sentence and a list of Google fonts that pass.
+
 Every answer can be a flag instead (`--primary '#c2410c' --fonts friendly …`), and anything you pass is not asked.
 Edit `syntara.brand.json` later and run `npx syntara build`. `npx syntara init --yes` asks nothing; `npx syntara help`
 lists the options.

@@ -1,0 +1,26 @@
+{
+  "name": "Kestrel",
+  "primary": "#2f5bea",
+  "accent": "#0f9d8a",
+  "neutral": "cool",
+  "shape": "soft",
+  "typePair": "modern",
+  "density": "comfortable",
+  "font": {
+    "body": {
+      "google": "Manrope",
+      "category": "sans"
+    },
+    "script": "latin",
+    "measured": {
+      "lineHeight": {
+        "tight": 1.31,
+        "snug": 1.35,
+        "normal": 1.5
+      },
+      "xHeight": 0.545,
+      "by": "syntara 0.2.0",
+      "date": "2026-10-06"
+    }
+  }
+}

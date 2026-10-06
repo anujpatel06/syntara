@@ -225,3 +225,105 @@ describe('pieces', () => {
     expect(() => parseArgs(['--colour'])).toThrow('Unknown option --colour');
   });
 });
+
+/* ------------------------------------------------------------------ a brand's own font (ADR-051) */
+
+describe('init with an own font', () => {
+  const measured = { lineHeight: { tight: 1.36, snug: 1.36, normal: 1.5 }, xHeight: 0.545, by: 'syntara test', date: '2026-10-06' };
+  /** Stands in for the real checks (Chrome, a minute or two): Lobster fails on weights, anything else passes. */
+  const checked: unknown[] = [];
+  const fakeCheck = async (req: { body: { google?: string; files?: string[] }; heading?: { google?: string }; script: string }) => {
+    checked.push(req);
+    if (req.body.google === 'Lobster') {
+      return { pass: false, failures: [{ check: 2, kind: 'weights', role: 'body', family: 'Lobster', has: [400], missing: [500, 600, 700] }] };
+    }
+    const source = (r: { google?: string; files?: string[] }) =>
+      r.google ? { google: r.google, category: 'sans' } : { family: 'Acme Sans', category: 'sans', files: r.files!.map((url) => ({ url, weight: '400 700' })) };
+    return { pass: true, cases: 3520, font: { body: source(req.body), ...(req.heading ? { heading: source(req.heading) } : {}), script: req.script, measured } };
+  };
+  const withCheck = (answers: string[], extra = {}) => {
+    const f = fakeIO(answers, extra);
+    return { ...f, io: { ...f.io, checkFont: fakeCheck } };
+  };
+  beforeEach(() => void (checked.length = 0));
+
+  it('--font: checked, stored with its measurement, and loaded and spaced in the CSS', async () => {
+    const { io, said } = withCheck([]);
+    expect(await runInit(['--yes', '--font', 'Manrope', '--no-install'], io)).toBe(0);
+    const brand = readConfig().brand;
+    expect(brand.font).toEqual({ body: { google: 'Manrope', category: 'sans' }, script: 'latin', measured });
+    expect(brand.typePair).toBe('modern');
+    const css = readFileSync(join(cwd, 'syntara-theme.css'), 'utf8');
+    expect(css).toContain('family=Manrope:wght@400;500;600;700');
+    expect(css).toContain('--syntara-font-body: "Manrope", system-ui');
+    expect(css).toContain('--syntara-line-height-tight: 1.36');
+    const text = said.join('\n');
+    expect(text).toContain('Manrope passes all six checks for English.');
+    expect(text).toContain('✓ Font Manrope: passed Syntara’s font checks on 2026-10-06; line spacing 1.36 / 1.36 / 1.5.'.replace('’', "'"));
+  });
+
+  it('a failing font writes nothing under --yes, and says why', async () => {
+    const { io, said } = withCheck([]);
+    expect(await runInit(['--yes', '--font', 'Lobster', '--no-install'], io)).toBe(1);
+    expect(existsSync(join(cwd, CONFIG_FILE))).toBe(false);
+    expect(said.join('\n')).toContain('Lobster comes in one weight only (Regular)');
+  });
+
+  it('asked: "Your own font" is the last choice; a fail asks again, and the next font is used', async () => {
+    const pairs = 9;
+    // guidelines, name, main, accent, grey, corners, fonts → own, Lobster, same for headings, English, spacing,
+    // then after the fail: own font again, Manrope, same, English.
+    const { io, said } = withCheck(['y', 'Kestrel', '', '', '1', '2', String(pairs + 1), 'Lobster', '', '1', '1', '1', 'Manrope', '', '1']);
+    expect(await runInit(['--no-install'], io)).toBe(0);
+    expect(said).toContain(`  ${pairs + 1}. Your own font: a Google font, or your font files`);
+    expect(said).toContain('Pick another font, or a ready-made pair');
+    expect(checked).toHaveLength(2);
+    expect(readConfig().brand.font.body).toEqual({ google: 'Manrope', category: 'sans' });
+  });
+
+  it('after a fail, a ready-made pair can be picked instead', async () => {
+    const { io } = withCheck(['y', 'Kestrel', '', '', '1', '2', '10', 'Lobster', '', '1', '1', '2']);
+    expect(await runInit(['--no-install'], io)).toBe(0);
+    expect(readConfig().brand.font).toBeUndefined();
+    expect(readConfig().brand.typePair).toBe('precise');
+  });
+
+  it('a Hindi brand keeps the Devanagari pair underneath, for its mono font and size floor', async () => {
+    const { io } = withCheck([]);
+    await runInit(['--yes', '--font', 'Mukta', '--script', 'hindi', '--no-install'], io);
+    expect(readConfig().brand).toMatchObject({ typePair: 'bilingual-devanagari', font: { script: 'devanagari' } });
+  });
+
+  it('own files: checked from disk, then linked relative to the theme CSS', async () => {
+    mkdirSync(join(cwd, 'src'));
+    const { io, said } = withCheck([]);
+    expect(await runInit(['--yes', '--font-file', 'public/fonts/acme.woff2', '--heading-font', 'Fraunces', '--no-install'], io)).toBe(0);
+    expect((checked[0] as { body: { files: string[] } }).body.files).toEqual([join(cwd, 'public/fonts/acme.woff2')]);
+    const brand = readConfig().brand;
+    expect(brand.font.body.files).toEqual([{ url: '../public/fonts/acme.woff2', weight: '400 700' }]);
+    expect(brand.font.heading).toEqual({ google: 'Fraunces', category: 'sans' });
+    const css = readFileSync(join(cwd, 'src/syntara-theme.css'), 'utf8');
+    expect(css).toContain('src: url("../public/fonts/acme.woff2") format("woff2");');
+    expect(said.join('\n')).toContain('Their licence is yours to check.');
+  });
+
+  it('build keeps the measured font and never measures again', async () => {
+    const { io } = withCheck([]);
+    await runInit(['--yes', '--font', 'Manrope', '--no-install'], io);
+    checked.length = 0;
+    const b = withCheck([]);
+    expect(await runBuild([], b.io)).toBe(0);
+    expect(checked).toHaveLength(0);
+    expect(readFileSync(join(cwd, 'syntara-theme.css'), 'utf8')).toContain('--syntara-line-height-tight: 1.36');
+    expect(b.said.join('\n')).toContain('✓ Font Manrope');
+  });
+
+  it.each([
+    [['--font', 'A', '--font-file', 'a.woff2'], /not both/],
+    [['--heading-font', 'A'], /go with --font/],
+    [['--font', 'A', '--script', 'greek'], /latin, arabic, hindi/],
+    [['--font', 'A', '--fonts', 'calm'], /not both/],
+  ])('rejects %j', (argv, message) => {
+    expect(() => parseArgs(argv)).toThrow(message);
+  });
+});

@@ -16,6 +16,7 @@ export {
   relativeLuminance,
 } from './color';
 export { TYPE_PAIRS, googleFontsHref } from './type-pairs';
+export { FONT_LINE_HEIGHT_BOUNDS, FONT_MIN_X_HEIGHT, fontFacesCSS, fontFamilyOf, typePairForFont, validateBrandFont } from './custom-font';
 export { FOUNDATIONS, radiusForShape } from './foundations';
 export { CHART_CANDIDATES, chartPaletteProblems, solveChartSeries } from './chart';
 export { FIDELITY_ROLES, brandFidelity, type BrandColorInput, type FidelityRecord } from './fidelity';

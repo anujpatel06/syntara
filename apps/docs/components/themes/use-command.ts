@@ -10,7 +10,7 @@ import type { BrandInput } from '@syntara/theme-engine';
 
 const hex = (value: string) => value.replace(/^#/, '').toLowerCase();
 
-export function initCommand(brand: Required<Omit<BrandInput, 'name'>> & Pick<BrandInput, 'name'>): string {
+export function initCommand(brand: Required<Omit<BrandInput, 'name' | 'font'>> & Pick<BrandInput, 'name'>): string {
   return [
     'npx syntara init',
     `--primary ${hex(brand.primary)}`,
