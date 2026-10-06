@@ -58,5 +58,5 @@ export function getNicheGroups(): IconGroup[] {
   const rank = (id: string) => (order.includes(id) ? order.indexOf(id) : order.length);
   return Object.entries(nicheDomains)
     .sort(([a], [b]) => rank(a) - rank(b))
-    .map(([id, names]) => ({ id, label: LABELS[id] ?? id, names: [...names].sort().map(exportName) }));
+    .map(([id, names]) => ({ id, label: LABELS[id] ?? id, niche: true, names: [...names].sort().map(exportName) }));
 }
