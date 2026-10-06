@@ -22,7 +22,7 @@ The server reads the repo when a tool is called. There is no build step.
 
 A file is read again when its modified time or size changes, so an edit to a meta file shows up on the next call.
 
-The repo root is three folders up from this package. Set `SYNTARA_ROOT` to use another checkout.
+Where those files come from, first match wins: `SYNTARA_ROOT` if set; the repo three folders up, when the package runs from a checkout; otherwise the copy in `data/` that ships in the npm package. `scripts/bundle-data.mjs` writes that copy on `prepack`, so every `pnpm pack` and `pnpm publish` takes a fresh one.
 
 ## Tools
 
@@ -82,14 +82,14 @@ If the file doesn't exist, reading the resource returns a "not found" error. The
 
 ## Setup
 
-Run it from a checkout of this repo: run `pnpm install` in the repo, then point your client at the file. `npx @syntara/mcp` starts the server, but on its own every tool fails, because the data it reads isn't in the npm package yet (see [Limits](#limits)).
+The package carries its own copy of the data, so `npx @syntara/mcp` works with no checkout.
 
-Replace `/path/to/syntara` with the absolute path of your checkout.
+To work on the server itself, run it from a checkout instead: run `pnpm install` in the repo, and in each snippet use `node` with `/path/to/syntara/packages/mcp/bin/cli.mjs` as the argument. It then reads the repo as you edit it.
 
 ### Claude Code
 
 ```sh
-claude mcp add syntara -- node /path/to/syntara/packages/mcp/bin/cli.mjs
+claude mcp add syntara -- npx -y @syntara/mcp
 ```
 
 Or in `.mcp.json` at the root of your project:
@@ -98,8 +98,8 @@ Or in `.mcp.json` at the root of your project:
 {
   "mcpServers": {
     "syntara": {
-      "command": "node",
-      "args": ["/path/to/syntara/packages/mcp/bin/cli.mjs"]
+      "command": "npx",
+      "args": ["-y", "@syntara/mcp"]
     }
   }
 }
@@ -113,8 +113,8 @@ Or in `.mcp.json` at the root of your project:
 {
   "mcpServers": {
     "syntara": {
-      "command": "node",
-      "args": ["/path/to/syntara/packages/mcp/bin/cli.mjs"]
+      "command": "npx",
+      "args": ["-y", "@syntara/mcp"]
     }
   }
 }
@@ -129,16 +129,16 @@ Or in `.mcp.json` at the root of your project:
   "servers": {
     "syntara": {
       "type": "stdio",
-      "command": "node",
-      "args": ["/path/to/syntara/packages/mcp/bin/cli.mjs"]
+      "command": "npx",
+      "args": ["-y", "@syntara/mcp"]
     }
   }
 }
 ```
 
-### Another checkout
+### Your own checkout
 
-Add `"env": { "SYNTARA_ROOT": "/path/to/other/syntara" }` to the server entry.
+Add `"env": { "SYNTARA_ROOT": "/path/to/syntara" }` to the server entry to read a checkout instead of the bundled copy, for example a fork with its own components.
 
 ### Check that it runs
 
@@ -227,7 +227,7 @@ pnpm --filter @syntara/mcp typecheck
 
 ## Limits
 
-- **It needs a checkout of the repo.** The package is on npm, but the data isn't bundled in it: run from `npx` alone, every tool answers "No Syntara repo" and `syntara://agents` is not found (checked with 0.1.3 on 2026-10-06). Bundling the data is the next step.
+- **The bundled copy is as new as the package.** Run from npm, the server knows the components, examples, icons and tenants of the commit it was published from. 0.1.3 and earlier shipped no copy at all, so from `npx` every tool failed; `test/packed.test.ts` now runs the packed package outside the repo.
 - **Token names are derived.** The CSS variable is the contract. The dotted name comes from rules in `src/tokens.ts`, for example `--syntara-font-size-md` → `font.size.md`. Density tokens and a few others have no group, so they keep their CSS name: `control-height`, `hairline`. The `tokens` list in `get_component` comes from the meta files as written, and some of those names differ from the derived ones (`icon.stroke` and `icon-stroke` both appear).
 - **Density tokens use the tenant's own density.** There is no `density` input.
 - **A pattern's `structure` is the first paragraph of the comment at the top of its source**, up to six sentences. It is as good as that comment.
@@ -235,5 +235,5 @@ pnpm --filter @syntara/mcp typecheck
 - **`find_icon` matches words, not drawings.** Beyond the synonym list it can't tell what an icon looks like. `synonymOf` marks a match by meaning, so the agent can judge it.
 - **`imports` and `typeNotes` are only as complete as the meta files.** They cover the traps the eval found and the same traps confirmed in other components' types.
 - **`audit_snippet` accepts up to 100,000 characters** of `tsx` or `css`.
-- **`find_token` and `audit_snippet` depend on `@syntara/audit`.** If it can't be loaded they return an error and the other tools keep working. The auditor finds tenants on its own; `SYNTARA_ROOT` is not passed to it.
+- **`find_token` and `audit_snippet` depend on `@syntara/audit`.** If it can't be loaded they return an error and the other tools keep working. The server points it at the same tenants it reads (by setting `SYNTARA_TENANTS_DIR`, unless you set it yourself).
 - **No recorded agent run yet.** BRIEF §8 asks for a recorded run where Claude Code builds a screen using only this server. That hasn't been done.

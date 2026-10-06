@@ -19,12 +19,15 @@
   },
   "files": [
     "bin",
-    "src"
+    "src",
+    "data"
   ],
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
+    "prepack": "node scripts/bundle-data.mjs",
+    "postpack": "node -e \"fs.rmSync('data',{recursive:true,force:true})\"",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json"
   },
