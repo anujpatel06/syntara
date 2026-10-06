@@ -43,15 +43,18 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
   car-lift, cattle-ear-tag, silicon-wafer, breadboard, dog-tags, access-keypad, centrifuge, garland, fireworks.
 - Docs site page for the pack (search by domain) is not built. Duotone twins not started. Not published to npm.
 - Hand-drawn at this scale: expect a redraw round after Anuj's review of the per-domain sheets.
+
+---
+
 ## 2026-10-06 — Cloudflare Web Analytics was blocked by our own CSP
 
 **Changed**
 - `apps/docs/public/_headers`: the CSP now allows `https://static.cloudflareinsights.com` in `script-src` and
   `https://cloudflareinsights.com` in `connect-src`, so the analytics script Cloudflare injects on syntara.live can run
-  and report (ADR-054).
+  and report (ADR-053).
 
 **Decided**
-- Keep Cloudflare Web Analytics and allow it, rather than turn it off — **Claude recommended, Anuj accepted** (ADR-054).
+- Keep Cloudflare Web Analytics and allow it, rather than turn it off — **Claude recommended, Anuj accepted** (ADR-053).
   Anuj had not known it was on.
 
 **Results**
