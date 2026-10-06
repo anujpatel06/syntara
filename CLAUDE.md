@@ -21,9 +21,10 @@ Anuj owns design decisions. You pair on engineering and push back when he's wron
   https://syntara.pages.dev still answers but **LinkedIn flags `*.pages.dev` as possibly malicious** and hides posts
   that link to it — never share it; the build's `NEXT_PUBLIC_SITE_URL` is `https://syntara.live`; previews per
   branch, configured in the Cloudflare dashboard, not in this repo), the differentiation research re-run (`docs/research/2026-10-01-differentiation.md`), the
-  README GIF and `/story`. Versions (`npm view <pkg> version`, 2026-10-05, after the init release): `@syntara/react` **0.3.0**, `syntara` **0.2.0**;
-  `sdui`, `tokens`, `theme-engine` and `audit` at **0.2.0**, `@syntara/mcp` at 0.1.2, `icons` and `codemods` at 0.1.0. Release with `pnpm changeset publish` from `main`; publish with pnpm, never npm, or
+  README GIF and `/story`. Versions (`npm view <pkg> version`, 2026-10-06, after the custom-fonts release): `syntara` **0.3.0**, `@syntara/theme-engine` **0.3.0**,
+  `@syntara/react` **0.3.1**; `sdui`, `tokens` and `audit` at **0.2.1**, `@syntara/mcp` at 0.1.3, `icons` and `codemods` at 0.1.1. Release with `pnpm changeset publish` from `main`; publish with pnpm, never npm, or
   `workspace:*` ships literally, and `+ pkg@version` means npm staged it — check `npm view` before believing it. npm asks for a web approval on every publish (2FA), so start it in the Terminal panel where Anuj can open the link; from a background shell it fails with `EOTP` and publishes nothing.
+  Before publishing: `npm whoami` (a `401` means Anuj runs `npm login` himself). After: a new version can take about 90 s to show in `npm view`; ask for the exact `pkg@version` before calling it missing. GitHub only accepts auto-merge while checks are still running; once they pass, Anuj merges.
 - **The repo is public** (ADR-037). Done: the pre-publication audit, the scrub of job-search framing, the
   Syntara screenshots, and `private: false` — which also unblocked branch protection and GitHub auto-merge, both
   now on for `main` with the two CI jobs required. The cold clone ADR-037 asked for was run on 2026-10-05, after the flip: a fresh clone of `main` (44ca23a) on an
