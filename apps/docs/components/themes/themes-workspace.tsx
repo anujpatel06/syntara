@@ -19,6 +19,17 @@ const TAB_LABEL: Record<TabId, string> = {
   tokens: 'Tokens',
 };
 
+/** One Export button per place it can show; CSS shows the one that fits the width (top of the inputs, or the tab row). */
+function ExportButton({ className }: { className?: string }) {
+  const { dispatch } = useThemes();
+  return (
+    <Button size="sm" onPress={() => dispatch({ type: 'setExportOpen', open: true })} className={className}>
+      <IconDownload aria-hidden />
+      Export
+    </Button>
+  );
+}
+
 function SchemeToggle() {
   const { state, dispatch } = useThemes();
   return (
@@ -45,17 +56,16 @@ function SchemeToggle() {
   );
 }
 
-/** Inputs on the start side (sticky on wide screens), views of the generated theme in tabs on the end side. */
+/**
+ * Views of the generated theme in tabs on the start side, inputs on the end side (sticky on wide screens), like the
+ * Motion lab's settings panel. The inputs come after the views in the source too, so focus order matches what you see.
+ */
 export function ThemesWorkspace() {
   const { state, dispatch, theme } = useThemes();
   const { adjustments } = theme.summary;
 
   return (
     <div className={styles.workspace}>
-      <div className={styles.controls}>
-        <ControlsPanel />
-      </div>
-
       <Tabs
         selectedKey={state.tab}
         onSelectionChange={(key: Key) => {
@@ -80,10 +90,7 @@ export function ThemesWorkspace() {
           </TabList>
           <div className={styles.tabActions}>
             <SchemeToggle />
-            <Button size="sm" onPress={() => dispatch({ type: 'setExportOpen', open: true })}>
-              <IconDownload aria-hidden />
-              Export
-            </Button>
+            <ExportButton className={styles.exportNarrow} />
           </div>
         </div>
         <TabPanel id="preview" className={styles.panel}>
@@ -97,6 +104,13 @@ export function ThemesWorkspace() {
         </TabPanel>
       </Tabs>
       <ExportDialog />
+      <div className={styles.controls}>
+        {/* Export heads the inputs column, level with the tab row: the page's one primary action, top right. */}
+        <div className={styles.exportRow}>
+          <ExportButton />
+        </div>
+        <ControlsPanel />
+      </div>
     </div>
   );
 }
