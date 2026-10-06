@@ -1,6 +1,6 @@
 # Motion lab spec
 
-Status: **approved for the first build** (Anuj, 2026-10-06: all six recommendations in §9 accepted). Nothing is built yet. Decision record: [ADR-054](../adr/054-motion-lab.md).
+Status: **approved for the first build** (Anuj, 2026-10-06: all six recommendations in §9 accepted). Nothing is built yet. Decision record: [ADR-055](../adr/055-motion-lab.md).
 
 Cross-checked against the repo on 2026-10-06. Every number below comes from a file or a command named next to it.
 
@@ -115,7 +115,7 @@ Anuj approves when he sees:
 
 Only after that: `/verify` once, the `/screenshots` sweep once, a docs nav link, then more components in groups.
 
-## 9. Decisions (2026-10-06, all **Claude recommended, Anuj accepted**; see ADR-054)
+## 9. Decisions (2026-10-06, all **Claude recommended, Anuj accepted**; see ADR-055)
 
 1. Three styles in v1: Tactile, Gentle, Snappy. Two cannot show a range.
 2. A docs-site demo that prints overrides. Styles are **not** added to the published `@syntara/theme-engine` yet; promote them only if people use the lab.

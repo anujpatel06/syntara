@@ -1,4 +1,4 @@
-# ADR-054: Motion lab, a docs page that shows a brand in motion and prints the code
+# ADR-055: Motion lab, a docs page that shows a brand in motion and prints the code
 
 - **Status:** Accepted — **Claude recommended, Anuj accepted** (2026-10-06), all six decisions below.
 - **Date:** 2026-10-06
