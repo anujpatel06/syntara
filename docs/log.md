@@ -59,6 +59,41 @@ Branch `feat/onboarding-welcome`, from `main` at c94e7bf, in its own worktree (`
 
 ---
 
+## 2026-10-06 — Branch and worktree cleanup
+
+Asked by Anuj after the custom-fonts release. No code changed.
+
+**Changed**
+- **Worktrees:** removed 3 clean ones whose work was merged: `strata-init-wire` (#78), `.claude/worktrees/repo-links`
+  (#77), `strata-repolink` (#40, closed, replaced by #77); `git worktree prune`. 9 → 6 (`git worktree list`). Size
+  before removal, from `du -sh`: 1.8G, 20M, 18M.
+- **Local branches:** deleted 23 whose PRs merged and whose tips matched the merged commit (one, the footer fix, had
+  only a merge of `main` and #67's own commit on top). 42 → 20 (`git branch | wc -l`), counting one backup added below.
+- **GitHub branches:** deleted **73**, the head branches of every merged PR. Anuj had approved "25": Claude counted
+  only those also on this computer, and the command used every merged PR. Then checked all 73: GitHub's push events
+  covered 30 (23 tips equal the merged commit; 6 older than it; 1 newer); for the rest, every leftover commit was
+  tested with `git merge-base --is-ancestor` against each merged PR's head.
+  - `claude/sharp-moser-fb7615` (#37) had `0d8983c` "docs(log): name the build the final numbers came from"
+    (2026-10-02), pushed after the merge and not in `main`. Pushed back to GitHub at `0d8983c`.
+  - `2e001ea` "feat(docs): /story, the case-study page" (2026-10-01) is in no merged PR and no branch; probably an early
+    draft (`/story` shipped in #27). Kept locally as `backup/story-draft-2e001ea`.
+  - Every other commit sits inside a merged PR. A deleted branch can be restored from its PR page.
+  GitHub now has 7 branches (`git branch -r`).
+
+**Decided**
+- Remove merged worktrees and branches, here and on GitHub. **Anuj.**
+- Keep everything with unsaved or unmerged work: the main checkout (2 files, on `feat/icons-style-filter`),
+  `ai-announcer` (11), `tenants-from-folder` (13, another session), `home-showcase-mobile` (1), `feat-prompt-composer`
+  (3 commits not in `main`), and 13 branches never sent as a PR, including `wip/haat-hindi-copy` (on Anuj's question
+  list) and the `backup/…` branches. **Claude.**
+- Before a delete, count from the exact list the command will use, and ask with that number. **Claude**, after the
+  73-for-25 mistake; written into `CLAUDE.md` and Claude's memory.
+
+**Next**
+- The 13 unsent branches and 4 dirty worktrees are Anuj's to decide, one by one.
+
+---
+
 ## 2026-10-06 — A brand's own font, accepted only if it passes six measured checks (ADR-051)
 
 Branch `feat/custom-fonts`, from `main` at 9767dae, in its own worktree; `main` fast-forwarded to 5c00355, then
