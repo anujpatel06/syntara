@@ -7,6 +7,7 @@ import type { Density, Role, Scheme, Theme } from './types';
 import { ROLES, roleToCssVar } from './types';
 import { capsTracking, trackingForSize } from './foundations';
 import { CHART_AXIS_ROLE, CHART_GRID_ROLE } from './chart';
+import { isGreyPrimary } from './roles';
 import {
   DENSITY_KEYS,
   FONT_ROLES,
@@ -31,6 +32,16 @@ const FONT_WEIGHT_VARS = FONT_WEIGHT_KEYS.map((k) => [k, `--syntara-font-weight-
 const DENSITY_VARS = DENSITY_KEYS.map((k) => [k, `--syntara-${kebab(k)}`] as const);
 
 const px = (n: number): string => `${n}px`;
+
+/**
+ * The colour brand glows are mixed from: the primary button fill, except for a grey brand in dark mode, whose button
+ * is near-white (ADR-056). A 30% near-white glow under a feature card dropped secondary text to 3.83:1, so those
+ * brands glow in neutral step 8 (L 0.44), close to the grey the button had before. Undefined means "use the fill".
+ */
+export function glowColorHex(theme: Theme, scheme: Scheme): string | undefined {
+  if (scheme !== 'dark' || !isGreyPrimary(theme.input.primary)) return undefined;
+  return theme.schemes.dark.ramps.neutral[7];
+}
 
 /** Colour roles (and the chart palette) for one scheme. */
 export function writeColorVars(out: CssVars, theme: Theme, scheme: Scheme): CssVars {
@@ -67,7 +78,8 @@ export function writeShadowVars(out: CssVars, theme: Theme, scheme: Scheme): Css
   out['--syntara-sheen'] = dark
     ? `linear-gradient(115deg, transparent 6%, color-mix(in srgb, var(${roleToCssVar('text.default')}) 8%, transparent) 20%, transparent 40%)`
     : 'none';
-  out['--syntara-glow'] = `0 0 0 1px color-mix(in srgb, var(${roleToCssVar('action.primary.bg')}) ${dark ? 40 : 22}%, transparent), 0 12px 40px -12px color-mix(in srgb, var(${roleToCssVar('action.primary.bg')}) ${dark ? 60 : 35}%, transparent)`;
+  out['--syntara-glow-color'] = glowColorHex(theme, scheme) ?? `var(${roleToCssVar('action.primary.bg')})`;
+  out['--syntara-glow'] = `0 0 0 1px color-mix(in srgb, var(--syntara-glow-color) ${dark ? 40 : 22}%, transparent), 0 12px 40px -12px color-mix(in srgb, var(--syntara-glow-color) ${dark ? 60 : 35}%, transparent)`;
   const { glass } = theme.schemes[scheme];
   out['--syntara-glass-opacity'] = String(glass.opacity);
   out['--syntara-glass-bg'] = `color-mix(in srgb, var(${roleToCssVar('surface.raised')}) ${Math.round(glass.opacity * 100)}%, transparent)`;

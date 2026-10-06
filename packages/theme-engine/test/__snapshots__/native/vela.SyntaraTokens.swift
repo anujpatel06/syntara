@@ -179,6 +179,8 @@ public struct SyntaraEffects: Equatable, Sendable {
     public let shadowHighlight: [SyntaraShadowLayer]
     /// `--syntara-rim`
     public let rim: Color
+    /// `--syntara-glow-color`
+    public let glowColor: Color
     /// `--syntara-glow`
     public let glow: [SyntaraShadowLayer]
     /// `--syntara-glass-opacity`
@@ -528,6 +530,7 @@ extension SyntaraEffects {
             SyntaraShadowLayer(color: srgb(0xFFFFFF, opacity: 0.2), offsetX: 0, offsetY: 1, blur: 0, spread: 0, inset: true)
         ],
         rim: srgb(0x1B2025, opacity: 0.1), // colors.textDefault at 10%
+        glowColor: srgb(0x3D45D6), // colors.actionPrimaryBg
         glow: [
             SyntaraShadowLayer(color: srgb(0x3D45D6, opacity: 0.22), offsetX: 0, offsetY: 0, blur: 0, spread: 1, inset: false),
             SyntaraShadowLayer(color: srgb(0x3D45D6, opacity: 0.35), offsetX: 0, offsetY: 12, blur: 40, spread: -12, inset: false)
@@ -552,6 +555,7 @@ extension SyntaraEffects {
             SyntaraShadowLayer(color: srgb(0xFFFFFF, opacity: 0.12), offsetX: 0, offsetY: 1, blur: 0, spread: 0, inset: true)
         ],
         rim: srgb(0xE9EFF7, opacity: 0.18), // colors.textDefault at 18%
+        glowColor: srgb(0x3D45D6), // colors.actionPrimaryBg
         glow: [
             SyntaraShadowLayer(color: srgb(0x3D45D6, opacity: 0.4), offsetX: 0, offsetY: 0, blur: 0, spread: 1, inset: false),
             SyntaraShadowLayer(color: srgb(0x3D45D6, opacity: 0.6), offsetX: 0, offsetY: 12, blur: 40, spread: -12, inset: false)

@@ -32,7 +32,8 @@ const compactTheme: Theme = { ...theme, input: { ...theme.input, density: 'compa
 describe('CSS variable contract (parsed from types.ts)', () => {
   it('parses every non-colour contract variable', () => {
     const vars = contractFoundationVars();
-    expect(vars).toHaveLength(83);
+    expect(vars).toHaveLength(84);
+    expect(vars).toContain('--syntara-glow-color');
     expect(vars).toContain('--syntara-chart-4');
     expect(vars).toContain('--syntara-chart-grid');
     expect(vars).toContain('--syntara-space-16');

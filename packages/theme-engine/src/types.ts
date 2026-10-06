@@ -319,7 +319,7 @@ export interface Theme {
  * Icons:         --syntara-icon-stroke  (unitless SVG stroke width)
  *                --syntara-line-height-{tight,snug,normal}         (unitless)
  *                --syntara-font-weight-{regular,medium,semibold,bold}
- * Elevation:     --syntara-shadow-raised | --syntara-shadow-overlay | --syntara-shadow-highlight | --syntara-hairline | --syntara-rim | --syntara-glow | --syntara-sheen
+ * Elevation:     --syntara-shadow-raised | --syntara-shadow-overlay | --syntara-shadow-highlight | --syntara-hairline | --syntara-rim | --syntara-glow-color | --syntara-glow | --syntara-sheen
  * Glass:         --syntara-glass-bg | --syntara-glass-blur | --syntara-glass-opacity
  * Chart:         --syntara-chart-{1,2,3,4}  (series hexes, fixed order; per scheme)
  *                --syntara-chart-grid | --syntara-chart-axis   (var() aliases of border.subtle / text.subtle)

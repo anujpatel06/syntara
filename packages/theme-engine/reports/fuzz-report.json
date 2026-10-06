@@ -15,9 +15,9 @@
   "failures": [],
   "invariantViolations": [],
   "generationMs": {
-    "median": 0.6158544999999549,
-    "p95": 0.9519580000000047,
-    "max": 4.878125000000004
+    "median": 0.6521879999999669,
+    "p95": 1.3524170000000595,
+    "max": 6.293916999999993
   },
   "minMargin": {
     "3": {
@@ -54,7 +54,7 @@
   },
   "interventions": [
     {
-      "scheme": "dark",
+      "scheme": "light",
       "role": "action.primary.fg",
       "kind": "choice",
       "brands": 555,
@@ -62,11 +62,11 @@
       "offRamp": 0
     },
     {
-      "scheme": "light",
+      "scheme": "dark",
       "role": "action.primary.fg",
       "kind": "choice",
-      "brands": 555,
-      "percent": 55.5,
+      "brands": 546,
+      "percent": 54.6,
       "offRamp": 0
     },
     {
@@ -111,6 +111,14 @@
     },
     {
       "scheme": "dark",
+      "role": "action.primary.bg",
+      "kind": "choice",
+      "brands": 128,
+      "percent": 12.8,
+      "offRamp": 0
+    },
+    {
+      "scheme": "dark",
       "role": "accent.bg",
       "kind": "choice",
       "brands": 116,
@@ -134,14 +142,6 @@
       "offRamp": 0
     },
     {
-      "scheme": "dark",
-      "role": "action.primary.bg",
-      "kind": "choice",
-      "brands": 108,
-      "percent": 10.8,
-      "offRamp": 0
-    },
-    {
       "scheme": "light",
       "role": "action.primary.bg",
       "kind": "contrast",
@@ -153,8 +153,8 @@
       "scheme": "dark",
       "role": "action.primary.bg",
       "kind": "visibility",
-      "brands": 92,
-      "percent": 9.2,
+      "brands": 87,
+      "percent": 8.7,
       "offRamp": 0
     },
     {
@@ -197,15 +197,15 @@
       "input": "primary",
       "scheme": "dark",
       "role": "action.primary.bg",
-      "exact": 800,
-      "exactPercent": 80,
+      "exact": 785,
+      "exactPercent": 78.5,
       "median": 0,
-      "p95": 7.089698650606184,
-      "max": 28.966717275068344,
+      "p95": 8.969409808434673,
+      "max": 74.96688971967035,
       "worst": {
-        "theme": 938,
-        "asked": "#0f030f",
-        "shipped": "#594658"
+        "theme": 106,
+        "asked": "#0d1914",
+        "shipped": "#ecefee"
       }
     },
     {

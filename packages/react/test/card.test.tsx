@@ -1,6 +1,6 @@
 import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
-import { generateTheme, toCssVariables, type BrandInput } from '@syntara/theme-engine';
+import { generateTheme, glowColorHex, toCssVariables, type BrandInput } from '@syntara/theme-engine';
 import {
   contrastRatio,
   hexToRgb8,
@@ -143,7 +143,7 @@ describe('feature card contrast', () => {
     return Number(m[1]);
   };
   const glowBlock = /--_glow: light-dark\(([\s\S]*?)\);\n/.exec(css)?.[1] ?? '';
-  const [SL, SD] = [...glowBlock.matchAll(/action-primary-bg\) (\d+)%/g)].map((m) => Number(m[1]));
+  const [SL, SD] = [...glowBlock.matchAll(/--_glow-color\) (\d+)%/g)].map((m) => Number(m[1]));
   const STOP = num(/var\(--_glow\) 0%, var\(--syntara-color-surface-raised\) (\d+)%/);
   const AL = num(/--_star: light-dark\(\s*color-mix\(in srgb, var\(--syntara-color-surface-raised\) (\d+)%/) / 100;
   const AD = num(/color-mix\(in srgb, var\(--syntara-color-text-default\) (\d+)%, transparent\)\s*\);/) / 100;
@@ -187,7 +187,8 @@ describe('feature card contrast', () => {
         const S = dark ? SD! : SL!;
         const A = dark ? AD : AL;
         const base = hex('surface.raised');
-        const corner = mix(hex('action.primary.bg'), base, S);
+        const glow = glowColorHex(theme, scheme) ?? hex('action.primary.bg');
+        const corner = mix(glow, base, S);
         const dot = dark ? hex('text.default') : base;
         for (const role of ['text.default', 'text.subtle', 'text.brand'] as const) {
           let worst = Infinity;
@@ -195,7 +196,7 @@ describe('feature card contrast', () => {
             const x = i / 200;
             const k = Math.max(0, 1 - x / (STOP / 100));
             const alpha = A * (dark ? x : 1 - x);
-            for (const g of [over(corner, base, k), mix(hex('action.primary.bg'), base, S * k)]) {
+            for (const g of [over(corner, base, k), mix(glow, base, S * k)]) {
               worst = Math.min(worst, contrastRatio(hex(role), g), contrastRatio(hex(role), over(dot, g, alpha)));
             }
           }

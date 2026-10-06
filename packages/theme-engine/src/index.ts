@@ -22,7 +22,7 @@ export { CHART_CANDIDATES, chartPaletteProblems, solveChartSeries } from './char
 export { FIDELITY_ROLES, brandFidelity, type BrandColorInput, type FidelityRecord } from './fidelity';
 
 // Exporters
-export { toCssVariables } from './css-vars';
+export { toCssVariables, glowColorHex } from './css-vars';
 export { toCSS } from './export/css';
 export { toDTCG } from './export/dtcg';
 export { toFigmaFiles, FIGMA_STARTER_MODE, type FigmaExportOptions, type FigmaModes } from './export/figma';

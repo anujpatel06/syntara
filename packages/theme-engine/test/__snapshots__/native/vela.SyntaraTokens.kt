@@ -177,6 +177,8 @@ data class SyntaraEffects(
     val shadowHighlight: List<SyntaraShadowLayer>,
     /** `--syntara-rim` */
     val rim: Color,
+    /** `--syntara-glow-color` */
+    val glowColor: Color,
     /** `--syntara-glow` */
     val glow: List<SyntaraShadowLayer>,
     /** `--syntara-glass-opacity` */
@@ -535,6 +537,7 @@ object SyntaraTokens {
             SyntaraShadowLayer(color = Color(0xFFFFFFFF).copy(alpha = 0.2f), offsetX = 0.dp, offsetY = 1.dp, blur = 0.dp, spread = 0.dp, inset = true),
         ),
         rim = Color(0xFF1B2025).copy(alpha = 0.1f), // colors.textDefault at 10%
+        glowColor = Color(0xFF3D45D6), // colors.actionPrimaryBg
         glow = listOf(
             SyntaraShadowLayer(color = Color(0xFF3D45D6).copy(alpha = 0.22f), offsetX = 0.dp, offsetY = 0.dp, blur = 0.dp, spread = 1.dp, inset = false),
             SyntaraShadowLayer(color = Color(0xFF3D45D6).copy(alpha = 0.35f), offsetX = 0.dp, offsetY = 12.dp, blur = 40.dp, spread = (-12).dp, inset = false),
@@ -559,6 +562,7 @@ object SyntaraTokens {
             SyntaraShadowLayer(color = Color(0xFFFFFFFF).copy(alpha = 0.12f), offsetX = 0.dp, offsetY = 1.dp, blur = 0.dp, spread = 0.dp, inset = true),
         ),
         rim = Color(0xFFE9EFF7).copy(alpha = 0.18f), // colors.textDefault at 18%
+        glowColor = Color(0xFF3D45D6), // colors.actionPrimaryBg
         glow = listOf(
             SyntaraShadowLayer(color = Color(0xFF3D45D6).copy(alpha = 0.4f), offsetX = 0.dp, offsetY = 0.dp, blur = 0.dp, spread = 1.dp, inset = false),
             SyntaraShadowLayer(color = Color(0xFF3D45D6).copy(alpha = 0.6f), offsetX = 0.dp, offsetY = 12.dp, blur = 40.dp, spread = (-12).dp, inset = false),

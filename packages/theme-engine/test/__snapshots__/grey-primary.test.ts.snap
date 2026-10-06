@@ -1,0 +1,3139 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`coloured brands are unchanged (ADR-056) > blue: roles and adjustments match the engine before the change 1`] = `
+{
+  "adjustments": [
+    {
+      "against": [
+        "action.primary.fg",
+      ],
+      "fromHex": "#3b82f6",
+      "id": "light:action.primary.bg",
+      "kind": "contrast",
+      "label": "Primary button",
+      "message": "Neither white (3.6:1) nor ink (4.4:1) labels reach 4.5:1 on #3b82f6, so the primary button uses a deeper tone, #2b72e5, with white labels (4.5:1).",
+      "ratioAfter": 4.524816363963211,
+      "ratioBefore": 4.484731133732447,
+      "required": 4.5,
+      "role": "action.primary.bg",
+      "scheme": "light",
+      "toHex": "#2b72e5",
+    },
+    {
+      "against": [
+        "accent.fg",
+      ],
+      "fromHex": "#3b82f6",
+      "id": "light:accent.bg",
+      "kind": "contrast",
+      "label": "Accent fill",
+      "message": "Neither white (3.6:1) nor ink (4.4:1) labels reach 4.5:1 on #3b82f6, so the accent fill uses a deeper tone, #2b72e5, with white labels (4.5:1).",
+      "ratioAfter": 4.524816363963211,
+      "ratioBefore": 4.484731133732447,
+      "required": 4.5,
+      "role": "accent.bg",
+      "scheme": "light",
+      "toHex": "#2b72e5",
+    },
+    {
+      "against": [
+        "action.primary.fg",
+      ],
+      "fromHex": "#3b82f6",
+      "id": "dark:action.primary.bg",
+      "kind": "choice",
+      "label": "Primary button",
+      "message": "White labels on #3b82f6 only reach 3.6:1 (ink would pass at 5.2:1), but to match light mode, dark-mode buttons use a deeper tone, #2b72e5, so button labels stay white (4.5:1).",
+      "ratioAfter": 4.524816363963211,
+      "ratioBefore": 3.6779011537825332,
+      "required": 4.5,
+      "role": "action.primary.bg",
+      "scheme": "dark",
+      "toHex": "#2b72e5",
+    },
+    {
+      "against": [
+        "accent.fg",
+      ],
+      "fromHex": "#3b82f6",
+      "id": "dark:accent.bg",
+      "kind": "choice",
+      "label": "Accent fill",
+      "message": "White labels on #3b82f6 only reach 3.6:1 (ink would pass at 5.2:1), but to match light mode, dark-mode accent fills use a deeper tone, #2b72e5, so accent labels stay white (4.5:1).",
+      "ratioAfter": 4.524816363963211,
+      "ratioBefore": 3.6779011537825332,
+      "required": 4.5,
+      "role": "accent.bg",
+      "scheme": "dark",
+      "toHex": "#2b72e5",
+    },
+  ],
+  "dark": {
+    "accent.bg": {
+      "adjusted": {
+        "adjustmentId": "dark:accent.bg",
+        "fromHex": "#3b82f6",
+        "fromRef": "accent.9",
+      },
+      "hex": "#2b72e5",
+    },
+    "accent.fg": {
+      "hex": "#ffffff",
+    },
+    "accent.subtle": {
+      "hex": "#162847",
+      "ref": "accent.4",
+    },
+    "accent.text": {
+      "hex": "#8db8ff",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "adjusted": {
+        "adjustmentId": "dark:action.primary.bg",
+        "fromHex": "#3b82f6",
+        "fromRef": "primary.9",
+      },
+      "hex": "#2b72e5",
+    },
+    "action.primary.border": {
+      "hex": "#2b72e5",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#1d65d7",
+    },
+    "action.primary.pressed": {
+      "hex": "#0d59ca",
+    },
+    "action.secondary.bg": {
+      "hex": "#132037",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#8db8ff",
+      "ref": "primary.11",
+    },
+    "action.secondary.hover": {
+      "hex": "#162847",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#193157",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#323335",
+      "ref": "neutral.6",
+    },
+    "border.strong": {
+      "hex": "#7f8083",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#222324",
+      "ref": "neutral.4",
+    },
+    "feedback.danger.bg": {
+      "hex": "#351613",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#7d2b26",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ff968a",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#122232",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#204d78",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#7ebdfd",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#142517",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#255632",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#85cb93",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#2c1d08",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#654200",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#ffca80",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#3b82f6",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "surface.default": {
+      "hex": "#131415",
+      "ref": "neutral.2",
+    },
+    "surface.inverse": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#1b1c1d",
+      "ref": "neutral.3",
+    },
+    "surface.selected": {
+      "hex": "#162847",
+      "ref": "primary.4",
+    },
+    "surface.sunken": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.brand": {
+      "hex": "#8db8ff",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#515355",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#b6b7ba",
+      "ref": "neutral.11",
+    },
+  },
+  "light": {
+    "accent.bg": {
+      "adjusted": {
+        "adjustmentId": "light:accent.bg",
+        "fromHex": "#3b82f6",
+        "fromRef": "accent.9",
+      },
+      "hex": "#2b72e5",
+    },
+    "accent.fg": {
+      "hex": "#ffffff",
+    },
+    "accent.subtle": {
+      "hex": "#e5efff",
+      "ref": "accent.3",
+    },
+    "accent.text": {
+      "hex": "#2564c8",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "adjusted": {
+        "adjustmentId": "light:action.primary.bg",
+        "fromHex": "#3b82f6",
+        "fromRef": "primary.9",
+      },
+      "hex": "#2b72e5",
+    },
+    "action.primary.border": {
+      "hex": "#2b72e5",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#1d65d7",
+    },
+    "action.primary.pressed": {
+      "hex": "#0d59ca",
+    },
+    "action.secondary.bg": {
+      "hex": "#e5efff",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#042965",
+      "ref": "primary.12",
+    },
+    "action.secondary.hover": {
+      "hex": "#d6e6ff",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#c4dbff",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#c7c9cb",
+      "ref": "neutral.7",
+    },
+    "border.strong": {
+      "hex": "#858689",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#dee0e2",
+      "ref": "neutral.5",
+    },
+    "feedback.danger.bg": {
+      "hex": "#ffe9e6",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#ff9b90",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ac1a1c",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#e3f0ff",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#84c0fe",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#025fa6",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#dcf7e0",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#8bcd98",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#0f7034",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#ffebd1",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#e6b061",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#7e5400",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#3b82f6",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#f7f8f9",
+      "ref": "neutral.2",
+    },
+    "surface.default": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.inverse": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.selected": {
+      "hex": "#e5efff",
+      "ref": "primary.3",
+    },
+    "surface.sunken": {
+      "hex": "#eff0f2",
+      "ref": "neutral.3",
+    },
+    "text.brand": {
+      "hex": "#2564c8",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#afb1b4",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#595b5d",
+      "ref": "neutral.11",
+    },
+  },
+}
+`;
+
+exports[`coloured brands are unchanged (ADR-056) > care: roles and adjustments match the engine before the change 1`] = `
+{
+  "adjustments": [
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "light:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #f27f00 only reach 2.6:1, so accent labels use ink #1e1f21 (6.1:1).",
+      "ratioAfter": 6.13528594003626,
+      "ratioBefore": 2.688448097182172,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "light",
+      "toHex": "#1e1f21",
+    },
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "dark:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #f27f00 only reach 2.6:1, so accent labels use ink #0d0d0e (7.2:1).",
+      "ratioAfter": 7.225740258072615,
+      "ratioBefore": 2.688448097182172,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "dark",
+      "toHex": "#0d0d0e",
+    },
+    {
+      "against": [
+        "surface.canvas",
+        "surface.default",
+        "surface.raised",
+        "surface.selected",
+      ],
+      "fromHex": "#0e63ff",
+      "id": "dark:focus.ring",
+      "kind": "contrast",
+      "label": "Focus ring",
+      "message": "#0e63ff is too dark to see as a focus ring on selected items #112750 (2.9:1), so the ring uses a lighter tone, #90b7ff (7.2:1).",
+      "ratioAfter": 7.275616905780377,
+      "ratioBefore": 2.970466759332018,
+      "required": 3,
+      "role": "focus.ring",
+      "scheme": "dark",
+      "toHex": "#90b7ff",
+    },
+  ],
+  "dark": {
+    "accent.bg": {
+      "hex": "#f27f00",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "dark:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "accent.subtle": {
+      "hex": "#3e2008",
+      "ref": "accent.4",
+    },
+    "accent.text": {
+      "hex": "#ffac70",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#0e63ff",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#0e63ff",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#0057ed",
+    },
+    "action.primary.pressed": {
+      "hex": "#004dd5",
+    },
+    "action.secondary.bg": {
+      "hex": "#101f3d",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#90b7ff",
+      "ref": "primary.11",
+    },
+    "action.secondary.hover": {
+      "hex": "#112750",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#142f62",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#323335",
+      "ref": "neutral.6",
+    },
+    "border.strong": {
+      "hex": "#7f8083",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#222324",
+      "ref": "neutral.4",
+    },
+    "feedback.danger.bg": {
+      "hex": "#351613",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#7d2b26",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ff968a",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#122232",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#204d78",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#7ebdfd",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#142517",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#255632",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#85cb93",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#2c1d08",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#654200",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#ffca80",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "adjusted": {
+        "adjustmentId": "dark:focus.ring",
+        "fromHex": "#0e63ff",
+        "fromRef": "primary.9",
+      },
+      "hex": "#90b7ff",
+      "ref": "primary.11",
+    },
+    "surface.canvas": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "surface.default": {
+      "hex": "#131415",
+      "ref": "neutral.2",
+    },
+    "surface.inverse": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#1b1c1d",
+      "ref": "neutral.3",
+    },
+    "surface.selected": {
+      "hex": "#112750",
+      "ref": "primary.4",
+    },
+    "surface.sunken": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.brand": {
+      "hex": "#90b7ff",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#515255",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#b6b7ba",
+      "ref": "neutral.11",
+    },
+  },
+  "light": {
+    "accent.bg": {
+      "hex": "#f27f00",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "light:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "accent.subtle": {
+      "hex": "#ffeadc",
+      "ref": "accent.3",
+    },
+    "accent.text": {
+      "hex": "#9f5100",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#0e63ff",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#0e63ff",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#0057ed",
+    },
+    "action.primary.pressed": {
+      "hex": "#004dd5",
+    },
+    "action.secondary.bg": {
+      "hex": "#e6efff",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#002571",
+      "ref": "primary.12",
+    },
+    "action.secondary.hover": {
+      "hex": "#d7e5ff",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#c5daff",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#c7c9cb",
+      "ref": "neutral.7",
+    },
+    "border.strong": {
+      "hex": "#858689",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#dee0e2",
+      "ref": "neutral.5",
+    },
+    "feedback.danger.bg": {
+      "hex": "#ffe9e6",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#ff9b90",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ac1a1c",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#e3f0ff",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#84c0fe",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#025fa6",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#dcf7e0",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#8bcd98",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#0f7034",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#ffebd1",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#e6b061",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#7e5400",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#0e63ff",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#f7f8f9",
+      "ref": "neutral.2",
+    },
+    "surface.default": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.inverse": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.selected": {
+      "hex": "#e6efff",
+      "ref": "primary.3",
+    },
+    "surface.sunken": {
+      "hex": "#eff0f2",
+      "ref": "neutral.3",
+    },
+    "text.brand": {
+      "hex": "#125be4",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#b0b1b4",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#595b5d",
+      "ref": "neutral.11",
+    },
+  },
+}
+`;
+
+exports[`coloured brands are unchanged (ADR-056) > haat: roles and adjustments match the engine before the change 1`] = `
+{
+  "adjustments": [
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "light:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #f48c06 only reach 2.4:1, so accent labels use ink #211f20 (6.7:1).",
+      "ratioAfter": 6.71116733630286,
+      "ratioBefore": 2.4417234797155727,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "light",
+      "toHex": "#211f20",
+    },
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "dark:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #f48c06 only reach 2.4:1, so accent labels use ink #0e0d0e (7.9:1).",
+      "ratioAfter": 7.9444078093194115,
+      "ratioBefore": 2.4417234797155727,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "dark",
+      "toHex": "#0e0d0e",
+    },
+    {
+      "against": [
+        "surface.canvas",
+        "surface.default",
+        "surface.raised",
+        "surface.selected",
+      ],
+      "fromHex": "#b5179e",
+      "id": "dark:focus.ring",
+      "kind": "contrast",
+      "label": "Focus ring",
+      "message": "#b5179e is too dark to see as a focus ring on selected items #3e1837 (2.5:1), so the ring uses a lighter tone, #f88ae1 (6.9:1).",
+      "ratioAfter": 6.985187359441038,
+      "ratioBefore": 2.5750845235113626,
+      "required": 3,
+      "role": "focus.ring",
+      "scheme": "dark",
+      "toHex": "#f88ae1",
+    },
+  ],
+  "dark": {
+    "accent.bg": {
+      "hex": "#f48c06",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "dark:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#0e0d0e",
+      "ref": "neutral.1",
+    },
+    "accent.subtle": {
+      "hex": "#3c2207",
+      "ref": "accent.4",
+    },
+    "accent.text": {
+      "hex": "#ffb87b",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#b5179e",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#b5179e",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#a60090",
+    },
+    "action.primary.pressed": {
+      "hex": "#940081",
+    },
+    "action.secondary.bg": {
+      "hex": "#31152b",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#f88ae1",
+      "ref": "primary.11",
+    },
+    "action.secondary.hover": {
+      "hex": "#3e1837",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#4c1c43",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#343233",
+      "ref": "neutral.6",
+    },
+    "border.strong": {
+      "hex": "#827f81",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#242223",
+      "ref": "neutral.4",
+    },
+    "feedback.danger.bg": {
+      "hex": "#351613",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#7d2b26",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ff968a",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#122232",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#204d78",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#7ebdfd",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#142517",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#255632",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#85cb93",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#2c1d08",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#654200",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#ffca80",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#0e0d0e",
+      "ref": "neutral.1",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "adjusted": {
+        "adjustmentId": "dark:focus.ring",
+        "fromHex": "#b5179e",
+        "fromRef": "primary.9",
+      },
+      "hex": "#f88ae1",
+      "ref": "primary.11",
+    },
+    "surface.canvas": {
+      "hex": "#0e0d0e",
+      "ref": "neutral.1",
+    },
+    "surface.default": {
+      "hex": "#141314",
+      "ref": "neutral.2",
+    },
+    "surface.inverse": {
+      "hex": "#f0edef",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#1d1b1c",
+      "ref": "neutral.3",
+    },
+    "surface.selected": {
+      "hex": "#3e1837",
+      "ref": "primary.4",
+    },
+    "surface.sunken": {
+      "hex": "#0e0d0e",
+      "ref": "neutral.1",
+    },
+    "text.brand": {
+      "hex": "#f88ae1",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#f0edef",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#545253",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#0e0d0e",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#b9b6b8",
+      "ref": "neutral.11",
+    },
+  },
+  "light": {
+    "accent.bg": {
+      "hex": "#f48c06",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "light:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#211f20",
+      "ref": "neutral.12",
+    },
+    "accent.subtle": {
+      "hex": "#ffeada",
+      "ref": "accent.3",
+    },
+    "accent.text": {
+      "hex": "#995600",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#b5179e",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#b5179e",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#a60090",
+    },
+    "action.primary.pressed": {
+      "hex": "#940081",
+    },
+    "action.secondary.bg": {
+      "hex": "#ffe6f8",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#520047",
+      "ref": "primary.12",
+    },
+    "action.secondary.hover": {
+      "hex": "#ffd6f4",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#ffc3f0",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#cac8ca",
+      "ref": "neutral.7",
+    },
+    "border.strong": {
+      "hex": "#888587",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#e1dfe0",
+      "ref": "neutral.5",
+    },
+    "feedback.danger.bg": {
+      "hex": "#ffe9e6",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#ff9b90",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ac1a1c",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#e3f0ff",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#84c0fe",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#025fa6",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#dcf7e0",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#8bcd98",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#0f7034",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#ffebd1",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#e6b061",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#7e5400",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#211f20",
+      "ref": "neutral.12",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#b5179e",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#f9f7f8",
+      "ref": "neutral.2",
+    },
+    "surface.default": {
+      "hex": "#fefdfe",
+      "ref": "neutral.1",
+    },
+    "surface.inverse": {
+      "hex": "#211f20",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#fefdfe",
+      "ref": "neutral.1",
+    },
+    "surface.selected": {
+      "hex": "#ffe6f8",
+      "ref": "primary.3",
+    },
+    "surface.sunken": {
+      "hex": "#f1eff1",
+      "ref": "neutral.3",
+    },
+    "text.brand": {
+      "hex": "#aa2595",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#211f20",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#b3b0b2",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#fefdfe",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#5c5a5c",
+      "ref": "neutral.11",
+    },
+  },
+}
+`;
+
+exports[`coloured brands are unchanged (ADR-056) > harbor: roles and adjustments match the engine before the change 1`] = `
+{
+  "adjustments": [
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "light:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #e07a3f only reach 2.9:1, so accent labels use ink #1d201f (5.4:1).",
+      "ratioAfter": 5.494188012857077,
+      "ratioBefore": 2.989303236635102,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "light",
+      "toHex": "#1d201f",
+    },
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "dark:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #e07a3f only reach 2.9:1, so accent labels use ink #0c0e0d (6.4:1).",
+      "ratioAfter": 6.4791216090841,
+      "ratioBefore": 2.989303236635102,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "dark",
+      "toHex": "#0c0e0d",
+    },
+    {
+      "against": [
+        "surface.canvas",
+        "surface.default",
+        "surface.raised",
+        "surface.selected",
+      ],
+      "fromHex": "#1d6b63",
+      "id": "dark:focus.ring",
+      "kind": "contrast",
+      "label": "Focus ring",
+      "message": "#1d6b63 is too dark to see as a focus ring on selected items #1b2d2a (2.2:1), so the ring uses a lighter tone, #8fc4bc (7.4:1).",
+      "ratioAfter": 7.413865317110283,
+      "ratioBefore": 2.2918188062037315,
+      "required": 3,
+      "role": "focus.ring",
+      "scheme": "dark",
+      "toHex": "#8fc4bc",
+    },
+  ],
+  "dark": {
+    "accent.bg": {
+      "hex": "#e07a3f",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "dark:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#0c0e0d",
+      "ref": "neutral.1",
+    },
+    "accent.subtle": {
+      "hex": "#3c2113",
+      "ref": "accent.4",
+    },
+    "accent.text": {
+      "hex": "#f2a379",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#1d6b63",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#1d6b63",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#0a5f58",
+    },
+    "action.primary.pressed": {
+      "hex": "#00544d",
+    },
+    "action.secondary.bg": {
+      "hex": "#162322",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#8fc4bc",
+      "ref": "primary.11",
+    },
+    "action.secondary.hover": {
+      "hex": "#1b2d2a",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#1f3734",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#313333",
+      "ref": "neutral.6",
+    },
+    "border.strong": {
+      "hex": "#7e8180",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#212323",
+      "ref": "neutral.4",
+    },
+    "feedback.danger.bg": {
+      "hex": "#351613",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#7d2b26",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ff968a",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#122232",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#204d78",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#7ebdfd",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#142517",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#255632",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#85cb93",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#2c1d08",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#654200",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#ffca80",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#0c0e0d",
+      "ref": "neutral.1",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "adjusted": {
+        "adjustmentId": "dark:focus.ring",
+        "fromHex": "#1d6b63",
+        "fromRef": "primary.9",
+      },
+      "hex": "#8fc4bc",
+      "ref": "primary.11",
+    },
+    "surface.canvas": {
+      "hex": "#0c0e0d",
+      "ref": "neutral.1",
+    },
+    "surface.default": {
+      "hex": "#131414",
+      "ref": "neutral.2",
+    },
+    "surface.inverse": {
+      "hex": "#ecefef",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#1a1c1c",
+      "ref": "neutral.3",
+    },
+    "surface.selected": {
+      "hex": "#1b2d2a",
+      "ref": "primary.4",
+    },
+    "surface.sunken": {
+      "hex": "#0c0e0d",
+      "ref": "neutral.1",
+    },
+    "text.brand": {
+      "hex": "#8fc4bc",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#ecefef",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#505353",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#0c0e0d",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#b5b8b8",
+      "ref": "neutral.11",
+    },
+  },
+  "light": {
+    "accent.bg": {
+      "hex": "#e07a3f",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "light:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#1d201f",
+      "ref": "neutral.12",
+    },
+    "accent.subtle": {
+      "hex": "#ffeadf",
+      "ref": "accent.3",
+    },
+    "accent.text": {
+      "hex": "#a34d13",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#1d6b63",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#1d6b63",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#0a5f58",
+    },
+    "action.primary.pressed": {
+      "hex": "#00544d",
+    },
+    "action.secondary.bg": {
+      "hex": "#dff4f0",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#0d3531",
+      "ref": "primary.12",
+    },
+    "action.secondary.hover": {
+      "hex": "#cfece7",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#bee2dc",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#c6cac9",
+      "ref": "neutral.7",
+    },
+    "border.strong": {
+      "hex": "#848786",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#dde0e0",
+      "ref": "neutral.5",
+    },
+    "feedback.danger.bg": {
+      "hex": "#ffe9e6",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#ff9b90",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ac1a1c",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#e3f0ff",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#84c0fe",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#025fa6",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#dcf7e0",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#8bcd98",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#0f7034",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#ffebd1",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#e6b061",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#7e5400",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#1d201f",
+      "ref": "neutral.12",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#1d6b63",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#f6f8f8",
+      "ref": "neutral.2",
+    },
+    "surface.default": {
+      "hex": "#fcfefe",
+      "ref": "neutral.1",
+    },
+    "surface.inverse": {
+      "hex": "#1d201f",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#fcfefe",
+      "ref": "neutral.1",
+    },
+    "surface.selected": {
+      "hex": "#dff4f0",
+      "ref": "primary.3",
+    },
+    "surface.sunken": {
+      "hex": "#eef1f0",
+      "ref": "neutral.3",
+    },
+    "text.brand": {
+      "hex": "#286a62",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#1d201f",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#aeb2b1",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#fcfefe",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#585b5b",
+      "ref": "neutral.11",
+    },
+  },
+}
+`;
+
+exports[`coloured brands are unchanged (ADR-056) > navy: roles and adjustments match the engine before the change 1`] = `
+{
+  "adjustments": [
+    {
+      "against": [
+        "surface.canvas",
+      ],
+      "fromHex": "#0f172a",
+      "id": "dark:action.primary.bg",
+      "kind": "visibility",
+      "label": "Primary button",
+      "message": "Your primary #0f172a nearly disappears on the dark canvas (1.0:1), so dark-mode buttons use a lighter tone of the same hue, #424c63 (2.2:1).",
+      "ratioAfter": 2.262297079499704,
+      "ratioBefore": 1.0881383337332076,
+      "required": 2.2,
+      "role": "action.primary.bg",
+      "scheme": "dark",
+      "toHex": "#424c63",
+    },
+    {
+      "against": [
+        "surface.canvas",
+      ],
+      "fromHex": "#0f172a",
+      "id": "dark:accent.bg",
+      "kind": "visibility",
+      "label": "Accent fill",
+      "message": "Your accent #0f172a nearly disappears on the dark canvas (1.0:1), so dark-mode accent fills use a lighter tone of the same hue, #424c63 (2.2:1).",
+      "ratioAfter": 2.262297079499704,
+      "ratioBefore": 1.0881383337332076,
+      "required": 2.2,
+      "role": "accent.bg",
+      "scheme": "dark",
+      "toHex": "#424c63",
+    },
+    {
+      "against": [
+        "surface.canvas",
+        "surface.default",
+        "surface.raised",
+        "surface.selected",
+      ],
+      "fromHex": "#0f172a",
+      "id": "dark:focus.ring",
+      "kind": "contrast",
+      "label": "Focus ring",
+      "message": "#0f172a is too dark to see as a focus ring on the default surface #131415 (1.0:1), so the ring uses a lighter tone, #aeb7cb (7.2:1).",
+      "ratioAfter": 7.235465227499175,
+      "ratioBefore": 1.0331317643444553,
+      "required": 3,
+      "role": "focus.ring",
+      "scheme": "dark",
+      "toHex": "#aeb7cb",
+    },
+  ],
+  "dark": {
+    "accent.bg": {
+      "adjusted": {
+        "adjustmentId": "dark:accent.bg",
+        "fromHex": "#0f172a",
+        "fromRef": "accent.9",
+      },
+      "hex": "#424c63",
+    },
+    "accent.fg": {
+      "hex": "#ffffff",
+    },
+    "accent.subtle": {
+      "hex": "#262930",
+      "ref": "accent.4",
+    },
+    "accent.text": {
+      "hex": "#aeb7cb",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "adjusted": {
+        "adjustmentId": "dark:action.primary.bg",
+        "fromHex": "#0f172a",
+        "fromRef": "primary.9",
+      },
+      "hex": "#424c63",
+    },
+    "action.primary.border": {
+      "hex": "#424c63",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#384158",
+    },
+    "action.primary.pressed": {
+      "hex": "#2d374d",
+    },
+    "action.secondary.bg": {
+      "hex": "#1e2025",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#aeb7cb",
+      "ref": "primary.11",
+    },
+    "action.secondary.hover": {
+      "hex": "#262930",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#2e323a",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#323335",
+      "ref": "neutral.6",
+    },
+    "border.strong": {
+      "hex": "#7f8083",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#222324",
+      "ref": "neutral.4",
+    },
+    "feedback.danger.bg": {
+      "hex": "#351613",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#7d2b26",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ff968a",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#122232",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#204d78",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#7ebdfd",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#142517",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#255632",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#85cb93",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#2c1d08",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#654200",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#ffca80",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "adjusted": {
+        "adjustmentId": "dark:focus.ring",
+        "fromHex": "#0f172a",
+        "fromRef": "primary.9",
+      },
+      "hex": "#aeb7cb",
+      "ref": "primary.11",
+    },
+    "surface.canvas": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "surface.default": {
+      "hex": "#131415",
+      "ref": "neutral.2",
+    },
+    "surface.inverse": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#1b1c1d",
+      "ref": "neutral.3",
+    },
+    "surface.selected": {
+      "hex": "#262930",
+      "ref": "primary.4",
+    },
+    "surface.sunken": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.brand": {
+      "hex": "#aeb7cb",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#515255",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#b6b7ba",
+      "ref": "neutral.11",
+    },
+  },
+  "light": {
+    "accent.bg": {
+      "hex": "#0f172a",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "hex": "#ffffff",
+    },
+    "accent.subtle": {
+      "hex": "#ebeef7",
+      "ref": "accent.3",
+    },
+    "accent.text": {
+      "hex": "#101728",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#0f172a",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#0f172a",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#070e20",
+    },
+    "action.primary.pressed": {
+      "hex": "#020616",
+    },
+    "action.secondary.bg": {
+      "hex": "#ebeef7",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#070b15",
+      "ref": "primary.12",
+    },
+    "action.secondary.hover": {
+      "hex": "#dfe5f0",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#d3d9e7",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#c8c9cb",
+      "ref": "neutral.7",
+    },
+    "border.strong": {
+      "hex": "#858689",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#dee0e2",
+      "ref": "neutral.5",
+    },
+    "feedback.danger.bg": {
+      "hex": "#ffe9e6",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#ff9b90",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ac1a1c",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#e3f0ff",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#84c0fe",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#025fa6",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#dcf7e0",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#8bcd98",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#0f7034",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#ffebd1",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#e6b061",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#7e5400",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#0f172a",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#f7f8f9",
+      "ref": "neutral.2",
+    },
+    "surface.default": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.inverse": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.selected": {
+      "hex": "#ebeef7",
+      "ref": "primary.3",
+    },
+    "surface.sunken": {
+      "hex": "#eff0f2",
+      "ref": "neutral.3",
+    },
+    "text.brand": {
+      "hex": "#101728",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#1e1f21",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#b0b1b4",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#5a5b5d",
+      "ref": "neutral.11",
+    },
+  },
+}
+`;
+
+exports[`coloured brands are unchanged (ADR-056) > qamar: roles and adjustments match the engine before the change 1`] = `
+{
+  "adjustments": [
+    {
+      "against": [
+        "action.primary.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "light:action.primary.fg",
+      "kind": "choice",
+      "label": "Button label",
+      "message": "White labels on #f2a516 only reach 2.0:1, so button labels use ink #201f1d (7.9:1).",
+      "ratioAfter": 7.9748076450828975,
+      "ratioBefore": 2.065081943432947,
+      "required": 4.5,
+      "role": "action.primary.fg",
+      "scheme": "light",
+      "toHex": "#201f1d",
+    },
+    {
+      "against": [
+        "surface.canvas",
+        "surface.default",
+        "surface.raised",
+        "surface.selected",
+      ],
+      "fromHex": "#f2a516",
+      "id": "light:focus.ring",
+      "kind": "contrast",
+      "label": "Focus ring",
+      "message": "#f2a516 is too light to see as a focus ring on selected items #ffebd2 (1.7:1), so the ring uses a deeper tone, #8e5e00 (4.8:1).",
+      "ratioAfter": 4.815999601322976,
+      "ratioBefore": 1.776556657463912,
+      "required": 3,
+      "role": "focus.ring",
+      "scheme": "light",
+      "toHex": "#8e5e00",
+    },
+    {
+      "against": [
+        "action.primary.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "dark:action.primary.fg",
+      "kind": "choice",
+      "label": "Button label",
+      "message": "White labels on #f2a516 only reach 2.0:1, so button labels use ink #0e0d0c (9.4:1).",
+      "ratioAfter": 9.402320830208428,
+      "ratioBefore": 2.065081943432947,
+      "required": 4.5,
+      "role": "action.primary.fg",
+      "scheme": "dark",
+      "toHex": "#0e0d0c",
+    },
+  ],
+  "dark": {
+    "accent.bg": {
+      "hex": "#7a2e8e",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "hex": "#ffffff",
+    },
+    "accent.subtle": {
+      "hex": "#34203a",
+      "ref": "accent.4",
+    },
+    "accent.text": {
+      "hex": "#d99ee9",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#f2a516",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#f2a516",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "adjusted": {
+        "adjustmentId": "dark:action.primary.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#0e0d0c",
+      "ref": "neutral.1",
+    },
+    "action.primary.hover": {
+      "hex": "#ffb233",
+    },
+    "action.primary.pressed": {
+      "hex": "#ffc572",
+    },
+    "action.secondary.bg": {
+      "hex": "#2c1d08",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#ffcd89",
+      "ref": "primary.11",
+    },
+    "action.secondary.hover": {
+      "hex": "#382406",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#442c03",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#343331",
+      "ref": "neutral.6",
+    },
+    "border.strong": {
+      "hex": "#82807e",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#242321",
+      "ref": "neutral.4",
+    },
+    "feedback.danger.bg": {
+      "hex": "#351613",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#7d2b26",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ff968a",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#122232",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#204d78",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#7ebdfd",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#142517",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#255632",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#85cb93",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#2c1d08",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#654200",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#ffca80",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#0e0d0c",
+      "ref": "neutral.1",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#f2a516",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#0e0d0c",
+      "ref": "neutral.1",
+    },
+    "surface.default": {
+      "hex": "#141413",
+      "ref": "neutral.2",
+    },
+    "surface.inverse": {
+      "hex": "#f0eeeb",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#1c1c1a",
+      "ref": "neutral.3",
+    },
+    "surface.selected": {
+      "hex": "#382406",
+      "ref": "primary.4",
+    },
+    "surface.sunken": {
+      "hex": "#0e0d0c",
+      "ref": "neutral.1",
+    },
+    "text.brand": {
+      "hex": "#ffcd89",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#f0eeeb",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#545250",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#0e0d0c",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#b9b7b5",
+      "ref": "neutral.11",
+    },
+  },
+  "light": {
+    "accent.bg": {
+      "hex": "#7a2e8e",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "hex": "#ffffff",
+    },
+    "accent.subtle": {
+      "hex": "#fae7ff",
+      "ref": "accent.3",
+    },
+    "accent.text": {
+      "hex": "#773489",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#f2a516",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#f2a516",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "adjusted": {
+        "adjustmentId": "light:action.primary.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#201f1d",
+      "ref": "neutral.12",
+    },
+    "action.primary.hover": {
+      "hex": "#ffb233",
+    },
+    "action.primary.pressed": {
+      "hex": "#ffc572",
+    },
+    "action.secondary.bg": {
+      "hex": "#ffebd2",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#402800",
+      "ref": "primary.12",
+    },
+    "action.secondary.hover": {
+      "hex": "#ffdfb5",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#fad29b",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#cac8c6",
+      "ref": "neutral.7",
+    },
+    "border.strong": {
+      "hex": "#888683",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#e1dfdd",
+      "ref": "neutral.5",
+    },
+    "feedback.danger.bg": {
+      "hex": "#ffe9e6",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#ff9b90",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ac1a1c",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#e3f0ff",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#84c0fe",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#025fa6",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#dcf7e0",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#8bcd98",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#0f7034",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#ffebd1",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#e6b061",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#7e5400",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#201f1d",
+      "ref": "neutral.12",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "adjusted": {
+        "adjustmentId": "light:focus.ring",
+        "fromHex": "#f2a516",
+        "fromRef": "primary.9",
+      },
+      "hex": "#8e5e00",
+      "ref": "primary.11",
+    },
+    "surface.canvas": {
+      "hex": "#f9f7f6",
+      "ref": "neutral.2",
+    },
+    "surface.default": {
+      "hex": "#fefdfc",
+      "ref": "neutral.1",
+    },
+    "surface.inverse": {
+      "hex": "#201f1d",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#fefdfc",
+      "ref": "neutral.1",
+    },
+    "surface.selected": {
+      "hex": "#ffebd2",
+      "ref": "primary.3",
+    },
+    "surface.sunken": {
+      "hex": "#f1f0ee",
+      "ref": "neutral.3",
+    },
+    "text.brand": {
+      "hex": "#8e5e00",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#201f1d",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#b2b1ae",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#fefdfc",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#5c5a58",
+      "ref": "neutral.11",
+    },
+  },
+}
+`;
+
+exports[`coloured brands are unchanged (ADR-056) > vela: roles and adjustments match the engine before the change 1`] = `
+{
+  "adjustments": [
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "light:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #12b5a6 only reach 2.5:1, so accent labels use ink #1f1f21 (6.4:1).",
+      "ratioAfter": 6.414194557872664,
+      "ratioBefore": 2.565385632304987,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "light",
+      "toHex": "#1f1f21",
+    },
+    {
+      "against": [
+        "accent.bg",
+      ],
+      "fromHex": "#ffffff",
+      "id": "dark:accent.fg",
+      "kind": "choice",
+      "label": "Accent label",
+      "message": "White labels on #12b5a6 only reach 2.5:1, so accent labels use ink #0d0d0e (7.5:1).",
+      "ratioAfter": 7.572361598553798,
+      "ratioBefore": 2.565385632304987,
+      "required": 4.5,
+      "role": "accent.fg",
+      "scheme": "dark",
+      "toHex": "#0d0d0e",
+    },
+    {
+      "against": [
+        "surface.canvas",
+        "surface.default",
+        "surface.raised",
+        "surface.selected",
+      ],
+      "fromHex": "#3d45d6",
+      "id": "dark:focus.ring",
+      "kind": "contrast",
+      "label": "Focus ring",
+      "message": "#3d45d6 is too dark to see as a focus ring on selected items #1d254c (2.1:1), so the ring uses a lighter tone, #9fb3ff (7.2:1).",
+      "ratioAfter": 7.293841659948224,
+      "ratioBefore": 2.1253962666875625,
+      "required": 3,
+      "role": "focus.ring",
+      "scheme": "dark",
+      "toHex": "#9fb3ff",
+    },
+  ],
+  "dark": {
+    "accent.bg": {
+      "hex": "#12b5a6",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "dark:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "accent.subtle": {
+      "hex": "#0d2f2b",
+      "ref": "accent.4",
+    },
+    "accent.text": {
+      "hex": "#73d0c3",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#3d45d6",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#3d45d6",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#3437c8",
+    },
+    "action.primary.pressed": {
+      "hex": "#2d27ba",
+    },
+    "action.secondary.bg": {
+      "hex": "#181e3a",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#9fb3ff",
+      "ref": "primary.11",
+    },
+    "action.secondary.hover": {
+      "hex": "#1d254c",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#232c5d",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#323335",
+      "ref": "neutral.6",
+    },
+    "border.strong": {
+      "hex": "#7f8083",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#222324",
+      "ref": "neutral.4",
+    },
+    "feedback.danger.bg": {
+      "hex": "#351613",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#7d2b26",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ff968a",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#122232",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#204d78",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#7ebdfd",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#142517",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#255632",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#85cb93",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#2c1d08",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#654200",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#ffca80",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "adjusted": {
+        "adjustmentId": "dark:focus.ring",
+        "fromHex": "#3d45d6",
+        "fromRef": "primary.9",
+      },
+      "hex": "#9fb3ff",
+      "ref": "primary.11",
+    },
+    "surface.canvas": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "surface.default": {
+      "hex": "#131415",
+      "ref": "neutral.2",
+    },
+    "surface.inverse": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#1b1c1d",
+      "ref": "neutral.3",
+    },
+    "surface.selected": {
+      "hex": "#1d254c",
+      "ref": "primary.4",
+    },
+    "surface.sunken": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.brand": {
+      "hex": "#9fb3ff",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#edeef1",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#525255",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#0d0d0e",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#b6b7ba",
+      "ref": "neutral.11",
+    },
+  },
+  "light": {
+    "accent.bg": {
+      "hex": "#12b5a6",
+      "ref": "accent.9",
+    },
+    "accent.fg": {
+      "adjusted": {
+        "adjustmentId": "light:accent.fg",
+        "fromHex": "#ffffff",
+      },
+      "hex": "#1f1f21",
+      "ref": "neutral.12",
+    },
+    "accent.subtle": {
+      "hex": "#d5f7f1",
+      "ref": "accent.3",
+    },
+    "accent.text": {
+      "hex": "#007a6f",
+      "ref": "accent.11",
+    },
+    "action.primary.bg": {
+      "hex": "#3d45d6",
+      "ref": "primary.9",
+    },
+    "action.primary.border": {
+      "hex": "#3d45d6",
+      "ref": "primary.9",
+    },
+    "action.primary.fg": {
+      "hex": "#ffffff",
+    },
+    "action.primary.hover": {
+      "hex": "#3437c8",
+    },
+    "action.primary.pressed": {
+      "hex": "#2d27ba",
+    },
+    "action.secondary.bg": {
+      "hex": "#e9eeff",
+      "ref": "primary.3",
+    },
+    "action.secondary.fg": {
+      "hex": "#1c216d",
+      "ref": "primary.12",
+    },
+    "action.secondary.hover": {
+      "hex": "#dce4ff",
+      "ref": "primary.4",
+    },
+    "action.secondary.pressed": {
+      "hex": "#ccd8ff",
+      "ref": "primary.5",
+    },
+    "border.default": {
+      "hex": "#c8c9cb",
+      "ref": "neutral.7",
+    },
+    "border.strong": {
+      "hex": "#858689",
+      "ref": "neutral.9",
+    },
+    "border.subtle": {
+      "hex": "#dfdfe2",
+      "ref": "neutral.5",
+    },
+    "feedback.danger.bg": {
+      "hex": "#ffe9e6",
+      "ref": "danger.3",
+    },
+    "feedback.danger.border": {
+      "hex": "#ff9b90",
+      "ref": "danger.7",
+    },
+    "feedback.danger.fg": {
+      "hex": "#ac1a1c",
+      "ref": "danger.11",
+    },
+    "feedback.danger.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.danger.solid": {
+      "hex": "#d73431",
+      "ref": "danger.9",
+    },
+    "feedback.info.bg": {
+      "hex": "#e3f0ff",
+      "ref": "info.3",
+    },
+    "feedback.info.border": {
+      "hex": "#84c0fe",
+      "ref": "info.7",
+    },
+    "feedback.info.fg": {
+      "hex": "#025fa6",
+      "ref": "info.11",
+    },
+    "feedback.info.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.info.solid": {
+      "hex": "#0f74c5",
+      "ref": "info.9",
+    },
+    "feedback.success.bg": {
+      "hex": "#dcf7e0",
+      "ref": "success.3",
+    },
+    "feedback.success.border": {
+      "hex": "#8bcd98",
+      "ref": "success.7",
+    },
+    "feedback.success.fg": {
+      "hex": "#0f7034",
+      "ref": "success.11",
+    },
+    "feedback.success.onSolid": {
+      "hex": "#ffffff",
+    },
+    "feedback.success.solid": {
+      "hex": "#11813c",
+      "ref": "success.9",
+    },
+    "feedback.warning.bg": {
+      "hex": "#ffebd1",
+      "ref": "warning.3",
+    },
+    "feedback.warning.border": {
+      "hex": "#e6b061",
+      "ref": "warning.7",
+    },
+    "feedback.warning.fg": {
+      "hex": "#7e5400",
+      "ref": "warning.11",
+    },
+    "feedback.warning.onSolid": {
+      "hex": "#1f1f21",
+      "ref": "neutral.12",
+    },
+    "feedback.warning.solid": {
+      "hex": "#efa30f",
+      "ref": "warning.9",
+    },
+    "focus.ring": {
+      "hex": "#3d45d6",
+      "ref": "primary.9",
+    },
+    "surface.canvas": {
+      "hex": "#f7f8f9",
+      "ref": "neutral.2",
+    },
+    "surface.default": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.inverse": {
+      "hex": "#1f1f21",
+      "ref": "neutral.12",
+    },
+    "surface.raised": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "surface.selected": {
+      "hex": "#e9eeff",
+      "ref": "primary.3",
+    },
+    "surface.sunken": {
+      "hex": "#eff0f2",
+      "ref": "neutral.3",
+    },
+    "text.brand": {
+      "hex": "#3f4bca",
+      "ref": "primary.11",
+    },
+    "text.default": {
+      "hex": "#1f1f21",
+      "ref": "neutral.12",
+    },
+    "text.disabled": {
+      "hex": "#b0b1b4",
+      "ref": "neutral.8",
+    },
+    "text.inverse": {
+      "hex": "#fdfdff",
+      "ref": "neutral.1",
+    },
+    "text.subtle": {
+      "hex": "#5a5b5d",
+      "ref": "neutral.11",
+    },
+  },
+}
+`;

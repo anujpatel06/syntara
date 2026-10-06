@@ -11,8 +11,8 @@ Seed **2026** (mulberry32) · **1,000** random brands: random primary, random ac
 | Passed | 118,000 |
 | Failed | 0 |
 | Pass rate | 100.00% |
-| Median generation time | 0.62 ms |
-| p95 generation time | 0.95 ms |
+| Median generation time | 0.65 ms |
+| p95 generation time | 1.35 ms |
 | Adjustments per brand (min / median / max) | 0 / 4 / 7 |
 
 Timing measured with `performance.now()` around each `generateTheme` call on Apple M1, Node v26.8.1 (darwin-arm64); it varies by machine.
@@ -32,19 +32,19 @@ Share of brands with at least one adjustment of each kind, by scheme and role. `
 
 | Scheme | Role | Kind | Brands | Share | Off-ramp |
 |---|---|---|---|---|---|
-| dark | `action.primary.fg` | choice | 555 | 55.5% | — |
 | light | `action.primary.fg` | choice | 555 | 55.5% | — |
+| dark | `action.primary.fg` | choice | 546 | 54.6% | — |
 | dark | `accent.fg` | choice | 538 | 53.8% | — |
 | light | `accent.fg` | choice | 538 | 53.8% | — |
 | light | `focus.ring` | contrast | 536 | 53.6% | 0 |
 | dark | `focus.ring` | contrast | 296 | 29.6% | 0 |
 | light | `action.primary.border` | visibility | 129 | 12.9% | — |
+| dark | `action.primary.bg` | choice | 128 | 12.8% | — |
 | dark | `accent.bg` | choice | 116 | 11.6% | — |
 | light | `accent.bg` | contrast | 116 | 11.6% | 116 |
 | dark | `accent.bg` | visibility | 109 | 10.9% | — |
-| dark | `action.primary.bg` | choice | 108 | 10.8% | — |
 | light | `action.primary.bg` | contrast | 108 | 10.8% | 108 |
-| dark | `action.primary.bg` | visibility | 92 | 9.2% | — |
+| dark | `action.primary.bg` | visibility | 87 | 8.7% | — |
 | light | `text.brand` | contrast | 25 | 2.5% | 0 |
 
 ## Chart palette
@@ -67,7 +67,7 @@ How far the colour on screen is from the colour the brand asked for. For each br
 | Brand colour | Scheme | Role | Kept exactly | Median ΔE | p95 ΔE | Largest ΔE | Furthest brand |
 |---|---|---|---|---|---|---|---|
 | primary | light | `action.primary.bg` | 892 (89.2%) | 0.0 | 3.5 | 5.8 | #883 #fa3d0e → #e03100 |
-| primary | dark | `action.primary.bg` | 800 (80.0%) | 0.0 | 7.1 | 29.0 | #939 #0f030f → #594658 |
+| primary | dark | `action.primary.bg` | 785 (78.5%) | 0.0 | 9.0 | 75.0 | #107 #0d1914 → #ecefee |
 | accent | light | `accent.bg` | 884 (88.4%) | 0.0 | 3.1 | 5.6 | #40 #2e91a7 → #148096 |
 | accent | dark | `accent.bg` | 775 (77.5%) | 0.0 | 8.0 | 25.0 | #882 #050041 → #36488c |
 
