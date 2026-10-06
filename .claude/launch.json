@@ -69,6 +69,16 @@
       ],
       "port": 3517,
       "url": "http://localhost:3517"
+    },
+    {
+      "name": "docs-grey-primary",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": [
+        "-c",
+        "cd apps/docs && NEXT_DIST_DIR=.next-grey-primary exec ./node_modules/.bin/next dev --port 3056"
+      ],
+      "port": 3056,
+      "url": "http://localhost:3056"
     }
   ]
 }

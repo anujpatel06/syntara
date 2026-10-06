@@ -6,6 +6,54 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Grey brands get a near-white primary button in dark mode (ADR-056)
+
+Branch `feat/engine-grey-primary-dark`, from `main` at c8e1ca5.
+
+**Changed**
+- `packages/theme-engine/src/roles.ts`: a primary with OKLCH chroma below `GREY_PRIMARY_C = 0.02` gets, in dark mode,
+  a `neutral.12` fill with an ink label instead of the ADR-006 light-mode match (which deepened the house grey to
+  `#4a4a4e`, next to the disabled grey `#525255`). Logged as a `choice` adjustment. Coloured brands take the old path.
+- `src/css-vars.ts`: new CSS variable `--syntara-glow-color` (the fill, or `neutral.8` for a grey brand in dark);
+  `--syntara-glow` mixes from it. `glowColorHex` is exported.
+- `packages/react/src/ui/card.module.css`: the feature glow, halo and media haze use `--syntara-glow-color`, falling
+  back to the fill.
+- Tests: `test/grey-primary.test.ts` (#18181B, #000000, #808080, navy, and seven coloured brands snapshotted from the
+  engine on `main` before the change). Card contrast proof reads the glow colour. Re-recorded: the eight per-pair
+  hashes in `script-type.test.ts` (checked identical to the old ones with the new variable stripped), the contract
+  count (83 → 84) and the vela Kotlin/Swift snapshots (additions only).
+- ADR-056; changeset (theme-engine minor, syntara and react patch); `.claude/launch.json`: `docs-grey-primary` (3056).
+
+**Decided**
+- Engine rule for grey brands, threshold chroma 0.02: **Anuj** (options: engine rule / house-only override / brighter
+  hover).
+- Card glow for grey brands in dark: a separate soft grey glow colour: **Claude recommended, Anuj accepted** (options:
+  soft grey glow / no glow / dim the glow for every brand). The first full check failed without it: house text.subtle
+  on the feature glow was 3.83:1.
+
+**Results**
+- House dark button `#eeeef1`, label `#0d0d0e`, 16.78:1; hover `#e1e1e4`, pressed `#d4d4d7` — `pnpm tokens`
+  (`packages/tokens/dist/house/tokens.css`).
+- Feature card, house dark worst pixel: 8.14 / 4.71 / 4.71:1 (default / subtle / brand) —
+  `pnpm --filter @syntara/react exec vitest run test/card.test.tsx`.
+- `pnpm test`: 2,386 passing (engine 335, components 547) — README counts updated by `node scripts/check-test-counts.mjs --fix`.
+- `pnpm test:themes`: 118,000 / 118,000 checks pass; adjustments per brand 0 / 4 / 7 (unchanged). Primary kept exactly
+  in dark: 78.5% (was 80.0%; the grey brands among the 1,000 now get the near-white fill). The README still says
+  80.0%; not changed, waiting on Anuj.
+- `pnpm check:meta` 58/58; `pnpm registry` 82 items; `node scripts/check-override-weight.mjs` 0.
+- `pnpm --filter @syntara/docs build`: 317/317 pages; `node scripts/check-ssr-tabs.mjs`: 0 missing panels. The build
+  contains `action-primary-bg: #eeeef1` and `--syntara-glow-color` (`grep` on `apps/docs/out/index.html`).
+- Served on :3057 (`SYNTARA_BASE_URL`, :3000 belonged to another session): hydration 0 failures (292 loads), theme
+  links 0, sideways scroll 0 (292), CSP 0 (146), axe 0 violation nodes (146 × 2), overlay exit 0 failures (108 tooltips, 4 menus and popovers).
+- Screenshots (`scripts/shoot.mjs`, `--web-fonts`): /motion dark (approved by Anuj), /motion dark 390px, home dark,
+  hero-cards in house dark, vela light, harbor dark and qamar light (RTL).
+
+**Next**
+- Anuj: update the README's "80.0% dark" to 78.5%?
+- Open: a grey brand with no accent still gets a grey accent fill in dark (ADR-056).
+
+---
+
 ## 2026-10-06 — Themes: Export is a button and a dialog, not a tab
 
 Branch `feat/themes-export-dialog`, from `main` at cde820f.

@@ -193,6 +193,19 @@ const PRESSED_DL = 0.08;
 /** Hover / pressed stay inside this L range where a change is still perceptible. */
 const STATE_L_MIN = 0.12;
 const STATE_L_MAX = 0.97;
+/**
+ * A primary whose OKLCH chroma is below this counts as grey: black, charcoal, mid and light greys.
+ * In dark mode such a brand's primary button turns near-white with ink labels (ADR-056, Anuj,
+ * 2026-10-06). Matching light mode's white label instead deepened the fill to a dull grey that read
+ * as disabled. #18181b is c 0.006 (grey); navy #0f172a is c 0.040 and stays coloured.
+ * Not HUELESS_PRIMARY_C in ramps.ts (1e-3): that one only decides whether neutrals borrow a hue.
+ */
+export const GREY_PRIMARY_C = 0.02;
+
+/** True when a primary is grey enough to get the near-white dark-mode button (see GREY_PRIMARY_C). */
+export function isGreyPrimary(hex: string): boolean {
+  return hexToOklch(hex).c < GREY_PRIMARY_C;
+}
 
 interface StepRef {
   hex: string;
@@ -394,6 +407,8 @@ class SchemeResolver {
    *    move is too big, or would undo the visibility lift, the rule above applies instead.
    * 3. hover / pressed: move away from the label by ΔL 0.04 / 0.08 (see deriveState).
    * 4. border: the fill itself, or border.strong when the fill vanishes into the surface.
+   * Grey primaries in dark mode (`darkGreyFill`, ADR-056) skip 1 and the light-mode match: the fill
+   * becomes the given near-white step and ink is the preferred label, still checked at 4.5:1.
    */
   solidWithLabel(o: {
     bgRole: Role;
@@ -415,13 +430,36 @@ class SchemeResolver {
     outlinedNoun?: string;
     /** Preferred label. Default 'white'. */
     prefer?: 'white' | 'ink';
+    /** Dark mode only: a grey brand's near-white fill, used with ink labels instead of the base (ADR-056). */
+    darkGreyFill?: StepRef;
   }): void {
     const { scheme } = this;
     let bg = o.base.hex;
+    let bgRef: StepRef | undefined;
     let bgAdj: Adjustment | undefined;
+    const greyFill = scheme === 'dark' ? o.darkGreyFill : undefined;
+
+    // 0. Grey brand in dark mode (ADR-056): a near-white fill with ink labels, like Vercel and Linear.
+    if (greyFill) {
+      const canvas = this.hex('surface.canvas');
+      const before = contrastRatio(bg, canvas);
+      const after = contrastRatio(greyFill.hex, canvas);
+      bgAdj = this.addAdjustment({
+        role: o.bgRole,
+        kind: 'choice',
+        fromHex: bg,
+        toHex: greyFill.hex,
+        against: ['surface.canvas'],
+        ratioBefore: before,
+        ratioAfter: after,
+        message: `${o.owner} ${bg} has almost no colour (${r1(before)}:1 on the dark canvas), so dark-mode ${o.fillsNoun} turn near-white, ${greyFill.hex} (${r1(after)}:1), with ink labels: a deepened grey with white labels would look disabled.`,
+      });
+      bg = greyFill.hex;
+      bgRef = greyFill;
+    }
 
     // 1. Dark findability heuristic (not WCAG; see DARK_VISIBILITY_MIN).
-    if (scheme === 'dark' && o.darkVisibility) {
+    if (scheme === 'dark' && o.darkVisibility && !greyFill) {
       const canvas = this.hex('surface.canvas');
       const before = contrastRatio(bg, canvas);
       if (before < DARK_VISIBILITY_MIN) {
@@ -451,11 +489,11 @@ class SchemeResolver {
     //    else move the fill (see chooseFillMove).
     const ink = scheme === 'light' ? this.step('neutral', 12) : this.step('neutral', 1);
     const white: StepRef = { hex: WHITE };
-    const preferInk = o.prefer === 'ink';
+    const preferInk = greyFill ? true : o.prefer === 'ink';
     const preferred = preferInk ? ink : white;
     const other = preferInk ? white : ink;
     let label: StepRef;
-    const match = this.lightMatch(o.fgRole);
+    const match = greyFill ? undefined : this.lightMatch(o.fgRole);
     const matchLabel = match === 'ink' ? ink : match === 'white' ? white : undefined;
     const matchMove = matchLabel && this.matchFillMove(bg, matchLabel.hex, match === 'white' ? -1 : 1, o.darkVisibility);
     if (matchLabel && contrastRatio(matchLabel.hex, bg) >= TEXT_MIN) {
@@ -503,7 +541,7 @@ class SchemeResolver {
     }
 
     // Record the fill.
-    if (bgAdj) this.setAdjusted(o.bgRole, { hex: bg }, o.base, bgAdj);
+    if (bgAdj) this.setAdjusted(o.bgRole, bgRef?.hex === bg ? bgRef : { hex: bg }, o.base, bgAdj);
     else this.set(o.bgRole, o.base);
 
     // Record the label: a 'choice' adjustment only when it differs from the preferred label.
@@ -714,7 +752,8 @@ export function resolveRoles(
   // Focus ring
   s.solve('focus.ring', L ? [p(9), p(10), p(11), p(12), n(12)] : [p(9), p(11), p(12), n(12)]);
 
-  // Primary button
+  // Primary button. A grey brand gets a near-white fill in dark mode (ADR-056).
+  const greyDark = !L && isGreyPrimary(p(9).hex);
   s.solidWithLabel({
     bgRole: 'action.primary.bg',
     fgRole: 'action.primary.fg',
@@ -728,6 +767,7 @@ export function resolveRoles(
     fillNoun: 'the primary button',
     labelsNoun: 'button labels',
     outlinedNoun: 'primary buttons',
+    ...(greyDark ? { darkGreyFill: n(12) } : {}),
   });
 
   // Accent fill

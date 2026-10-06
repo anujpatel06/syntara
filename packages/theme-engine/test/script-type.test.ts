@@ -156,6 +156,11 @@ describe('every pair exports exactly the tokens it is meant to', () => {
    * space 20/24/32. Checked before re-recording: with those new tokens removed, every pair's CSS, DTCG and CSS
    * variables hashed to the previous row exactly, so the change only adds. shadcn is unchanged (it emits no sizes).
    *
+   * Re-recorded on 2026-10-06 for `--syntara-glow-color` (ADR-056), which `--syntara-glow` now mixes from. Checked
+   * before re-recording: with that variable removed and `var(--syntara-glow-color)` read back as the primary fill,
+   * every pair's CSS and CSS variables hashed to the previous row exactly. DTCG and shadcn are unchanged (neither
+   * emits it). None of these eight brands is grey, so no colour value moved.
+   *
    * What the table pins now is which pairs moved. `precise` and `modern` are byte-identical to every earlier
    * recording — they clipped nothing, so they kept the shared 1.2/1.35/1.5 and must not drift. The other six each
    * changed in exactly three of the four columns: CSS, DTCG and the CSS variables carry line heights, and the
@@ -163,14 +168,14 @@ describe('every pair exports exactly the tokens it is meant to', () => {
    * shape is a regression, not a re-recording.
    */
   const BEFORE: [TypePairId, css: string, dtcg: string, shadcn: string, vars: string][] = [
-    ['precise', '5e2ee4b29d3e61c5', '7f5aa020b760f34b', '7d28a1aad0f2c6d9', 'e05a04d41aaebfc5'],
-    ['calm', '639f61f6ce153425', '2027c1bdfb4b40e7', '76867bc7a1f22b70', 'be14c53236a4356a'],
-    ['friendly', 'b8394e99cbb494f0', '56792303dd193a59', 'e38f3efee6290ae4', '5e0ec80fff54e59d'],
-    ['technical', '8780e3e52614d7f2', 'd78c9a02075cb296', '0c23a07967510672', 'a96ec6cec87076b4'],
-    ['bilingual-round', '7254a3a330d7a572', '937ea2c6a4a87bd4', '9ef142c32702e62b', '19021d775711b00e'],
-    ['bilingual-classic', '70a03e5191aa27a3', '7d3d4df062325d8b', '47c9bbe33dc2a983', '75866ea069269d86'],
-    ['editorial', '5c9e516e44319d10', '31d63016e084215b', '8b7f0a706369ea2d', 'b8e892373de77559'],
-    ['modern', '14ef6572a82e33f9', 'e395d3c676c1dafa', '9de8d1fb2bdd5b94', 'b75ab39ea67fad20'],
+    ['precise', '4b5873999101ffd8', '7f5aa020b760f34b', '7d28a1aad0f2c6d9', 'bd878b0f34098042'],
+    ['calm', '2d21fbcd4ae183eb', '2027c1bdfb4b40e7', '76867bc7a1f22b70', '4dd5eddbf6c7c1a5'],
+    ['friendly', 'a6ecbe8e0b7aa827', '56792303dd193a59', 'e38f3efee6290ae4', '9073f746adb0540e'],
+    ['technical', '3379bcefe995adb2', 'd78c9a02075cb296', '0c23a07967510672', 'feac05dd5a1eb14f'],
+    ['bilingual-round', '494dfd87d88200d3', '937ea2c6a4a87bd4', '9ef142c32702e62b', 'c1defa7c3a1e92d0'],
+    ['bilingual-classic', 'e1994cc2a65b86f6', '7d3d4df062325d8b', '47c9bbe33dc2a983', 'd283d89a20f6d3b2'],
+    ['editorial', '01dbcb0879cf2463', '31d63016e084215b', '8b7f0a706369ea2d', '4ce1e923d1ac411b'],
+    ['modern', 'e1deb2626ae0773c', 'e395d3c676c1dafa', '9de8d1fb2bdd5b94', 'd5c190b663b3a8a6'],
   ];
   const inputs = fuzzInputs().slice(0, 8);
 

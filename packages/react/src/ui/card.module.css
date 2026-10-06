@@ -125,7 +125,7 @@
  * Both switch with light-dark(), so a light scope nested in a dark page (or the reverse) still gets its own look.
  *
  * Contrast (text.default, text.subtle and text.brand on the glow's worst pixel, all ≥ 4.5:1). The glow colour at the
- * corner is color-mix(in oklab, action.primary.bg S%, surface.raised), fading to surface.raised at 70% of the radius.
+ * corner is color-mix(in oklab, glow colour S%, surface.raised), fading to surface.raised at 70% of the radius.
  * S is set per scheme with light-dark(): 6% in light, 30% in dark. The proof samples every pixel along the radius
  * for vela, harbor, qamar, care and house in both schemes, interpolating both ways a browser may (sRGB and OKLab), with
  * a star dot composited on top at its maximum alpha (8-bit sRGB, like glass.ts). Worst pixels:
@@ -144,9 +144,12 @@
   /* The glow tints the face, and the nested-outline proof covers plain surfaces only: inner pieces keep their face. */
   --syntara-surface-nest: none;
   --_glow-at: 0% 0%;
+  /* The engine's glow colour: the primary fill, or a mid grey for a grey brand in dark mode (ADR-056). Themes built
+     before it existed fall back to the fill. */
+  --_glow-color: var(--syntara-glow-color, var(--syntara-color-action-primary-bg));
   --_glow: light-dark(
-    color-mix(in oklab, var(--syntara-color-action-primary-bg) 6%, var(--syntara-color-surface-raised)),
-    color-mix(in oklab, var(--syntara-color-action-primary-bg) 30%, var(--syntara-color-surface-raised))
+    color-mix(in oklab, var(--_glow-color) 6%, var(--syntara-color-surface-raised)),
+    color-mix(in oklab, var(--_glow-color) 30%, var(--syntara-color-surface-raised))
   );
   --_face:
     radial-gradient(farthest-corner at var(--_glow-at), var(--_glow) 0%, var(--syntara-color-surface-raised) 70%);
@@ -155,8 +158,8 @@
    * bloom at 60%) with light-dark() colours, because a token shadow can't be switched per scheme. In light both
    * layers are transparent, leaving the hairline edge and the raised shadow.
    */
-  --_halo-ring: light-dark(transparent, color-mix(in srgb, var(--syntara-color-action-primary-bg) 40%, transparent));
-  --_halo: light-dark(transparent, color-mix(in srgb, var(--syntara-color-action-primary-bg) 60%, transparent));
+  --_halo-ring: light-dark(transparent, color-mix(in srgb, var(--_glow-color) 40%, transparent));
+  --_halo: light-dark(transparent, color-mix(in srgb, var(--_glow-color) 60%, transparent));
   /* No sheen: on the glow it would cost the proof its margin (qamar dark: text.subtle and text.brand drop to 4.15:1
      at a 6% peak, measured 2026-09-27; the peak is now 8%, so lower still). The glow is this variant's light. */
   --_sheen: none;
@@ -355,7 +358,7 @@
  * media's own stacking context), never behind text.
  */
 .media[data-glow]::before {
-  --_haze: var(--syntara-color-action-primary-bg);
+  --_haze: var(--syntara-glow-color, var(--syntara-color-action-primary-bg));
   position: absolute;
   z-index: -1;
   inset: 0;
