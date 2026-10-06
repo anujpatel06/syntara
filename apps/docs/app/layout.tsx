@@ -7,6 +7,7 @@ import { HeaderFrame, NotOnHome } from '@/components/site/home-chrome';
 import { SiteHeader } from '@/components/site/site-header';
 import skip from '@/components/site/skip-link.module.css';
 import { SCHEME_SCRIPT } from '@/lib/scheme';
+import { VIEWPORT_WIDTH_SCRIPT } from '@/lib/viewport-width';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import { getSiteTheme } from '@/lib/theme-css';
 import './globals.css';
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" dir="ltr" data-syntara-scheme="auto" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: SCHEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: VIEWPORT_WIDTH_SCRIPT }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href={theme.houseFontHref} />

@@ -6,7 +6,7 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
-## 2026-10-06 — 2,000 niche icons in `@syntara/icons/niche` (ADR-052)
+## 2026-10-06 — 2,000 niche icons in `@syntara/icons/niche` (ADR-053)
 
 Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
 
@@ -18,7 +18,7 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
   the dot cap. Drawers cut and replaced about 200 drawings that read as the wrong object (a plough that read as a banana).
 - **Into `@syntara/icons`** (Anuj: "include in same"; first built as a separate package, then merged): `src/icons/niche/<domain>.ts`
   (40 files), `src/niche.ts` and `src/niche-domains.ts` (domain → names) behind a new entry `@syntara/icons/niche`;
-  `test/niche.test.tsx`, `check:niche-drawing` (live-area geometry in a real browser), README section, changeset, ADR-052.
+  `test/niche.test.tsx`, `check:niche-drawing` (live-area geometry in a real browser), README section, changeset, ADR-053.
   **Own entry, not the main one**, because the server-driven UI renderer, the docs gallery and `syntara/icons` import the
   whole main entry; a test keeps niche icons out of it.
 
@@ -33,6 +33,7 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
   - `pnpm --filter @syntara/icons check:niche-drawing`: `{"icons":2000,"problems":0}`. `typecheck` clean.
   - `pnpm --filter @syntara/icons build`: `dist/index.js` 17.07 kB (unchanged main entry), `dist/niche.js` 68.86 kB; `anatomy-skull` found in `dist/icons/niche/healthcare-anatomy.js` and absent from `dist/index.js`.
   - `pnpm typecheck` clean; `pnpm test` 2,358 passed, 0 failed, and `check-test-counts.mjs` says the README row matches (`--fix` wrote 966 icons); `pnpm check:meta` 58/58; `pnpm registry` 82 ok; `check-override-weight` clean; `pnpm --filter @syntara/docs build` 316/316 pages; `check-ssr-tabs` 0 of 592.
+  - After merging `main` (4 newer commits, ADR numbers collided: this record is ADR-053): `pnpm typecheck` clean, `pnpm test` 2,363 passed 0 failed, `check-test-counts.mjs` says the README row matches, `check:niche-drawing` `{"icons":2000,"problems":0}`.
   - Browser sweeps (hydration, links, overflow, CSP, axe, overlay) were last run on the first layout (separate package): all 0 failures, 144 routes. Not re-run after the merge: `git diff $(git merge-base HEAD origin/main) -- apps packages/react packages/sdui packages/syntara packages/mcp packages/audit packages/theme-engine/src` is empty, and the docs build output is unchanged in kind. `pnpm test:themes` was not re-run: the engine is untouched (118,000/118,000 on the first layout).
 - Strokes per icon: 0–2: 432, 3: 628, 4: 594, 5: 346 (940 above the aim of 3). The shipped set bends the aim too.
 
@@ -42,6 +43,183 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
   car-lift, cattle-ear-tag, silicon-wafer, breadboard, dog-tags, access-keypad, centrifuge, garland, fireworks.
 - Docs site page for the pack (search by domain) is not built. Duotone twins not started. Not published to npm.
 - Hand-drawn at this scale: expect a redraw round after Anuj's review of the per-domain sheets.
+## 2026-10-06 — Header nav never wraps; search grows only where the row fits
+
+Reported by Anuj: "Get started" in the site header broke onto two lines around 1080px, on syntara.live and on `main` (d3ca2e5).
+
+**Changed**
+- `apps/docs/components/site/site-header.module.css`: main-nav links are `white-space: nowrap`; the header search
+  stays icon-only until 1024px (was 960), takes its 192px field from 1024 and its 288px field from 1120 (was 1024).
+  The reasoning and the measurements are in the comment above the media queries.
+- `apps/docs/components/site/search.tsx`: the header search button reads "Search docs…" (was "Search
+  documentation…", cut off at 192px). Its accessible name is now "Search docs" too, so the visible label stays inside
+  it (WCAG 2.5.3). The search dialog's own field keeps "Search documentation…".
+
+**Decided**
+- Keep every nav link and grow the search later, rather than hiding "Get started" until 1104px, which would drop it at
+  1024px laptop widths — **Claude recommended, Anuj accepted**.
+- "Search docs" as the header label — **Anuj**.
+
+**Results**
+- Before, on syntara.live, every width 768–1400px: "Get started" wrapped at 960–1006 and 1024–1102; no sideways
+  scroll — a one-off Playwright sweep (scratch script, not committed) reading each nav link's line boxes.
+- The row needs 1006px with the 192px field and 1102px with the 288px one (nav 556px on one line) — same sweep with
+  links forced to one line. New breakpoints leave 18px spare at 1024 and at 1120.
+- After, on this branch's dev server, 768–1400px: no wrapped links, no sideways scroll — same sweep.
+- `/verify` on build `jzZ9mWlEabVKocCYW5v-9`, served on port 3418 because another session held 3000
+  (`SYNTARA_BASE_URL=http://localhost:3418`):
+  - Typecheck clean — `pnpm typecheck`.
+  - 2,351 tests across 8 packages, 0 failing; the README count matches — `pnpm test`, `node scripts/check-test-counts.mjs`.
+  - Fuzz: 118,000 / 118,000 checks; adjustments per brand median 4 — `pnpm test:themes`.
+  - 58/58 components pass — `pnpm check:meta`. 82 registry items — `pnpm registry`.
+  - 0 component restyles of equal weight — `node scripts/check-override-weight.mjs`.
+  - 316/316 pages built — `pnpm --filter @syntara/docs build`. The new rules are in the build:
+    `grep -rl 'min-width:1120px' apps/docs/out/_next/static` and `Search docs…` in `out/index.html`.
+  - 0 pages missing a tab panel — `node scripts/check-ssr-tabs.mjs`.
+  - 0 hydration failures of 288 — `check-hydration.mjs`. 0 of 5 theme-link failures — `check-theme-links.mjs`.
+  - 0 of 288 pages scroll sideways at 320 and 768px — `check-narrow-overflow.mjs`.
+  - 0 of 144 pages broken by the CSP — `check-csp.mjs`.
+  - 0 axe violation nodes, 144 routes × 2 schemes — `axe-sweep.mjs`. Its first run crashed before measuring
+    (Playwright's browser failed to launch); the re-run on the same build passed.
+  - 0 overlay failures (108 tooltips, 4 menus and popovers) — `check-overlay-exit.mjs`.
+
+**Next**
+- The `/screenshots` sweep was not run this session.
+- syntara.live still shows the wrap until this merges and deploys.
+
+---
+
+## 2026-10-06 — The homepage's app window fits iPhones
+
+Branch `fix/home-showcase-mobile`, from `main` at 37b9578, in its own worktree.
+
+**Changed**
+- On iPhones (Safari, and every in-app browser there, which all run Safari's engine) the hero's app window stayed
+  nearly desktop-size: it ran off the right edge, covered "Just the package?", and squeezed the style list. Cause:
+  Safari resolves `100vw` wrongly inside `tan(atan2())` under `zoom` or `scale` (zoom came out 0.948 at 390px;
+  the right value is 0.356). Chrome was fine, so #68 looked done.
+- `apps/docs/lib/viewport-width.ts`: a one-line script in `<head>` (beside the scheme script) sets `--page-w` to the
+  page's width in px, before first paint and on resize. The window's shrink reads it; `100vw` stays as the fallback.
+- `landing.module.css`: the window shrinks with `scale`, not `zoom` — Safari holds zoomed text at its minimum font
+  size, so the sidebar's labels outgrew their rows. Margins take the unscaled layout box back out; the visible
+  spacing is the same as before.
+- The gap under the window on phones: the scroll rise (`data-rise`, an inline transform from `landing-effects.tsx`)
+  is off below 1080px, where the window sits in the flow — climbing 96px covered "Just the package?" and opened a
+  band under it; the intro's top padding there is 96px, not desktop's 154px.
+
+**Decided**
+- Fix the iPhone bug and the gap under the window, in one PR. **Anuj** (2026-10-06); both approved from before/after
+  iPhone-engine screenshots.
+
+**Results**
+- iPhone engine (Playwright WebKit 26.0, iPhone 14, 390px): window 342px wide, page 390px wide (no sideways
+  scroll); before: 960px laid out, zoom 0.948. Chrome at 390px: 342px. (scratch script, `getBoundingClientRect`)
+- `/verify`, once, on the branch merged with `main` at c94e7bf: `pnpm typecheck` exit 0; `pnpm test` 2,351 tests,
+  none failing (`check-test-counts.mjs` matches the README); `pnpm test:themes` 118,000 of 118,000 checks, median 4
+  adjustments per brand (unchanged); `pnpm check:meta` 58/58 (one warning already on `main`: `hero-styles.tsx` not
+  in `meta.examples`); `pnpm registry` 82 items; `check-override-weight` 0; docs build 316/316 pages;
+  `check-ssr-tabs` 0. Served on :3419 (3000 held by another session; build id `p-AoRIXTIoCh4INU2W6eP` checked):
+  `check-hydration` 0 of 288; `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144
+  (the new inline script passes the site's policy); `axe-sweep` 0 violation nodes over 144 × 2;
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
+- Shipped: `grep -rl 'page-w' apps/docs/out/_next/static` → 2 files; `transform:none!important` in 1 CSS chunk.
+- Screenshot sweep of `/` (the homepage is always dark, ADR-047, so no tenant matrix): `shoot.mjs` at 320, 390, 768,
+  1079, 1081, 1280px × light/dark, and Playwright WebKit on iPhone SE (320), iPhone 14 (390), iPad Mini (768) ×
+  light/dark, top and scrolled. Window width in WebKit 272 / 342 / 720px (the screen minus 24px a side), page width
+  equal to the screen at all three. Desktop (1081, 1280) unchanged. Seen, already on the live site, not this change:
+  the header's "Get started" wraps to two lines around 1080px; Cloudflare's analytics beacon is blocked by the CSP.
+
+**Next**
+- Playwright's WebKit installs only under Node 24 here (`/usr/local/bin/node node_modules/playwright/cli.js install
+  webkit`); under Node 26 the unzip hangs or the lock fails.
+
+---
+
+## 2026-10-06 — After setup, a welcome card shows the brand, light or dark to match the computer (ADR-052)
+
+Branch `feat/onboarding-welcome`, from `main` at c94e7bf, in its own worktree (`.claude/worktrees/onboarding`).
+
+**Changed**
+- **Found by running `npx syntara@0.3.0 init` as a new user** in a fresh `create-vite` react-ts app, Enter at every
+  question (scripted with `expect`). On a dark-mode Mac the starter's headings computed to `rgb(243, 244, 246)` on the
+  light page `ThemeScope` painted; after setup the app looked as before.
+- **`ThemeScope scheme="auto"`** (`packages/react`): follows the system setting. The token CSS already had the
+  `[data-syntara-scheme="auto"]` media block; the prop type, `color-scheme` and `meta.json` now match. Additive.
+- **`init`** (`packages/syntara/src/cli/`): wraps with `scheme="auto"`, and writes `syntara-welcome.tsx` (`.jsx` for a
+  JS entry) beside the theme CSS, placed first inside the `ThemeScope`: "This is <brand>" at `font-size-2xl`, this
+  run's contrast count, a text field, a switch, two buttons, a link to every component, "Hide for now". Never over an
+  existing file; `--no-welcome` skips it. Help, both READMEs and `installation.mdx` say so.
+- 5 tests in `test/wire.test.ts`; 5 existing expectations updated for `scheme="auto"`.
+
+**Decided**
+- Fix the dark-mode page and the missing "it worked" moment; the welcome card over a better message or opening
+  syntara.live; bigger title; a visible footer line. **Anuj** (ADR-052).
+- `scheme="auto"` as the fix, 24px for the title, `border.default` for the line. **Claude recommended, Anuj accepted**
+  (approved in screenshots).
+
+**Results**
+- Vite: setup run with this branch's build swapped into a fresh app's `node_modules`; the app shows the card, no console
+  errors, light and dark. `tsc -p tsconfig.app.json --noEmit` in that app: no errors.
+- Next.js: `create-next-app` (App Router), `syntara init --yes --name Acme` edits `app/layout.tsx`; `next build`
+  passes and `grep -rl "See every component" .next/server` finds `app/index.html`.
+- `pnpm typecheck`: passes. `pnpm test`: 2,356 passing across 8 packages (syntara 98 + 1 skipped);
+  `node scripts/check-test-counts.mjs --from <test output> --fix` moved the README's one-install count 94 → 99.
+- `pnpm test:themes`: every brand valid, median adjustments 4 (main: 4). `pnpm check:meta`: passes, 1 old warning
+  (hero-styles). `pnpm registry`: 82 items. `node scripts/check-override-weight.mjs`: 0.
+- `pnpm --filter @syntara/docs build`: 315 pages; `grep -rl -- "--no-welcome" apps/docs/out` finds `installation.html`.
+  `node scripts/check-ssr-tabs.mjs`: 0 missing panels.
+- Served build `kU0Ol9izZvzTStHTbRs-D` on :3000: `check-hydration` 0 of 288, `check-theme-links` 0 of 5,
+  `check-narrow-overflow` 0 of 288, `check-csp` 0 of 144, `axe-sweep` 0 violation nodes (144 × 2),
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus/popovers).
+- Screenshots (`node scripts/shoot.mjs http://localhost:5288/ … --web-fonts`, temp folder): light, dark, 390px dark,
+  compact, Qamar `ar-AE` RTL. Mirrors correctly; no overflow.
+
+**Known gaps**
+- Every `CardFooter divider` is near-invisible in dark mode (`#202327` on `#191c20`). Fixed only in the welcome card;
+  `Card` is beta, so a system fix is a GOVERNANCE §5 decision for Anuj.
+- In an RTL app the card's English sentence puts its full stop on the left.
+- With an `allow-scripts` line in `~/.npmrc`, npm 11 refuses `init`'s install (`EALLOWSCRIPTS`); the command recovers,
+  but its "Next" step repeats the same install.
+- The theme CSS header says `@syntara/theme-engine 0.1.0`; 0.3.0 is published.
+- The "1 small colour fix" on the default look contradicts ADR-049's "nothing a new user sees has been adjusted".
+
+**Next**
+- Anuj: the Card footer line for every card, and whether the default look's focus-ring fix needs a new colour.
+
+---
+
+## 2026-10-06 — Branch and worktree cleanup
+
+Asked by Anuj after the custom-fonts release. No code changed.
+
+**Changed**
+- **Worktrees:** removed 3 clean ones whose work was merged: `strata-init-wire` (#78), `.claude/worktrees/repo-links`
+  (#77), `strata-repolink` (#40, closed, replaced by #77); `git worktree prune`. 9 → 6 (`git worktree list`). Size
+  before removal, from `du -sh`: 1.8G, 20M, 18M.
+- **Local branches:** deleted 23 whose PRs merged and whose tips matched the merged commit (one, the footer fix, had
+  only a merge of `main` and #67's own commit on top). 42 → 20 (`git branch | wc -l`), counting one backup added below.
+- **GitHub branches:** deleted **73**, the head branches of every merged PR. Anuj had approved "25": Claude counted
+  only those also on this computer, and the command used every merged PR. Then checked all 73: GitHub's push events
+  covered 30 (23 tips equal the merged commit; 6 older than it; 1 newer); for the rest, every leftover commit was
+  tested with `git merge-base --is-ancestor` against each merged PR's head.
+  - `claude/sharp-moser-fb7615` (#37) had `0d8983c` "docs(log): name the build the final numbers came from"
+    (2026-10-02), pushed after the merge and not in `main`. Pushed back to GitHub at `0d8983c`.
+  - `2e001ea` "feat(docs): /story, the case-study page" (2026-10-01) is in no merged PR and no branch; probably an early
+    draft (`/story` shipped in #27). Kept locally as `backup/story-draft-2e001ea`.
+  - Every other commit sits inside a merged PR. A deleted branch can be restored from its PR page.
+  GitHub now has 7 branches (`git branch -r`).
+
+**Decided**
+- Remove merged worktrees and branches, here and on GitHub. **Anuj.**
+- Keep everything with unsaved or unmerged work: the main checkout (2 files, on `feat/icons-style-filter`),
+  `ai-announcer` (11), `tenants-from-folder` (13, another session), `home-showcase-mobile` (1), `feat-prompt-composer`
+  (3 commits not in `main`), and 13 branches never sent as a PR, including `wip/haat-hindi-copy` (on Anuj's question
+  list) and the `backup/…` branches. **Claude.**
+- Before a delete, count from the exact list the command will use, and ask with that number. **Claude**, after the
+  73-for-25 mistake; written into `CLAUDE.md` and Claude's memory.
+
+**Next**
+- The 13 unsent branches and 4 dirty worktrees are Anuj's to decide, one by one.
 
 ---
 

@@ -6,6 +6,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, isAbsolute, join, relative } from 'node:path';
 import { brandFidelity, fontFacesCSS, fontFamilyOf, generateTheme, googleFontsHref, isValidHex, TYPE_PAIRS, toCSS } from '@syntara/theme-engine';
 import { findLook, LOOKS } from './looks.js';
+import { welcomePathFor, welcomeSource } from './welcome.js';
 import { findEntry, planWire } from './wire.js';
 
 /** @typedef {import('@syntara/theme-engine').BrandInput} BrandInput */
@@ -143,7 +144,7 @@ const SCRIPTS = { latin: 'latin', english: 'latin', arabic: 'arabic', devanagari
 
 /** --flag value / --flag / -y. Unknown flags and bad values are reported with how to fix them, not ignored. */
 export function parseArgs(argv) {
-  const opts = { yes: false, force: false, install: true, edit: true, look: undefined, name: undefined, out: undefined, brand: {}, font: {} };
+  const opts = { yes: false, force: false, install: true, edit: true, welcome: true, look: undefined, name: undefined, out: undefined, brand: {}, font: {} };
   const takes = { '--look': 'look', '--name': 'name', '--out': 'out' };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
@@ -151,6 +152,7 @@ export function parseArgs(argv) {
     else if (arg === '--force') opts.force = true;
     else if (arg === '--no-install') opts.install = false;
     else if (arg === '--no-edit') opts.edit = false;
+    else if (arg === '--no-welcome') opts.welcome = false;
     else if (arg in takes || arg in BRAND_FLAGS || arg in FONT_FLAGS) {
       const value = argv[++i];
       if (value === undefined || value.startsWith('--')) throw new Error(`${arg} needs a value.`);
@@ -371,7 +373,7 @@ function sayNextSteps(io, { id, cssPath, brand, installed, wired }) {
     io.say(`       import 'syntara/styles.css';`);
     io.say(`       import './${inSrc ? cssPath.slice(4) : cssPath}';${inSrc ? '' : '   (path from your project folder)'}`);
     io.say(`  ${step++}. Wrap your app:`);
-    io.say(`       <ThemeScope theme="${id}" style={{ minHeight: '100vh' }}>…</ThemeScope>`);
+    io.say(`       <ThemeScope theme="${id}" scheme="auto" style={{ minHeight: '100vh' }}>…</ThemeScope>`);
   }
   io.say(`  ${step++}. Use a component:  import { Button } from 'syntara';`);
   io.say('');
@@ -389,11 +391,20 @@ function sayNextSteps(io, { id, cssPath, brand, installed, wired }) {
  * Adds the imports and the ThemeScope to the app's entry file, after showing the change and asking (Enter = yes).
  * Returns true when the app loads Syntara afterwards, whether this run added it or it was there already.
  */
-async function wireApp(io, { id, cssPath }, opts) {
+async function wireApp(io, { id, cssPath, theme }, opts) {
   const entry = findEntry(io.cwd);
   if (!entry) return false;
   const file = join(io.cwd, entry.path);
-  const plan = planWire(readFileSync(file, 'utf8'), { kind: entry.kind, entryPath: entry.path, cssPath, id });
+  // The welcome card comes only with a fresh edit, and never replaces a file of the same name.
+  const welcomePath = opts.welcome ? welcomePathFor(cssPath, entry.path) : undefined;
+  const addWelcome = welcomePath !== undefined && !existsSync(join(io.cwd, welcomePath));
+  const plan = planWire(readFileSync(file, 'utf8'), {
+    kind: entry.kind,
+    entryPath: entry.path,
+    cssPath,
+    id,
+    welcomePath: addWelcome ? welcomePath : undefined,
+  });
   io.say('');
   if (plan.status === 'already') {
     io.say(`${entry.path} already loads Syntara, so it was left as it is.`);
@@ -403,7 +414,8 @@ async function wireApp(io, { id, cssPath }, opts) {
     io.say(`${entry.path} was not changed: ${plan.reason}. The steps below say what to add by hand.`);
     return false;
   }
-  io.say(`To finish, Syntara will add these to ${entry.path}:`);
+  if (addWelcome) io.say(`To finish, Syntara will add a welcome card that shows your brand (${welcomePath}), and these to ${entry.path}:`);
+  else io.say(`To finish, Syntara will add these to ${entry.path}:`);
   for (const line of plan.added) io.say(`  + ${line}`);
   io.say(`  ~ ${plan.wrapped}`);
   const go =
@@ -412,7 +424,13 @@ async function wireApp(io, { id, cssPath }, opts) {
     /^y/i.test(await askValid(io, `Change ${entry.path}? y or n`, 'y', (a) => /^(y|yes|n|no)$/i.test(a), 'Type y or n.'));
   if (!go) return false;
   writeFileSync(file, plan.source);
-  io.say(`Changed ${entry.path}: your app now loads your theme.`);
+  io.say(`Changed ${entry.path}: your app now loads your theme, light or dark to match the computer.`);
+  if (addWelcome) {
+    const { passed, checks } = theme.summary;
+    writeFileSync(join(io.cwd, welcomePath), welcomeSource({ name: theme.input.name, entryPath: entry.path, welcomePath, checks: { passed, checks } }));
+    io.say(`Wrote ${welcomePath}: start your app to see your brand at the top of the page.`);
+    io.say(`  When you are done with it, delete that file and the two SyntaraWelcome lines in ${entry.path}.`);
+  }
   return true;
 }
 
@@ -457,7 +475,7 @@ export async function runInit(argv, io) {
     installed = go && io.run(install);
     if (go && !installed) io.say(`The install did not finish. Run "${install}" yourself.`);
   }
-  const wired = opts.edit ? await wireApp(io, { id, cssPath }, opts) : false;
+  const wired = opts.edit ? await wireApp(io, { id, cssPath, theme }, opts) : false;
   sayNextSteps(io, { id, cssPath, brand: theme.input, installed, wired });
   return 0;
 }

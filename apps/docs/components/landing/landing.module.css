@@ -1348,18 +1348,36 @@
     display: none;
   }
   /* narrow: the hero's window joins the flow under the copy and shrinks, whole, to the screen's width.
-     tan(atan2(a, b)) is a / b as a plain number, which zoom needs; zoom (unlike scale) shrinks the layout box too */
+     tan(atan2(a, b)) is a / b as a plain number. --page-w (px, set by lib/viewport-width.ts) not 100vw: Safari
+     resolves vw wrongly in here; 100vw is the no-script fallback.
+     scale, not zoom: Safari holds zoomed text at its minimum font size, so the sidebar's labels outgrew their rows.
+     scale leaves the layout box full size, so the margins below take the difference back out */
   .app {
+    --l-s: tan(atan2(calc(var(--page-w, 100vw) - var(--syntara-space-6) * 2), var(--l-app)));
     position: relative;
     inset: auto;
     translate: none;
-    /* the negative foot tucks the window's square bottom edge behind the hero's fade, as on desktop */
-    margin: var(--syntara-space-16) auto calc(var(--syntara-space-24) * -2);
-    zoom: tan(atan2(calc(100vw - var(--syntara-space-6) * 2), var(--l-app)));
+    scale: var(--l-s);
+    transform-origin: top center;
+    /* centred though wider than the screen; the negative foot tucks the window's square bottom edge behind the
+       hero's fade, as on desktop */
+    margin-block: calc(var(--syntara-space-16) * var(--l-s))
+      calc(
+        var(--syntara-space-16) * 10.5 * (var(--l-s) - 1) - var(--syntara-space-24) * 2 * var(--l-s)
+      );
+    margin-inline: calc((100% - var(--l-app)) / 2);
+    /* no scroll rise here (landing-effects.tsx writes an inline transform; only !important beats it): in the flow,
+       climbing 96px covered "Just the package?" and opened an empty band under the window */
+    transform: none !important;
   }
   .hero {
     block-size: auto;
     padding-block-end: 0;
+  }
+  /* the shrunk window's foot already reaches into the intro, under the fade; desktop's 154px on top of it read as
+     an empty band */
+  .intro {
+    padding-block-start: var(--syntara-space-24);
   }
   .frame {
     block-size: auto;

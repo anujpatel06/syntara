@@ -124,5 +124,12 @@ When parallelising, give each agent exact file ownership and these rules: no dep
 - **`serve` may not take the port you asked for.** `serve out -l 3000` falls back to a random port when 3000 is taken, prints the one it actually took, and exits 0. So a `200` from `curl` proves something is answering, not that it is yours — and with several agents on one machine, "something" is usually another session's build. The six `/verify` step 9 scripts compare the served build against `apps/docs/.next/BUILD_ID` first and stop on a mismatch: believe that error rather than working around it, and confirm the port with `lsof -nP -iTCP:<port> -sTCP:LISTEN`. `shoot.mjs`, `screenshots.mjs` and `check-script-clipping.mjs` take whatever URL you give them and check nothing, so a screenshot of the wrong build looks exactly like a screenshot of yours.
 - **`shoot.mjs` blocks Google Fonts** unless you pass `--web-fonts` (or `SYNTARA_LOCAL_FONTS`): text then renders in the fallback stack. Fine for layout, wrong for judging a font.
 - **A matching build id proves whose build you measured, not that your change is in it.** Edit a file, forget to rebuild, and the id still matches while the numbers mean nothing. When a run is meant to prove a change works, prove the change shipped: `grep -rl '<something from your diff>' apps/docs/out/_next/static`.
+- **Cleaning up branches:** PRs merge as one combined (squash) commit, so every merged branch still looks unmerged to
+  `git branch --merged`; ask GitHub (`gh pr list --state merged`) and compare each branch's tip with the PR's merged
+  commit. Before deleting, count from the exact list the delete command will use and ask with that number: on
+  2026-10-06, "25" approved became 73 deleted, and one had a commit not in `main` (restored).
 - **Stopping servers:** `pgrep -f "next start"` also matches your own shell command. Kill by the PID you started instead.
+- **iPhone bugs need WebKit, not Chrome.** Every iPhone browser (and LinkedIn's in-app one) is Safari's engine; a
+  phone layout that's right in Chrome can be wrong there (#68 was). Playwright's WebKit installs only under Node 24
+  here: `/usr/local/bin/node node_modules/playwright/cli.js install webkit` (under Node 26 the unzip hangs).
 - **Offline sandboxes** can't reach Google Fonts. Screenshot scripts accept `SYNTARA_LOCAL_FONTS=<node_modules with @fontsource/*>`. You don't need this on a normal Mac.
