@@ -6,7 +6,7 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
-## 2026-10-06 — 2,000 niche icons in `@syntara/icons/niche` (ADR-053)
+## 2026-10-06 — 2,000 niche icons in `@syntara/icons/niche` (ADR-054)
 
 Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
 
@@ -18,7 +18,7 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
   the dot cap. Drawers cut and replaced about 200 drawings that read as the wrong object (a plough that read as a banana).
 - **Into `@syntara/icons`** (Anuj: "include in same"; first built as a separate package, then merged): `src/icons/niche/<domain>.ts`
   (40 files), `src/niche.ts` and `src/niche-domains.ts` (domain → names) behind a new entry `@syntara/icons/niche`;
-  `test/niche.test.tsx`, `check:niche-drawing` (live-area geometry in a real browser), README section, changeset, ADR-053.
+  `test/niche.test.tsx`, `check:niche-drawing` (live-area geometry in a real browser), README section, changeset, ADR-054.
   **Own entry, not the main one**, because the server-driven UI renderer, the docs gallery and `syntara/icons` import the
   whole main entry; a test keeps niche icons out of it.
 
@@ -33,7 +33,7 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
   - `pnpm --filter @syntara/icons check:niche-drawing`: `{"icons":2000,"problems":0}`. `typecheck` clean.
   - `pnpm --filter @syntara/icons build`: `dist/index.js` 17.07 kB (unchanged main entry), `dist/niche.js` 68.86 kB; `anatomy-skull` found in `dist/icons/niche/healthcare-anatomy.js` and absent from `dist/index.js`.
   - `pnpm typecheck` clean; `pnpm test` 2,358 passed, 0 failed, and `check-test-counts.mjs` says the README row matches (`--fix` wrote 966 icons); `pnpm check:meta` 58/58; `pnpm registry` 82 ok; `check-override-weight` clean; `pnpm --filter @syntara/docs build` 316/316 pages; `check-ssr-tabs` 0 of 592.
-  - After merging `main` (4 newer commits, ADR numbers collided: this record is ADR-053): `pnpm typecheck` clean, `pnpm test` 2,363 passed 0 failed, `check-test-counts.mjs` says the README row matches, `check:niche-drawing` `{"icons":2000,"problems":0}`.
+  - After merging `main` (4 newer commits, ADR numbers collided: this record is ADR-054): `pnpm typecheck` clean, `pnpm test` 2,363 passed 0 failed, `check-test-counts.mjs` says the README row matches, `check:niche-drawing` `{"icons":2000,"problems":0}`.
   - Browser sweeps (hydration, links, overflow, CSP, axe, overlay) were last run on the first layout (separate package): all 0 failures, 144 routes. Not re-run after the merge: `git diff $(git merge-base HEAD origin/main) -- apps packages/react packages/sdui packages/syntara packages/mcp packages/audit packages/theme-engine/src` is empty, and the docs build output is unchanged in kind. `pnpm test:themes` was not re-run: the engine is untouched (118,000/118,000 on the first layout).
 - Strokes per icon: 0–2: 432, 3: 628, 4: 594, 5: 346 (940 above the aim of 3). The shipped set bends the aim too.
 
@@ -43,6 +43,36 @@ Branch `feat/icons-niche-pack`, from `main` at c94e7bf, in its own worktree.
   car-lift, cattle-ear-tag, silicon-wafer, breadboard, dog-tags, access-keypad, centrifuge, garland, fireworks.
 - Docs site page for the pack (search by domain) is not built. Duotone twins not started. Not published to npm.
 - Hand-drawn at this scale: expect a redraw round after Anuj's review of the per-domain sheets.
+## 2026-10-06 — Cloudflare Web Analytics was blocked by our own CSP
+
+**Changed**
+- `apps/docs/public/_headers`: the CSP now allows `https://static.cloudflareinsights.com` in `script-src` and
+  `https://cloudflareinsights.com` in `connect-src`, so the analytics script Cloudflare injects on syntara.live can run
+  and report (ADR-054).
+
+**Decided**
+- Keep Cloudflare Web Analytics and allow it, rather than turn it off — **Claude recommended, Anuj accepted** (ADR-054).
+  Anuj had not known it was on.
+
+**Results**
+- `SYNTARA_BASE_URL=http://localhost:3417 node scripts/check-csp.mjs`: 144 routes, 0 failures (build
+  `FS3a_myytfOxyaR-Pj697`; `grep -c static.cloudflareinsights.com apps/docs/out/_headers` → 1).
+- That check only covers the repo's headers, not Cloudflare's injection. A one-off Playwright load of live syntara.live
+  with the CSP swapped: old policy blocks the beacon; new policy loads it (`200`) and its report returns `204`, no
+  violations.
+- `/verify` before committing: typecheck clean; `pnpm test` 2,351 tests, none failing (`check-test-counts.mjs` matches
+  the README); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand; `pnpm check:meta` 58/58 (one
+  existing warning: `hero-styles.tsx` not in `meta.examples`); `pnpm registry` 82 items; `check-override-weight.mjs`
+  clean; docs build 316/316 pages; `check-ssr-tabs.mjs` 0 of 315; against build `9wvFO0M0IWsv4c6_v5tlA`:
+  `check-hydration.mjs` 0 of 288, `check-theme-links.mjs` 0 of 5, `check-narrow-overflow.mjs` 0 of 288,
+  `check-csp.mjs` 0 of 144, `axe-sweep.mjs` 0 violation nodes, `check-overlay-exit.mjs` 0 of 112.
+
+**Next**
+- After this deploys, open syntara.live and confirm the console is clean, then check the Cloudflare Web Analytics
+  dashboard shows visits within a day.
+
+---
+
 ## 2026-10-06 — Header nav never wraps; search grows only where the row fits
 
 Reported by Anuj: "Get started" in the site header broke onto two lines around 1080px, on syntara.live and on `main` (d3ca2e5).

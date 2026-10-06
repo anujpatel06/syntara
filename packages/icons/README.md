@@ -35,7 +35,7 @@ so a product can move its whole icon layer in one import change.
 ## Niche icons: `@syntara/icons/niche`
 
 **2,000 more outline icons in 40 domains** (healthcare specialties, dental, anatomy, finance, legal, farming, aviation
-and more), same style and same `createIcon`, in the same package under their own entry point (ADR-053):
+and more), same style and same `createIcon`, in the same package under their own entry point (ADR-054):
 
 ```tsx
 import { IconCardiology } from '@syntara/icons/niche';

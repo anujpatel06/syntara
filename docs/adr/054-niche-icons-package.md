@@ -1,4 +1,4 @@
-# ADR-053: Niche icons live in `@syntara/icons`, behind their own entry point, with two measured caps
+# ADR-054: Niche icons live in `@syntara/icons`, behind their own entry point, with two measured caps
 
 - **Status:** Accepted — **Anuj** (2026-10-06: 2,000 icons, outline only, duotone later per domain; the cap of 5
   strokes and the cap of 4 filled dots; "include in same" package). The entry point `@syntara/icons/niche` instead of
