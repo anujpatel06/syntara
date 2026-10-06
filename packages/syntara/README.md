@@ -14,14 +14,17 @@ Run it in your app's folder. It is the whole setup:
    `syntara.brand.json` keeps your answers. It tells you in plain words what it adjusted.
 3. **Installs Syntara.** It offers to run your project's own package manager. `--no-install` skips this.
 4. **Adds it to your app.** In your entry file (Vite `src/main.tsx`, Next `app/layout.tsx` or `pages/_app.tsx`) it
-   adds two style imports and a `ThemeScope` around your app. It shows you the change and asks first. `--no-edit`
+   adds two style imports and a `ThemeScope` around your app that follows the computer's light or dark setting
+   (`scheme="auto"`), plus a welcome card (`syntara-welcome.tsx`) that shows your brand on real components when you
+   start the app. Delete that file and its two lines when you are done with it; `--no-welcome` skips it. It shows you
+   the change and asks first. `--no-edit`
    skips this, and you add the lines yourself:
 
 ```tsx
 import 'syntara/styles.css';
 import './syntara-theme.css';
 
-<ThemeScope theme="my-brand">…</ThemeScope>
+<ThemeScope theme="my-brand" scheme="auto">…</ThemeScope>
 ```
 
 Just want the package? `npm install syntara`.

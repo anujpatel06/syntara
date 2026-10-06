@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { runInit } from '../src/cli/init.js';
+import { welcomePathFor, welcomeSource } from '../src/cli/welcome.js';
 import { findEntry, planWire, relativeImport } from '../src/cli/wire.js';
 
 const VITE_MAIN = `import { StrictMode } from 'react'
@@ -130,7 +131,7 @@ import './syntara-theme.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeScope theme="acme" style={{ minHeight: '100vh' }}>
+    <ThemeScope theme="acme" scheme="auto" style={{ minHeight: '100vh' }}>
       <App />
     </ThemeScope>
   </StrictMode>,
@@ -147,7 +148,7 @@ import "syntara/styles.css";
 import "../syntara-theme.css";
 `);
     expect(plan.source).toContain(`      >
-        <ThemeScope theme="acme" style={{ minHeight: '100vh' }}>
+        <ThemeScope theme="acme" scheme="auto" style={{ minHeight: '100vh' }}>
           {children}
         </ThemeScope>
       </body>`);
@@ -160,7 +161,7 @@ import "../syntara-theme.css";
     const plan = planWire(PAGES_APP, { kind: 'next-pages', entryPath: 'pages/_app.tsx', cssPath: 'syntara-theme.css', id: 'acme' });
     expect(plan.status).toBe('ready');
     expect(plan.source).toContain(
-      `return <ThemeScope theme="acme" style={{ minHeight: '100vh' }}><Component {...pageProps} /></ThemeScope>;`,
+      `return <ThemeScope theme="acme" scheme="auto" style={{ minHeight: '100vh' }}><Component {...pageProps} /></ThemeScope>;`,
     );
     expect(plan.source).toContain(`import "../syntara-theme.css";\n\nexport default`);
   });
@@ -169,14 +170,14 @@ import "../syntara-theme.css";
     const plan = planWire(CRA_INDEX, { kind: 'react', entryPath: 'src/index.tsx', cssPath: 'src/syntara-theme.css', id: 'acme' });
     expect(plan.status).toBe('ready');
     expect(plan.source).toContain(`import App from './App';\nimport { ThemeScope } from 'syntara';\n`);
-    expect(plan.source).toContain(`    <ThemeScope theme="acme" style={{ minHeight: '100vh' }}>\n      <App />\n    </ThemeScope>`);
+    expect(plan.source).toContain(`    <ThemeScope theme="acme" scheme="auto" style={{ minHeight: '100vh' }}>\n      <App />\n    </ThemeScope>`);
   });
 
   it('reads a multi-line import to its end before adding', () => {
     const src = `import {\n  StrictMode,\n} from 'react';\nimport App from './App';\n\nrender(<App />);\n`;
     const plan = planWire(src, { kind: 'react', entryPath: 'src/main.tsx', cssPath: 'src/syntara-theme.css', id: 'x' });
     expect(plan.source).toBe(
-      `import {\n  StrictMode,\n} from 'react';\nimport App from './App';\nimport { ThemeScope } from 'syntara';\nimport 'syntara/styles.css';\nimport './syntara-theme.css';\n\nrender(<ThemeScope theme="x" style={{ minHeight: '100vh' }}><App /></ThemeScope>);\n`,
+      `import {\n  StrictMode,\n} from 'react';\nimport App from './App';\nimport { ThemeScope } from 'syntara';\nimport 'syntara/styles.css';\nimport './syntara-theme.css';\n\nrender(<ThemeScope theme="x" scheme="auto" style={{ minHeight: '100vh' }}><App /></ThemeScope>);\n`,
     );
   });
 
@@ -278,5 +279,62 @@ describe('init changes the entry file', () => {
     expect(await runInit(['--yes'], io)).toBe(0);
     expect(readFileSync(join(cwd, 'src/main.tsx'), 'utf8')).toBe(`render(<Root />);\n`);
     expect(said.join('\n')).toContain('src/main.tsx was not changed: <App /> was not found in src/main.tsx.');
+  });
+});
+
+describe('welcome card', () => {
+  it('sits beside the theme CSS, in the entry file\'s language', () => {
+    expect(welcomePathFor('src/syntara-theme.css', 'src/main.tsx')).toBe('src/syntara-welcome.tsx');
+    expect(welcomePathFor('syntara-theme.css', 'app/layout.tsx')).toBe('syntara-welcome.tsx');
+    expect(welcomePathFor('src/syntara-theme.css', 'src/index.jsx')).toBe('src/syntara-welcome.jsx');
+    expect(welcomePathFor('src/syntara-theme.css', 'src/index.js')).toBe('src/syntara-welcome.jsx');
+  });
+
+  it('is imported and placed first inside the ThemeScope, in the file\'s own quotes', () => {
+    const plan = planWire(VITE_MAIN, {
+      kind: 'react',
+      entryPath: 'src/main.tsx',
+      cssPath: 'src/syntara-theme.css',
+      id: 'acme',
+      welcomePath: 'src/syntara-welcome.tsx',
+    });
+    expect(plan.source).toContain(`import { SyntaraWelcome } from './syntara-welcome'\n`);
+    expect(plan.source).toContain(`    <ThemeScope theme="acme" scheme="auto" style={{ minHeight: '100vh' }}>\n      <SyntaraWelcome />\n      <App />\n    </ThemeScope>`);
+    const next = planWire(NEXT_LAYOUT, { kind: 'next-app', entryPath: 'app/layout.tsx', cssPath: 'syntara-theme.css', id: 'acme', welcomePath: 'syntara-welcome.tsx' });
+    expect(next.source).toContain(`import { SyntaraWelcome } from "../syntara-welcome";`);
+    expect(next.source).toMatch(/<SyntaraWelcome \/>\s*\{children\}/);
+  });
+
+  it('shows the brand name and the check counts it is given, and says how to remove it', () => {
+    const src = welcomeSource({ name: 'Zing "Co"', entryPath: 'src/main.tsx', welcomePath: 'src/syntara-welcome.tsx', checks: { passed: 117, checks: 118 } });
+    expect(src.startsWith(`'use client';`)).toBe(true);
+    expect(src).toContain(`{"This is Zing \\"Co\\""}`);
+    expect(src).toContain('117 of 118 contrast checks pass.');
+    expect(src).toContain('delete src/syntara-welcome.tsx and the two SyntaraWelcome lines in src/main.tsx');
+    // The same text works as .jsx: nothing TypeScript-only.
+    expect(src).not.toMatch(/\bas const\b|: React\.|<[A-Z]\w*>\(/);
+  });
+
+  it('init writes it with the edit, and a run that finds one already there leaves it alone', async () => {
+    put('src/main.tsx', VITE_MAIN);
+    const { io, said } = fakeIO([]);
+    expect(await runInit(['--yes', '--name', 'Acme'], io)).toBe(0);
+    const card = readFileSync(join(cwd, 'src/syntara-welcome.tsx'), 'utf8');
+    expect(card).toContain('This is Acme');
+    expect(readFileSync(join(cwd, 'src/main.tsx'), 'utf8')).toContain('<SyntaraWelcome />');
+    expect(said.join('\n')).toContain('Wrote src/syntara-welcome.tsx');
+
+    put('src/main.tsx', VITE_MAIN);
+    put('src/syntara-welcome.tsx', '// mine\n');
+    expect(await runInit(['--yes', '--force'], fakeIO([]).io)).toBe(0);
+    expect(readFileSync(join(cwd, 'src/syntara-welcome.tsx'), 'utf8')).toBe('// mine\n');
+    expect(readFileSync(join(cwd, 'src/main.tsx'), 'utf8')).not.toContain('SyntaraWelcome');
+  });
+
+  it('--no-welcome skips it', async () => {
+    put('src/main.tsx', VITE_MAIN);
+    expect(await runInit(['--yes', '--no-welcome'], fakeIO([]).io)).toBe(0);
+    expect(readFileSync(join(cwd, 'src/main.tsx'), 'utf8')).not.toContain('SyntaraWelcome');
+    expect(() => readFileSync(join(cwd, 'src/syntara-welcome.tsx'))).toThrow();
   });
 });

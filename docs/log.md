@@ -6,6 +6,59 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — After setup, a welcome card shows the brand, light or dark to match the computer (ADR-052)
+
+Branch `feat/onboarding-welcome`, from `main` at c94e7bf, in its own worktree (`.claude/worktrees/onboarding`).
+
+**Changed**
+- **Found by running `npx syntara@0.3.0 init` as a new user** in a fresh `create-vite` react-ts app, Enter at every
+  question (scripted with `expect`). On a dark-mode Mac the starter's headings computed to `rgb(243, 244, 246)` on the
+  light page `ThemeScope` painted; after setup the app looked as before.
+- **`ThemeScope scheme="auto"`** (`packages/react`): follows the system setting. The token CSS already had the
+  `[data-syntara-scheme="auto"]` media block; the prop type, `color-scheme` and `meta.json` now match. Additive.
+- **`init`** (`packages/syntara/src/cli/`): wraps with `scheme="auto"`, and writes `syntara-welcome.tsx` (`.jsx` for a
+  JS entry) beside the theme CSS, placed first inside the `ThemeScope`: "This is <brand>" at `font-size-2xl`, this
+  run's contrast count, a text field, a switch, two buttons, a link to every component, "Hide for now". Never over an
+  existing file; `--no-welcome` skips it. Help, both READMEs and `installation.mdx` say so.
+- 5 tests in `test/wire.test.ts`; 5 existing expectations updated for `scheme="auto"`.
+
+**Decided**
+- Fix the dark-mode page and the missing "it worked" moment; the welcome card over a better message or opening
+  syntara.live; bigger title; a visible footer line. **Anuj** (ADR-052).
+- `scheme="auto"` as the fix, 24px for the title, `border.default` for the line. **Claude recommended, Anuj accepted**
+  (approved in screenshots).
+
+**Results**
+- Vite: setup run with this branch's build swapped into a fresh app's `node_modules`; the app shows the card, no console
+  errors, light and dark. `tsc -p tsconfig.app.json --noEmit` in that app: no errors.
+- Next.js: `create-next-app` (App Router), `syntara init --yes --name Acme` edits `app/layout.tsx`; `next build`
+  passes and `grep -rl "See every component" .next/server` finds `app/index.html`.
+- `pnpm typecheck`: passes. `pnpm test`: 2,356 passing across 8 packages (syntara 98 + 1 skipped);
+  `node scripts/check-test-counts.mjs --from <test output> --fix` moved the README's one-install count 94 → 99.
+- `pnpm test:themes`: every brand valid, median adjustments 4 (main: 4). `pnpm check:meta`: passes, 1 old warning
+  (hero-styles). `pnpm registry`: 82 items. `node scripts/check-override-weight.mjs`: 0.
+- `pnpm --filter @syntara/docs build`: 315 pages; `grep -rl -- "--no-welcome" apps/docs/out` finds `installation.html`.
+  `node scripts/check-ssr-tabs.mjs`: 0 missing panels.
+- Served build `kU0Ol9izZvzTStHTbRs-D` on :3000: `check-hydration` 0 of 288, `check-theme-links` 0 of 5,
+  `check-narrow-overflow` 0 of 288, `check-csp` 0 of 144, `axe-sweep` 0 violation nodes (144 × 2),
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus/popovers).
+- Screenshots (`node scripts/shoot.mjs http://localhost:5288/ … --web-fonts`, temp folder): light, dark, 390px dark,
+  compact, Qamar `ar-AE` RTL. Mirrors correctly; no overflow.
+
+**Known gaps**
+- Every `CardFooter divider` is near-invisible in dark mode (`#202327` on `#191c20`). Fixed only in the welcome card;
+  `Card` is beta, so a system fix is a GOVERNANCE §5 decision for Anuj.
+- In an RTL app the card's English sentence puts its full stop on the left.
+- With an `allow-scripts` line in `~/.npmrc`, npm 11 refuses `init`'s install (`EALLOWSCRIPTS`); the command recovers,
+  but its "Next" step repeats the same install.
+- The theme CSS header says `@syntara/theme-engine 0.1.0`; 0.3.0 is published.
+- The "1 small colour fix" on the default look contradicts ADR-049's "nothing a new user sees has been adjusted".
+
+**Next**
+- Anuj: the Card footer line for every card, and whether the default look's focus-ring fix needs a new colour.
+
+---
+
 ## 2026-10-06 — A brand's own font, accepted only if it passes six measured checks (ADR-051)
 
 Branch `feat/custom-fonts`, from `main` at 9767dae, in its own worktree; `main` fast-forwarded to 5c00355, then
