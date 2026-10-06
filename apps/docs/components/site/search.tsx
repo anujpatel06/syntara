@@ -86,9 +86,9 @@ export function Search({ groups }: { groups: SearchGroup[] }) {
 
   return (
     <>
-      <Button variant="outline" onPress={() => setOpen(true)} className={styles.search} aria-label="Search documentation">
+      <Button variant="outline" onPress={() => setOpen(true)} className={styles.search} aria-label="Search docs">
         <IconSearch aria-hidden className={styles.searchIcon} />
-        <span className={styles.searchLabel}>Search documentation…</span>
+        <span className={styles.searchLabel}>Search docs…</span>
         <Kbd className={styles.searchKbd} aria-hidden="true">
           {isMac ? '⌘K' : 'Ctrl K'}
         </Kbd>
