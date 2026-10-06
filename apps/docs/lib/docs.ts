@@ -46,7 +46,7 @@ export const DOC_PAGES: readonly DocPage[] = [
     slug: 'mcp',
     href: '/docs/mcp',
     title: 'MCP',
-    description: 'The planned Syntara MCP server for AI coding agents.',
+    description: 'The Syntara MCP server for AI coding agents.',
     group: 'getting-started',
     keywords: 'mcp agents claude cursor ai model context protocol',
   },

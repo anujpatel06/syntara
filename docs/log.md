@@ -6,6 +6,34 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — MCP page: say it needs a copy of the repo
+
+Branch `docs/mcp-needs-checkout`, from `main` at 50bbb7a, in its own worktree (`../strata-mcp-docs`).
+
+**Changed**
+- `apps/docs/content/docs/mcp.mdx`: the "Not published yet" box became a warning, "Needs a copy of the repo". The
+  package is on npm, but its data isn't in it, so `npx @syntara/mcp` alone starts and then every lookup fails.
+- `apps/docs/lib/docs.ts`: page subtitle no longer says "planned".
+- `packages/mcp/README.md`: removed the false "`npx @syntara/mcp` works"; Limits now says what npx alone does.
+
+**Decided**
+- Fix the words now, ship the data in the package next, in its own session (Claude recommended, Anuj accepted).
+
+**Results**
+- `npx -y @syntara/mcp@latest` (0.1.3) from an empty folder: `initialize` answers; `list_components`, `get_example`,
+  `find_icon` and `get_tokens` all return "No Syntara repo at …/_npx/…/node_modules (packages/react/meta is missing)";
+  `syntara://agents` returns "not found".
+- Screenshot of `/docs/mcp` (dark) on a dev server for this branch: the box renders; its "Set it up" link
+  resolves to `#set-it-up`. No `/verify`: text-only change.
+
+**Next**
+- Bundle the data (meta files, examples, icons index, tenant brands, AGENTS.md, GOVERNANCE.md) into `@syntara/mcp`
+  at build time, with a test that runs the packed package from an empty folder. Then delete the box and switch the
+  setup snippets to `npx`. Also: the server's startup instructions point agents at `npx syntara init`, which is
+  fine, but every tool after that fails until this ships.
+
+---
+
 ## 2026-10-06 — A docs page for the niche icons: /docs/icons/niche (ADR-054)
 
 Branch `feat/docs-niche-icons`, from `main` at eb1ee7a, in its own worktree.
