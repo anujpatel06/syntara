@@ -34,6 +34,9 @@ Branch `feat/themes-export-dialog`, from `main` at cde820f.
 
 **Next**
 - Nothing for this change, unless the unchecked views turn something up.
+
+---
+
 ## 2026-10-06 — Motion lab: component tiles show the real component
 
 Branch `feat/motion-lab-previews`, from `main` at 15a81d3.
