@@ -253,23 +253,66 @@
   }
 }
 .search.search {
-  /* 160px to start from, so search, style, size and stroke share one row in the 808px docs column at 1440;
-     it grows into whatever the tools leave, and the row still wraps when the column is narrower */
-  flex: 1 1 calc(var(--syntara-space-16) * 2.5);
+  /* Search gets a row of its own: it is the first thing most visitors reach for. */
+  flex: 1 1 100%;
   min-inline-size: 0;
 }
+/* Filters at the start, preview settings at the end, a hairline between them once they share a row. */
 .tools {
+  display: flex;
+  flex: 1 1 100%;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--syntara-space-4) var(--syntara-space-6);
+  container: icon-tools / inline-size;
+}
+.cluster {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: var(--syntara-space-3) var(--syntara-space-4);
+  min-inline-size: 0;
+}
+/* The hairline only means something when both clusters share a row. 776px is the two clusters at the width they
+   measure with the divider (389 + 24 + 356 = 769, Geist at 1440) plus a little slack; below it they stack. */
+@container icon-tools (min-inline-size: 48.5rem) {
+  .cluster + .cluster {
+    padding-inline-start: var(--syntara-space-6);
+    box-shadow: inset var(--syntara-hairline) 0 0 0 var(--syntara-color-border-default);
+  }
+  .cluster + .cluster:dir(rtl) {
+    box-shadow: inset calc(var(--syntara-hairline) * -1) 0 0 0 var(--syntara-color-border-default);
+  }
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--syntara-space-2);
+  min-inline-size: 0;
+}
+/* Same type as the Select's and Slider's own labels, so all four read as one row of labels. */
+.fieldLabel {
+  color: var(--syntara-color-text-default);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  line-height: var(--syntara-line-height-snug);
+}
+.fieldUnit {
+  color: var(--syntara-color-text-subtle);
+  font-weight: var(--syntara-font-weight-regular);
 }
 .sizeToggle.sizeToggle {
   min-inline-size: calc(var(--syntara-space-8) + var(--syntara-space-1));
   font-variant-numeric: tabular-nums;
 }
+/* The slider's hit area is 24px against the other controls' 32px: pad 4px under it and widen the gap above it
+   by the same 4px, so its label lines up with the other three and its rail sits on their centre line. */
 .stroke.stroke {
   inline-size: calc(var(--syntara-space-16) * 2.5);
+  gap: calc(var(--syntara-space-2) + var(--syntara-space-1));
+  padding-block-end: var(--syntara-space-1);
 }
 
 .count {
@@ -439,7 +482,7 @@
 }
 
 /* The group picker sits with the other tools; its list is wider than the closed field (it names "Healthcare: equipment and lab (65)"). */
-.domain.domain {
+.category.category {
   inline-size: calc(var(--syntara-space-16) * 2.25);
   max-inline-size: 100%;
 }
