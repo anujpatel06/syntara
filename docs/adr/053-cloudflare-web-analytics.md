@@ -1,4 +1,4 @@
-# ADR-052: Let Cloudflare Web Analytics run on syntara.live
+# ADR-053: Let Cloudflare Web Analytics run on syntara.live
 
 - **Status:** Accepted — **Claude recommended, Anuj accepted** (2026-10-06).
 - **Date:** 2026-10-06

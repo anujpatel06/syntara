@@ -6,7 +6,7 @@
   X-Frame-Options: DENY
   Cross-Origin-Opener-Policy: same-origin
   # The docs site has no forms and no auth. Fonts come from Google Fonts. The one outside script is Cloudflare
-  # Web Analytics (ADR-052): Cloudflare adds it to every page at its edge, not from this repo, and it posts page
+  # Web Analytics (ADR-053): Cloudflare adds it to every page at its edge, not from this repo, and it posts page
   # views back to cloudflareinsights.com. It sets no cookies. Everything else is same-origin. style-src needs
   # 'unsafe-inline' because /themes writes a generated theme into a <style> tag on every keystroke, and each
   # preview scopes its own tokens the same way.

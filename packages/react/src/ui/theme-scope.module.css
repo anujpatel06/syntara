@@ -11,6 +11,11 @@
 .scope[data-syntara-scheme='dark'] {
   color-scheme: dark;
 }
+@media (prefers-color-scheme: dark) {
+  .scope[data-syntara-scheme='auto'] {
+    color-scheme: dark;
+  }
+}
 .scope *,
 .scope *::before,
 .scope *::after {
