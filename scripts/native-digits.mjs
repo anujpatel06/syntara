@@ -4,8 +4,8 @@
  *   node scripts/native-digits.mjs            # rewrite in place
  *   node scripts/native-digits.mjs --check    # exit 1 if any copy still has 0–9 where native digits belong
  *
- * Files: tenants/qamar/content.json (Arabic ٠–٩), tenants/haat/content.json (Devanagari ०–९), and the docs examples'
- * word lists apps/docs/examples/_copy/ar.json and hi.json.
+ * Files: every tenants/<id>/content.json whose locale asks for native digits (`-u-nu-arab` → ٠–٩, `-u-nu-deva` → ०–९;
+ * today Qamar and Haat), and the docs examples' word lists apps/docs/examples/_copy/ar.json and hi.json.
  *
  * Left alone, because a program reads them or they are codes, not numbers to read:
  * - keys `date`, `lastActive`, `id`, `reference`, and anything under `copyReview`. Form `value`s and placeholders are
@@ -14,7 +14,7 @@
  * - digits inside {braces}: ICU placeholders.
  * Numbers stored as JSON numbers (amounts, stats) need nothing: Intl formats them in the locale's digits.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
@@ -22,9 +22,17 @@ const SYSTEMS = {
   arab: { zero: 0x0660, group: '٬', decimal: '٫' },
   deva: { zero: 0x0966, group: ',', decimal: '.' },
 };
+/** A tenant's numbering system from its content.json locale, e.g. "ar-AE-u-nu-arab" → "arab". */
+const tenantFiles = readdirSync(`${root}tenants`, { withFileTypes: true })
+  .filter((d) => d.isDirectory() && existsSync(`${root}tenants/${d.name}/content.json`))
+  .map((d) => {
+    const path = `tenants/${d.name}/content.json`;
+    const system = /-u-(?:.*-)?nu-([a-z]+)/.exec(JSON.parse(readFileSync(`${root}${path}`, 'utf8')).locale ?? '')?.[1];
+    return { path, system };
+  })
+  .filter((f) => f.system && Object.hasOwn(SYSTEMS, f.system));
 const FILES = [
-  { path: 'tenants/qamar/content.json', system: 'arab' },
-  { path: 'tenants/haat/content.json', system: 'deva' },
+  ...tenantFiles,
   { path: 'apps/docs/examples/_copy/ar.json', system: 'arab', flat: true },
   { path: 'apps/docs/examples/_copy/hi.json', system: 'deva', flat: true },
 ];

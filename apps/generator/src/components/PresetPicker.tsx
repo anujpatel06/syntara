@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import { IconCheck } from '@syntara/icons';
-import { TENANT_TAGLINES, type Tenant, type TenantId } from '../tenants';
+import { tenantTagline, type Tenant, type TenantId } from '../tenants';
 import styles from './PresetPicker.module.css';
 import ui from './ui.module.css';
 
@@ -29,8 +29,8 @@ export function PresetPicker({ tenants, selected, edited, swatches, onSelect, on
           {tenants.map((tenant) => {
             const id = `${name}-${tenant.id}`;
             const isSelected = tenant.id === selected;
-            const tagline = TENANT_TAGLINES[tenant.id];
-            const sw = swatches[tenant.id];
+            const tagline = tenantTagline(tenant);
+            const sw = swatches[tenant.id]!; // App builds one per tenant
             return (
               <div key={tenant.id} className={styles.item}>
                 <input
@@ -53,8 +53,8 @@ export function PresetPicker({ tenants, selected, edited, swatches, onSelect, on
                       {tenant.brand.name}
                       {isSelected && edited && <span className={styles.edited}>edited</span>}
                     </span>
-                    <span className={styles.tagline}>
-                      {tagline.industry} · <span lang={tagline.languageLang}>{tagline.language}</span>
+                    <span className={styles.tagline} lang={tagline.languageLang}>
+                      {tagline.industry} · {tagline.language}
                     </span>
                   </span>
                   <span className={styles.check} aria-hidden="true">
