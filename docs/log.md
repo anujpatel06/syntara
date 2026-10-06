@@ -6,6 +6,48 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Motion lab: all 50 components (ADR-055 revision)
+
+Branch `feat/motion-lab-batch-2`, from `main` at 15a81d3, merged up to c8e1ca5, in its own worktree.
+
+**Changed**
+- Batch 2 (10): Sheet (stand-in); Checkbox, Radio group, Toggle group, Chip, Steps (real, through their props);
+  Badge, Meter, Sparkline, Avatar (real, remounted each loop).
+- Batch 3 (34), built by four parallel helpers, each owning its own files in `apps/docs/components/motion/batch3/`:
+  Overlays (7, all stand-ins), Inputs and presses (9: Pagination and Calendar real, the rest stand-ins), Data (11:
+  Alert a stand-in, the rest real), Page (7: Streaming response and the Footer's social links stand-ins). The shared
+  shapes moved to `specimen-types.ts` so the batch files and `specimens.tsx` don't import each other.
+- Merged #103 (tiles show the real component's still, Anuj): the drawn tile sketches are gone, including the 34
+  batch-3 ones and 189 CSS rules only they used (removed by a script that keeps every class any motion file still
+  references; it reported 0 used-but-missing classes).
+- Spec §12 (batches 2 and 3, the two new stand-in reasons, known limits) and an ADR-055 revision.
+
+**Decided**
+- All 50 components, and batch 2's look. **Anuj**.
+- Real component through props where that shows the motion; stand-in wearing the component's own CSS where the real
+  one would take focus, announce, or only move under real input. **Claude** (ADR-055 revision).
+
+**Results**
+- All 50, in the real browser (the in-app pane, dev build): each tile selects its component and something under the
+  stage animates within 2.2 s; page errors 0.
+- Headless Playwright froze when jumping far down the tile list (about 20 tile stills mount at once, rendered without
+  a GPU); the real browser showed 1 node added per tile click and a responsive page. Lost clicks seen earlier came from
+  Playwright's instant clicks after a scroll; realistic pointer sequences and keyboard selection never missed.
+- Page layout shifts while tile stills load: about 0.002 each (Layout Instability API), the panel's height constant.
+- `/verify`, once, after Anuj asked to commit: `pnpm typecheck` passes; `pnpm test` 2,374 tests across 8 packages,
+  none failing (README row matches); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand (reports not
+  committed); `pnpm check:meta` 58/58; `pnpm registry` ok; `check-override-weight` 0; docs build 317/317;
+  `check-ssr-tabs` 0. Served on :3472 (`SYNTARA_BASE_URL=http://localhost:3472`): `check-hydration` 0 (146 × 2),
+  `check-theme-links` 0 of 5, `check-narrow-overflow` 0 (146 × 320, 768), `check-csp` 0 (146), `axe-sweep` 0
+  violation nodes (146 × 2, `/motion` included), `check-overlay-exit` 0. Change shipped: `grep -rl "Streaming
+  response" apps/docs/out/_next/static` finds the chunk.
+
+**Next**
+- The left panel is about 3,400 px tall with 50 tiles: a search box or folding groups.
+- Slider (thumb doesn't travel), Alert and Footer (barely move): candidates to drop or rethink.
+
+---
+
 ## 2026-10-06 — Themes: inputs on the right, Export top right, compact header
 
 Branch `feat/themes-inputs-right`, from `main` at c8e1ca5 (after #104).
