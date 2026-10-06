@@ -6,6 +6,51 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Motion lab: an "i" on every control, Light / Dark on the preview
+
+Branch `feat/motion-lab-hints`, from `main` at 216efe8.
+
+**Changed**
+- `apps/docs/components/motion/motion-lab.tsx`: every control in the right panel has an "i" beside its label
+  (`InfoTip`) that says what it does. It opens on hover and keyboard focus like a tooltip, and on tap, because a phone
+  can't hover; a second tap or a tap elsewhere closes it. It sits beside the label, never inside it, so it isn't read
+  as part of the control's name: sliders and selects now take `aria-labelledby` from a `FieldLabel` row, which also
+  shows the slider's value. The grey hints that were already there (style feel, the speed limit, the duration order,
+  the stand-in note) stay visible, because they say why a control is limited right now.
+- The light/dark toggle moved from the top bar onto the preview's top corner, as a labelled two-option switch
+  (Light / Dark) in the preview brand's colours. Inline-end, so it sits top-left for an RTL brand (Qamar).
+
+**Decided**
+- Hints behind an "i", not as text under each control (Anuj: a first version with a line under every control was too
+  much text).
+- Light / Dark as two named options, not one icon toggle (Anuj asked for the words; two options rather than one
+  button whose word flips, so it's plain which is on and a screen reader isn't told a changing name).
+- The site's primary button reads as disabled in dark mode (`#4a4a4e`, beside text-disabled `#525255`, in
+  `packages/tokens/dist/house/tokens.css`). **Anuj** chose option 1 of three: grey brands (primary OKLCH chroma below
+  **0.02**, Anuj's number) get a near-white primary with ink labels in dark mode. Built in its own session and branch
+  (task "Flip grey brands to a light button in dark mode"), which writes the ADR.
+
+**Results**
+- Hover, keyboard focus and phone taps checked in headless Chromium against the dev server: each opened the hint;
+  the second tap and a tap elsewhere closed it. Clicking Dark set the switch pressed and the stage dark.
+- `/verify`, once, on the final build (`YZhtTMfCCbQTOxT0N2Kv_`):
+  `pnpm typecheck` passes; `pnpm test` 2,374 tests, 0 failing (`node scripts/check-test-counts.mjs` matches the
+  README); `pnpm test:themes` 118,000/118,000 checks, adjustments per brand 0 / 4 / 7 (unchanged; only the timing
+  lines moved, so the report isn't committed); `pnpm check:meta` 58/58 (one existing warning: `hero-styles.tsx` not
+  in meta.examples); `pnpm registry` 82 items; `check-override-weight` 0; docs build 317/317 pages;
+  `check-ssr-tabs` 0 of 316 pages; `check-hydration` 0 of 292; `check-theme-links` 0 of 5; `check-narrow-overflow`
+  0 of 292; `check-csp` 0 of 146; `axe-sweep` 0 violation nodes (146 routes × 2 schemes); `check-overlay-exit`
+  0 failures (108 tooltips, 4 menus and popovers).
+- The first axe run found 10 nodes: the five sliders' inputs had no name once their label moved into `FieldLabel`
+  (5 × light and dark on `/motion`). Fixed with `thumbLabels`; the second run above is clean.
+
+**Next**
+- The grey-primary engine change, in its own session.
+- `/screenshots` not run (Anuj asked to commit). Screenshots were taken of desktop width only, light and dark; RTL (Qamar)
+  and phone width are not looked at.
+
+---
+
 ## 2026-10-06 — Motion lab: component tiles show the real component
 
 Branch `feat/motion-lab-previews`, from `main` at 15a81d3.
