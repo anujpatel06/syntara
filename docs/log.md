@@ -30,11 +30,10 @@ Branch `feat/motion-lab-previews`, from `main` at 15a81d3.
 - Not run, at Anuj's call: typecheck, `/verify` and `/screenshots`. Dark, RTL and phone width are unchecked here.
 
 **Next**
+- Nothing for this change, unless CI or the unchecked views turn something up.
 
 ---
 
-
-- Nothing for this change, unless CI or the unchecked views turn something up.
 ## 2026-10-06 — Independent review of the niche icons: 81 bad ones redrawn, 46 removed (ADR-054 amendment)
 
 Branch `fix/niche-icons-review`, from `main` at bf99e00, in its own worktree.
