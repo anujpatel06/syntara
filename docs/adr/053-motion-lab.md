@@ -30,6 +30,11 @@
 
 Anuj accepted all six recommendations ("fix everything", 2026-10-06).
 
+7. **What the stage loops** (found while building: a real Dialog is modal, so looping it blocks the controls and
+   moves focus every cycle). (a) A stand-in with the Dialog's own stylesheet, plus a button that opens the real one;
+   (b) the real Dialog behind a play button, no loop; (c) a new preview mode on Dialog itself. Claude recommended (a).
+   **Anuj chose (a).**
+
 ## Decision
 
 1. A `/motion` page on the docs site: pick a brand (Vela, Harbor, Qamar, Care, Haat) and a component (v1: Dialog),
@@ -41,6 +46,8 @@ Anuj accepted all six recommendations ("fix everything", 2026-10-06).
 4. The code panel prints the overrides under `[data-syntara-theme="<id>"]` by default (what `npx syntara init`
    writes, ADR-049), with a switch to `:root`.
 5. Home-page link only. Share clip last. Scale tokens later, if at all.
+6. The stage loops a stand-in: Dialog's markup with `dialog.module.css` imported (not copied), inert and hidden from
+   assistive tech. "Open the real Dialog" opens the component.
 
 ## Consequences
 

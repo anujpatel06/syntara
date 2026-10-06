@@ -78,12 +78,14 @@ Rules every style must pass:
 
 Route: `/motion` on the docs site (free: `ls apps/docs/app` has no `motion`). Top to bottom:
 
-1. **Stage.** The chosen component, centred, on a surface in the chosen brand. Light/dark toggle and left-to-right/right-to-left toggle.
+1. **Stage.** The chosen component, centred, on a surface in the chosen brand. A light/dark switch. Direction follows the brand (Qamar is right-to-left, in Arabic), not a separate toggle: Dialog's motion has no direction in it, and mirrored English would be a state no product ships.
 2. **Controls, three groups:**
    - Brand: the five product tenants (Vela, Harbor, Qamar, Care, Haat). `house` is the docs site's own theme, so it is the default, not a choice.
    - Component (v1: Dialog only).
    - Motion style (the three above), plus a **speed** slider and a **bounce** slider (0 to 100% of the style's overshoot). Speed stops wherever the longest duration would pass 500 ms, so the sliders can never break rule 1.
-3. **Loop.** The stage replays on its own: open, hold 1.2 s, close, wait 0.6 s, repeat. A pause button and a "preview reduced motion" toggle are always visible.
+3. **Loop.** The stage replays on its own: open, hold 1.2 s, close, wait 0.6 s, repeat. A pause button and a "preview reduced motion" toggle are always visible. A visitor whose system asks for reduced motion starts paused.
+   - **What loops is a stand-in, not the modal** (Anuj, 2026-10-06). A real Dialog is modal: it covers the page, moves focus into itself and hides the rest from assistive tech. Looping it would block the controls and steal focus every cycle. The stand-in is the Dialog's markup wearing the Dialog's own stylesheet (`dialog.module.css`, imported, not copied), inside the stage, hidden from assistive tech and inert. Its look and motion can't drift from the component's because they are the same CSS.
+   - **"Open the real Dialog"** opens the component itself, once, with the chosen motion.
 4. **Code panel.** Two tabs: *Tokens* and *Component*, each with one Copy button.
 
 Not in v1: video or GIF export, saving, accounts, any component but Dialog, a custom curve editor.
@@ -117,7 +119,8 @@ Only after that: `/verify` once, the `/screenshots` sweep once, a docs nav link,
 
 1. Three styles in v1: Tactile, Gentle, Snappy. Two cannot show a range.
 2. A docs-site demo that prints overrides. Styles are **not** added to the published `@syntara/theme-engine` yet; promote them only if people use the lab.
-3. Linked from the home page only, for now. No main-nav entry.
+3. Linked from the home page only, for now. No main-nav entry. Built as a "Motion lab" link under Brand in the footer
+   (`FOOTER_COLUMNS`), which the home page shares with every page, so it also shows in other pages' footers.
 4. A clip/GIF button for sharing, built last.
 5. The middle style is called **Gentle**, because Harbor's type pair is already called `calm` (`tenants/harbor/brand.json`).
 6. Scale amounts stay out of v1. Making them tokens touches 11 values across many components and is its own piece of work.
@@ -126,4 +129,36 @@ Only after that: `/verify` once, the `/screenshots` sweep once, a docs nav link,
 
 - Gentle and Snappy may feel wrong once seen. That is why they are tuned by eye before being made final.
 - Making styles a published engine option adds to the public API. Under GOVERNANCE.md §4 it is an addition, and §5 (versioning) decides the version bump. Keeping v1 as a demo avoids both.
-- The looping Dialog: checked, not a risk. `Dialog` accepts `isOpen` and `onOpenChange` (`packages/react/src/ui/dialog.tsx`), so the loop drives it directly with no fake clicks.
+- The looping Dialog: **was a risk, found in the build.** Controlling `isOpen` works, but a looping modal blocks the page and steals focus. Resolved with the stand-in (§5).
+
+## 11. Editor layout (Anuj, 2026-10-06: "build the layout how [Animos] has, and the export button at the top")
+
+Exemplar: the Animos editor (Anuj's screenshot, 2026-10-06, 2000 px wide). What we take: a full-height workspace with
+three columns, a top bar holding the title and the primary action, a dotted canvas, and a play bar under the stage.
+What we don't take: their colours, their blue Export, their template thumbnails' content.
+
+Measured on the screenshot, converted to tokens:
+
+| Part | Animos (px of 2000) | Ours |
+|---|---|---|
+| Top bar | 78 tall, title centred, Export right | `space-12` + `space-2` (56 px), same as the site header |
+| Left panel | 333 wide, 2-column thumbnail grid, section label in caps with a count | `space-16` × 4.5 (288 px) |
+| Right panel | 445 wide, grouped settings, caps section labels | `space-16` × 5.5 (352 px) |
+| Canvas | dot grid, stage centred with a 1 px edge | dots: 1 px, every `space-5`, `border.subtle` |
+| Play bar | 78 tall: play/pause, restart, progress, "15.6s / 20.0s" | 56 px: same four parts |
+
+- **Workspace height:** the viewport minus the site header (`100dvh − --docs-header-height`), never less than
+  `space-32` × 5 (640 px). Each side panel scrolls on its own.
+- **Left panel:** "Motion style · 3": one card per style, each with a small live preview of that style's spring.
+  "Component · 1": Dialog. No placeholder cards for components that don't exist.
+- **Right panel:** Brand, Timing (speed, bounce, the measured readout), Preview (dark, reduced motion).
+- **Top bar:** "Motion lab" + the brand and style as the subtitle, centred; Export (primary button) at the end.
+- **Export** opens a real Dialog (so it moves with the chosen style) with the Tokens and Component tabs, Copy and
+  Download. Video export is a separate piece of work (see below).
+- **Play bar:** pause/play, restart, a progress line through one loop, and the time in the loop
+  ("1.2 s / 2.6 s"). The progress line is decoration (hidden from assistive tech); the time is plain text.
+- **Under 900 px wide:** one column, in order stage, settings, styles; the workspace grows with its content.
+
+Video export (not built): the stand-in is live page content, which a browser can't draw into video frames
+directly. It needs either drawing the Dialog again in a canvas or a capture step on a server, and an MP4 encoder.
+Decide separately.

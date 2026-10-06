@@ -19,6 +19,7 @@ export function docsRoutes() {
     '/docs/components',
     '/blocks',
     '/themes',
+    '/motion',
     '/colors',
     '/story',
     ...docs.map((d) => `/docs/${d}`),
