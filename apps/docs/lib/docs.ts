@@ -118,17 +118,9 @@ export const DOC_PAGES: readonly DocPage[] = [
     slug: 'icons',
     href: '/docs/icons',
     title: 'Icons',
-    description: 'Syntara’s own icon set, curvy and minimal. Search it, try a size and stroke, copy an import.',
+    description: 'Syntara’s own icon set, curvy and minimal, with 2,000 niche icons. Search it, try a size and stroke, copy an import.',
     group: 'foundations',
     keywords: 'icons svg glyphs @syntara/icons stroke grid tabler lucide',
-  },
-  {
-    slug: 'icons-niche',
-    href: '/docs/icons/niche',
-    title: 'Niche icons',
-    description: '2,000 niche outline icons in 40 domains: healthcare specialties, dental, finance, legal, farming and more.',
-    group: 'foundations',
-    keywords: 'icons niche domains healthcare dental specialist finance legal farming aviation @syntara/icons/niche',
   },
   {
     slug: 'governance',
