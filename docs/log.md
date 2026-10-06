@@ -39,6 +39,36 @@ Branch `feat/motion-nav`, from `main` at 50bbb7a (after #87 merged).
 
 ---
 
+## 2026-10-06 — A docs page for the niche icons: /docs/icons/niche (ADR-054)
+
+Branch `feat/docs-niche-icons`, from `main` at eb1ee7a, in its own worktree.
+
+**Changed**
+- **New page** `apps/docs/app/docs/icons/niche/page.tsx`: the 2,000 niche icons by domain. Search, a domain picker (all 40 or one),
+  size 16-32, stroke slider, click to copy the `@syntara/icons/niche` import. Reuses the main icons page's styles
+  (`icons.module.css`), toolbar and cells. `components/icons/niche-data.ts` reads the domain list from the package, so the
+  page cannot drift from what ships; `niche-gallery.tsx` is the client sheet.
+- Registered in `lib/docs.ts` (sidebar, search, prev/next) and linked from `/docs/icons`.
+- **Sweeps now visit it:** `scripts/docs-routes.mjs` lists the two icon pages by hand (`/docs/icons`, `/docs/icons/niche`). They are
+  file pages, not `.mdx`, so no sweep had ever loaded `/docs/icons`. Routes swept 144 → 146.
+
+**Decided**
+- A page at `/docs/icons/niche`, not a bigger `/docs/icons`: the main page and its gallery stay 480 icons. **Claude** (pending Anuj's review).
+- All 2,000 render up front (no lazy loading), so search covers every icon and the page works without JS. Cost below. **Claude** (pending Anuj).
+
+**Results**
+- `pnpm typecheck` clean; `pnpm test` 2,363 passed 0 failed, README row matches; `pnpm test:themes` 118,000/118,000; `pnpm check:meta` 58/58; `pnpm registry` 82 ok; `check-override-weight` clean.
+- `pnpm --filter @syntara/docs build`: 317/317 pages. `out/docs/icons/niche.html` contains `anatomy-skull` and 2,024 distinct `data-syntara-icon` marks (2,000 niche + the site's own).
+- `check-ssr-tabs` 0 of 592 tab lists missing a panel; hydration 0/292 loads; theme links 0; sideways scroll at 320/768px 0/292; CSP 0/146; axe 0 violation nodes (146 routes × 2 schemes); overlay exit 0 failures (108 tooltips, 4 menus).
+- Weight: `out/docs/icons/niche.html` is 3,151,058 bytes, 211,978 gzipped (`gzip -c … | wc -c`). Not measured: load time on a slow phone.
+
+**Next / known gaps**
+- The search field is narrow (placeholder reads "Search niche ic…") and long names wrap mid-word (`cardiothoracic-surgery`).
+- If 3 MB of HTML is too heavy: render the first domain up front and the rest on demand (search then needs an index).
+- Still no human review of the icons themselves; this page is the tool for it.
+
+---
+
 ## 2026-10-06 — Motion lab: spec and first build (ADR-055)
 
 Branch `docs/motion-lab-spec`, from `main` at 9fcc9a5, in its own worktree. Written first on `feat/icons-style-filter`
