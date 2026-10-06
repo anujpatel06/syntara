@@ -32,6 +32,67 @@ Branch `feat/docs-icons-first`, from `main` at 5306ea4, in its own worktree.
 
 ---
 
+## 2026-10-06 — "Motion" in the site header (ADR-055 revision)
+
+Branch `feat/motion-nav`, from `main` at 50bbb7a (after #87 merged).
+
+**Changed**
+- `apps/docs/lib/site.ts`: "Motion" → `/motion` in `MAIN_NAV`, between Themes and Colors, with a new `fromMid` flag.
+- `apps/docs/components/site/site-header.module.css`: `.mainNavMid` shows it from 810px; the search's two growth
+  steps move from 1024 / 1120 to 1074 / 1170. `main-nav.tsx` applies the class. The mobile menu lists it at every
+  width.
+
+**Decided**
+- A top-menu entry for the motion lab, replacing "footer only". **Anuj** (ADR-055 revision).
+- Where it shows and the search steps: **Claude**, following the header's existing 18px-spare rule.
+
+**Results**
+- Before the breakpoint changes, with "Motion" (70px) added: the home page scrolled sideways up to 22px at
+  768–791, 32px at 1024–1055 and 32px at 1120–1151 (Playwright, every 4px, `scrollWidth − innerWidth`).
+- After: home page at every 2px from 768 to 1300, 267 widths, 0 with overflow or a link on two lines; "Motion"
+  hidden at 808, shown at 810. On `/motion` the header marks "Motion" as the current page; the mobile menu lists it.
+
+- `/verify`, once, after Anuj approved: `pnpm typecheck` passes; `pnpm test` 2,363 tests across 8 packages, none
+  failing (README row matches); `pnpm test:themes` 118,000 / 118,000, median 4 adjustments per brand (reports not
+  committed); `pnpm check:meta` 58/58; `pnpm registry` ok; `check-override-weight` 0; docs build 317/317;
+  `check-ssr-tabs` 0. Served on :3472 (`SYNTARA_BASE_URL=http://localhost:3472`): `check-hydration` 0 (145 × 2),
+  `check-theme-links` 0 of 5, `check-narrow-overflow` 0 (145 × 320, 768), `check-csp` 0 (145), `axe-sweep` 0
+  violation nodes (145 × 2), `check-overlay-exit` 0. Change shipped: the built CSS chunk has the 1074px step and
+  `out/index.html` links `/motion`.
+
+**Next**
+- Merge, then confirm "Motion" on https://syntara.live.
+
+---
+
+## 2026-10-06 — MCP page: say it needs a copy of the repo
+
+Branch `docs/mcp-needs-checkout`, from `main` at 50bbb7a, in its own worktree (`../strata-mcp-docs`).
+
+**Changed**
+- `apps/docs/content/docs/mcp.mdx`: the "Not published yet" box became a warning, "Needs a copy of the repo". The
+  package is on npm, but its data isn't in it, so `npx @syntara/mcp` alone starts and then every lookup fails.
+- `apps/docs/lib/docs.ts`: page subtitle no longer says "planned".
+- `packages/mcp/README.md`: removed the false "`npx @syntara/mcp` works"; Limits now says what npx alone does.
+
+**Decided**
+- Fix the words now, ship the data in the package next, in its own session (Claude recommended, Anuj accepted).
+
+**Results**
+- `npx -y @syntara/mcp@latest` (0.1.3) from an empty folder: `initialize` answers; `list_components`, `get_example`,
+  `find_icon` and `get_tokens` all return "No Syntara repo at …/_npx/…/node_modules (packages/react/meta is missing)";
+  `syntara://agents` returns "not found".
+- Screenshot of `/docs/mcp` (dark) on a dev server for this branch: the box renders; its "Set it up" link
+  resolves to `#set-it-up`. No `/verify`: text-only change.
+
+**Next**
+- Bundle the data (meta files, examples, icons index, tenant brands, AGENTS.md, GOVERNANCE.md) into `@syntara/mcp`
+  at build time, with a test that runs the packed package from an empty folder. Then delete the box and switch the
+  setup snippets to `npx`. Also: the server's startup instructions point agents at `npx syntara init`, which is
+  fine, but every tool after that fails until this ships.
+
+---
+
 ## 2026-10-06 — A docs page for the niche icons: /docs/icons/niche (ADR-054)
 
 Branch `feat/docs-niche-icons`, from `main` at eb1ee7a, in its own worktree.

@@ -119,7 +119,8 @@ Only after that: `/verify` once, the `/screenshots` sweep once, a docs nav link,
 
 1. Three styles in v1: Tactile, Gentle, Snappy. Two cannot show a range.
 2. A docs-site demo that prints overrides. Styles are **not** added to the published `@syntara/theme-engine` yet; promote them only if people use the lab.
-3. Linked from the home page only, for now. No main-nav entry. Built as a "Motion lab" link under Brand in the footer
+3. ~~Linked from the home page only, for now. No main-nav entry.~~ Revised by Anuj, 2026-10-06: "Motion" is in the
+   site header from 810px (ADR-055 revision). Built as a "Motion lab" link under Brand in the footer
    (`FOOTER_COLUMNS`), which the home page shares with every page, so it also shows in other pages' footers.
 4. A clip/GIF button for sharing, built last.
 5. The middle style is called **Gentle**, because Harbor's type pair is already called `calm` (`tenants/harbor/brand.json`).
