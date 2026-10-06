@@ -29,11 +29,6 @@ export const IconBloodTest = createIcon('blood-test', [
   ['path', { d: 'M13 3.5h6M14 3.5v14.5a2 2 0 0 0 4 0V3.5' }],
   ['path', { d: 'M7.5 9c1.75 2 3 3.4 3 5a3 3 0 0 1-6 0c0-1.6 1.25-3 3-5Z' }],
 ]);
-export const IconBodyWeightScale = createIcon('body-weight-scale', [
-  ['rect', { x: 3.5, y: 3.5, width: 17, height: 17, rx: 4.5 }],
-  ['path', { d: 'M8.5 9.5a3.5 3.5 0 0 1 7 0Z' }],
-  ['path', { d: 'M12 9.5l1-2.25' }],
-]);
 export const IconCompressionStocking = createIcon('compression-stocking', [
   ['path', { d: 'M9 3.5h6v9.25l3.6 3.6a2.75 2.75 0 0 1-3.9 3.9l-4.4-4.4A4.5 4.5 0 0 1 9 12.5Z' }],
   ['path', { d: 'M9 6.5h6' }],

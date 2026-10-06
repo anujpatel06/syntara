@@ -159,12 +159,6 @@ export const IconLightbulb = createIcon('lightbulb', [
   ['path', { d: 'M9 16.5c0-2-3.5-3.5-3.5-7.5a6.5 6.5 0 0 1 13 0c0 4-3.5 5.5-3.5 7.5Z' }],
   ['path', { d: 'M9.5 19h5M10.5 21.25h3' }],
 ]);
-export const IconMicrowaveOven = createIcon('microwave-oven', [
-  ['rect', { x: 2.75, y: 5, width: 18.5, height: 14, rx: 2.5 }],
-  ['rect', { x: 5.5, y: 8, width: 9, height: 8, rx: 1.25 }],
-  ['circle', { cx: 17.75, cy: 9.25, r: 0.9, fill: 'currentColor', stroke: 'none' }],
-  ['path', { d: 'M17 15h1.5' }],
-]);
 export const IconOven = createIcon('oven', [
   ['rect', { x: 4, y: 2.75, width: 16, height: 18.5, rx: 2.5 }],
   ['path', { d: 'M4 8h16' }],

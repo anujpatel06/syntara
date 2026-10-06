@@ -145,10 +145,6 @@ export const IconJerryCan = createIcon('jerry-can', [
   ['path', { d: 'M8.5 4v3h3.5V4' }],
   ['path', { d: 'M15.75 6.25 17.5 4.5 20 7l-1.75 1.75' }],
 ]);
-export const IconLowBeam = createIcon('low-beam', [
-  ['path', { d: 'M12.5 6.5c3.5 0 7 2 7 5.5s-3.5 5.5-7 5.5c-1 0-1.5-2.5-1.5-5.5s.5-5.5 1.5-5.5Z' }],
-  ['path', { d: 'M3.5 8.5l5 1.25M3.5 12.25l5 1.25M3.5 16l5 1.25' }],
-]);
 export const IconManualGearbox = createIcon('manual-gearbox', [
   ['path', { d: 'M6 6.5v11M12 6.5v11M18 4.5V12M6 12h12' }],
   ['circle', { cx: 6, cy: 5, r: 0.95, fill: 'currentColor', stroke: 'none' }],

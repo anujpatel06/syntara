@@ -242,10 +242,6 @@ export const IconSkis = createIcon('skis', [
   ['circle', { cx: 9, cy: 14.5, r: 0.95, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 12.5, cy: 15.75, r: 0.95, fill: 'currentColor', stroke: 'none' }],
 ]);
-export const IconSnorkelMask = createIcon('snorkel-mask', [
-  ['path', { d: 'M3.5 9.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2V13a3 3 0 0 1-3 3h-2.25l-1.5-1.75h-1.5L8.75 16H6.5a3 3 0 0 1-3-3Z' }],
-  ['path', { d: 'M20.5 6v10.5a3.5 3.5 0 0 1-3.5 3.5h-3' }],
-]);
 export const IconSnowGlobe = createIcon('snow-globe', [
   ['circle', { cx: 12, cy: 10, r: 7 }],
   ['path', { d: 'M6.5 15.25 5 20.5h14l-1.5-5.25' }],

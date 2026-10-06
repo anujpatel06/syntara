@@ -17,41 +17,6 @@ export const IconAnimalCell = createIcon('animal-cell', [
   ['circle', { cx: 16, cy: 9, r: 0.85, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 15.25, cy: 15.5, r: 0.85, fill: 'currentColor', stroke: 'none' }],
 ]);
-export const IconAstronomyComet = createIcon('astronomy-comet', [
-  ['circle', { cx: 16.5, cy: 7.5, r: 3, fill: 'currentColor', stroke: 'none' }],
-  ['path', { d: 'M13.5 10.5 4 20M12.5 7 6 11M17 11l-4 7' }],
-]);
-export const IconAstronomyGalaxy = createIcon('astronomy-galaxy', [
-  ['path', { d: 'M12 12a1 1 0 0 1 2 0a3 3 0 0 1-6 0a5 5 0 0 1 10 0a7 7 0 0 1-14 0' }],
-  ['circle', { cx: 19.5, cy: 5, r: 0.9, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 5, cy: 19, r: 0.9, fill: 'currentColor', stroke: 'none' }],
-]);
-export const IconAstronomyHelmet = createIcon('astronomy-helmet', [
-  ['path', { d: 'M5.5 17.5a8 8 0 1 1 13 0' }],
-  ['rect', { x: 7, y: 7, width: 10, height: 7, rx: 3.5 }],
-  ['rect', { x: 5, y: 17.5, width: 14, height: 3, rx: 1.5 }],
-  ['circle', { cx: 9.5, cy: 9.5, r: 0.8, fill: 'currentColor', stroke: 'none' }],
-]);
-export const IconAstronomyLunarLander = createIcon('astronomy-lunar-lander', [
-  ['rect', { x: 7.5, y: 4, width: 9, height: 7.5, rx: 2.5 }],
-  ['path', { d: 'M8.75 11.5 5 19H3' }],
-  ['path', { d: 'M15.25 11.5 19 19h2' }],
-  ['path', { d: 'M10.5 11.5 10 14h4l-.5-2.5' }],
-]);
-export const IconAstronomyRingedPlanet = createIcon('astronomy-ringed-planet', [
-  ['circle', { cx: 12, cy: 12, r: 5.5 }],
-  ['ellipse', { cx: 12, cy: 12, rx: 9.5, ry: 2.75, transform: 'rotate(-20 12 12)' }],
-]);
-export const IconAstronomyRocket = createIcon('astronomy-rocket', [
-  ['path', { d: 'M12 2.5c3 2 4.5 5.5 4.5 9.5v4h-9v-4c0-4 1.5-7.5 4.5-9.5Z' }],
-  ['path', { d: 'M7.5 12.5 5 15v3.5l2.5-1.5M16.5 12.5 19 15v3.5l-2.5-1.5' }],
-  ['circle', { cx: 12, cy: 9, r: 1.75 }],
-  ['path', { d: 'M10.5 18.5 12 21.5l1.5-3' }],
-]);
-export const IconAstronomyTelescope = createIcon('astronomy-telescope', [
-  ['rect', { x: 4, y: 8, width: 14, height: 5, rx: 2.5, transform: 'rotate(-25 12 12)' }],
-  ['path', { d: 'M12 13.5l-3.5 7M12 13.5l3.5 7M12 13.5v7' }],
-]);
 export const IconAtom = createIcon('atom', [
   ['ellipse', { cx: 12, cy: 12, rx: 9, ry: 3.5, transform: 'rotate(45 12 12)' }],
   ['ellipse', { cx: 12, cy: 12, rx: 9, ry: 3.5, transform: 'rotate(-45 12 12)' }],
@@ -104,13 +69,6 @@ export const IconCitation = createIcon('citation', [
   ['path', { d: 'M4.5 14c0-4 2-6.75 5-7.75' }],
   ['circle', { cx: 16.5, cy: 14, r: 3 }],
   ['path', { d: 'M13.5 14c0-4 2-6.75 5-7.75' }],
-]);
-export const IconConstellation = createIcon('constellation', [
-  ['path', { d: 'M4.5 17 9 10l5.5 2.5L19 5.5' }],
-  ['circle', { cx: 4.5, cy: 17, r: 1.3, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 9, cy: 10, r: 1.3, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 14.5, cy: 12.5, r: 1.3, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 19, cy: 5.5, r: 1.3, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconConvexLens = createIcon('convex-lens', [
   ['path', { d: 'M12 3.5c2 2.5 2 14.5 0 17-2-2.5-2-14.5 0-17Z' }],

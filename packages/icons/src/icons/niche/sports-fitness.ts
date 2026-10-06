@@ -301,11 +301,6 @@ export const IconSportsJersey = createIcon('sports-jersey', [
   ['path', { d: 'M8.5 3.5c0 2 1.5 3.5 3.5 3.5s3.5-1.5 3.5-3.5H17c0 2.5.5 4 2 5v12H5v-12c1.5-1 2-2.5 2-5Z' }],
   ['path', { d: 'M10.5 11.5h3l-2 5.5' }],
 ]);
-export const IconSportsNet = createIcon('sports-net', [
-  ['path', { d: 'M4 20.5V4.5M20 20.5V4.5' }],
-  ['rect', { x: 4, y: 5.5, width: 16, height: 6.5, rx: 1.5 }],
-  ['path', { d: 'M9.33 5.5V12M14.67 5.5V12' }],
-]);
 export const IconStationaryBike = createIcon('stationary-bike', [
   ['path', { d: 'M3.5 20.5h16' }],
   ['path', { d: 'M7 20.5 10 9.5M8 9.5h4M16 15.5l-1.5-8.5h3' }],
@@ -332,11 +327,6 @@ export const IconTennisRacket = createIcon('tennis-racket', [
   ['ellipse', { cx: 10, cy: 10, rx: 4.5, ry: 6.75, transform: 'rotate(-45 10 10)' }],
   ['path', { d: 'M10 4.25v11.5M5.75 10h8.5', transform: 'rotate(-45 10 10)' }],
   ['path', { d: 'M14.25 14.25l6 6' }],
-]);
-export const IconTrainingCone = createIcon('training-cone', [
-  ['path', { d: 'M8.5 18 11 4.5h2L15.5 18' }],
-  ['rect', { x: 4.5, y: 18, width: 15, height: 2.75, rx: 1.25 }],
-  ['path', { d: 'M9.6 12h4.8' }],
 ]);
 export const IconTreadmill = createIcon('treadmill', [
   ['path', { d: 'M3.5 17h14a1.5 1.5 0 0 1 0 3h-14a1.5 1.5 0 0 1 0-3Z' }],

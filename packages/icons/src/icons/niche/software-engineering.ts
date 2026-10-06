@@ -176,25 +176,12 @@ export const IconDevopsLoop = createIcon('devops-loop', [
   ['path', { d: 'M12 12c-1.75-2.5-3.5-4-5.5-4a4 4 0 0 0 0 8c2 0 3.75-1.5 5.5-4s3.5-4 5.5-4a4 4 0 0 1 0 8c-2 0-3.75-1.5-5.5-4Z' }],
   ['path', { d: 'M16 6.5 17.5 8 16 9.5' }],
 ]);
-export const IconEdgeNetwork = createIcon('edge-network', [
-  ['circle', { cx: 12, cy: 12, r: 3 }],
-  ['path', { d: 'M9.9 9.9 6.5 6.5M14.1 9.9l3.4-3.4M9.9 14.1l-3.4 3.4M14.1 14.1l3.4 3.4' }],
-  ['circle', { cx: 5.5, cy: 5.5, r: 1.9, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 18.5, cy: 5.5, r: 1.9, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 5.5, cy: 18.5, r: 1.9, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 18.5, cy: 18.5, r: 1.9, fill: 'currentColor', stroke: 'none' }],
-]);
 export const IconEncryption = createIcon('encryption', [
   ['rect', { x: 4.5, y: 10.5, width: 15, height: 10, rx: 3 }],
   ['path', { d: 'M8 10.5v-3a4 4 0 0 1 8 0v3' }],
   ['circle', { cx: 9, cy: 15.5, r: 1, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 12, cy: 15.5, r: 1, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 15, cy: 15.5, r: 1, fill: 'currentColor', stroke: 'none' }],
-]);
-export const IconEnvironments = createIcon('environments', [
-  ['path', { d: 'M12 3.5 20.5 8 12 12.5 3.5 8Z' }],
-  ['path', { d: 'M3.5 12 12 16.5 20.5 12' }],
-  ['path', { d: 'M3.5 16 12 20.5 20.5 16' }],
 ]);
 export const IconFileDiff = createIcon('file-diff', [
   ['path', { d: 'M14 3H7a2.5 2.5 0 0 0-2.5 2.5v13A2.5 2.5 0 0 0 7 21h10a2.5 2.5 0 0 0 2.5-2.5V8.5Z' }],
@@ -229,11 +216,6 @@ export const IconGitFork = createIcon('git-fork', [
 ]);
 export const IconHashFunction = createIcon('hash-function', [
   ['path', { d: 'M9.5 3.5 8 20.5M16 3.5l-1.5 17M4.5 9h16M3.5 15h16' }],
-]);
-export const IconIncidentSiren = createIcon('incident-siren', [
-  ['path', { d: 'M7 16v-4a5 5 0 0 1 10 0v4' }],
-  ['rect', { x: 4.5, y: 16, width: 15, height: 4.5, rx: 1.75 }],
-  ['path', { d: 'M12 3v1.5M4.5 6l1 1M19.5 6l-1 1' }],
 ]);
 export const IconIssueTracker = createIcon('issue-tracker', [
   ['rect', { x: 3, y: 5, width: 18, height: 14, rx: 2.5 }],
@@ -300,12 +282,6 @@ export const IconNeuralNetwork = createIcon('neural-network', [
   ['circle', { cx: 5, cy: 17, r: 1.75, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 12, cy: 8.5, r: 1.75, fill: 'currentColor', stroke: 'none' }],
   ['circle', { cx: 12, cy: 15.5, r: 1.75, fill: 'currentColor', stroke: 'none' }],
-]);
-export const IconOnCallPager = createIcon('on-call-pager', [
-  ['rect', { x: 3, y: 6, width: 18, height: 12, rx: 3 }],
-  ['rect', { x: 6, y: 9, width: 9, height: 4, rx: 1 }],
-  ['circle', { cx: 17.5, cy: 11, r: 1, fill: 'currentColor', stroke: 'none' }],
-  ['circle', { cx: 17.5, cy: 15, r: 1, fill: 'currentColor', stroke: 'none' }],
 ]);
 export const IconPasswordField = createIcon('password-field', [
   ['rect', { x: 2.5, y: 8, width: 19, height: 8, rx: 2.5 }],

@@ -101,11 +101,6 @@ export const IconHouseplant = createIcon('houseplant', [
   ['path', { d: 'M12 14V9.5' }],
   ['path', { d: 'M12 11.5C12 8 9.5 6 6 6c0 3.5 2.5 5.5 6 5.5ZM12 9.5c0-3 2-5.5 5.5-5.5 0 3.25-2 5.5-5.5 5.5Z' }],
 ]);
-export const IconInteriorBathtub = createIcon('interior-bathtub', [
-  ['path', { d: 'M3 11.5h18v2.5a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5Z' }],
-  ['path', { d: 'M6 11.5V6a2 2 0 0 1 3.75-1' }],
-  ['path', { d: 'M6.5 19l-1 1.5M17.5 19l1 1.5' }],
-]);
 export const IconInteriorBunkBed = createIcon('interior-bunk-bed', [
   ['path', { d: 'M4 3v18M20 3v18' }],
   ['path', { d: 'M4 10h16M4 17.5h16' }],

@@ -50,11 +50,6 @@ export const IconFishBowl = createIcon('fish-bowl', [
   ['path', { d: 'M8.5 4.75C5.75 6.5 4 9.25 4 12.5a8 8 0 0 0 16 0c0-3.25-1.75-6-4.5-7.75' }],
   ['path', { d: 'M5 12q1.75-1.25 3.5 0t3.5 0 3.5 0 3.5 0' }],
 ]);
-export const IconGroomingScissors = createIcon('grooming-scissors', [
-  ['circle', { cx: 7, cy: 17.5, r: 2.75 }],
-  ['circle', { cx: 17, cy: 17.5, r: 2.75 }],
-  ['path', { d: 'M8.75 15.5 16.5 3.75M15.25 15.5 7.5 3.75' }],
-]);
 export const IconHamsterWheel = createIcon('hamster-wheel', [
   ['circle', { cx: 12, cy: 10.5, r: 7.25 }],
   ['path', { d: 'M8.5 20.5 12 10.5l3.5 10M6.5 20.5h11' }],

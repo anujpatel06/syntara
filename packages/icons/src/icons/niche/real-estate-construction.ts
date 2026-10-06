@@ -185,12 +185,6 @@ export const IconLandPlot = createIcon('land-plot', [
   ['path', { d: 'M2.75 20 7 13h14.25L17 20Z' }],
   ['path', { d: 'M11.5 16.5V3.5l5.5 2.5-5.5 2.5' }],
 ]);
-export const IconLaundryRoom = createIcon('laundry-room', [
-  ['rect', { x: 4, y: 2.75, width: 16, height: 18.5, rx: 3 }],
-  ['circle', { cx: 12, cy: 13.5, r: 4.5 }],
-  ['path', { d: 'M4 7h16' }],
-  ['circle', { cx: 7, cy: 4.9, r: 0.8, fill: 'currentColor', stroke: 'none' }],
-]);
 export const IconLivingRoom = createIcon('living-room', [
   ['path', { d: 'M5 10V8a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v2' }],
   ['path', { d: 'M3 12.5a2 2 0 0 1 4 0V14h10v-1.5a2 2 0 0 1 4 0V18H3Z' }],

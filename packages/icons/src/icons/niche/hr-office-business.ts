@@ -59,12 +59,6 @@ export const IconEmployeeHandbook = createIcon('employee-handbook', [
   ['circle', { cx: 13.75, cy: 9.5, r: 1.75 }],
   ['path', { d: 'M11.25 15.25a2.5 2.5 0 0 1 5 0' }],
 ]);
-export const IconEmployeeId = createIcon('employee-id', [
-  ['rect', { x: 3, y: 5, width: 18, height: 14, rx: 2.5 }],
-  ['circle', { cx: 8.5, cy: 10.75, r: 2 }],
-  ['path', { d: 'M5.5 16a3 3 0 0 1 6 0' }],
-  ['path', { d: 'M14 10h4M14 13.5h4' }],
-]);
 export const IconFeedback = createIcon('feedback', [
   ['path', { d: 'M5.5 3.5h13a2.5 2.5 0 0 1 2.5 2.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4V16.5h-1A2.5 2.5 0 0 1 3 14V6a2.5 2.5 0 0 1 2.5-2.5Z' }],
   ['path', { d: 'M12 7.21l0.9025 1.9 2.09 0.285-1.52 1.4249999999999998 0.39899999999999997 2.09L12 11.9125l-1.8715 0.9974999999999999 0.39899999999999997-2.09-1.52-1.4249999999999998 2.09-0.285Z' }],
