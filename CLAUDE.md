@@ -39,7 +39,7 @@ Anuj owns design decisions. You pair on engineering and push back when he's wron
   used only if it passes six measured checks (`docs/design/custom-fonts.md`). `npx syntara init --font <name>`, or
   `node scripts/check-font.mjs <name>` in the repo. The pass list shown after a failure is
   `packages/syntara/src/fonts/passed.json`, written by `node scripts/check-font.mjs --record …`.
-- **ADRs run to 051.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
+- **ADRs run to 052.** Check `ls docs/adr/` for the next free number rather than trusting this line; it has been stale before.
 
 ## Run it
 
