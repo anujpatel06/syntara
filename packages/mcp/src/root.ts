@@ -29,10 +29,16 @@ export function isSafeName(name: string): boolean {
   return name.length <= 64 && SAFE_NAME.test(name);
 }
 
-/** SYNTARA_ROOT if set, otherwise three levels up from packages/mcp/src. */
+/**
+ * SYNTARA_ROOT if set; otherwise the checkout three levels up from packages/mcp/src; otherwise the copy of the
+ * repo's data that ships in the npm package (packages/mcp/data, written by scripts/bundle-data.mjs on prepack).
+ */
 export function findRoot(env: NodeJS.ProcessEnv = process.env): string {
   const override = env.SYNTARA_ROOT;
-  return resolve(override && override.trim() !== '' ? override : join(here, '../../..'));
+  if (override && override.trim() !== '') return resolve(override);
+  const checkout = resolve(here, '../../..');
+  if (existsSync(join(checkout, 'packages/react/meta'))) return checkout;
+  return resolve(here, '../data');
 }
 
 /** Throws a ToolError when `root` doesn't look like a Syntara checkout. */
