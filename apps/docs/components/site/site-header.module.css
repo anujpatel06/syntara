@@ -208,6 +208,15 @@
     display: revert;
   }
 }
+/* "Motion" (70px) from 810: the row fits it from 792 and keeps the same 18px margin as the search steps. */
+.mainNavMid {
+  display: none;
+}
+@media (min-width: 810px) {
+  .mainNavMid {
+    display: revert;
+  }
+}
 
 /*
  * The search grows in two steps, each placed where the whole row still fits on one line. Measured on
@@ -215,8 +224,11 @@
  * 192px field and 1102px with the 288px one. The field used to grow at 960 and 1024, which is inside both of
  * those, so the nav was squeezed and "Get started" broke onto two lines from 960–1006 and 1024–1102.
  * Now: icon until 1024 (18px spare at 1024), 192px until 1120 (18px spare at 1120), then 288px.
+ *
+ * "Motion" (ADR-055 revision, 2026-10-06) added 70px to the nav and put the row 32px over at both steps, so each
+ * moved 50px later (32 + the same 18 spare): icon until 1074, 192px until 1170, then 288px.
  */
-@media (min-width: 1024px) {
+@media (min-width: 1074px) {
   .search.search {
     justify-content: flex-start;
     inline-size: calc(var(--syntara-space-16) * 3);
@@ -235,7 +247,7 @@
     display: inline-flex;
   }
 }
-@media (min-width: 1120px) {
+@media (min-width: 1170px) {
   .search.search {
     inline-size: calc(var(--syntara-space-16) * 4.5);
   }

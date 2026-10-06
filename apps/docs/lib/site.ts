@@ -23,6 +23,12 @@ export interface NavLink {
    * every page from 768 to 959 scrolls sideways by 26px.
    */
   wide?: true;
+  /**
+   * Shown from 810px. "Motion" is 70px; the row has 33px spare at 768, so it fits from 792 and gets the same 18px
+   * margin the search steps keep (measured 2026-10-06, see site-header.module.css). Below 810 it is in the mobile
+   * menu and the footer.
+   */
+  fromMid?: true;
 }
 
 /**
@@ -38,6 +44,7 @@ export const MAIN_NAV: readonly NavLink[] = [
   { href: '/docs/components', label: 'Components' },
   { href: '/blocks', label: 'Blocks' },
   { href: '/themes', label: 'Themes' },
+  { href: '/motion', label: 'Motion', fromMid: true },
   { href: '/colors', label: 'Colors' },
   { href: '/docs/icons', label: 'Icons' },
 ];
