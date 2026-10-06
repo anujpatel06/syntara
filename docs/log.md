@@ -6,6 +6,47 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — The homepage's app window fits iPhones
+
+Branch `fix/home-showcase-mobile`, from `main` at 37b9578, in its own worktree.
+
+**Changed**
+- On iPhones (Safari, and every in-app browser there, which all run Safari's engine) the hero's app window stayed
+  nearly desktop-size: it ran off the right edge, covered "Just the package?", and squeezed the style list. Cause:
+  Safari resolves `100vw` wrongly inside `tan(atan2())` under `zoom` or `scale` (zoom came out 0.948 at 390px;
+  the right value is 0.356). Chrome was fine, so #68 looked done.
+- `apps/docs/lib/viewport-width.ts`: a one-line script in `<head>` (beside the scheme script) sets `--page-w` to the
+  page's width in px, before first paint and on resize. The window's shrink reads it; `100vw` stays as the fallback.
+- `landing.module.css`: the window shrinks with `scale`, not `zoom` — Safari holds zoomed text at its minimum font
+  size, so the sidebar's labels outgrew their rows. Margins take the unscaled layout box back out; the visible
+  spacing is the same as before.
+- The gap under the window on phones: the scroll rise (`data-rise`, an inline transform from `landing-effects.tsx`)
+  is off below 1080px, where the window sits in the flow — climbing 96px covered "Just the package?" and opened a
+  band under it; the intro's top padding there is 96px, not desktop's 154px.
+
+**Decided**
+- Fix the iPhone bug and the gap under the window, in one PR. **Anuj** (2026-10-06); both approved from before/after
+  iPhone-engine screenshots.
+
+**Results**
+- iPhone engine (Playwright WebKit 26.0, iPhone 14, 390px): window 342px wide, page 390px wide (no sideways
+  scroll); before: 960px laid out, zoom 0.948. Chrome at 390px: 342px. (scratch script, `getBoundingClientRect`)
+- `/verify`, once, on the branch merged with `main` at c94e7bf: `pnpm typecheck` exit 0; `pnpm test` 2,351 tests,
+  none failing (`check-test-counts.mjs` matches the README); `pnpm test:themes` 118,000 of 118,000 checks, median 4
+  adjustments per brand (unchanged); `pnpm check:meta` 58/58 (one warning already on `main`: `hero-styles.tsx` not
+  in `meta.examples`); `pnpm registry` 82 items; `check-override-weight` 0; docs build 316/316 pages;
+  `check-ssr-tabs` 0. Served on :3419 (3000 held by another session; build id `p-AoRIXTIoCh4INU2W6eP` checked):
+  `check-hydration` 0 of 288; `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of 288; `check-csp` 0 of 144
+  (the new inline script passes the site's policy); `axe-sweep` 0 violation nodes over 144 × 2;
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
+- Shipped: `grep -rl 'page-w' apps/docs/out/_next/static` → 2 files; `transform:none!important` in 1 CSS chunk.
+
+**Next**
+- Playwright's WebKit installs only under Node 24 here (`/usr/local/bin/node node_modules/playwright/cli.js install
+  webkit`); under Node 26 the unzip hangs or the lock fails.
+
+---
+
 ## 2026-10-06 — Branch and worktree cleanup
 
 Asked by Anuj after the custom-fonts release. No code changed.
