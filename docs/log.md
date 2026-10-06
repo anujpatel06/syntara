@@ -6,6 +6,28 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — Release: react 0.4.0, icons 0.2.0, syntara 0.4.0, mcp 0.1.4
+
+Branch `release/2026-10-06-mcp-icons-init`, from `main` at bf99e00.
+
+**Changed**
+- `pnpm changeset version` on the four pending changesets: `@syntara/react` 0.3.1 → 0.4.0, `@syntara/icons` 0.1.1 →
+  0.2.0, `syntara` 0.3.0 → 0.4.0, `@syntara/mcp` 0.1.3 → 0.1.4 (npm versions from `npm view`). Nothing else moves.
+
+**Decided**
+- Release all four together rather than `@syntara/mcp` alone (Anuj, given both options; Claude recommended mcp only).
+
+**Results**
+- `pnpm pack` of each, before merging: all four built; 0 `workspace:` references in any packed `package.json`;
+  `@syntara/icons` 0.2.0 carries `./niche` and `dist/icons/niche/`. Sizes: react 501,259, icons 478,193, mcp 257,338,
+  syntara 33,145 bytes.
+
+**Next**
+- After merge: `pnpm changeset publish` from `main`, then `npm view` each version, then `npx -y @syntara/mcp@0.1.4`
+  from an empty folder. Update the versions line in `CLAUDE.md`.
+
+---
+
 ## 2026-10-06 — Make `npx syntara init` readable to AI assistants
 
 Branch `feat/agent-friendly-install`, from `main` at ea2ca1c, rebased onto fa8c03f, in its own worktree
