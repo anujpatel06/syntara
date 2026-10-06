@@ -6,6 +6,32 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-06 — One Icons page for all 2,480 icons, icons on the first screen (ADR-054)
+
+Branch `feat/docs-icons-first`, from `main` at 5306ea4, in its own worktree.
+
+**Changed**
+- **One page.** `/docs/icons` now shows the main set (243 drawings, 480 components) and the 2,000 niche icons (40 domains) together, with a new Group picker in the toolbar. The separate `/docs/icons/niche` page is removed (page, sidebar entry, sweep route) and redirects here via `apps/docs/public/_redirects`.
+- **Icons first.** Anuj: the documentation pushed the icons to the third scroll. The gallery is now the first thing under the title; the specimen, style rules, usage and duotone notes follow it.
+- **Numbers fixed.** The lead sentence said "243 drawings … 480 components" beside "2,480 icons" in the grid. It now reads 2,243 drawings (243 main + 2,000 niche) and 2,480 components, computed from the packages (`tsx` count over both entries: 480 main, 237 duotone, 2,000 niche).
+- Copying a niche icon gives `from '@syntara/icons/niche'`.
+
+**Decided**
+- One page, not two: **Anuj** ("why 2 icons pages"). Niche icons stay behind their own entry in code (ADR-054): **Claude recommended, pending Anuj**.
+
+**Results**
+- `pnpm typecheck` clean; `pnpm test` 2,363 passed 0 failed, README row matches; `pnpm test:themes` 118,000/118,000; `check:meta` 58/58; `registry` 82 ok; `check-override-weight` clean.
+- `pnpm --filter @syntara/docs build`: 317/317 pages. `out/docs/icons.html` holds 2,480 distinct `data-syntara-icon` marks and `anatomy-skull`; `out/_redirects` is shipped; 264,632 bytes gzipped (`gzip -c out/docs/icons.html | wc -c`).
+- On the served build: `check-ssr-tabs` 0 of 592 tab lists missing a panel; hydration 0/292; theme links 0; sideways scroll at 320/768px 0/292; CSP 0/146.
+- Local `axe-sweep` (146 routes × 2 schemes) 0 violation nodes and `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers), finished after the PR was opened (it was opened on Anuj's word while they ran). The redirect from `/docs/icons/niche` is untested until it deploys.
+- The first build of this session failed with `ENOSPC: no space left on device` (disk 97% full, 7.7 GiB free): a full disk, not the code. After clearing `.next`/`out` it built clean.
+
+**Next**
+- Worktrees take 22 GB on this machine (12 worktrees, 11 extra); prune the merged ones.
+- Search field on the page is narrow; a lazy-loaded niche section would cut the 3 MB of HTML if that proves too heavy.
+
+---
+
 ## 2026-10-06 — @syntara/mcp carries its own data, so `npx` works
 
 Branch `feat/mcp-bundle-data`, on top of `docs/mcp-needs-checkout` (PR #89), in `../strata-mcp-docs`.
