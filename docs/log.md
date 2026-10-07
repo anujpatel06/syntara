@@ -6,6 +6,49 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-07 — Marquee: no more endless copies (the motion lab and components page froze)
+
+Branch `fix/marquee-runaway`, from `main` at 77aabcd, in its own worktree (`.claude/worktrees/marquee-runaway`).
+
+**Changed**
+- `packages/react/src/ui/marquee.module.css`: the viewport gets `contain: inline-size` and
+  `contain-intrinsic-inline-size: 100vw`. The strip's width can no longer come from its own copies, and it asks a
+  content-sized parent for the screen's width instead, which the parent shrinks to fit.
+- Changeset: `@syntara/react` patch.
+
+**Why**
+- Anuj: "why my motion page is lagging this much". Measured on https://syntara.live in headless Chromium: smooth at
+  rest (60 fps), but once the Marquee still mounted, the page froze for up to 11,633 ms per task and then stopped
+  answering. The Marquee measures its viewport and adds copies to fill it; inside a parent that sizes to its content
+  (the stills' centring grid), each copy widened the viewport, so the next measure added more: 1,152 → 4,614 →
+  18,456 copies (19,166,018 px wide) in about 20 s. Same on `/docs/components`, not only `/motion`.
+
+**Decided**
+- Fix it in the component, not the docs still, so it can't happen in anyone's app (**Claude recommended, Anuj accepted**).
+- `inline-size: 100%` on the root was tried first and dropped: the "Two rows" example's wrapper sized to its content
+  and collapsed both strips to 40 px. The intrinsic width covers both cases (**Claude**).
+
+**Results**
+- Dev server on this branch (port 3614), same probe: 2 to 4 copies, unchanged over 8 s, on `/docs/components` and
+  `/motion`; 0 long tasks over 200 ms after mounting every still. Marquee page: all four strips 654 px (were 654, 40,
+  40, 654 with the first attempt). Screenshots of the components card, the motion lab with Marquee picked and the
+  Marquee page looked right.
+- `/verify`, once, on build `x8r2Hea6ggMRNjCHVVq5x` (port 3000): `pnpm typecheck` passes; `pnpm test` 2,386 tests,
+  0 failing (`node scripts/check-test-counts.mjs` matches the README); `pnpm test:themes` 118,000/118,000 checks,
+  adjustments per brand 0 / 4 / 7 (only timing lines moved, report not committed); `pnpm check:meta` 58/58 (the
+  existing `hero-styles.tsx` warning); `pnpm registry` 82 items; `check-override-weight` 0; docs build 317/317 pages;
+  `check-ssr-tabs` 0 of 316; `check-hydration` 0 of 292; `check-theme-links` 0 of 5; `check-narrow-overflow` 0 of
+  292; `check-csp` 0 of 146; `axe-sweep` 0 violation nodes (146 routes × 2 schemes); `check-overlay-exit` 0 failures
+  (108 tooltips, 4 menus and popovers).
+- Shipped: `grep -rl 'contain-intrinsic-inline-size:100vw' apps/docs/out/_next/static` finds it.
+
+**Next**
+- `/screenshots` not run. RTL (Qamar) and phone width not looked at for the Marquee.
+- Not measured: the motion lab re-renders all 50 component stills on every loop step (read in the code). Not the cause
+  of the freeze; worth memoising the list on its own.
+
+---
+
 ## 2026-10-07 — Motion lab: the editor stays dark, only the preview follows Light / Dark
 
 Branch `feat/motion-dark-panels`, from `main` at 5f9b8fd.

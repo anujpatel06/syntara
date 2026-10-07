@@ -11,6 +11,13 @@
 .viewport {
   flex: 1;
   min-inline-size: 0;
+  /* The strip's width must never come from its own copies. Without this, a parent that sizes to its content
+     (a centring grid, an inline-flex row) widens the viewport for every copy added, the measure adds more copies
+     to fill it, and the loop never ends: 18,456 copies in about 20 s in a docs thumbnail. */
+  contain: inline-size;
+  /* What the strip asks its parent for instead: the screen's width, a constant, so a parent that sizes to its
+     content still gets a wide strip and shrinks it to fit, as it did when the copies set the width. */
+  contain-intrinsic-inline-size: 100vw;
   overflow: hidden;
   mask-image: linear-gradient(to right, transparent, currentColor var(--syntara-space-12), currentColor calc(100% - var(--syntara-space-12)), transparent);
 }
