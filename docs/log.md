@@ -32,8 +32,40 @@ Branch `fix/motion-info-click`, from `main` at 5f9b8fd, in its own worktree: ano
   exit failures 0 (108 tooltips, 4 menus and popovers).
 
 **Next**
-- Nothing for this fix. The other session's motion-lab work (editor always dark) is still uncommitted in the main
-  checkout.
+- Nothing for this fix. The "always dark" editor change seen in the main checkout is not in this PR or in #109.
+
+---
+
+## 2026-10-07 — Motion lab: style thumbnails play on hover only
+
+Branch `fix/motion-style-hover`, from `main` at 5f9b8fd.
+
+**Changed**
+- `apps/docs/components/motion/motion-lab.module.css`: the three motion style thumbnails (Tactile / Gentle / Snappy)
+  no longer loop all the time. A thumbnail sits still and loops only while its tile is hovered or has keyboard focus.
+  Selectors doubled (`.card.card`) to pass `check-override-weight.mjs`. Reduced motion: still never animates.
+- `motion-lab.tsx`: comment on `animationsRemaining` updated (thumbnails no longer loop forever).
+
+**Decided**
+- Play on hover, still at rest: **Anuj**. Keyboard focus plays it too: **Claude** (pending Anuj's review).
+
+**Results**
+- Dev server, `/motion`: at rest all three thumbnails have `animation-duration: 0s`; hovering Gentle gives it `2.4s`
+  / `infinite` and leaves the other two at `0s` (`getComputedStyle` in the browser pane).
+- `pnpm typecheck` ok; `pnpm test`: 2,386 passing (`node scripts/check-test-counts.mjs`: README matches).
+- `pnpm test:themes`: all brands valid; adjustments per brand 0 / 4 / 7 (unchanged).
+- `pnpm check:meta` ok (1 warning, already there: `hero-styles.tsx` not in meta.examples); `pnpm registry` 82 items;
+  `node scripts/check-override-weight.mjs` 0 (was 2 before doubling the selectors).
+- `pnpm --filter @syntara/docs build`: 317/317 pages; `node scripts/check-ssr-tabs.mjs`: 0 missing panels. The built
+  CSS contains the `.card.card:hover … thumbPanel` rule (`grep` on `apps/docs/out/_next/static/chunks/*.css`).
+- Served on :3000: hydration 0 failures (292 loads), theme links 0, sideways scroll 0 (292), CSP 0 (146), axe 0
+  violation nodes (146 × 2), overlay exit 0 failures (108 tooltips, 4 menus and popovers).
+- Note: the build included another session's uncommitted edit to the "i" tooltips in `motion-lab.tsx` (same
+  checkout). That edit is not in this commit.
+
+**Next**
+- Another session is editing this checkout (`motion-lab.tsx` InfoTip, a `.next-motion-info` dev server). It should
+  move to its own worktree. (Done: that session was this InfoTip fix, now on `fix/motion-info-click`.)
 
 ---
 
