@@ -6,6 +6,44 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-07 — Motion lab: the editor stays dark, only the preview follows Light / Dark
+
+Branch `feat/motion-dark-panels`, from `main` at 5f9b8fd.
+
+**Changed**
+- `apps/docs/components/motion/motion-lab.tsx`: the editor (top bar, both side panels, play bar) is pinned to the
+  house theme in dark (`data-syntara-theme="house" data-syntara-scheme="dark"` on `.editor`), whatever the site's
+  scheme. Only the stage follows the preview's Light / Dark switch. The previews inside the panels (motion style tiles,
+  component stills, the curve graph) are pinned to dark too, so they match the panel they sit in; they still take the
+  stage's brand.
+
+**Decided**
+- The editor's controls are always dark; only the component on the stage changes to light (**Anuj**).
+- The in-panel previews stay dark rather than following the Light / Dark switch (**Claude recommended, Anuj accepted**
+  on the screenshot).
+- First built in the main checkout while two other sessions were editing the same file; moved to its own worktree
+  (`../strata-motion-dark-panels`) before committing (**Anuj**).
+
+**Results**
+- Site set to light, preview set to Light (dev server): page background `rgb(247, 247, 249)`, editor
+  `rgb(20, 20, 21)` (`getComputedStyle`).
+- `/verify`, once, on build `FY1mCxtcdgC99sauL5N4n`, served on port 3819 (another session held 3000) with
+  `SYNTARA_BASE_URL=http://localhost:3819`: `pnpm typecheck` passes; `pnpm test` 2,386 tests, 0 failing
+  (`node scripts/check-test-counts.mjs` matches the README); `pnpm test:themes` 118,000/118,000 checks, adjustments
+  per brand 0 / 4 / 7 (only the timing lines moved, so the report isn't committed); `pnpm check:meta` passes (one
+  existing warning: `hero-styles.tsx` not in meta.examples); `pnpm registry` 82 items; `check-override-weight` 0;
+  docs build 317/317 pages; `check-ssr-tabs` 0 of 316 pages; `check-hydration` 0 of 292; `check-theme-links` 0 of 5;
+  `check-narrow-overflow` 0 of 292; `check-csp` 0 of 146; `axe-sweep` 0 violation nodes (146 routes × 2 schemes);
+  `check-overlay-exit` 0 failures (108 tooltips, 4 menus and popovers).
+- Shipped: `grep -rl '"data-syntara-theme":"house","data-syntara-scheme":"dark"' apps/docs/out/_next/static` finds it.
+
+**Next**
+- `/screenshots` not run (Anuj asked to commit). Desktop width only was looked at; RTL (Qamar) and phone width are not.
+- The motion-style hover fix (#109) and the info-button fix (#110) merged first; this branch merged `main` in after
+  each (only `docs/log.md` conflicted both times).
+
+---
+
 ## 2026-10-07 — Motion lab: a click on an "i" opens its tip
 
 Branch `fix/motion-info-click`, from `main` at 5f9b8fd, in its own worktree: another session was editing
