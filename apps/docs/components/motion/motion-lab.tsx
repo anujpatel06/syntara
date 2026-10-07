@@ -189,12 +189,16 @@ function InfoTip({ about, children }: { about: string; children: ReactNode }) {
   return (
     // Capture runs before React Aria closes the tooltip on press, so a second tap can close it.
     <span ref={wrap} className={styles.infoWrap} onPointerDownCapture={() => (openAtTap.current = open)}>
-      <TooltipTrigger isOpen={open} onOpenChange={setOpen} delay={300}>
+      {/* Short delay: long enough that sweeping the pointer past an "i" doesn't flash its tip, short enough to feel instant. */}
+      <TooltipTrigger isOpen={open} onOpenChange={setOpen} delay={100}>
         <AriaButton
           className={styles.infoButton}
           aria-label={`About ${about}`}
+          // A tap toggles. A click (or Enter) always opens: React Aria closes a tooltip when its trigger is pressed,
+          // which left a mouse click with no tip at all.
           onPress={(e) => {
             if (e.pointerType === 'touch' || e.pointerType === 'pen') setOpen(!openAtTap.current);
+            else setOpen(true);
           }}
         >
           <IconInfoCircle aria-hidden />

@@ -39,8 +39,38 @@ Branch `feat/motion-dark-panels`, from `main` at 5f9b8fd.
 
 **Next**
 - `/screenshots` not run (Anuj asked to commit). Desktop width only was looked at; RTL (Qamar) and phone width are not.
-- The motion-style hover fix (#109) merged first; this branch merged `main` in (only `docs/log.md` conflicted). The
-  info-button fix (`fix/motion-info-click`) touches the same file and is still in another session.
+- The motion-style hover fix (#109) and the info-button fix (#110) merged first; this branch merged `main` in after
+  each (only `docs/log.md` conflicted both times).
+
+---
+
+## 2026-10-07 — Motion lab: a click on an "i" opens its tip
+
+Branch `fix/motion-info-click`, from `main` at 5f9b8fd, in its own worktree: another session was editing
+`motion-lab.tsx` in the main checkout, so this fix was moved out rather than committed alongside its work.
+
+**Changed**
+- `InfoTip` (`apps/docs/components/motion/motion-lab.tsx`): a mouse click or Enter always opens the tip; a tap still
+  toggles. Before, React Aria's close-on-press won, so a click closed a hover-opened tip or never opened one.
+- Hover delay 300 ms → 100 ms.
+
+**Decided**
+- Both changes: Claude recommended, Anuj accepted (reported on Chrome, where a click showed nothing).
+
+**Results**
+- Before, on syntara.live in the Browser pane: after a click, `document.querySelectorAll('[role=tooltip]').length` → 0.
+  After, on a dev server: hover 0.3 s → 1, click while open → 1, click elsewhere → 0, fresh click → 1.
+- Built output contains the change: `grep -rl infoButton apps/docs/out/_next/static` → the chunk has
+  `"pen"===e.pointerType?n(!i.current):n(!0)` and `delay:100`.
+- `/verify`: typecheck ok; `pnpm test` 2,386 tests across 8 packages, none failing (`check-test-counts.mjs`);
+  `pnpm test:themes` 0 failed, 100.00%, median adjustments 4; `check:meta` ok (1 old warning: hero-styles.tsx);
+  `pnpm registry` 82 items; `check-override-weight.mjs` 0; docs build 317/317 pages; `check-ssr-tabs.mjs` 0;
+  served on :3611 (build ZjLdi_jCB9dCoH1lrGSJd, `SYNTARA_BASE_URL`): hydration failures 0 (292 loads), theme links
+  0 failures, sideways scroll 0 at 320/768px, CSP failures 0, axe violation nodes 0 (146 routes × 2 schemes), overlay
+  exit failures 0 (108 tooltips, 4 menus and popovers).
+
+**Next**
+- Nothing for this fix. The "always dark" editor change seen in the main checkout is not in this PR or in #109.
 
 ---
 
@@ -73,7 +103,7 @@ Branch `fix/motion-style-hover`, from `main` at 5f9b8fd.
 
 **Next**
 - Another session is editing this checkout (`motion-lab.tsx` InfoTip, a `.next-motion-info` dev server). It should
-  move to its own worktree.
+  move to its own worktree. (Done: that session was this InfoTip fix, now on `fix/motion-info-click`.)
 
 ---
 
