@@ -278,7 +278,7 @@ function Segmented<T extends string | number>({
  * named. The spring's peak above 1 is its overshoot, measured (motion-math.ts, overshoot()). Decorative; the
  * figures are in the text under it.
  */
-function CurveGraph({ enter, spring, overshoot, dark }: { enter: string; spring: string; overshoot: number; dark: boolean }) {
+function CurveGraph({ enter, spring, overshoot }: { enter: string; spring: string; overshoot: number }) {
   const W = 100;
   const H = 60;
   const top = 1.12;
@@ -287,7 +287,7 @@ function CurveGraph({ enter, spring, overshoot, dark }: { enter: string; spring:
     pts.map(([px, py], i) => `${i ? 'L' : 'M'}${(px * W).toFixed(2)},${y(py).toFixed(2)}`).join(' ');
   return (
     // In the stage's brand, so the spring is drawn in the brand's colour like the tiles and the stage.
-    <figure className={styles.curve} data-syntara-theme={STAGE_THEME_ID} data-syntara-scheme={dark ? 'dark' : 'light'}>
+    <figure className={styles.curve} data-syntara-theme={STAGE_THEME_ID} data-syntara-scheme="dark">
       <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden className={styles.curveSvg}>
         <line x1="0" x2={W} y1={y(1)} y2={y(1)} className={styles.curveRest} />
         <path d={path(easingPoints(enter))} className={styles.curveEnter} />
@@ -494,7 +494,8 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
   const Render = specimen.Render;
 
   return (
-    <div className={styles.editor}>
+    // The editor's own panels are always dark, whatever the site's scheme: only the stage follows Light / Dark.
+    <div className={styles.editor} data-syntara-theme="house" data-syntara-scheme="dark">
       <style>{stageCss}</style>
 
       {/* Top bar: the title, what's on the stage, and the one primary action. The light/dark toggle is on the stage. */}
@@ -544,10 +545,10 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
                       <span className={styles.cardLabel}>{s.label}</span>
                     </ToggleButton>
                     {/* The same still as the component's card on /docs/components (meta's `<name>-demo`), in the
-                        stage's brand and scheme so it changes with the brand like the stage does. */}
+                        stage's brand so it changes with the brand like the stage does; always dark, like the panel it sits in. */}
                     <div
                       data-syntara-theme={STAGE_THEME_ID}
-                      data-syntara-scheme={dark ? 'dark' : 'light'}
+                      data-syntara-scheme="dark"
                       className={styles.componentThumb}
                     >
                       <ExampleThumb name={`${s.id}-demo`} zoom={0.5} />
@@ -675,7 +676,7 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
                 {/* Brand tokens without ThemeScope's <div>, which can't sit inside a <button>. */}
                 <span
                   data-syntara-theme={STAGE_THEME_ID}
-                  data-syntara-scheme={dark ? 'dark' : 'light'}
+                  data-syntara-scheme="dark"
                   className={styles.thumb}
                   aria-hidden
                 >
@@ -822,7 +823,7 @@ export function MotionLab({ brands, initialBrand, componentCode }: MotionLabProp
             ))}
           </Select>
           </div>
-          <CurveGraph enter={tokens.easingOut} spring={tokens.spring} overshoot={tokens.overshoot} dark={dark} />
+          <CurveGraph enter={tokens.easingOut} spring={tokens.spring} overshoot={tokens.overshoot} />
         </section>
 
         <section aria-labelledby={ids.playback} className={styles.section}>
