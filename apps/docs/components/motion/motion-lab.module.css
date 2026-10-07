@@ -164,8 +164,10 @@
   background: var(--syntara-color-surface-raised);
   box-shadow: var(--syntara-shadow-overlay);
 }
+/* Still until hovered (or reached by keyboard): three tiles looping at once pulled the eye off the preview. */
 @media (prefers-reduced-motion: no-preference) {
-  .thumbPanel {
+  .card.card:hover .thumbPanel,
+  .card.card[data-focus-visible] .thumbPanel {
     animation-duration: 2400ms;
     animation-iteration-count: infinite;
     animation-fill-mode: both;
