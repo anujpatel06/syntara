@@ -66,7 +66,7 @@ const NEXT: Record<Phase, Phase> = { entering: 'open', open: 'exiting', exiting:
 /**
  * Milliseconds until every animation the stage started has ended (0 when there are none, e.g. reduced motion).
  * Looks at the stage and anything portalled from it (a tooltip lands in <body> but carries the stage's theme id),
- * not at the style thumbnails, which loop forever. Read from each animation's own timing rather than awaiting
+ * not at the style thumbnails, which loop for as long as one is hovered. Read from each animation's own timing rather than awaiting
  * `finished`: in Chromium that promise was measured resolving ~650 ms after a 120 ms exit had visibly ended.
  */
 function animationsRemaining(): number {
