@@ -6,6 +6,63 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-08 — Preview width: phone, full, and a drag handle on every example
+
+Branch `feat/preview-width`, from `main` at c91ea0c, in its own worktree (`../strata-preview-width`). Anuj: "if every
+component is responsive we need a option here to see the responsiveness".
+
+**Found**
+- Not every component is responsive in the sense Anuj meant. 7 of 58 change layout with their box width: dialog,
+  footer, pagination, navbar, prompt-composer, hero, steps (`grep -lE "@container[^{]*(inline-size|width) *[<>:]|@container[^{]*\((min|max)-width" packages/react/src/ui/*.module.css`).
+  The other 51 wrap and stretch. None reads the window width (`grep -l "@media[^{]*width"` → 0), so narrowing the
+  stage is enough; no iframe needed. (My first answer said 23; that count included `@container style(...)` queries,
+  which are not about width.)
+- Where they change (`grep -hoE '@container[^{]*[0-9.]+px'` per file): dialog 480; pagination 400, 520; steps 480,
+  640; navbar 640, 960; hero 640, 1024; footer 960; prompt-composer has no px breakpoint. The docs column tops out at
+  734 px even in a 1600 px window (measured in Playwright at 1280 → 654, 1600 → 734), so footer's, navbar's second and
+  hero's second layouts can't be seen in any docs preview, this control or not.
+
+**Changed**
+- `apps/docs/components/preview/preview-client.tsx`: a fourth toolbar group, Mobile (375 px) and Full. A handle on
+  the stage's end edge drags to any width (min 280), or takes the arrow keys (Shift = 50 px), Home and End; it is a
+  focusable `separator` with its value. A dragged width selects no preset and shows "N px" under the stage. Both the
+  group and the handle are hidden on phones, like density: the stage is already phone-wide, and the handle would
+  catch a thumb scrolling past. Until the panel is measured, the chosen width is trusted (a hidden tab read "0 px").
+  The "N px" label is in the body font with tabular digits and a thin space (Anuj: "fix the px gap"; the monospace
+  space was too wide).
+- `preview.module.css`: the stage's inline gutter follows the stage's own width (`@container preview-stage`), not the
+  window's, so a 375 px stage has a phone's gutter. Narrowed, the panel around the stage goes plain and the stage
+  gets an edge: a subtle hairline in light, a 1 px `border-default` line in dark (Anuj: "make the edge stronger in
+  dark mode"), following the preview's own Light / Dark, not the site's.
+
+**Decided**
+- Presets plus drag, rather than presets only or drag only (**Claude recommended, Anuj accepted**).
+- No Tablet preset. It was built at 768 px, but the column never reaches 768, so the button could never do what it
+  said; Mobile + Full + drag instead of letting the stage outgrow the column or keeping Tablet with a "narrower than
+  768" note (**Claude recommended, Anuj accepted**).
+
+**Results**
+- Browser pane, Navbar page: Mobile → stage 375 px, the navbar folds into its phone layout; keyboard 375 → 425 → 415 →
+  End = full; a mouse drag lands at 396 px with the readout matching. Dark edge computes to `1px` in `border-default`;
+  light stays `0.5px` in `border-subtle` with the dark line transparent.
+- `/screenshots` (browser pane and a Playwright click-through): Vela light mobile (Pagination folds to "Page 4 of 12"),
+  Harbor dark, Qamar RTL (stage `dir=rtl`, Previous first, Arabic digits; the handle stays on the LTR page's end),
+  compact dark mobile (Steps folds to "Step 2 of 3"), 390 px window (width group and handle hidden, no sideways
+  scroll). Found and fixed there: Tablet capped at the column, the handle showing on phones, the "0 px" readout.
+- `/verify` steps 1–6 on the first build (docs-only changes since): `pnpm typecheck` clean; `pnpm test` 2,393
+  tests, 0 failing (`check-test-counts.mjs`: README matches); `pnpm test:themes` 118,000 checks, every theme passes,
+  adjustments 0 / 4 / 7 (unchanged); `pnpm check:meta` 59/59; `pnpm registry` 83 items.
+- `/verify` steps 6a–9 on the final build j_3IqSBxVMPdL8d35ZS81, served on :3021 (`SYNTARA_BASE_URL`; :3000 held by
+  the `strata-sidebar-icons` session); `grep -rl "Preview width" apps/docs/out/_next/static` → 3 chunks,
+  `grep -rl "Tablet, "` → 0:
+  `check-override-weight.mjs` 0; docs build 321/321 pages; `check-ssr-tabs.mjs` 0 of 320; `check-hydration.mjs` 0 of 294; `check-theme-links.mjs` 0 of 5; the rest of step 9 still running when the PR opened.
+
+**Next**
+- Anuj's look at the PR preview.
+- `hero-styles.tsx` isn't listed in Hero's `meta.examples` (`pnpm check:meta` warning, also on `main`).
+
+---
+
 ## 2026-10-08 — Release: react 0.5.0, theme-engine 0.4.0, syntara 0.4.1, icons 0.2.1, mcp 0.1.5, audit 0.2.2
 
 Branch `release/2026-10-08-navbar`, from `main` at 4db794e (the Navbar, #113). Anuj: "publish it to npm after it merges".
