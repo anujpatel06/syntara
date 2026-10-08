@@ -55,7 +55,7 @@ component is responsive we need a option here to see the responsiveness".
 - `/verify` steps 6a–9 on the final build j_3IqSBxVMPdL8d35ZS81, served on :3021 (`SYNTARA_BASE_URL`; :3000 held by
   the `strata-sidebar-icons` session); `grep -rl "Preview width" apps/docs/out/_next/static` → 3 chunks,
   `grep -rl "Tablet, "` → 0:
-  `check-override-weight.mjs` 0; docs build 321/321 pages; `check-ssr-tabs.mjs` 0 of 320; `check-hydration.mjs` 0 of 294; `check-theme-links.mjs` 0 of 5; the rest of step 9 still running when the PR opened.
+  `check-override-weight.mjs` 0; docs build 321/321 pages; `check-ssr-tabs.mjs` 0 of 320; `check-hydration.mjs` 0 of 294; `check-theme-links.mjs` 0 of 5; `check-narrow-overflow.mjs` 0 of 294; `check-csp.mjs` 0 of 147; `axe-sweep.mjs` 0 violation nodes (147 routes × 2); `check-overlay-exit.mjs` 0 of 112.
 
 **Next**
 - Anuj's look at the PR preview.
