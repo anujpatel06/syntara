@@ -1,0 +1,199 @@
+{
+  "name": "navbar",
+  "title": "Navbar",
+  "description": "A site navigation bar that is invisible at rest, with the logo dead centre, and folds into a floating blurred capsule once the page scrolls under it; a nine-dot button opens a menu drawer.",
+  "category": "navigation",
+  "maturity": "alpha",
+  "exports": [
+    "Navbar",
+    "NavbarLogo",
+    "NavbarLink",
+    "NavbarAction",
+    "NavbarMenuGroup",
+    "NavbarMenuLink"
+  ],
+  "files": [
+    "navbar.tsx",
+    "navbar.module.css"
+  ],
+  "dependencies": [
+    "react-aria-components"
+  ],
+  "registryDependencies": [
+    "sheet"
+  ],
+  "reactAria": "https://react-spectrum.adobe.com/react-aria/Link.html",
+  "usage": "import { Navbar, NavbarAction, NavbarLink, NavbarLogo, NavbarMenuGroup, NavbarMenuLink } from '@syntara/react';\n\nexport function SiteNav() {\n  return (\n    <Navbar\n      logo={<NavbarLogo href=\"/\">Acme</NavbarLogo>}\n      actions={\n        <>\n          <NavbarLink href=\"/login\">Log in</NavbarLink>\n          <NavbarAction href=\"/join\">Join now</NavbarAction>\n        </>\n      }\n      menu={\n        <NavbarMenuGroup title=\"Explore\">\n          <NavbarMenuLink href=\"/plans\">Plans</NavbarMenuLink>\n          <NavbarMenuLink href=\"/clinics\">Clinics</NavbarMenuLink>\n        </NavbarMenuGroup>\n      }\n    >\n      <NavbarLink href=\"/plans\" isCurrent>Plans</NavbarLink>\n      <NavbarLink href=\"/clinics\">Clinics</NavbarLink>\n    </Navbar>\n  );\n}",
+  "examples": [
+    {
+      "name": "navbar-demo",
+      "title": "Navbar",
+      "description": "Logo in the middle, links at the start, Log in and a pill at the end, a menu behind the dots. Scroll the frame: the row folds into a capsule."
+    },
+    {
+      "name": "navbar-scrolled",
+      "title": "Folded",
+      "description": "The capsule, pinned with isScrolled: the brand's inverse colour over blurred page, the logo at three quarters, the pill inverted, the dots in their own circle."
+    },
+    {
+      "name": "navbar-minimal",
+      "title": "Logo and links",
+      "description": "No actions and no menu: just the brand and the links, still folding on scroll."
+    }
+  ],
+  "props": [
+    {
+      "component": "Navbar",
+      "name": "logo",
+      "type": "ReactNode",
+      "description": "The brand, centred on wide bars and at the start on narrow ones: a NavbarLogo, or any link with the logo in it."
+    },
+    {
+      "component": "Navbar",
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "The end group: a quiet NavbarLink such as \"Log in\" and one NavbarAction pill. Narrow bars hide the link and keep the pill; the drawer shows both again at its top."
+    },
+    {
+      "component": "Navbar",
+      "name": "menu",
+      "type": "ReactNode",
+      "description": "The drawer's content, NavbarMenuGroups of links. When set, a nine-dot button at the end of the bar opens a Sheet from the end edge."
+    },
+    {
+      "component": "Navbar",
+      "name": "menuLabel",
+      "type": "string",
+      "default": "'Menu'",
+      "description": "Names the nine-dot button and titles the drawer."
+    },
+    {
+      "component": "Navbar",
+      "name": "navLabel",
+      "type": "string",
+      "default": "'Main'",
+      "description": "Names the navigation landmark for screen readers."
+    },
+    {
+      "component": "Navbar",
+      "name": "isScrolled",
+      "type": "boolean",
+      "description": "Pins the folded state. Leave it out and the bar folds itself once the page (or the frame it sits in) has scrolled 64px, and unfolds on the way back."
+    },
+    {
+      "component": "Navbar",
+      "name": "children",
+      "type": "ReactNode",
+      "description": "NavbarLinks for the start group. Narrow bars hide them, so repeat them in the menu."
+    },
+    {
+      "component": "NavbarLogo",
+      "name": "children",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The brand: a wordmark as text, set in the heading font, or an image or SVG with an aria-label on the link."
+    },
+    {
+      "component": "NavbarLink",
+      "name": "isCurrent",
+      "type": "boolean",
+      "description": "Marks the link to the current page (aria-current=\"page\"); it reads a step heavier."
+    },
+    {
+      "component": "NavbarAction",
+      "name": "href",
+      "type": "string",
+      "description": "Where the pill goes. A React Aria Link, so it works with client routers; pass onPress instead for an action."
+    },
+    {
+      "component": "NavbarMenuGroup",
+      "name": "title",
+      "type": "ReactNode",
+      "required": true,
+      "description": "The group's label, e.g. \"Explore\". Names its list for screen readers."
+    },
+    {
+      "component": "NavbarMenuGroup",
+      "name": "size",
+      "type": "'lg' | 'sm'",
+      "default": "'lg'",
+      "description": "lg: the drawer's big links in the heading font. sm: a column of small body-text links."
+    },
+    {
+      "component": "NavbarMenuLink",
+      "name": "isCurrent",
+      "type": "boolean",
+      "description": "Marks the link to the current page (aria-current=\"page\")."
+    }
+  ],
+  "accessibility": {
+    "keyboard": [
+      {
+        "keys": "Tab",
+        "action": "Moves through the logo, the links, the actions and the menu button, in reading order."
+      },
+      {
+        "keys": "Enter / Space",
+        "action": "On the menu button, opens the drawer and moves focus into it."
+      },
+      {
+        "keys": "Escape",
+        "action": "Closes the drawer and returns focus to the menu button."
+      }
+    ],
+    "notes": [
+      "A header landmark holding one navigation landmark named by navLabel; the logo link names the brand.",
+      "The nine-dot button is a real button named by menuLabel, with aria-expanded; the drawer is a dialog with the same name (React Aria DialogTrigger + Sheet).",
+      "Hovering a link quietens its neighbours to text.subtle, a colour the engine proves at 4.5:1, never to an opacity. Inside the folded capsule they quieten to a mix that test/navbar.test.tsx proves ≥ 4.5:1 on every tenant and 1,000 fuzz brands, light and dark.",
+      "The folded capsule is surface.inverse at the glass opacity plus 8 points, with text.inverse on it: the same test proves ≥ 4.5:1 over black and white backdrops.",
+      "Every target is at least 24px tall; every part shows the focus ring.",
+      "With reduced motion the capsule switches without moving, the hover dash stays put and only colours fade."
+    ]
+  },
+  "guidelines": {
+    "do": [
+      "Put it first inside the scroller: the page, or the frame it sits in. It takes no room, so start the page's first section with enough top padding to clear it.",
+      "Keep the start links to three or four short words, so they clear the centred logo: the bar lays out wide from 640px of its own width, and at that width three fit.",
+      "Repeat every link in the menu: narrow bars hide the start group."
+    ],
+    "dont": [
+      "Don't put more than one NavbarAction in actions.",
+      "Don't give it a background of its own at rest; the bar is meant to be invisible until the page scrolls.",
+      "Don't nest it inside a container with overflow hidden and no scroll: it would never fold."
+    ]
+  },
+  "tokens": [
+    "color.surface.inverse",
+    "color.surface.default",
+    "color.text.default",
+    "color.text.subtle",
+    "color.text.inverse",
+    "color.border.subtle",
+    "color.focus.ring",
+    "glass.bg",
+    "glass.blur",
+    "glass.opacity",
+    "font.heading",
+    "font.size.sm",
+    "font.size.lg",
+    "font.size.2xl",
+    "space.1",
+    "space.2",
+    "space.4",
+    "space.5",
+    "space.6",
+    "space.8",
+    "space.12",
+    "space.16",
+    "radius.pill",
+    "radius.button",
+    "control.height",
+    "control.padding-inline",
+    "shadow.raised",
+    "motion.duration.fast",
+    "motion.duration.normal",
+    "motion.easing-out",
+    "motion.spring"
+  ],
+  "opens": "the bar only — the nine-dot button opens the menu drawer from the end edge"
+}

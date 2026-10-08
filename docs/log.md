@@ -6,6 +6,85 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-08 — Navbar: Superpower's floating-capsule bar as a component (draft, waiting for Anuj's look)
+
+Branch `worktree-navbar`, from `main` at 66914cc, in its own worktree (`.claude/worktrees/navbar`). Nothing committed yet:
+show first, check once.
+
+**Changed**
+- `docs/design/navbar.md`: the spec, measured from https://superpower.com in the desktop app's browser (1024 × 768 and
+  375 × 812; at rest, after 1,000 px of scroll, hovering a link, with the drawer open), with the token mapping and an
+  anti-list. We copy the system, not the logo, words, colours or code.
+- `packages/react/src/ui/navbar.tsx` + `navbar.module.css`: `Navbar`, `NavbarLogo`, `NavbarLink`, `NavbarAction`,
+  `NavbarMenuGroup`, `NavbarMenuLink`. Invisible at rest with the logo dead centre; once a sentinel at the top of the
+  scroller leaves view (IntersectionObserver, so a bar inside a frame folds on that frame's scroll) the row folds into a
+  capsule of `surface.inverse` glass, the logo scales to 0.75, the pill inverts and the nine-dot button becomes a
+  matching circle. Bars narrower than 640 px (their own width, a container query) become a glass strip, logo at the
+  start, links hidden. The dots open a `Sheet` from the end edge with the actions repeated and the menu groups.
+- `packages/react/meta/navbar.meta.json`; `packages/react/test/navbar.test.tsx` (landmarks, current page, keyboard
+  open and Escape, `isScrolled`, and the capsule contrast proof); `apps/docs/examples/navbar/` (demo, folded, minimal).
+- Generated: `packages/react/src/index.ts`, `apps/docs/lib/examples.generated.ts`.
+- `.claude/launch.json`: a `playground-navbar` entry for this worktree (port 5191). Local tooling; drop before merging.
+
+**Decided**
+- The capsule is the brand's *inverse* surface, not the scheme glass: dark on a light page like the reference, light on
+  a dark page. Its face is `surface.inverse` at the glass opacity + 8 points, like every glass surface (**Claude**,
+  pending Anuj; the alternative is a scheme-glass variant later).
+- Quietened neighbours on hover go to `text.subtle` (in the capsule, to a text.inverse / surface.inverse mix), never to
+  the reference's 50 % opacity, which would drop under 4.5:1 (**Claude**).
+- The wide layout starts at 640 px of the bar's own width, not the reference's 992: the docs preview stage is 655 px
+  wide at a 1440 px window (first tried 720, and the built docs page showed the narrow strip) and the playground 720.
+  Four start links collided with the centred wordmark at 720, so the demo shows three and the guideline says three
+  or four (**Claude**).
+- The bar takes no room in flow (a zero-height sticky), so the page runs under it as on the reference; a page starts
+  its first section with its own top padding (**Claude**).
+- The drawer is the system's `Sheet`, not a bespoke panel (**Claude**).
+
+**Results** (Anuj approved the draft's look the same day: "do it")
+- Capsule contrast proof (`pnpm --filter @syntara/react exec vitest run test/navbar.test.tsx`: 5 tenants + 1,000 fuzz
+  brands, light and dark, composited over black and white): worst text.inverse on the capsule **12.31:1**, worst
+  quietened link **5.61:1** (read once by raising the bar to 99; the test asserts 4.5). 7 tests pass.
+- `/verify`, every step, on the 720 px build and again where the 640 px change could show:
+  | Step | Result |
+  |---|---|
+  | `pnpm --filter @syntara/react gen:index` | 59 modules |
+  | `pnpm typecheck` | clean (`gen-examples: 227 examples from 59 components`) |
+  | `pnpm test` | 2,393 passed, 2 skipped, 0 failed (react 554, engine 335, icons 966, MCP 204, schema 150, auditor 77, codemods 8, one-install 99). Two MCP tests expected 58 components; now 59. |
+  | `node scripts/check-test-counts.mjs --from … --fix` | README row updated: components 547 → 554, total 2,386 → 2,393 |
+  | `pnpm test:themes` | 118,000 checks, 0 failed; adjustments per brand min 0 / median 4 / max 7 (unchanged; only the timing lines of the report moved, so the report was put back) |
+  | `pnpm check:meta` | navbar ok, alpha met; the one warning (hero-styles.tsx unlisted) is pre-existing |
+  | `pnpm registry` | 83 items ok |
+  | `node scripts/check-override-weight.mjs` | every override outweighs its component |
+  | `pnpm --filter @syntara/docs build` | 321 pages; `grep -rl syntara-navbar apps/docs/out/_next/static` finds the CSS chunk |
+  | `node scripts/check-ssr-tabs.mjs` | 320 pages, 600 tab lists, 0 missing panels |
+  | `node scripts/check-hydration.mjs` | 147 routes × 2 schemes, 294 loaded, 0 failures |
+  | `node scripts/check-theme-links.mjs` | 5 links, 0 failures |
+  | `node scripts/check-narrow-overflow.mjs` | 147 routes × 320 and 768 px, 0 scrolling sideways |
+  | `node scripts/check-csp.mjs` | 147 routes, 0 failures |
+  | `node scripts/axe-sweep.mjs` | 147 routes × 2 schemes, 0 violation nodes |
+  | `node scripts/check-overlay-exit.mjs` | 108 tooltips, 4 menus and popovers, 0 failures |
+  | Rebuilt at 640 px (`grep -o 640px` on the navbar's CSS chunk: 3, `720px`: 0), then `SYNTARA_ROUTES=/docs/components/navbar` hydration, narrow-overflow and CSP | 0 failures each |
+  | `node scripts/axe-sweep.mjs` on the rebuild | 293 of 294 scans, 0 violation nodes; `/blocks/portfolio/view?tenant=qamar` (light) outran the sweep's 15 s hydration wait on the busy machine. Re-measured alone with the same scan (`scratchpad/axe-one.mjs`): hydrated in 694 ms, 0 violations. That block has no Navbar in it. |
+- Screenshot sweep (`node scripts/shoot.mjs "http://localhost:5191/?c=navbar&tenant=…" … --width=1440 --web-fonts`):
+  Vela light, Harbor dark, Qamar light RTL, Care compact, Haat dark, Vela at 390 px, and Vela at a 760 px window (a
+  648 px bar, the tightest wide layout). All looked right: RTL mirrors the whole row, the glass strip holds at 390,
+  serif and Devanagari wordmarks sit on the row's centre line.
+- The built docs page (`/docs/components/navbar`) was shot at 1440: the stage is 655 px wide, which is why the
+  breakpoint moved from 720 to 640.
+
+**Next**
+- Pull request from `feat/navbar`; Anuj merges.
+- Later, if wanted: a scheme-glass capsule variant; a `NavbarAction` that is a button; a guard for medium widths with
+  four or more links; the drawer listing the start links by itself.
+
+**Known gaps**
+- Between 640 and 960 px, four or more start links overlap the centred logo; nothing guards it.
+- The fold animates the capsule's width and padding (layout properties). Allowed because the bar is out of flow, so
+  nothing else reflows; said so in the CSS.
+- `NavbarAction` is always a link; there is no button form yet.
+
+---
+
 ## 2026-10-07 — Marquee: no more endless copies (the motion lab and components page froze)
 
 Branch `fix/marquee-runaway`, from `main` at 77aabcd, in its own worktree (`.claude/worktrees/marquee-runaway`).
