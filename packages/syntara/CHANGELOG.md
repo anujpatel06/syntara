@@ -1,6 +1,24 @@
 # syntara
 
+## 0.4.1
+
+### Patch Changes
+
+- 5f9b8fd: Grey and black brands (primary OKLCH chroma below 0.02) now get a near-white primary button with ink labels in dark mode, instead of a dull deepened grey that looked disabled (ADR-056). Coloured brands are unchanged.
+
+  New CSS variable `--syntara-glow-color`: the colour brand glows are mixed from. It is the primary fill, except for grey brands in dark mode, which glow in a mid grey so text on Card's feature glow keeps 4.5:1. Card falls back to the fill when the variable is missing.
+
+- Updated dependencies [5f9b8fd]
+- Updated dependencies [66914cc]
+- Updated dependencies [2fd9a64]
+- Updated dependencies [cde820f]
+  - @syntara/theme-engine@0.4.0
+  - @syntara/react@0.5.0
+  - @syntara/icons@0.2.1
+
 ## 0.4.0
+
+Not published to npm: these changes first shipped in 0.4.1.
 
 ### Minor Changes
 

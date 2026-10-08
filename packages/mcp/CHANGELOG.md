@@ -1,6 +1,16 @@
 # @syntara/mcp
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [5f9b8fd]
+  - @syntara/theme-engine@0.4.0
+  - @syntara/audit@0.2.2
+
 ## 0.1.4
+
+Not published to npm: these changes first shipped in 0.1.5.
 
 ### Patch Changes
 

@@ -1,5 +1,15 @@
 # @syntara/playground
 
+## 0.1.7
+
+### Patch Changes
+
+- Updated dependencies [5f9b8fd]
+- Updated dependencies [66914cc]
+- Updated dependencies [2fd9a64]
+  - @syntara/theme-engine@0.4.0
+  - @syntara/react@0.5.0
+
 ## 0.1.6
 
 ### Patch Changes

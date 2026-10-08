@@ -6,6 +6,41 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-08 — Release: react 0.5.0, theme-engine 0.4.0, syntara 0.4.1, icons 0.2.1, mcp 0.1.5, audit 0.2.2
+
+Branch `release/2026-10-08-navbar`, from `main` at 4db794e (the Navbar, #113). Anuj: "publish it to npm after it merges".
+
+**Found**
+- The 2026-10-06 release (#98: react 0.4.0, icons 0.2.0, syntara 0.4.0, mcp 0.1.4) was merged into `main` but never
+  published. `npm view <pkg> versions` on 2026-10-08: react tops out at 0.3.1, icons 0.1.1, syntara 0.3.0, mcp 0.1.3.
+
+**Changed**
+- `pnpm changeset version` on the four pending changesets (grey primary in dark, Marquee copies, niche icons review,
+  Navbar): `@syntara/react` 0.4.0 → **0.5.0**, `@syntara/theme-engine` 0.3.0 → **0.4.0**, `syntara` 0.4.0 → **0.4.1**,
+  `@syntara/icons` 0.2.0 → **0.2.1**, `@syntara/mcp` 0.1.4 → **0.1.5**, `@syntara/audit` 0.2.1 → **0.2.2** (a dependent
+  of the engine). Docs and playground move too; both are private.
+- The four changelog headings that never reached npm (react 0.4.0, icons 0.2.0, syntara 0.4.0, mcp 0.1.4) now say so,
+  and name the version where their changes first ship.
+
+**Decided**
+- One release that ships everything pending, rather than publishing the 10-06 numbers first: `main` already holds
+  later changes under those numbers, so "0.4.0 as it was" can no longer be built from `main` (**Claude**; Anuj asked
+  for the publish, this was the only way to make it from `main`).
+
+**Results**
+- `pnpm --filter <pkg> pack` of all six, then each tarball opened (`scratchpad/check-packs.mjs`): 0 `workspace:`
+  references; internal ranges point at this release (syntara → react ^0.5.0, engine ^0.4.0, icons ^0.2.1; react →
+  icons 0.2.1; mcp → audit 0.2.2, engine 0.4.0); the React tarball has `NavbarMenuLink` in its JS and types and the
+  `syntara-navbar` container in its CSS; the MCP tarball's data lists `navbar`. Sizes in bytes: react 513,562,
+  icons 474,111, mcp 261,039, engine 166,371, audit 45,041, syntara 33,149.
+- `npm whoami`: `E401` (logged out). Anuj runs `npm login` himself before the publish.
+
+**Next**
+- Merge this; then `pnpm changeset publish` from `main` in the Terminal panel (npm asks Anuj for web approval);
+  `npm view` each version; update the versions line in `CLAUDE.md`.
+
+---
+
 ## 2026-10-08 — Navbar: Superpower's floating-capsule bar as a component (draft, waiting for Anuj's look)
 
 Branch `worktree-navbar`, from `main` at 66914cc, in its own worktree (`.claude/worktrees/navbar`). Nothing committed yet:

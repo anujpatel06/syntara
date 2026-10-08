@@ -1,5 +1,12 @@
 # @syntara/audit
 
+## 0.2.2
+
+### Patch Changes
+
+- Updated dependencies [5f9b8fd]
+  - @syntara/theme-engine@0.4.0
+
 ## 0.2.1
 
 ### Patch Changes
