@@ -1,6 +1,14 @@
 # @syntara/icons
 
+## 0.2.1
+
+### Patch Changes
+
+- cde820f: `@syntara/icons/niche`: after an independent review, 84 niche icons were redrawn because they read as the wrong object, and 46 were removed (41 that repeated another icon, 5 that could not be drawn clearly). The pack is 1,954 icons, not 2,000. Removed: `environments`, `conical-flask`, `learning-blocks`, `baby-toy-blocks`, `grooming-scissors`, `school-scissors`, `artboard`, `employee-id`, `potted-plant`, `body-weight-scale`, `anatomy-cell-division`, `sewing-button`, `incident-siren`, `laundry-room`, `edge-network`, `microwave-oven`, the seven `astronomy-*` icons, `constellation`, `on-call-pager`, `anatomy-ear`, `anatomy-eyebrow`, `anatomy-footprint`, `anatomy-pregnant-body`, `anatomy-teeth-smile`, `anatomy-blood-drop-cell`, `anatomy-spine`, `anatomy-hand`, `snorkel-mask`, `interior-bathtub`, `sports-net`, `police-whistle`, `training-cone`, `official-seal`, `diploma`, `low-beam`, `vascular`, `dental-canine`, `anatomy-shoulder`, `earth-core`, `embroidery-hoop`. If you imported one of these from 0.2.0, use the icon named in its pair (for example `IconSpaceRocket` for `IconAstronomyRocket`).
+
 ## 0.2.0
+
+Not published to npm: these changes first shipped in 0.2.1.
 
 ### Minor Changes
 

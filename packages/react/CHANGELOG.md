@@ -1,6 +1,24 @@
 # @syntara/react
 
+## 0.5.0
+
+### Minor Changes
+
+- 2fd9a64: New `Navbar`: a site navigation bar that is invisible at rest, with the logo dead centre, and folds into a floating blurred capsule in the brand's inverse colour once the page scrolls under it. Narrow bars become a glass strip. A nine-dot button opens a menu drawer (a `Sheet`) with `NavbarMenuGroup`s of links. Parts: `Navbar`, `NavbarLogo`, `NavbarLink`, `NavbarAction`, `NavbarMenuGroup`, `NavbarMenuLink`.
+
+### Patch Changes
+
+- 5f9b8fd: Grey and black brands (primary OKLCH chroma below 0.02) now get a near-white primary button with ink labels in dark mode, instead of a dull deepened grey that looked disabled (ADR-056). Coloured brands are unchanged.
+
+  New CSS variable `--syntara-glow-color`: the colour brand glows are mixed from. It is the primary fill, except for grey brands in dark mode, which glow in a mid grey so text on Card's feature glow keeps 4.5:1. Card falls back to the fill when the variable is missing.
+
+- 66914cc: Marquee no longer copies itself without end inside a parent that sizes to its content, such as a centring grid. The strip's width now never comes from its own copies, so it stays at a few copies instead of growing until the page freezes.
+- Updated dependencies [cde820f]
+  - @syntara/icons@0.2.1
+
 ## 0.4.0
+
+Not published to npm: these changes first shipped in 0.5.0.
 
 ### Minor Changes
 
