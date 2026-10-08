@@ -6,6 +6,35 @@ Numbers only with the command that produced them. Design trade-offs get an ADR i
 
 ---
 
+## 2026-10-08 — Docs sidebar: an icon beside every component
+
+Branch `feat/sidebar-component-icons`, from `main` at c91ea0c, in its own worktree (`../strata-sidebar-icons`).
+
+**Changed**
+- `apps/docs/components/docs/doc-icons.ts`: an `@syntara/icons` glyph for "All components" and each of the 59
+  components, keyed by href like the guide pages. The desktop sidebar and the phone menu both read this map.
+
+**Decided**
+- Components get sidebar icons, reversing the 2026-10-05 text-only call (**Anuj**, 2026-10-08, approved from a
+  screenshot). Weakest matches, open to swaps: Button (small square), Skeleton (hourglass), Sheet (page), Theme Scope
+  (globe), Stat Tile (percent).
+
+**Results**
+- `pnpm typecheck`: pass. `pnpm test`: 2,393 tests across 8 packages, none failing (`node scripts/check-test-counts.mjs`).
+- `pnpm test:themes`: 118,000 / 118,000 checks; median adjustments per brand 4. `pnpm check:meta`: 59/59 (one existing
+  warning: `hero-styles.tsx` not listed in meta.examples). `pnpm registry`: 83 items ok. `check-override-weight.mjs`: 0.
+- `pnpm --filter @syntara/docs build`: 321/321 pages; `check-ssr-tabs.mjs`: 0 missing panels. The change shipped:
+  `grep -rl 'docs/components/streaming-response' apps/docs/out/_next/static` → 1 chunk.
+- Served build `Pe0IbVuXBAQB7czXEw3_X`: `check-hydration.mjs` 0 of 294; `check-theme-links.mjs` 0 of 5;
+  `check-narrow-overflow.mjs` 0 of 294; `check-csp.mjs` 0 of 147; `axe-sweep.mjs` 0 violation nodes (147 × 2);
+  `check-overlay-exit.mjs` 0 failures (108 tooltips, 4 menus/popovers).
+- `/screenshots` sweep not run: the sidebar is one shared docs template and Anuj approved it from one screenshot.
+
+**Next**
+- Swap any of the five weak icons if Anuj wants; nothing else open.
+
+---
+
 ## 2026-10-08 — Release: react 0.5.0, theme-engine 0.4.0, syntara 0.4.1, icons 0.2.1, mcp 0.1.5, audit 0.2.2
 
 Branch `release/2026-10-08-navbar`, from `main` at 4db794e (the Navbar, #113). Anuj: "publish it to npm after it merges".
