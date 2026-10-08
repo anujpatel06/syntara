@@ -1,0 +1,468 @@
+/* Navbar: invisible at rest; once the page has scrolled under it, the row folds into a floating capsule in the brand's
+   inverse colour (spec: docs/design/navbar.md, measured from superpower.com). It lays itself out by its own width, so
+   it works inside a scrolling frame as well as at the top of a page. */
+
+/* The first thing in the scroller, taking no room. Once it has left the viewport the bar folds, so its height is how
+   far the page scrolls before that happens. */
+.sentinel {
+  block-size: var(--syntara-space-16);
+  margin-block-end: calc(-1 * var(--syntara-space-16));
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.root {
+  box-sizing: border-box;
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 30;
+  /* Zero height in flow: the bar hangs below the sticky point and the page runs under it, whatever its own height. */
+  block-size: 0;
+  inline-size: 100%;
+  container: syntara-navbar / inline-size;
+  color: var(--syntara-color-text-default);
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-sm);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  line-height: var(--syntara-line-height-snug);
+}
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.bar {
+  /* The capsule's height: the action pill plus a step of air above and below it. */
+  --_row: calc(var(--syntara-control-height) + var(--syntara-space-2));
+  /* The folded face: surface.inverse at the glass opacity plus 8 points, like every glass surface (CONVENTIONS).
+     test/navbar.test.tsx proves text.inverse and --_dim ≥ 4.5:1 on it over black and white, tenants and fuzz brands. */
+  --_face: color-mix(in srgb, var(--syntara-color-surface-inverse) calc(var(--syntara-glass-opacity) * 100% + 8%), transparent);
+  /* A quietened link inside the capsule: text.inverse pulled towards the face. sRGB, so the proof composites it exactly. */
+  --_dim: color-mix(in srgb, var(--syntara-color-text-inverse) 72%, var(--syntara-color-surface-inverse));
+  padding-block: var(--syntara-space-5);
+  padding-inline: clamp(var(--syntara-space-4), 6cqi, var(--syntara-space-16));
+  /* The empty bar lets the pointer through to the page; the row takes it back. */
+  pointer-events: none;
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syntara-space-2);
+  block-size: var(--_row);
+}
+.row > * {
+  pointer-events: auto;
+}
+
+/* ---- The row that folds ------------------------------------------------------------------------------------ */
+
+.capsule {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  max-inline-size: 100cqi;
+  block-size: var(--_row);
+  padding-inline: 0;
+  border-radius: var(--syntara-radius-pill);
+  background: transparent;
+  /* The transparent capsule still has corners; a hairline of nothing keeps forced-colours mode from drawing one. */
+  border: 1px solid transparent;
+}
+
+/* The logo spans the capsule and centres its link; only the link takes the pointer. Scaling the box scales about the
+   capsule's centre, so the folded logo stays centred. */
+.logo {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.logo > * {
+  pointer-events: auto;
+}
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--syntara-space-2);
+  min-block-size: var(--syntara-space-6);
+  color: inherit;
+  text-decoration: none;
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-lg);
+  font-weight: var(--syntara-font-weight-semibold);
+  letter-spacing: var(--syntara-font-tracking-lg);
+  line-height: var(--syntara-line-height-tight);
+  border-radius: var(--syntara-radius-button);
+  outline: none;
+  outline-offset: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.logoLink > svg,
+.logoLink > img {
+  block-size: var(--syntara-space-5);
+  inline-size: auto;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  gap: var(--syntara-space-6);
+}
+.links {
+  display: flex;
+  align-items: center;
+  /* Tighter on bars under 960px, so four short links clear the centred logo (docs/design/navbar.md §5). */
+  gap: var(--syntara-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@container syntara-navbar (inline-size >= 960px) {
+  .links {
+    gap: var(--syntara-space-6);
+  }
+}
+.item {
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-4);
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--syntara-space-6);
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--syntara-radius-button);
+  outline: none;
+  outline-offset: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+.link[aria-current='page'] {
+  font-weight: var(--syntara-font-weight-medium);
+}
+/* Hover: the hovered link keeps its colour and the others in its group quieten, to a colour the engine proves
+   readable, never to an opacity. The groups quieten separately, as on the reference. */
+.links:has(.link[data-hovered]) .link:not([data-hovered]),
+.actions:has(.link[data-hovered]) .link:not([data-hovered]) {
+  color: var(--syntara-color-text-subtle);
+}
+
+/* The one pill: contrast at rest (Button's contrast variant), the page colour inside the folded capsule. */
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--syntara-space-2);
+  min-block-size: var(--syntara-control-height);
+  padding-inline: calc(var(--syntara-control-padding-inline) + var(--syntara-space-1));
+  border: 1px solid transparent;
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-surface-inverse);
+  color: var(--syntara-color-text-inverse);
+  font-size: var(--syntara-font-size-sm);
+  font-weight: var(--syntara-font-weight-medium);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: var(--syntara-shadow-raised);
+  cursor: pointer;
+  outline: none;
+  outline-offset: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    box-shadow var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+.action[data-hovered] {
+  background: color-mix(in oklab, var(--syntara-color-surface-inverse) 88%, var(--syntara-color-text-subtle));
+}
+
+/* The nine-dot menu button: a bare square at rest, a circle in the capsule's face once folded. */
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  inline-size: var(--syntara-space-8);
+  block-size: var(--syntara-space-8);
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--syntara-radius-pill);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  outline-offset: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+.menuButton[data-hovered] {
+  background: color-mix(in oklab, var(--syntara-color-text-default) 6%, transparent);
+}
+.dots {
+  inline-size: var(--syntara-space-5);
+  block-size: var(--syntara-space-5);
+}
+
+.logoLink[data-focus-visible],
+.link[data-focus-visible],
+.action[data-focus-visible],
+.menuButton[data-focus-visible],
+.menuLink[data-focus-visible] {
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---- Folded (wide bars only) -------------------------------------------------------------------------------- */
+
+@container syntara-navbar (inline-size >= 640px) {
+  .root[data-scrolled] .capsule {
+    max-inline-size: calc(var(--syntara-space-16) * 12.5);
+    padding-inline: var(--syntara-space-5) var(--syntara-space-1);
+    background: var(--_face);
+    -webkit-backdrop-filter: blur(var(--syntara-glass-blur)) saturate(1.6);
+    backdrop-filter: blur(var(--syntara-glass-blur)) saturate(1.6);
+    color: var(--syntara-color-text-inverse);
+    /* The bar keeps its height; the row rides up inside it, so nothing below moves. */
+    translate: 0 calc(-1 * var(--syntara-space-2));
+  }
+  .root[data-scrolled] .nav {
+    gap: var(--syntara-space-12);
+  }
+  .root[data-scrolled] .logo {
+    scale: 0.75;
+  }
+  .root[data-scrolled] .links:has(.link[data-hovered]) .link:not([data-hovered]),
+  .root[data-scrolled] .actions:has(.link[data-hovered]) .link:not([data-hovered]) {
+    color: var(--_dim);
+  }
+  .root[data-scrolled] .action {
+    background: var(--syntara-color-surface-default);
+    color: var(--syntara-color-text-default);
+    box-shadow: none;
+  }
+  .root[data-scrolled] .action[data-hovered] {
+    background: color-mix(in oklab, var(--syntara-color-surface-default) 92%, var(--syntara-color-text-default));
+  }
+  .root[data-scrolled] .menuButton {
+    inline-size: var(--_row);
+    block-size: var(--_row);
+    background: var(--_face);
+    -webkit-backdrop-filter: blur(var(--syntara-glass-blur)) saturate(1.6);
+    backdrop-filter: blur(var(--syntara-glass-blur)) saturate(1.6);
+    color: var(--syntara-color-text-inverse);
+    translate: 0 calc(-1 * var(--syntara-space-2));
+  }
+  .root[data-scrolled] .menuButton[data-hovered] {
+    background: color-mix(in srgb, var(--_face) 90%, var(--syntara-color-text-inverse));
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .bar {
+    --_face: var(--syntara-color-surface-inverse);
+  }
+}
+
+/* ---- Narrow bars: a glass strip, the logo at the start, the links in the drawer ------------------------------ */
+
+@container syntara-navbar (inline-size < 640px) {
+  .bar {
+    padding-block: var(--syntara-space-3);
+    background: var(--syntara-glass-bg);
+    -webkit-backdrop-filter: blur(var(--syntara-glass-blur)) saturate(1.6);
+    backdrop-filter: blur(var(--syntara-glass-blur)) saturate(1.6);
+    box-shadow: 0 var(--syntara-hairline) 0 0 var(--syntara-color-border-subtle);
+    pointer-events: auto;
+  }
+  .logo {
+    position: static;
+    inset: auto;
+  }
+  .links,
+  .actions .link {
+    display: none;
+  }
+  .nav {
+    justify-content: flex-end;
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  @container syntara-navbar (inline-size < 640px) {
+    .bar {
+      background: var(--syntara-color-surface-raised);
+    }
+  }
+}
+
+/* ---- The drawer ---------------------------------------------------------------------------------------------- */
+
+.menuActions {
+  display: flex;
+  align-items: center;
+  gap: var(--syntara-space-4);
+}
+.menu {
+  display: grid;
+  gap: var(--syntara-space-8);
+}
+.group {
+  display: grid;
+  align-content: start;
+  gap: var(--syntara-space-2);
+}
+.groupTitle {
+  margin: 0;
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  line-height: var(--syntara-line-height-normal);
+}
+.groupList {
+  display: grid;
+  justify-items: start;
+  gap: var(--syntara-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.group[data-size='sm'] .groupList {
+  gap: var(--syntara-space-2);
+}
+.menuLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--syntara-space-6);
+  color: var(--syntara-color-text-default);
+  text-decoration: none;
+  font-family: var(--syntara-font-heading);
+  font-size: var(--syntara-font-size-2xl);
+  font-weight: var(--syntara-font-weight-regular);
+  letter-spacing: var(--syntara-font-tracking-2xl);
+  line-height: var(--syntara-line-height-snug);
+  border-radius: var(--syntara-radius-button);
+  outline: none;
+  outline-offset: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+    outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+}
+.group[data-size='sm'] .menuLink {
+  font-family: var(--syntara-font-body);
+  font-size: var(--syntara-font-size-sm);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  line-height: var(--syntara-line-height-normal);
+}
+.menuLink[aria-current='page'] {
+  font-weight: var(--syntara-font-weight-medium);
+}
+/* The dash sits at the start, folded to nothing; it grows (and the words slide over) only with motion allowed, as
+   transforms, so nothing in the list reflows. */
+.dash {
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 50%;
+  inline-size: var(--syntara-space-2);
+  block-size: 1px;
+  background: currentColor;
+  scale: 0 1;
+  transform-origin: 0 50%;
+}
+.dash:dir(rtl) {
+  transform-origin: 100% 50%;
+}
+.menuLinkText {
+  display: inline-block;
+}
+.groupList:has(.menuLink[data-hovered]) .menuLink:not([data-hovered]) {
+  color: var(--syntara-color-text-subtle);
+}
+
+/* ---- Motion (Tactile style). Every size, scale and translate change lives here. ------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The fold: one ease-out move, the reference's 0.25 s cubic-bezier(0.16, 1, 0.3, 1). The capsule's width and
+     padding do animate: the bar is out of flow (a zero-height sticky), so nothing else reflows, like a
+     SelectionIndicator's pill. */
+  .capsule {
+    transition:
+      max-inline-size var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      padding var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      background-color var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      translate var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      -webkit-backdrop-filter var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      backdrop-filter var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      color var(--syntara-motion-duration-fast) var(--syntara-motion-easing);
+  }
+  .nav {
+    transition: gap var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out);
+  }
+  .logo {
+    transition: scale var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out);
+  }
+  .menuButton {
+    transition:
+      inline-size var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      block-size var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      translate var(--syntara-motion-duration-normal) var(--syntara-motion-easing-out),
+      background-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      scale var(--syntara-motion-duration-spring) var(--syntara-motion-spring);
+  }
+  .menuButton[data-pressed] {
+    scale: 0.9;
+  }
+  .action {
+    transition:
+      background-color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      color var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      box-shadow var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      outline-offset var(--syntara-motion-duration-fast) var(--syntara-motion-easing),
+      scale var(--syntara-motion-duration-spring) var(--syntara-motion-spring);
+  }
+  .action[data-pressed] {
+    scale: 0.96;
+  }
+  .dash {
+    transition: scale var(--syntara-motion-duration-fast) var(--syntara-motion-easing-out);
+  }
+  .menuLinkText {
+    transition: translate var(--syntara-motion-duration-fast) var(--syntara-motion-easing-out);
+  }
+  .menuLink[data-hovered] .dash {
+    scale: 1 1;
+  }
+  .menuLink[data-hovered] .menuLinkText {
+    translate: var(--syntara-space-3) 0;
+  }
+  .menuLink[data-hovered] .menuLinkText:dir(rtl) {
+    translate: calc(-1 * var(--syntara-space-3)) 0;
+  }
+}

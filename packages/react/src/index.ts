@@ -30,6 +30,7 @@ export * from './ui/link';
 export * from './ui/marquee';
 export * from './ui/menu';
 export * from './ui/meter';
+export * from './ui/navbar';
 export * from './ui/pagination';
 export * from './ui/person-chip';
 export * from './ui/popover';
