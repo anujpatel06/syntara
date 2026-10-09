@@ -3,6 +3,8 @@
 import {
   IconBaselineDensityMedium,
   IconBaselineDensitySmall,
+  IconDeviceDesktop,
+  IconDeviceMobile,
   IconMoon,
   IconSun,
   IconTextDirectionLtr,
@@ -19,7 +21,16 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@syntara/react';
-import { Component, useEffect, useId, useState, type ReactNode } from 'react';
+import {
+  Component,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type PointerEvent,
+  type ReactNode,
+} from 'react';
 import type { Key } from 'react-aria-components';
 import { examples } from '@/lib/examples.generated';
 import styles from './preview.module.css';
@@ -36,6 +47,82 @@ export interface PreviewTenant {
 type Scheme = 'light' | 'dark';
 type Dir = 'ltr' | 'rtl';
 type Density = 'comfortable' | 'compact';
+
+/**
+ * Preset stage widths in CSS px. "full" is the docs column. No tablet preset: the column tops out near 734 px on any
+ * screen, so 768 could never be shown (Anuj, 2026-10-08); the drag handle covers widths in between.
+ */
+const WIDTHS = { mobile: 375 } as const;
+const MIN_WIDTH = 280;
+
+/**
+ * The stage's width handle: drag it, or focus it and use the arrow keys (Shift for bigger steps), Home for the
+ * narrowest and End for full width. The stage is centred, so the width changes by twice the pointer's travel to keep
+ * the edge under the pointer.
+ */
+function WidthHandle({
+  width,
+  max,
+  onChange,
+}: {
+  width: number;
+  max: number;
+  onChange: (next: number | undefined) => void;
+}) {
+  const drag = useRef<{ x: number; width: number; sign: number } | null>(null);
+  const clamp = (w: number) => (w >= max ? undefined : Math.max(MIN_WIDTH, Math.round(w)));
+
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const sign = getComputedStyle(e.currentTarget).direction === 'rtl' ? -1 : 1;
+    drag.current = { x: e.clientX, width, sign };
+  };
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (!drag.current) return;
+    const { x, width: start, sign } = drag.current;
+    onChange(clamp(start + (e.clientX - x) * 2 * sign));
+  };
+  const onPointerUp = () => {
+    drag.current = null;
+  };
+  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = e.shiftKey ? 50 : 10;
+    const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
+    const keys: Record<string, number | 'min' | 'max'> = {
+      ArrowLeft: rtl ? step : -step,
+      ArrowRight: rtl ? -step : step,
+      ArrowDown: -step,
+      ArrowUp: step,
+      Home: 'min',
+      End: 'max',
+    };
+    const move = keys[e.key];
+    if (move == null) return;
+    e.preventDefault();
+    onChange(move === 'min' ? MIN_WIDTH : move === 'max' ? undefined : clamp(width + move));
+  };
+
+  return (
+    <div
+      role="separator"
+      aria-orientation="vertical"
+      aria-label="Preview width"
+      aria-valuemin={MIN_WIDTH}
+      aria-valuemax={max}
+      aria-valuenow={width}
+      aria-valuetext={`${width} pixels`}
+      tabIndex={0}
+      className={`${styles.handle} ${styles.wideOnly}`}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
+      onKeyDown={onKeyDown}
+    >
+      <span className={styles.grip} aria-hidden="true" />
+    </div>
+  );
+}
 
 /** The site's effective scheme (html attribute, or the OS preference when it is "auto"). */
 function useSiteScheme(): Scheme {
@@ -110,6 +197,21 @@ export function PreviewClient({ name, label, align, tenants, code }: PreviewClie
   /** undefined = follow the tenant's direction. The toggle overrides it until the tenant changes. */
   const [dir, setDir] = useState<Dir | undefined>();
   const [density, setDensity] = useState<Density | undefined>();
+  /** undefined = the full docs column. Set by a preset or by dragging the stage's edge. */
+  const [width, setWidth] = useState<number | undefined>();
+  const [maxWidth, setMaxWidth] = useState(0);
+  const viewport = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = viewport.current;
+    if (!el) return;
+    const observer = new ResizeObserver(([entry]) => setMaxWidth(Math.floor(entry?.contentRect.width ?? 0)));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  // Until the panel has been measured (first paint, or a hidden tab), trust the chosen width; CSS caps it anyway.
+  const shownWidth = maxWidth === 0 ? (width ?? 0) : Math.min(width ?? maxWidth, maxWidth);
+  const widthKey =
+    width == null ? 'full' : (Object.keys(WIDTHS) as (keyof typeof WIDTHS)[]).find((k) => WIDTHS[k] === width);
 
   const tenant = tenants.find((t) => t.id === tenantId) ?? tenants[0];
   const effectiveScheme = scheme ?? siteScheme;
@@ -215,10 +317,30 @@ export function PreviewClient({ name, label, align, tenants, code }: PreviewClie
                   <IconBaselineDensitySmall aria-hidden />
                 </IconToggle>
               </ToggleButtonGroup>
+              {/* No preset is selected while a dragged width is shown; the readout under the stage names it. */}
+              <ToggleButtonGroup
+                aria-label="Preview width"
+                size="sm"
+                selectedKeys={widthKey ? [widthKey] : []}
+                onSelectionChange={(keys) => {
+                  const next = firstKey(keys);
+                  if (next) setWidth(next === 'full' ? undefined : WIDTHS[next as keyof typeof WIDTHS]);
+                }}
+                className={`${styles.group} ${styles.wideOnly}`}
+              >
+                <IconToggle id="mobile" label={`Mobile, ${WIDTHS.mobile} px`}>
+                  <IconDeviceMobile aria-hidden />
+                </IconToggle>
+                <IconToggle id="full" label="Full width">
+                  <IconDeviceDesktop aria-hidden />
+                </IconToggle>
+              </ToggleButtonGroup>
             </div>
           )}
         </div>
         <TabPanel id="preview" shouldForceMount className={styles.panel}>
+          <div ref={viewport} className={styles.viewport} data-narrowed={width != null || undefined}>
+          <div className={styles.sizer} style={width == null ? undefined : { inlineSize: shownWidth }}>
           <ThemeScope
             theme={tenant?.id}
             data-syntara-scheme={scheme ?? 'site'}
@@ -241,6 +363,14 @@ export function PreviewClient({ name, label, align, tenants, code }: PreviewClie
               </p>
             )}
           </ThemeScope>
+          {maxWidth > 0 && <WidthHandle width={shownWidth} max={maxWidth} onChange={setWidth} />}
+          </div>
+          {width != null && (
+            <p className={styles.readout} aria-live="polite">
+              {`${shownWidth} px`}
+            </p>
+          )}
+          </div>
         </TabPanel>
         <TabPanel id="code" className={styles.panel}>
           {code}

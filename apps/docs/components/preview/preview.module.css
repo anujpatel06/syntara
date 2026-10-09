@@ -152,10 +152,87 @@
 .stage.stage[data-align='start'] {
   align-items: flex-start;
 }
-@media (min-width: 768px) {
+/* The stage's gutter follows the stage's own width, not the window's, so a 375 px preview has a phone's gutter. */
+@container preview-stage (min-width: 768px) {
   .stage.stage {
     padding-inline: var(--syntara-space-10);
   }
+}
+
+/* ---- Width: the stage narrows to a preset or a dragged width, centred in the panel ---- */
+.viewport {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Narrowed, the panel around the stage goes plain, so the stage's own edges read as the device's edges. */
+.viewport[data-narrowed] {
+  padding-block-end: var(--syntara-space-2);
+  background: var(--syntara-color-surface-default);
+}
+.sizer {
+  position: relative;
+  container: preview-stage / inline-size;
+  inline-size: 100%;
+  max-inline-size: 100%;
+}
+/* Light: a subtle hairline edge. Dark: a full 1 px line in the default border, since a hairline barely parts the
+   stage from the panel there. light-dark() reads the stage's own scheme (ThemeScope sets color-scheme), not the
+   site's, so the edge follows the Light / Dark toggle. A shadow's width can't follow the scheme, so the edge is two
+   lines: the light one goes transparent in dark, the dark one in light. */
+.viewport[data-narrowed] .stage.stage {
+  --edge-light: light-dark(var(--syntara-color-border-subtle), transparent);
+  --edge-dark: light-dark(transparent, var(--syntara-color-border-default));
+  --edge-dark-w: calc(var(--syntara-hairline) * 2);
+  box-shadow:
+    inset var(--syntara-hairline) 0 0 0 var(--edge-light),
+    inset calc(var(--syntara-hairline) * -1) 0 0 0 var(--edge-light),
+    inset 0 calc(var(--syntara-hairline) * -1) 0 0 var(--edge-light),
+    inset var(--edge-dark-w) 0 0 0 var(--edge-dark),
+    inset calc(var(--edge-dark-w) * -1) 0 0 0 var(--edge-dark),
+    inset 0 calc(var(--edge-dark-w) * -1) 0 0 var(--edge-dark);
+}
+
+/* The handle sits over the stage's end edge: a 24 px wide target with a short grip line in the middle. */
+.handle {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: calc(var(--syntara-space-3) * -1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--syntara-space-6);
+  cursor: ew-resize;
+  touch-action: none;
+  outline: none;
+}
+.grip {
+  inline-size: var(--syntara-space-1);
+  block-size: var(--syntara-space-8);
+  border-radius: var(--syntara-radius-pill);
+  background: var(--syntara-color-border-default);
+}
+.handle:hover .grip {
+  background: var(--syntara-color-text-subtle);
+}
+.handle:focus-visible .grip {
+  background: var(--syntara-color-text-default);
+  outline: 2px solid var(--syntara-color-focus-ring);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .grip {
+    transition: background-color var(--syntara-motion-duration-fast) ease-out;
+  }
+}
+.readout {
+  margin: 0;
+  padding-block-start: var(--syntara-space-2);
+  color: var(--syntara-color-text-subtle);
+  font-size: var(--syntara-font-size-sm);
+  letter-spacing: var(--syntara-font-tracking-sm);
+  /* Fixed-width digits, so the label doesn't jitter while dragging, without a monospace font's wide space. */
+  font-variant-numeric: tabular-nums;
 }
 
 .example {
@@ -182,7 +259,8 @@
   font-size: var(--syntara-font-size-sm);
 }
 
-/* Phones: density is the least-used control and would push the bar to a third line, so it waits for more room. */
+/* Phones: density is the least-used control and would push the bar to a third line, so it waits for more room.
+   Width waits too: the stage is already phone-wide, and the handle would catch a thumb scrolling past. */
 @media (max-width: 479px) {
   .wideOnly.wideOnly {
     display: none;
